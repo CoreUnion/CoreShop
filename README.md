@@ -13,7 +13,7 @@
 [![star](https://gitee.com/CoreUnion/CoreShop/badge/star.svg)](https://gitee.com/CoreUnion/CoreShop.git) [![fork](https://gitee.com/CoreUnion/CoreShop/badge/fork.svg)](https://gitee.com/CoreUnion/CoreShop.git)
 [![GitHub stars](https://img.shields.io/github/stars/CoreUnion/CoreShop?logo=github)](https://gihub.com/CoreUnion/CoreShop.git) 
 [![GitHub forks](https://img.shields.io/github/forks/CoreUnion/CoreShop?logo=github)](https://gihub.com/CoreUnion/CoreShop.git)
-<a target="_blank" href="https://gitee.com/CoreUnion/CoreShop/master/LICENSE"><img src="https://img.shields.io/github/license/CoreUnion/CoreShop.svg?logo=git&logoColor=red" ></img></a>
+<a target="_blank" href="https://gitee.com/CoreUnion/CoreShop/blob/master/LICENSE"><img src="https://img.shields.io/github/license/CoreUnion/CoreShop.svg?logo=git&logoColor=red" ></img></a>
 
 
 
@@ -163,7 +163,7 @@
 - HBuilderX
 - 微信开发者工具
 - SQL Server Management Studio / Navicat for MySQL
-- 
+
 
 
 ### 💝运维环境
