@@ -1,0 +1,80 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsPagesItems-detailsForm" id="LAY-app-CoreCmsPagesItems-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id"></label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="widgetCode">组件编码</label>
+                </td>
+                <td>
+                    {{ d.params.data.widgetCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="pageCode">页面编码</label>
+                </td>
+                <td>
+                    {{ d.params.data.pageCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="positionId">布局位置</label>
+                </td>
+                <td>
+                    {{ d.params.data.positionId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sort">排序，越小越靠前</label>
+                </td>
+                <td>
+                    {{ d.params.data.sort || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="parameters">组件配置内容</label>
+                </td>
+                <td>
+                    {{ d.params.data.parameters || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsPagesItems-detailsForm');
+        });
+    };
+</script>

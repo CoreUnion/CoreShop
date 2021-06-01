@@ -1,0 +1,137 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsDistributionResult-editForm" id="LAY-app-CoreCmsDistributionResult-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.id }}" />
+        <input type="hidden" name="gradeId" value="{{d.params.data.gradeId }}" />
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">佣金设置：</label>
+            <div class="layui-input-block">
+                <select name="result_code" id="result_code" lay-filter="result_code">
+                    <option value="">请选择佣金设置</option>
+                    <option value="COMMISSION_1" {{d.params.data.code=='COMMISSION_1' ?'selected="selected"':'' }}>一级佣金</option>
+                    <option value="COMMISSION_2" {{d.params.data.code=='COMMISSION_2' ?'selected="selected"':'' }}>二级佣金</option>
+                    <option value="COMMISSION_3" {{d.params.data.code=='COMMISSION_3' ?'selected="selected"':'' }}>三级佣金</option>
+                </select>
+            </div>
+        </div>
+        <div id="resultBox"></div>
+        <div class="layui-form-item text-center">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistributionResult-editForm-submit" id="LAY-app-CoreCmsDistributionResult-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+
+<script id="first_class_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">一级佣金</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="commissionType" value="1" title="百分比" {{d.commissionType=='1' ?'checked="checked"':'' }}>
+            <input type="radio" name="commissionType" value="2" title="固定金额" {{d.commissionType=='2' ?'checked="checked"':'' }}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">佣金值：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input  type="number" min="0" max="999999" name="discount" lay-verify="required|number" class="layui-input" value="{{d.discount || '0'}}" placeholder="请输入佣金值" lay-reqText="请输入佣金值"  />
+        </div>
+        <div class="layui-form-mid layui-word-aux">百分比时，请设置1-100的数字</div>
+    </div>
+</script>
+
+<script id="second_class_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">二级佣金</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="commissionType" value="1" title="百分比" {{d.commissionType=='1' ?'checked="checked"':'' }}>
+            <input type="radio" name="commissionType" value="2" title="固定金额" {{d.commissionType=='2' ?'checked="checked"':'' }}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">佣金值：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input  type="number" min="0" max="999999" name="discount" lay-verify="required|number" class="layui-input" value="{{d.discount || '0'}}" placeholder="请输入佣金值" lay-reqText="请输入佣金值"  />
+        </div>
+        <div class="layui-form-mid layui-word-aux">百分比时，请设置1-100的数字</div>
+    </div>
+</script>
+
+<script id="three_class_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">三级佣金</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="commissionType" value="1" title="百分比" {{d.commissionType=='1' ?'checked="checked"':'' }}>
+            <input type="radio" name="commissionType" value="2" title="固定金额" {{d.commissionType=='2' ?'checked="checked"':'' }}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">佣金值：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input  type="number" min="0" max="999999" name="discount" lay-verify="required|number" class="layui-input" value="{{d.discount || '0'}}" placeholder="请输入佣金值" lay-reqText="请输入佣金值"  />
+        </div>
+        <div class="layui-form-mid layui-word-aux">百分比时，请设置1-100的数字</div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'laytpl', 'util', 'view', 'table'],
+            function () {
+                var $ = layui.$, form = layui.form, admin = layui.admin, util = layui.util, upload = layui.upload, coreHelper = layui.coreHelper, laytpl = layui.laytpl, view = layui.view, table = layui.table;
+
+                var code = d.params.data.code;
+                var obj = JSON.parse(d.params.data.parameters);
+                var view = document.getElementById('resultBox');
+                $("#resultBox").empty();
+
+                if (code === 'COMMISSION_1') {
+                    var getTpl = first_class_tpl.innerHTML;
+                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                } else if (code === 'COMMISSION_2') {
+                    var getTpl = second_class_tpl.innerHTML;
+                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                } else if (code === 'COMMISSION_3') {
+                    var getTpl = three_class_tpl.innerHTML;
+                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                }
+
+                form.on('select(result_code)', function (data) {
+                    $('#result_code').val(data.value);
+                    var view = document.getElementById('resultBox');
+                    $("#resultBox").empty();
+
+                    if (data.value === 'COMMISSION_1') {
+                        var getTpl = first_class_tpl.innerHTML;
+                        laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'COMMISSION_2') {
+                        var getTpl = second_class_tpl.innerHTML;
+                        laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'COMMISSION_3') {
+                        var getTpl = three_class_tpl.innerHTML;
+                        laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    }
+                    form.render();
+                });
+
+                form.verify({
+                    verifycode: [/^[\S]{0,50}$/, '佣金编码最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsDistributionResult-editForm');
+            })
+    };
+</script>

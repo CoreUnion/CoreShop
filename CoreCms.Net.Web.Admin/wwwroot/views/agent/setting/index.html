@@ -1,0 +1,253 @@
+<title>标题</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+    .layui-form-item label { width: 140px; }
+    .classifyimg { margin-bottom: 20px; width: 672px !important; }
+    .classifyimg-item { display: inline-block; width: 140px; }
+    .classifyimg img { width: 100px; display: block; }
+    .classifyimg .layui-form-radio { vertical-align: top; display: block; margin-bottom: 10px; }
+    .image_storage_type .item { display: none; }
+    .layui-elem-quote { margin: 10px; }
+    .layui-tab-content { padding: 15px 0; }
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsAgentSetting/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <!--<div class="layui-card-header">
+
+                    </div>-->
+
+                    <div class="layui-card-body">
+                        <div class="layui-tab  layui-tab-card" lay-filter="setting">
+                            <ul class="layui-tab-title">
+                                <li lay-id="agent" class="layui-this">代理设置</li>
+                                <li lay-id="platform">用户须知、代理协议</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['isOpenAgent']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="isOpenAgent" name="isOpenAgent" value="1" title="开启" {{d.data.configs['isOpenAgent']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="isOpenAgent" name="isOpenAgent" value="2" title="不开启" {{d.data.configs['isOpenAgent']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['isShowAgentPortal']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="isShowAgentPortal" name="isShowAgentPortal" value="1" title="开启" {{d.data.configs['isShowAgentPortal']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="isShowAgentPortal" name="isShowAgentPortal" value="2" title="不开启" {{d.data.configs['isShowAgentPortal']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['isAllowProcurementService']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-4">
+                                                <input type="radio" lay-filter="isAllowProcurementService" name="isAllowProcurementService" value="1" title="开启" {{d.data.configs['isAllowProcurementService']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="isAllowProcurementService" name="isAllowProcurementService" value="2" title="不开启" {{d.data.configs['isAllowProcurementService']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                            <div class="layui-form-mid">开启此功能，代理商自己下单也将直接计算利润提成</div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-fluid">
+                                        <div class="layui-row layui-col-space10">
+                                            <div class="layui-col-md6">
+                                                <fieldset class="layui-elem-field layui-field-title site-title">
+                                                    <legend><a>{{d.data.configs['agentNotes']['sKey']}}</a></legend>
+                                                </fieldset>
+                                                <div id="agentNotes"></div>
+                                            </div>
+                                            <div class="layui-col-md6">
+                                                <fieldset class="layui-elem-field layui-field-title site-title">
+                                                    <legend><a>{{d.data.configs['agentAgreement']['sKey']}}</a></legend>
+                                                </fieldset>
+                                                <div id="agentAgreement"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">&nbsp;</label>
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="saveEditor">保存更改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
+
+
+<script>
+
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+        indexData = d.data;
+        layui.use(['admin', 'form', 'coreHelper', 'element', 'table', 'util', 'view', 'table', 'cropperImg'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form
+                , element = layui.element
+                , table = layui.table
+                , util = layui.util
+                , view = layui.view
+                , cropperImg = layui.cropperImg
+                , router = layui.router()
+                , search = router.search;
+
+            form.render();
+
+
+            //加载编辑器
+            var toolbar = [
+                {
+                    "name": "basicstyles",
+                    "groups": ["basicstyles"]
+                },
+                {
+                    "name": "paragraph",
+                    "groups": ["list", "blocks"]
+                },
+                {
+                    "name": "document",
+                    "groups": ["mode"]
+                },
+                {
+                    "name": "insert",
+                    "groups": ["insert"]
+                },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                }
+            ];
+            var removeButtons = 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,Iframe,PageBreak,SpecialChar,Smiley,Print,Preview,ExportPdf,NewPage,Save,CreateDiv';
+            var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+            var editor = CKEDITOR.replace('agentNotes', {
+                fileTools_requestHeaders: {
+                    'Authorization': Authorization
+                },
+                toolbarGroups: toolbar,
+                removeButtons: removeButtons
+            });
+            editor.setData(d.data.configs['agentNotes']['sValue']);
+
+            var editor2 = CKEDITOR.replace('agentAgreement', {
+                fileTools_requestHeaders: {
+                    'Authorization': Authorization
+                },
+                toolbarGroups: toolbar,
+                removeButtons: removeButtons
+            });
+            editor2.setData(d.data.configs['agentAgreement']['sValue']);
+
+
+
+
+            form.verify({
+                money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入合法整数或小数'],
+            });
+
+            //保存数据
+            form.on('submit(save)', function (data) {
+                formData = data.field;
+                if (!formData) {
+                    layer.msg('请先完善数据', {
+                        time: 1300
+                    });
+                    return false;
+                }
+                var field = data.field;
+                var keys = Object.keys(field);
+                var postData = [];
+                for (var i = 0; i < keys.length; i++) {
+                    var keyName = Object.keys(field)[i];
+
+                    var entity = {};
+                    entity.sKey = keyName;
+                    entity.sValue = field[keyName];
+                    postData.push(entity);
+                }
+
+                console.log(postData);
+                coreHelper.Post("Api/CoreCmsAgentSetting/DoSave", { entity: postData }, function (e) {
+                    if (debug) { console.log(e); } //开启调试返回数据
+                    layer.msg(e.msg);
+                });
+            });
+
+
+            //保存编辑器数据
+            form.on('submit(saveEditor)', function (data) {
+                formData = data.field;
+                var field = data.field;
+                var keys = Object.keys(field);
+                var postData = [];
+
+
+                var agentNotes = editor.getData();
+                if (!!!agentNotes) {
+                    layer.msg(d.data.configs['agentNotes']['sKey'] + '不能为空', { icon: 5 });
+                    return false;
+                } else {
+                    var entity = {};
+                    entity.sKey = 'agentNotes';
+                    entity.sValue = agentNotes;
+                    postData.push(entity);
+                }
+
+                var agentAgreement = editor2.getData();
+                if (!!!agentAgreement) {
+                    layer.msg(d.data.configs['agentAgreement']['sKey'] + '不能为空', { icon: 5 });
+                    return false;
+                } else {
+                    var entity = {};
+                    entity.sKey = 'agentAgreement';
+                    entity.sValue = agentAgreement;
+                    postData.push(entity);
+                }
+
+
+
+                console.log(postData);
+                coreHelper.Post("Api/CoreCmsAgentSetting/DoSave", { entity: postData }, function (e) {
+                    if (debug) { console.log(e); } //开启调试返回数据
+                    layer.msg(e.msg);
+                });
+            });
+        });
+    }
+</script>

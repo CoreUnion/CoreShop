@@ -1,0 +1,96 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsBrand-createForm" id="LAY-app-CoreCmsBrand-createForm">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">品牌名称</label>
+            <div class="layui-input-inline layui-inline-5">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入品牌名称" placeholder="请输入品牌名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="logoImageUrl" class="layui-form-label">品牌LOGO</label>
+            <div class="layui-input-inline layui-inline-5">
+                <input name="logoImageUrl" id="logoImageUrl" lay-verType="tips" lay-verify="required" class="layui-input" placeholder="请上传品牌LOGO" lay-reqText="请上传品牌LOGO" />
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="upBtnlogoImageUrl">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="viewImgBoxlogoImageUrl">
+                        <p id="viewTextBoxlogoImageUrl"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">品牌排序</label>
+            <div class="layui-input-inline  layui-inline-2">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入品牌排序" lay-reqText="请输入品牌排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="isShow" class="layui-form-label">是否显示</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isShow" id="isShow" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsBrand-createForm-submit" id="LAY-app-CoreCmsBrand-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'laydate', 'cropperImg', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //品牌LOGO图片上传
+                $('#upBtnlogoImageUrl').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 1 / 1,
+                        imgSrc: $('#viewImgBoxlogoImageUrl').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBoxlogoImageUrl').attr('src', res.data.fileUrl);
+                                    $("#logoImageUrl").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsBrand-createTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifyname: [/^[\S]{0,50}$/, '品牌名称最大只允许输入50位字符，且不能出现空格'],
+                    verifylogoImageUrl: [/^[\S]{0,255}$/, '品牌LOGO最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsBrand-createForm');
+            })
+    };
+</script>

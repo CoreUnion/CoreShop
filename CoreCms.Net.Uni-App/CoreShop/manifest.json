@@ -1,0 +1,136 @@
+{
+  "name": "核心小程序商城系统",
+  "appid": "__UNI__EAACF14",
+  "description": "核心小程序商城系统（CoreShop）是基于 Asp.Net Core 5.0、Uni-App开发，支持可视化布局的小程序商城系统",
+  "versionName": "1.0",
+  "versionCode": 1,
+  "transformPx": false,
+  "app-plus": {
+    /* 5+App特有相关 */
+    "modules": {
+      "Payment": {},
+      "VideoPlayer": {}
+    },
+    /* 模块配置 */
+    "distribute": {
+      /* 应用发布信息 */
+      "android": {
+        /* android打包配置 */
+        "permissions": [
+          "<uses-feature android:name=\"android.hardware.camera\"/>",
+          "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+          "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+          "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+          "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+          "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+          "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+          "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+        ],
+        "abiFilters": [ "armeabi-v7a", "arm64-v8a", "x86" ]
+      },
+      "ios": {},
+      /* ios打包配置 */
+      "sdkConfigs": {
+        "payment": {
+          "weixin": {
+            "appid": "wxd56f71964a318e5d"
+          },
+          "alipay": {
+            "scheme": ""
+          }
+        },
+        "ad": {},
+        "maps": {},
+        "oauth": {
+          "univerify": {}
+        }
+      }
+    },
+    "splashscreen": {
+      "waiting": true
+    }
+  },
+  /* SDK配置 */
+  "quickapp": {},
+  /* 快应用特有相关 */
+  "mp-weixin": {
+    "appid": "wxd56f71964a318e5d",
+    "setting": {
+      "urlCheck": true,
+      "postcss": true,
+      "minified": true,
+      "es6": true,
+      "checkSiteMap": false
+    },
+    "permission": {
+      "scope.userLocation": {
+        "desc": "用于获取您附近的门店列表"
+      }
+    },
+    "optimization": {
+      "subPackages": true
+    }
+  },
+  "h5": {
+    "title": "核心小程序商城系统",
+    "domain": "https://h5.demo.coreshop.com.cn/",
+    "router": {
+      "base": "/h5/",
+      "mode": "history"
+    },
+    "template": "index.html",
+    "devServer": {
+      "port": 80,
+      "disableHostCheck": true,
+      "https": true
+    },
+    "sdkConfigs": {
+      "maps": {
+        "qqmap": {
+          "key": "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+        }
+      }
+    },
+    "optimization": {
+      "treeShaking": {
+        "enable": false
+      }
+    }
+  },
+  "mp-toutiao": {
+    "setting": {
+      "es6": true,
+      "postcss": true,
+      "minified": true
+    },
+    "appid": ""
+  },
+  "mp-qq": {
+    "setting": {
+      "es6": true,
+      "postcss": true,
+      "minified": true
+    },
+    "optimization": {
+      "subPackages": true
+    }
+  },
+  "mp-alipay": {},
+  "mp-baidu": {}
+}

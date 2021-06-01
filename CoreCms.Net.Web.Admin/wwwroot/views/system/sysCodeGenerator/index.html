@@ -1,0 +1,148 @@
+﻿<title>代码生成器</title>
+
+<!--当前位置结束-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">请选择数据库表后进行对应项目生成</div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin: 0 auto; max-width: 460px; padding-top: 40px;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据表选择:</label>
+                            <div class="layui-input-block">
+                                <div id="selectBox" class="xm-select-demo"></div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">生成类型</label>
+                            <div class="layui-input-block">
+                                <select name="fileType" id="fileType">
+                                    <option value="AllFiles">全部</option>
+                                    <option value="EntityFiles">实体</option>
+                                    <option value="ViewFiles">视图</option>
+                                    <option value="InterFaceFiles">DAL层</option>
+                                    <option value="ServicesFiles">BLL层</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn" lay-submit lay-filter="LAY-app-codeGenerator-form-submit" id="LAY-app-codeGenerator-form-submit">立即生成</button>
+                                <button type="button" class="layui-btn" lay-submit lay-filter="LAY-app-codeGenerator-GetDataBaseTablesToExcel-submit" id="LAY-app-codeGenerator-GetDataBaseTablesToExcel-submit">生成表名及说明</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="color: #666; margin-bottom: 40px; margin-top: 30px; padding-left: 30px;">
+                        <h3>说明：</h3><br>
+                        <h4>请注意选择表名</h4>
+                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/lib/jquery/jquery-2.1.4.min.js"></script>
+<script src="/lib/jquery/jquery.fileDownload.js"></script>
+<script>
+    layui.use(['admin', 'form', 'layer', 'xmSelect', 'coreHelper'], function () {
+
+        var $ = layui.$
+            , setter = layui.setter
+            , admin = layui.admin
+            , form = layui.form
+            , layer = layui.layer
+            , coreHelper = layui.coreHelper
+            , router = layui.router()
+            , xmSelect = layui.xmSelect
+            , search = router.search;
+
+        var selectBox = xmSelect.render({
+            el: '#selectBox',
+            tips: '请选择数据库表?',
+            height: '600px',
+            radio: true,
+            filterable: true,
+            clickClose: true,
+            toolbar: { show: false },
+            name: 'tableName',
+            prop: {
+                name: 'label',
+                value: 'name',
+            },
+            data: []
+        })
+        coreHelper.Post('api/CodeGenerator/GetTables', null, function (res) {
+            //console.log(res);
+            if (res.code === 0) {
+                selectBox.update({
+                    data: res.data,
+                    autoRow: true,
+                })
+            }
+        })
+
+        //重载form
+        form.render();
+        //监听提交
+        form.on('submit(LAY-app-codeGenerator-form-submit)',
+            function (data) {
+                var field = data.field; //获取提交的字段
+                var headers = {};
+                headers[setter.request.tokenName] = layui.data(setter.tableName)[setter.request.tokenName];
+                var loadingIndex = false;
+                $.fileDownload(setter.apiUrl + 'api/CodeGenerator/CodeGenDown?tableName=' + field.tableName + '&fileType=' + field.fileType,
+                    {
+                        httpMethod: 'POST',
+                        dataType: "json",
+                        contentType: "application/json",
+                        //data: { tableName: field.tableName },
+                        headers: headers,
+                        //preparingMessageHtml: "代码正在生成中,请稍后...",
+                        prepareCallback: function () {
+                            loadingIndex = layer.msg('代码正在生成中,请稍后...',
+                                {
+                                    icon: 16,
+                                    shade: 0.01
+                                });
+                        },
+                        failCallback: function () {
+                            layer.close(loadingIndex);
+                            layer.msg("生成出错,请联系技术！", { icon: 5, time: 1500 });
+                        },
+                        //failMessageHtml: "生成出错,请联系技术！",
+                        successCallback: function () {
+                            layer.close(loadingIndex);
+                            layer.msg("代码生成成功", { icon: 1 });
+                        }
+                    });
+            });
+        //监听提交
+        form.on('submit(LAY-app-codeGenerator-GetDataBaseTablesToExcel-submit)',
+            function (data) {
+                layer.confirm('确定导出数据吗？',
+                    function (index) {
+                        coreHelper.PostForm("api/CodeGenerator/GetDataBaseTablesToExcel", null, function (e) {
+                            console.log(e); //开启调试返回数据
+                            if (e.code === 0) {
+                                window.open(e.data);
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        });
+                    });
+            });
+    });
+</script>

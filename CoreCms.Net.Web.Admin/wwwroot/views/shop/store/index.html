@@ -1,0 +1,437 @@
+<title>门店表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+
+<!--当前位置结束-->
+<style>
+    #storeTable + .layui-table-view .layui-table-tool-temp { padding-right: 0; }
+    #storeTable + .layui-table-view .layui-table-body tbody > tr td { cursor: pointer; }
+    #storeTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click { background-color: #fff3e0; }
+        #storeTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click td:last-child > div:before { position: absolute; right: 6px; content: "\e602"; font-size: 12px; font-style: normal; font-family: layui-icon !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsStore/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid" style="padding-bottom: 0;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 表格工具栏1 -->
+                        <form class="layui-form toolbar">
+                            <div class="layui-form-item" style="margin-bottom: 10px;">
+                                <input name="storeName" class="layui-input" placeholder="输入门店名称"
+                                       style="max-width: 140px;display: inline-block;" />&emsp;
+                                <button class="layui-btn icon-btn" lay-filter="dictTbSearch" lay-submit>
+                                    <i class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                            </div>
+                        </form>
+                        <!-- 数据表格1 -->
+                        <table id="storeTable" lay-filter="storeTable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 表格工具栏2 -->
+                        <form class="layui-form toolbar">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">用户昵称:</label>
+                                    <div class="layui-input-inline">
+                                        <input name="nickName" class="layui-input" placeholder="输入用户昵称" />
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">手机号码:</label>
+                                    <div class="layui-input-inline">
+                                        <input name="mobile" class="layui-input" placeholder="输入用户手机号码" />
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    &emsp;
+                                    <button class="layui-btn icon-btn" lay-filter="dictDataTbSearch" lay-submit>
+                                        <i class="layui-icon">&#xe615;</i>搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- 数据表格2 -->
+                        <table id="storeClerkTable" lay-filter="storeClerkTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="storeClerkBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs"
+       data-dropdown="#dictTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide"
+         id="dictTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除{{d.nickName}}吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal" lay-event="del">确定</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper', 'tableX'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , tableX = layui.tableX
+                    , view = layui.view;
+
+                var selObj;  // 左表选中数据
+
+                /* 渲染表格 */
+                var insTb = table.render({
+                    elem: '#storeTable',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsStore/GetPageList',
+                    method: 'Post',
+                    height: 'full-235',
+                    toolbar: ['<p>',
+                        '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
+                        '<button lay-event="edit" class="layui-btn layui-btn-sm layui-btn-warm icon-btn"><i class="layui-icon">&#xe642;</i>修改</button>&nbsp;',
+                        '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>',
+                        '</p>'].join(''),
+                    defaultToolbar: [],
+                    cols: [[
+                        { type: 'numbers' },
+                        { field: 'storeName', title: '门店名称' }
+                    ]],
+                    done: function (res, curr, count) {
+                        $('#storeTable+.layui-table-view .layui-table-body tbody>tr:first').trigger('click');
+                    }
+                });
+
+                /* 表格搜索 */
+                form.on('submit(dictTbSearch)', function (data) {
+                    insTb.reload({ where: data.field });
+                    return false;
+                });
+
+                /* 表格头工具栏点击事件 */
+                table.on('toolbar(storeTable)', function (obj) {
+                    if (obj.event === 'add') { // 添加
+                        doCreate();
+                    } else if (obj.event === 'edit') { // 修改
+                        doEdit(selObj);
+                    } else if (obj.event === 'del') { // 删除
+                        doDelete(selObj);
+                    }
+                });
+
+                /* 监听行单击事件 */
+                table.on('row(storeTable)', function (obj) {
+                    selObj = obj;
+                    obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+                    insTb2.reload({
+                        where: { storeId: obj.data.id },
+                        page: { curr: 1 },
+                        url: layui.setter.apiUrl + 'Api/CoreCmsStore/GetClerkPageList'
+                    });
+                });
+
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsStore/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建门店数据',
+                                area: ['380px', '600px'],
+                                id: 'LAY-popup-CoreCmsStore-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/store/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsStore-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                field.isDefault = field.isDefault == 'on';
+
+                                                if (!!!field.areaId) {
+                                                    layer.msg("请选择完整【门店地区】");
+                                                    return false;
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsStore/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsStore/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑门店',
+                                area: ['380px', '630px'],
+                                id: 'LAY-popup-CoreCmsStore-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/store/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsStore-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                field.isDefault = field.isDefault == 'on';
+
+                                                if (!!!field.areaId) {
+                                                    layer.msg("请选择完整【门店地区】");
+                                                    return false;
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsStore/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsStore/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            insTb.reload();
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                /* 渲染表格2 */
+                var insTb2 = tableX.render({
+                    elem: '#storeClerkTable',
+                    method: 'Post',
+                    height: 'full-235',
+                    page: true,
+                    toolbar: ['<p>',
+                        '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
+                        '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>&nbsp;',
+                        '</p>'].join(''),
+                    cellMinWidth: 100,
+                    cols: [[
+                        { type: 'checkbox' },
+                        { type: 'numbers' },
+                        { field: 'storeName', title: '门店名称', sort: false },
+                        {
+                            field: 'avatarImage', title: '头像', sort: false,
+                            templet: function (d) {
+                                if (d.avatarImage) {
+                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.avatarImage + '")><image style="max-width:28px;max-height:28px;" src="' + d.avatarImage + '" /></a>';
+                                } else {
+                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                }
+                            }, width: 80
+                        },
+                        { field: 'nickName', title: '店员昵称', sort: false },
+                        { field: 'mobile', title: '手机号码', sort: false },
+                        { field: 'createTime', title: '关联时间', sort: false },
+                        { title: '操作', toolbar: '#storeClerkBar', align: 'center', width: 120, minWidth: 120 }
+                    ]]
+                });
+
+                /* 表格2搜索 */
+                form.on('submit(dictDataTbSearch)', function (data) {
+                    insTb2.reload({ where: data.field, page: { curr: 1 } });
+                    return false;
+                });
+
+                /* 表格2工具条点击事件 */
+                table.on('tool(storeClerkTable)', function (obj) {
+                    if (obj.event === 'edit') { // 修改
+                        doEditData(obj);
+                    } else if (obj.event === 'del') { // 删除
+                        doDeleteData(obj);
+                    }
+                });
+
+                /* 表格2头工具栏点击事件 */
+                table.on('toolbar(storeClerkTable)', function (obj) {
+                    if (obj.event === 'add') { // 添加
+                        doCreateData();
+                    } else if (obj.event === 'del') { // 删除
+                        doBatchDeleteData();
+                    }
+                });
+
+                //执行创建操作
+                function doCreateData() {
+                    coreHelper.Post("Api/CoreCmsStore/GetClerkCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建用户数据',
+                                area: ['380px', '200px'],
+                                id: 'LAY-popup-CoreCmsStore-GetClerkCreate',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/store/clerkCreate', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsStore-clerkCreateForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+                                                field.storeId = selObj.data.id;
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsStore/DoClerkCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb2.reload({ page: { curr: 1 } });
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEditData(obj) {
+                    coreHelper.Post("Api/CoreCmsStore/GetClerkEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑用户数据',
+                                area: ['380px', '200px'],
+                                id: 'LAY-popup-CoreCmsStore-clerkEdit',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/store/clerkEdit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsStore-clerkEdit-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsStore/DoClerkEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb2.reload({ page: { curr: 1 } });
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行批量删除
+                function doBatchDeleteData() {
+                    var checkRows = table.checkStatus('storeClerkTable');
+                    if (checkRows.data.length === 0) {
+                        layer.msg('请选择要删除的数据', { icon: 2, anim: 6 });
+                        return;
+                    }
+                    var ids = checkRows.data.map(function (d) {
+                        return d.id;
+                    });
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            coreHelper.Post("Api/CoreCmsStore/DoClerkBatchDelete", { id: ids }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                insTb2.reload({ page: { curr: 1 } });
+                                layer.msg(e.msg);
+                            });
+                        });
+                }
+
+                //执行单个删除
+                function doDeleteData(obj) {
+                    coreHelper.Post("Api/CoreCmsStore/DoClerkDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        insTb2.reload({ page: { curr: 1 } });
+                        layer.msg(e.msg);
+                    });
+                }
+
+            });
+    };
+</script>

@@ -1,0 +1,335 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsPromotionCondition-editForm" id="LAY-app-CoreCmsPromotionCondition-editForm">
+        <input type="hidden" name="promotionId" id="promotionId" value="{{d.params.data.promotionModel.promotionId}}" />
+        <input type="hidden" name="id" id="id" value="{{d.params.data.promotionModel.id}}" />
+        <div class="layui-form-item" style="display:none;">
+            <label class="layui-form-label">促销条件：</label>
+            <div class="layui-input-block">
+                <select name="code" id="code" lay-filter="conditionCode">
+                    <option value="">请选择促销条件</option>
+                    {{# layui.each(d.params.data.conditionCodes, function(index, item){ }}
+                    <option value="{{ item.sKey }}" {{d.params.data.promotionModel.code==item.sKey?'selected="selected"':''}}>{{ item.sDescription }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div id="conditionBox"></div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotionCondition-editForm-submit" id="LAY-app-CoreCmsPromotionCondition-editForm-submit" value="确认编辑">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="goods_all_tpl" type="text/html">
+    <input type="hidden" name="nums" value="{{d.nums}}" />
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">所有商品都满足条件</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件：</label>
+        <div class="layui-form-mid">
+            无需设置任何条件，直接点击“完成”吧。
+        </div>
+    </div>
+</script>
+
+<script id="goods_cats_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">指定商品分类</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品分类：</label>
+        <div class="layui-input-block">
+            <ul id="goodsSelectCategorytTree" class="dtree" data-id="0" data-name="parentId"></ul>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品数量：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
+    </div>
+</script>
+
+<script id="goodsIds_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">指定商品id</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品id：</label>
+        <div class="layui-input-block">
+            <div id="goods_box" class="select_seller_goods_box">
+                <div>
+                    <button class="layui-btn" lay-active="goodsShow"><i class="layui-icon layui-icon-ok"></i>选择商品</button>
+                </div>
+                <input type="hidden" name="goods" id="goods" value="">
+                <ul id="goods_list" class="sellect_seller_goods_list">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品数量：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
+    </div>
+</script>
+
+<script id="goods_brands_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">指定商品品牌</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品品牌：</label>
+        <div class="layui-input-inline">
+            <select name="brandId" id="brandId">
+                <option value="">请选择品牌</option>
+                {{# layui.each(d.brands, function(index, item){ }}
+                <option value="{{ item.id }}" {{d.obj.brandId==item.id?'selected="selected"':''}}>{{ item.name }}</option>
+                {{# }); }}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品数量：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.obj.nums || '1'}}" placeholder="商品数量" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
+    </div>
+</script>
+
+<script id="order_full_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">满减</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">满多少：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="{{d.money || '1'}}" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">订单金额满多少的时候，优惠</div>
+    </div>
+</script>
+
+<script id="user_grade_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-input-inline">
+            <div class="layui-form-mid">指定用户等级</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="required-color">*</i>请选择：</label>
+        <div class="layui-input-block">
+            <div id="grades-select" class="xm-select-demo"></div>
+        </div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'dtree', 'util', 'table'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , view = layui.view
+                    , laytpl = layui.laytpl
+                    , dtree = layui.dtree
+                    , coreHelper = layui.coreHelper
+                    , table = layui.table
+                    , util = layui.util;
+
+                var code = d.params.data.promotionModel.code;
+                var obj = JSON.parse(d.params.data.promotionModel.parameters);
+                var view = document.getElementById('conditionBox');
+                $("#conditionBox").empty();
+                if (code === 'GOODS_ALL') {//所有商品满足条件
+                    laytpl(goods_all_tpl.innerHTML).render(obj, function (html) { view.innerHTML = html; });
+                } else if (code === 'GOODS_IDS') { //指定某些商品满足条件
+                    laytpl(goodsIds_tpl.innerHTML).render(obj, function (html) { view.innerHTML = html; });
+                    if (obj.goodsId) {
+                        var goodsIds = obj.goodsId.split(',');
+                        coreHelper.Post("Api/Tools/GetGoodsByIds", { id: goodsIds }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+
+                            $("#goods_list").empty();
+                            var the_val = "";
+                            for (var i = 0; i < e.data.length; i++) {
+                                $("#goods_list").append('<li><span id="' + e.data[i].id + '"  lay-active="goodsDelete">×</span>' + e.data[i].name + '</li>');
+                                the_val += "," + e.data[i].id;
+                            }
+                            $("#goods").val(the_val.slice(1));
+                        });
+                    }
+                } else if (code === 'GOODS_CATS') {//指定商品分类满足条件
+                    laytpl(goods_cats_tpl.innerHTML).render(obj, function (html) { view.innerHTML = html; });
+                    dtree.renderSelect({
+                        elem: "#goodsSelectCategorytTree",
+                        width: "100%",
+                        data: d.params.data.categories.data,
+                        done: function (res, $ul, first) {
+                            if (first) {
+                                var id = obj.catId.toString();
+                                dtree.dataInit("goodsSelectCategorytTree", id);
+                                dtree.selectVal("goodsSelectCategorytTree", id);
+                            }
+                        }
+                    });
+                } else if (code === 'GOODS_BRANDS') {//指定商品品牌满足条件
+                    var data = { brands: d.params.data.brands, obj: obj }
+                    laytpl(goods_brands_tpl.innerHTML).render(data, function (html) { view.innerHTML = html; });
+                } else if (code === 'ORDER_FULL') {//订单满XX金额满足条件
+                    laytpl(order_full_tpl.innerHTML).render(obj, function (html) { view.innerHTML = html; });
+                } else if (code === 'USER_GRADE') {//用户符合指定等级
+                    laytpl(user_grade_tpl.innerHTML).render(obj, function (html) { view.innerHTML = html; });
+                    var gradeIds = obj.grades.split(',');
+                    xmSelect.render({
+                        el: '#grades-select',
+                        tips: '请选择用户类别?',
+                        initValue: gradeIds,
+                        name: 'grades',
+                        prop: {
+                            name: 'title',
+                            value: 'id',
+                        },
+                        data: d.params.data.grades
+                    })
+                }
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    goodsShow: function () {
+                        admin.popup({ shadeClose: false,
+                            title: '选择商品',
+                            area: ['750xp', '90%'],
+                            id: 'LAY-app-CoreCmsPinTuanRule-editForm-GetGoodsList',
+                            success: function (layero, index) {
+                                layui.view(this.id).render('common/getGoodIds', null).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+
+                                    //table.on('tool(LAY-app-CoreCmsGoods-GoodsTable-TableBox)',
+                                    //table.on('tool(LAY-app-CoreCmsGoods-getData)',
+                                    //    function (obj) {
+                                    //        var data = obj.data; //获得当前行数据
+                                    //        $("#goods_list").empty();
+                                    //        $("#goods_list").append('<li><span id="' + data.id + '"  lay-active="goods_delete">×</span>' + data.name + '</li>');
+                                    //        $("#goods").val(data.id);
+                                    //        layer.close(index);
+                                    //    });
+
+                                    //监听商品列表页工具条
+                                    form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                        function (data) {
+                                            if (Object.getOwnPropertyNames(ids).length === 0) {
+                                                layer.msg("请先选择商品");
+                                                return;
+                                            }
+                                            //判断个数是否满足
+                                            if (Object.getOwnPropertyNames(ids).length > 10) {
+                                                layer.msg("最多只能选择" + 10 + "个");
+                                                return false;
+                                            }
+                                            $("#goods_list").empty();
+                                            var the_val = "";
+                                            for (var key in ids) {
+                                                $("#goods_list").append('<li><span id="' + key + '"  lay-active="goodsDelete">×</span>' + ids[key].name + '</li>');
+                                                the_val += "," + key;
+                                            }
+                                            $("#goods").val(the_val.slice(1));
+                                            layer.close(index);
+                                        });
+
+                                });
+                            }
+                        });
+                    },
+                    goodsDelete: function () {
+                        var ids_array = $("#goods").val().split(",");
+                        for (var i = 0; i < ids_array.length; i++) {
+                            if (ids_array[i] == $(this).attr("id")) {
+                                ids_array.splice(i, 1);
+                            }
+                        }
+                        $("#goods").val(ids_array.join(","));
+                        $(this).parent().remove();
+                    }
+                });
+
+                //form.on('select(conditionCode)', function (data) {
+                //    $('#code').val(data.value);
+                //    var view = document.getElementById('conditionBox');
+                //    $("#conditionBox").empty();
+                //    if (data.value === 'GOODS_ALL') {//所有商品满足条件
+                //        laytpl(goods_all_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                //    } else if (data.value === 'GOODS_IDS') { //指定某些商品满足条件
+                //        laytpl(goodsIds_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                //    } else if (data.value === 'GOODS_CATS') {//指定商品分类满足条件
+                //        laytpl(goods_cats_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                //        dtree.renderSelect({
+                //            elem: "#goodsSelectCategorytTree",
+                //            width: "100%",
+                //            data: d.params.data.categories.data,
+                //            done: function (res, $ul, first) {
+                //                if (first) {
+                //                    dtree.dataInit("goodsSelectCategorytTree", '0');
+                //                    dtree.selectVal("goodsSelectCategorytTree", '0');
+                //                }
+                //            }
+                //        });
+                //    } else if (data.value === 'GOODS_BRANDS') {//指定商品品牌满足条件
+                //        laytpl(goods_brands_tpl.innerHTML).render(d.params.data.brands, function (html) { view.innerHTML = html; });
+                //    } else if (data.value === 'ORDER_FULL') {//订单满XX金额满足条件
+                //        laytpl(order_full_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                //    } else if (data.value === 'USER_GRADE') {//用户符合指定等级
+                //        laytpl(user_grade_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                //        xmSelect.render({
+                //            el: '#grades-select',
+                //            tips: '请选择用户类别?',
+                //            name: 'grades',
+                //            prop: {
+                //                name: 'title',
+                //                value: 'id',
+                //            },
+                //            data: d.params.data.grades
+                //        })
+                //    }
+                //    form.render();
+                //});
+
+                form.verify({
+                    money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入金额'],
+                    verifycode: [/^[\S]{0,50}$/, '促销条件编码最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render();
+            })
+    };
+</script>

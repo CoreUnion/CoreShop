@@ -1,0 +1,188 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysUser-detailsForm" id="LAY-app-SysUser-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">用户id</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="userName">账号</label>
+                </td>
+                <td>
+                    {{ d.params.data.userName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="passWord">密码</label>
+                </td>
+                <td>
+                    {{ d.params.data.passWord || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="nickName">昵称</label>
+                </td>
+                <td>
+                    {{ d.params.data.nickName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="avatar">头像</label>
+                </td>
+                <td>
+                    {{ d.params.data.avatar || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sex">性别</label>
+                </td>
+                <td>
+                    {{ d.params.data.sex || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="phone">手机号</label>
+                </td>
+                <td>
+                    {{ d.params.data.phone || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="email">邮箱</label>
+                </td>
+                <td>
+                    {{ d.params.data.email || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="emailVerified">邮箱是否验证</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="emailVerified" value="{{d.params.data.emailVerified}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="emailVerified" {{ d.params.data.emailVerified ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="trueName">真实姓名</label>
+                </td>
+                <td>
+                    {{ d.params.data.trueName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="idCard">身份证号</label>
+                </td>
+                <td>
+                    {{ d.params.data.idCard || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="birthday">出生日期</label>
+                </td>
+                <td>
+                    {{ d.params.data.birthday || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="introduction">个人简介</label>
+                </td>
+                <td>
+                    {{ d.params.data.introduction || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="organizationId">机构id</label>
+                </td>
+                <td>
+                    {{ d.params.data.organizationId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="state">状态,0正常,1冻结</label>
+                </td>
+                <td>
+                    {{ d.params.data.state || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="deleted">是否删除,0否,1是</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="deleted" value="{{d.params.data.deleted}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="deleted" {{ d.params.data.deleted ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">注册时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">修改时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysUser-detailsForm');
+        });
+    };
+</script>

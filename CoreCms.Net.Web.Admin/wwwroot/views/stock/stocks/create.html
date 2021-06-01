@@ -1,0 +1,168 @@
+<style>
+    .clearfix:after, .clearfix:before { content: ""; display: table; }
+    .clearfix:after { clear: both; }
+    .clearfix { *zoom: 1; margin-bottom: 5px; }
+    .layui-btn-group { vertical-align: text-top; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsStock-createForm" id="LAY-app-CoreCmsStock-createForm">
+        <input type="hidden" name="id" value="{{layui.coreHelper.getSN('iin')}}" />
+
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label  layui-form-required">操作类型</label>
+            <div class="layui-input-block">
+                {{# layui.each(d.params.data.stockType, function(index, item){ }}
+                <input type="radio" name="type" value="{{ item.value }}" title="{{ item.description }}" lay-verify="required">
+                {{# }); }}
+                <!--<select name="type" lay-verify="required" lay-reqText="请选择入库单类型">
+                    <option value="">请选择出库入库类型</option>
+                    {{# layui.each(d.params.data.stockType, function(index, item){ }}
+                    <option value="{{ item.value }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>-->
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="memo" class="layui-form-label  layui-form-required">备注</label>
+            <div class="layui-input-block">
+                <input name="memo" lay-verType="tips" lay-verify="required|verifymemo" class="layui-input" value="无" placeholder="请输入备注" />
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label for="memo" class="layui-form-label  layui-form-required">选择货品</label>
+            <div class="layui-input-block" style="padding: 0 0 10px 10px;" id="father">
+                <div id="element" class="clearfix myBox" data-id="0">
+                    <label class="layui-form-label layui-form-required">选择货品</label>
+                    <div class="pro clearfix">
+                        <div class="layui-input-inline layui-inline-13">
+                            <select name="item.productId[0]" id="productId" lay-verify="required">
+                                <option value="">根据商品名称、货品编号搜索</option>
+                                {{# layui.each(d.params.data.products, function(index, item){ }}
+                                <option value="{{ item.id }}">商品名称：{{ item.name }}{{ item.spesDesc ? '-'+item.spesDesc :''}}，货品编号：{{ item.sn }}，当前库存：{{ item.stock }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                        <div class="layui-input-inline layui-inline-2">
+                            <input type="number" placeholder="数量" name="item.nums[0]" id="nums" class="layui-input" lay-verify="required|number">
+                        </div>
+                        <div class="layui-input-inline layui-inline-3">
+                            <div class="layui-btn-group">
+                                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm add">
+                                    <i class="layui-icon">&#xe654;</i>
+                                </button>
+                                <!--<button type="button" class="layui-btn layui-btn-primary layui-btn-sm del">
+                                    <i class="layui-icon">&#xe640;</i>
+                                </button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="layui-form-item text-right core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsStock-createForm-submit" id="LAY-app-CoreCmsStock-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+
+
+
+<script id="tr_tpl" type="text/html">
+    <div id="element" class="clearfix myBox" data-id="{{ d.id }}">
+        <label class="layui-form-label layui-form-required">选择货品</label>
+        <div class="pro clearfix">
+            <div class="layui-input-inline layui-inline-13">
+                <select name="item.productId[{{ d.id }}]" id="productId" lay-verify="required">
+                    <option value="">根据商品名称、货品编号搜索</option>
+                    {{# layui.each(paramsData, function(index, item){ }}
+                    <option value="{{ item.id }}">商品名称：{{ item.name }}{{ item.spesDesc ? '-'+item.spesDesc :''}}，货品编号：{{ item.sn }}，当前库存：{{ item.stock }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" placeholder="数量" name="item.nums[{{ d.id }}]" value="1" id="nums" class="layui-input" lay-verify="required|number">
+            </div>
+            <div class="layui-input-inline layui-inline-3">
+                <div class="layui-btn-group">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm add">
+                        <i class="layui-icon">&#xe654;</i>
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm del">
+                        <i class="layui-icon">&#xe640;</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+
+<script>
+    var debug = layui.setter.debug;
+    var paramsData;
+    layui.data.done = function (d) {
+        paramsData = d.params.data.products;
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , laytpl = layui.laytpl
+                    , coreHelper = layui.coreHelper;
+
+
+                $("#father").on('click', '.add', function (e) {
+                    var getTpl = tr_tpl.innerHTML;
+                    var lastId = $(this).parents("#element").parent().find('.myBox').last().attr('data-id');
+                    console.log(lastId);
+                    var tmpData = {};
+                    tmpData.id = parseInt(lastId) + 1;
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        $("#father").append(html);
+                        form.render();
+                    });
+                });
+
+                $("#father").on('click', '.del', function (e) {
+                    if ($(".del").length >= 1) {
+                        $(this).parents("#element").remove();
+                        resetInputNameID();
+                    } else {
+                        layer.msg("至少保留1个表单字段");
+                    }
+                })
+
+                //重置排序
+                function resetInputNameID() {
+                    $.each($("#father .myBox"), function (i, tr) {
+                        $(this).attr('data-id', i);
+                        $(this).find("#id").attr("name", "item.id[" + i + "]");
+                        $(this).find("#nums").attr("name", "item.nums[" + i + "]");
+                    });
+                    form.render();
+                }
+
+                form.verify({
+
+                    verifyid: [/^.{0,20}$/, '序列最大只允许输入20位字符'],
+                    verifymemo: [/^.{0,200}$/, '备注最大只允许输入200位字符'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsStock-createForm');
+            })
+    };
+</script>

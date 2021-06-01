@@ -1,0 +1,163 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsBillReship-detailsForm" id="LAY-app-CoreCmsBillReship-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="reshipId">退货单号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.reshipId || '' }}
+                </td>
+                <td>
+                    <label for="orderId">订单序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.orderId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="aftersalesId">售后单序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.aftersalesId || '' }}
+                </td>
+                <td>
+                    <label for="userId">用户信息</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.userNickName || '' }}  （ {{ d.params.data.model.userId || '' }}）
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="logiCode">物流公司</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.logiCode || '' }}
+                </td>
+                <td>
+                    <label for="logiNo">物流单号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.logiNo || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">状态</label>
+                </td>
+                <td>
+                    {{#  layui.each(d.params.data.status, function(index, item){ }}
+                    {{#  if(item.value === d.params.data.model.status){ }}
+                    {{ item.description }}
+                    {{#  } }}
+                    {{#  }); }}
+                </td>
+                <td>
+                    <label for="memo">备注</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.memo || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.createTime || '' }}
+                </td>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.updateTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <label for="updateTime">退货明细</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table id="LAY-app-CoreCmsBillReshipItem-tableBox" lay-filter="LAY-app-CoreCmsBillReshipItem-tableBox"></table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper', 'table'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , table = layui.table
+                , form = layui.form;
+
+
+            //数据绑定
+            table.render({
+                elem: '#LAY-app-CoreCmsBillReshipItem-tableBox',
+                data: d.params.data.model.items,
+                method: 'POST',
+                defaultToolbar: ['filter', 'print', 'exports'],
+                //height: 'full-189',
+                width: '950',
+                page: false,
+                limit: 30,
+                limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                text: { none: '暂无相关数据' },
+                cols: [
+                    [
+                        //{ type: "checkbox", fixed: "left" },
+                        { field: 'id', title: '序列', width: 60, sort: false },
+                        //{ field: 'reshipId', title: '退款单单id', sort: false, width: 105 },
+                        //{ field: 'orderItemsId', title: '订单明细', sort: false, width: 60 },
+                        //{ field: 'goodsId', title: '商品序号', sort: false, width: 60 },
+                        //{ field: 'productId', title: '货品序号', sort: false, width: 60 },
+                        { field: 'sn', title: '货品编码', sort: false, width: 120 },
+                        { field: 'bn', title: '商品编码', sort: false, width: 120 },
+                        { field: 'name', title: '商品名称', sort: false },
+                        { field: 'addon', title: '货品名称', sort: false },
+                        {
+                            field: 'imageUrl', title: '图片', width: 50, sort: false,
+                            templet: function (d) {
+                                if (d.imageUrl) {
+                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.imageUrl + '")><image style="max-width:28px;max-height:28px;" src="' + d.imageUrl + '"/></a>';
+                                } else {
+                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '"/></a>';
+                                }
+                            }
+                        },
+                        { field: 'nums', title: '数量', sort: false, width: 50 },
+                        { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                    ]
+                ]
+            });
+
+
+
+            form.render(null, 'LAY-app-CoreCmsBillReship-detailsForm');
+        });
+    };
+</script>

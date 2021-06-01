@@ -1,0 +1,25 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div style="text-align: center" lay-filter="LAY-app-CoreCmsForm-QrCode" id="LAY-app-CoreCmsForm-QrCode">
+        <img id="cavasimg" src="{{d.params.data.fileUrl}}" width="300" height="341" style="border: 1px solid #c0c0c0" />
+        <div style="width: 100%;text-align:center;margin-top: 20px;">
+            <a class="layui-btn" href="{{d.params.data.fileUrl}}" target="_blank">下载二维码</a>
+        </div>
+    </div>
+
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsForm-detailsForm');
+        });
+    };
+</script>

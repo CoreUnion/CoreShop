@@ -1,0 +1,38 @@
+.wrap { font-size: 28rpx;
+    .content { width: 600rpx; margin: 80rpx auto 0;
+
+        .title { text-align: left; font-size: 50rpx; font-weight: 500; margin-bottom: 100rpx; }
+        input { text-align: left; margin-bottom: 10rpx; padding-bottom: 6rpx; }
+        .tips { color: $u-type-info; margin-bottom: 60rpx; margin-top: 8rpx; }
+        .getCaptcha { background-color: rgb(253, 243, 208); color: $u-tips-color; border: none; font-size: 30rpx; padding: 12rpx 0;
+
+            &::after { border: none; }
+        }
+        .alternative { color: $u-tips-color; display: flex; justify-content: space-between; margin-top: 30rpx; }
+    }
+    .buttom {
+        .loginType { display: flex; padding: 350rpx 150rpx 150rpx 150rpx; justify-content: center;
+
+            .item { display: flex; flex-direction: column; align-items: center; color: $u-content-color; font-size: 28rpx; }
+        }
+
+        .hint { padding: 20rpx 40rpx; font-size: 22rpx; color: $u-tips-color;
+
+            .link { color: $u-type-warning; }
+        }
+    }
+}
+
+
+.wrapkey { padding: 80rpx 70rpx; }
+.box { margin: 30rpx 0; font-size: 30rpx; color: 555; }
+.key-input { padding: 30rpx 0;
+    text { display: none; }
+    .error { display: block; color: red; font-size: 30rpx; margin: 20rpx 0; }
+}
+.title { font-size: 50rpx; color: #333; }
+.key-input .tips { font-size: 30rpx; color: #333; margin-top: 20rpx; margin-bottom: 60rpx; }
+.captcha { color: $u-type-warning; font-size: 30rpx; margin-top: 40rpx;
+    .noCaptcha { display: block; }
+    .regain { display: block; }
+}

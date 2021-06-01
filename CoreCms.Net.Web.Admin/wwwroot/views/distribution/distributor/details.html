@@ -1,0 +1,152 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsDistribution-detailsForm" id="LAY-app-CoreCmsDistribution-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+            <tr>
+                <td style="width: 20%;">
+                    <label for="id">序列</label>
+                </td>
+                <td style="width: 30%;">
+                    {{ d.params.data.model.id || '' }}
+                </td>
+                <td style="width: 20%;">
+                    <label for="userId">用户Id</label>
+                </td>
+                <td style="width: 30%;">
+                    {{ d.params.data.model.userId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">分销商名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.name || '' }}
+                </td>
+                <td>
+                    <label for="gradeId">分销等级</label>
+                </td>
+                <td>
+                    {{# layui.each(d.params.data.grades, function(index, item){ }}
+                    {{#  if(item.id === d.params.data.model.gradeId){ }}
+                    <button class="layui-btn layui-btn-xs">{{ item.name }}</button>
+                    {{#  } }}
+                    {{# }); }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="mobile">手机号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.mobile || '' }}
+                </td>
+                <td>
+                    <label for="weixin">微信号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.weixin || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="qq">qq号</label>
+                </td>
+                <td colspan="3">
+                    {{ d.params.data.model.qq || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="storeName">店铺名称</label>
+                </td>
+                <td colspan="3">
+                    {{ d.params.data.model.storeName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="storeLogo">店铺Logo</label>
+                </td>
+                <td>
+                    <img src=" {{ d.params.data.model.storeLogo ? d.params.data.model.storeLogo:'/static/images/common/empty-banner.png' }}" />
+                </td>
+                <td>
+                    <label for="storeBanner">店铺Banner</label>
+                </td>
+                <td>
+                    <img src=" {{ d.params.data.model.storeBanner ? d.params.data.model.storeBanner:'/static/images/common/empty-banner.png' }}" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="storeDesc">店铺简介</label>
+                </td>
+                <td colspan="3">
+                    {{ d.params.data.model.storeDesc || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.createTime || '' }}
+                </td>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.updateTime || '' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="verifyStatus">审核状态</label>
+                </td>
+                <td>
+                    {{# layui.each(d.params.data.distributionVerifyStatus, function(index, item){ }}
+
+                    {{#  if(item.value === d.params.data.model.verifyStatus){ }}
+                    <button class="layui-btn layui-btn-xs">{{ item.description }}</button>
+                    {{#  } }}
+
+                    {{# }); }}
+                </td>
+                <td>
+                    <label for="verifyTime">审核时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.verifyTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsDistribution-detailsForm');
+        });
+    };
+</script>

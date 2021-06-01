@@ -1,0 +1,767 @@
+{
+  "easycom": {
+    // 下载安装的方式需要前面的"@/"，npm安装的方式无需"@/"
+    // 下载安装方式
+    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+    // npm安装方式
+    // "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+  },
+  "pages": [
+    {
+      "path": "pages/index/default/default",
+      "style": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "首页",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/index/custom/custom",
+      "style": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "页面",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/index/cart/cart",
+      "style": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "购物车"
+      }
+    },
+    {
+      "path": "pages/index/member/member",
+      "style": {
+        "navigationBarTextStyle": "black",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "navigationBarTitleText": "会员中心"
+      }
+    },
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "搜索"
+      }
+    },
+    {
+      "path": "pages/category/index/index",
+      "style": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "分类"
+      }
+    },
+    {
+      "path": "pages/category/list/list",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "商品列表"
+      }
+    },
+    {
+      "path": "pages/goods/goodDetails/goodDetails",
+      "style": {
+        "navigationBarTextStyle": "black",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "navigationBarTitleText": "商品详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/placeOrder/index/index",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "提交订单"
+      }
+    },
+    {
+      "path": "pages/placeOrder/invoice/invoice",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "发票"
+      }
+    },
+    {
+      "path": "pages/placeOrder/storeList/storeList",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "门店列表"
+      }
+    },
+    {
+      "path": "pages/payment/pay/pay",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "支付"
+      }
+    },
+    {
+      "path": "pages/payment/waiting/waiting",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "等待支付"
+      }
+    },
+    {
+      "path": "pages/payment/result/result",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "支付结果"
+      }
+    },
+
+    {
+      "path": "pages/article/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "文章详情"
+      }
+    },
+    {
+      "path": "pages/article/list/list",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "文章列表"
+      }
+    },
+    {
+      "path": "pages/login/loginBySMS/loginBySMS",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "授权登录"
+      }
+    },
+    {
+      "path": "pages/login/loginByGetPhoneNumber/loginByGetPhoneNumber",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "手机授权"
+      }
+    },
+    {
+      "path": "pages/login/loginByAccount/loginByAccount",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "账户登录"
+      }
+    },
+    {
+      "path": "pages/login/forget/forget",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "忘记密码"
+      }
+    },
+    {
+      "path": "pages/share/sharePoster/sharePoster",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "分享"
+      }
+    },
+    {
+      "path": "pages/login/author/author",
+      "style": {
+        "navigationBarTextStyle": "black",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "navigationBarTitleText": "获取授权中"
+      }
+    },
+    {
+      "path": "pages/activity/pinTuan/list/list",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "拼团列表"
+      }
+    },
+    {
+      "path": "pages/activity/pinTuan/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "拼团详情"
+      }
+    },
+    {
+      "path": "pages/activity/seckill/list/list",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "秒杀列表"
+      }
+    },
+    {
+      "path": "pages/activity/seckill/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "秒杀详情"
+      }
+    },
+    {
+      "path": "pages/activity/groupBuying/list/list",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "团购列表"
+      }
+    },
+    {
+      "path": "pages/activity/groupBuying/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "团购详情"
+      }
+    },
+    {
+      "path": "pages/form/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "万能表单"
+      }
+    },
+
+    {
+      "path": "pages/share/jump/jump",
+      "style": {
+        "navigationBarTextStyle": "black",
+        // #ifdef H5
+        "titleNView": false,
+        // #endif
+        "navigationBarTitleText": "加载中..."
+      }
+    },
+    {
+      "path": "pages/storeMap/storeMap",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "门店列表"
+      }
+    },
+
+    {
+      "path": "pages/serviceGoods/index/index",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "服务商品列表"
+      }
+    },
+    {
+      "path": "pages/serviceGoods/details/details",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "服务商品详情"
+      }
+    },
+    {
+      "path": "pages/coupon/coupon",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "优惠券列表"
+      }
+    },
+    {
+      "path": "pages/map/map",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "地图展示"
+      }
+    },
+    {
+      "path": "pages/goods/goodComments/goodComments",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "商品评论"
+      }
+    },
+    {
+      "path": "pages/reward/reward",
+      "style": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "打赏"
+      }
+    }
+  ],
+  "subpackages": [
+    {
+      "root": "pages/member",
+      "name": "member",
+      "pages": [
+        {
+          "path": "coupon/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的优惠券"
+          }
+        },
+        {
+          "path": "balance/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的余额"
+          }
+        },
+        {
+          "path": "balance/recharge",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "储值"
+          }
+        },
+        {
+          "path": "balance/withdrawCash",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "提现"
+          }
+        },
+        {
+          "path": "balance/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "余额明细"
+          }
+        },
+        {
+          "path": "balance/cashlist",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "提现记录"
+          }
+        },
+        {
+          "path": "balance/bankcard",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的银行卡"
+          }
+        },
+        {
+          "path": "balance/addBankCard",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "添加银行卡"
+          }
+        },
+        {
+          "path": "collection/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的收藏"
+          }
+        },
+        {
+          "path": "history/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的足迹"
+          }
+        },
+        {
+          "path": "address/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "地址管理"
+          }
+        },
+        {
+          "path": "address/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "修改地址"
+          }
+        },
+        {
+          "path": "setting/index/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "设置"
+          }
+        },
+        {
+          "path": "setting/userInfo/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "个人信息"
+          }
+        },
+        {
+          "path": "setting/userInfo/password",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "修改密码"
+          }
+        },
+        {
+          "path": "integral/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的积分"
+          }
+        },
+        {
+          "path": "invite/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "邀请好友"
+          }
+        },
+        {
+          "path": "invite/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "邀请列表"
+          }
+        },
+        {
+          "path": "invoice/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的发票"
+          }
+        },
+        {
+          "path": "order/orderlist",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "订单列表"
+          }
+        },
+        {
+          "path": "order/orderdetail",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "订单详情"
+          }
+        },
+        {
+          "path": "order/invitationGroup",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "邀请拼单"
+          }
+        },
+        {
+          "path": "afterSales/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "申请售后"
+          }
+        },
+        {
+          "path": "afterSales/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "售后列表"
+          }
+        },
+        {
+          "path": "afterSales/detail",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "售后详情"
+          }
+        },
+        {
+          "path": "order/evaluate",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "订单评价"
+          }
+        },
+        {
+          "path": "order/expressDelivery",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "物流信息"
+          }
+        },
+        {
+          "path": "distribution/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "分销中心"
+          }
+        },
+        {
+          "path": "distribution/apply",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "申请成为分销"
+          }
+        },
+        {
+          "path": "distribution/applyState",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "审核状态"
+          }
+        },
+        {
+          "path": "distribution/panel",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "分销中心"
+          }
+        },
+        {
+          "path": "distribution/agreement",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "分销协议"
+          }
+        },
+        {
+          "path": "distribution/order",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "推广订单"
+          }
+        },
+        {
+          "path": "distribution/myStore",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的店铺"
+          }
+        },
+        {
+          "path": "distribution/storeSetting",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "店铺设置"
+          }
+        },
+        {
+          "path": "distribution/team",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "我的团队"
+          }
+        },
+        {
+          "path": "distribution/commissionDetails",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "佣金明细"
+          }
+        },
+        {
+          "path": "distribution/rankings",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "分销排行"
+          }
+        },
+        {
+          "path": "agent/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "代理中心"
+          }
+        },
+        {
+          "path": "agent/apply",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "申请成为代理"
+          }
+        },
+        {
+          "path": "agent/applyState",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "审核状态"
+          }
+        },
+        {
+          "path": "agent/panel",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "代理中心"
+          }
+        },
+        {
+          "path": "agent/agreement",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "代理协议"
+          }
+        },
+        {
+          "path": "agent/order",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "推广订单"
+          }
+        },
+        {
+          "path": "agent/myStore",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的店铺"
+          }
+        },
+        {
+          "path": "agent/storeSetting",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "店铺设置"
+          }
+        },
+        {
+          "path": "agent/team",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "我的团队"
+          }
+        },
+        {
+          "path": "agent/commissionDetails",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "佣金明细"
+          }
+        },
+        {
+          "path": "agent/rankings",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "代理排行"
+          }
+        },
+        {
+          "path": "distribution/shareLog",
+          "style": {
+            "navigationBarTextStyle": "white",
+            "navigationBarTitleText": "分享记录"
+          }
+        },
+        {
+          "path": "setting/subscription/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "消息订阅"
+          }
+        },
+        {
+          "path": "serviceOrder/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "我的服务卡"
+          }
+        },
+        {
+          "path": "serviceOrder/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "服务卡详情"
+          }
+        },
+        {
+          "path": "merchant/index/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "商家管理"
+          }
+        },
+        {
+          "path": "merchant/detail/detail",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "订单预览"
+          }
+        },
+        {
+          "path": "merchant/storeList/storeList",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "门店选择"
+          }
+        },
+        {
+          "path": "merchant/serviceVerification/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "核验服务券"
+          }
+        },
+        {
+          "path": "merchant/serviceVerification/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "服务券列表"
+          }
+        },
+        {
+          "path": "merchant/takeDelivery/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "提货单核销"
+          }
+        },
+        {
+          "path": "merchant/takeDelivery/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "提货单列表"
+          }
+        }
+      ]
+    }
+  ],
+  "preloadRule": { //加载规则 当渲染pages/index/default/default时加载子包
+    "pages/index/default/default": {
+      "network": "all",
+      "packages": [ "member" ]
+    }
+  },
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "mp-alipay": {
+      "allowsBounceVertical": "NO",
+      "transparentTitle": "always"
+    }
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#333",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/default/default",
+        "text": "首页",
+        "iconPath": "static/images/indexMenus/index01.png",
+        "selectedIconPath": "static/images/indexMenus/index01_1.png"
+      },
+      {
+        "pagePath": "pages/category/index/index",
+        "text": "分类",
+        "iconPath": "static/images/indexMenus/index02.png",
+        "selectedIconPath": "static/images/indexMenus/index02_1.png"
+      },
+      {
+        "pagePath": "pages/index/cart/cart",
+        "text": "购物车",
+        "iconPath": "static/images/indexMenus/index03.png",
+        "selectedIconPath": "static/images/indexMenus/index03_1.png"
+      },
+      {
+        "pagePath": "pages/index/member/member",
+        //"pagePath": "pages/login/loginByAccount/loginByAccount",
+        "text": "我的",
+        "iconPath": "static/images/indexMenus/index04.png",
+        "selectedIconPath": "static/images/indexMenus/index04_1.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsPayments-editForm" id="LAY-app-CoreCmsPayments-editForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.id}}" />
+        <input type="hidden" name="code" id="code" value="{{d.params.data.code}}" />
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">支付类型名称</label>
+            <div class="layui-form-mid layui-word-aux"> {{d.params.data.name || '' }}</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="code" class="layui-form-label">支付类型编码</label>
+            <div class="layui-form-mid layui-word-aux">{{d.params.data.code || '' }}</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="memo" class="layui-form-label">方式描述</label>
+            <div class="layui-form-mid layui-word-aux">{{d.params.data.memo || '' }}</div>
+        </div>
+        <div id="codeDiv"></div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="{{d.params.data.sort || '' }}" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label for="isEnable" class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isEnable" id="isEnable" {{ d.params.data.isEnable ? 'checked' : '' }} lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPayments-editForm-submit" id="LAY-app-CoreCmsPayments-editForm-submit" value="确认编辑">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="codeTmp" type="text/html">
+    {{#  if(d.data.code=='wechatpay'){ }}
+    <div class="layui-form-item">
+        <label class="layui-form-label">商户号：</label>
+        <div class="layui-input-inline layui-inline-6">
+            <input type="text" name="mch_id" value="{{d.params.mch_id || '' }}" required lay-verType="tips" lay-verify="required" placeholder="请输入商户号" autocomplete="off" class="layui-input">
+            <span style="font-size:0.8em;"><a href="https://pay.weixin.qq.com/" style="color:#FF7159;" target="_blank">商户平台</a>》账户中心》账户设置》商户信息</span>
+        </div>
+    </div>
+    <div id="radio_type_2">
+        <div class="layui-form-item">
+            <label class="layui-form-label">API秘钥：</label>
+            <div class="layui-input-inline layui-inline-6">
+                <input type="text" name="key" value="{{d.params.key || '' }}" required lay-verType="tips" lay-verify="required" placeholder="请输入API秘钥" autocomplete="off" class="layui-input">
+                <span style="font-size:0.8em;"><a href="https://pay.weixin.qq.com/" style="color:#FF7159;" target="_blank">商户平台</a>》账户中心》账户设置》API安全</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">appid：</label>
+            <div class="layui-input-block" style="font-size:0.9em;">
+                appid的取值是取的在后台》微信管理》小程序配置里和后台》微信管理》公众号配置里的appid，当是微信公众号内支付的话，使用的就是微信公众号的appid，当是小程序支付的话，使用的是小程序的appid，当只有h5端微信支付的时候，不开启微信公众号和微信小程序的时候，这两个appid随便写一个，就可以了。
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证书</label>
+            <div class="layui-input-block" style="font-size:0.9em;">
+                如果在线退款的话，需要手动上传cert证书和key证书，不在线退款的话，可以不传cert证书和key证书<br />
+                cert证书请手动上传到/config/payment_cert/wechatpay/apiclient_cert.pem，
+                key证书请手动上传到/config/payment_cert/wechatpay/apiclient_key.pem。
+            </div>
+        </div>
+    </div>
+    {{#  } else if (d.data.code=='alipay') { }}
+    <div class="layui-form-item">
+        <label class="layui-form-label">appid：</label>
+        <div class="layui-input-inline layui-inline-6">
+            <input type="text" name="appid" value="{{d.params.appid || '' }}" required lay-verType="tips" lay-verify="required" placeholder="请输入appid" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">RSA私钥：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入私钥" class="layui-textarea" lay-verType="tips" lay-verify="required" name="rsa_private_key">{{d.params.rsa_private_key || '' }}</textarea>
+            <div class="layui-form-mid">请输入私钥内容，并确定应用的公钥已经上传到支付宝里了</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝公钥：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入支付宝公钥" class="layui-textarea" lay-verType="tips" lay-verify="required" name="alipay_public_key">{{d.params.alipay_public_key || '' }}</textarea>
+            <div class="layui-form-mid">请输入支付宝公钥，<a style="color:red;" href="https://docs.open.alipay.com/291/105972" target="_blank">上传应用公钥并获取支付宝公钥</a> </div>
+        </div>
+    </div>
+    {{#  } else if (d.data.code=='offline') { }}
+
+    {{#  } else { }}
+
+    {{#  } }}
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , laytpl = layui.laytpl
+                    , coreHelper = layui.coreHelper;
+                var parameters;
+                if (d.params.data.code == 'wechatpay') {
+                    if (d.params.data.parameters) {
+                        var jsObject = JSON.parse(d.params.data.parameters);
+                        parameters = {
+                            "mch_id": jsObject.mch_id,
+                            "key": jsObject.key,
+                        }
+                    } else {
+                        parameters = {
+                            "mch_id": '',
+                            "key": '',
+                        }
+                    }
+
+                } else if (d.params.data.code == 'alipay') {
+                    if (d.params.data.parameters) {
+                        var jsObject = JSON.parse(d.params.data.parameters);
+                        parameters = {
+                            "appid": jsObject.appid,
+                            "rsa_private_key": jsObject.rsa_private_key,
+                            "alipay_public_key": jsObject.alipay_public_key,
+                        }
+                    } else {
+                        parameters = {
+                            "appid": '',
+                            "rsa_private_key": '',
+                            "alipay_public_key": '',
+                        }
+                    }
+                }
+                var tmpData = {
+                    'data': d.params.data,
+                    'params': parameters
+                }
+                var getTpl = codeTmp.innerHTML, view = document.getElementById('codeDiv');
+                laytpl(getTpl).render(tmpData, function (html) {
+                    view.innerHTML = html;
+                });
+
+                form.verify({
+                    verifyname: [/^[\S]{0,50}$/, '支付类型名称最大只允许输入50位字符，且不能出现空格'],
+                    verifycode: [/^[\S]{0,50}$/, '支付类型编码最大只允许输入50位字符，且不能出现空格'],
+                    verifymemo: [/^[\S]{0,200}$/, '方式描述最大只允许输入200位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsPayments-editForm');
+            })
+    };
+</script>

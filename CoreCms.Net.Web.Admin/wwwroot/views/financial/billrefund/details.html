@@ -1,0 +1,138 @@
+<style>
+    .layui-table td, .layui-table th { position: relative; padding: 9px 15px; min-height: 20px; line-height: 20px; font-size: 12px; word-wrap: break-word; word-break: break-all; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsBillRefund-detailsForm" id="LAY-app-CoreCmsBillRefund-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td style="width: 150px">
+                    退款单ID
+                </td>
+                <td>
+                    {{ d.params.data.model.refundId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="aftersalesId">售后单id</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.aftersalesId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="money">退款金额</label>
+                </td>
+                <td>
+                    ￥ {{ d.params.data.model.money || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="userId">用户id</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.userId || '' }}
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td>
+                    <label for="type">资源类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.type ===1  ?'订单':'充值' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="sourceId">资源id</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.sourceId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="paymentCode">退款支付类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.paymentCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="tradeNo">第三方平台流水号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.tradeNo || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">状态</label>
+                </td>
+                <td>
+                    {{ d.params.data.refundStatus || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="memo">退款失败原因</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.memo || '无' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsBillRefund-detailsForm');
+        });
+    };
+</script>

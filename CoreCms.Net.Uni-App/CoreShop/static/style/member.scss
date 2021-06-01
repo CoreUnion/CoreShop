@@ -1,0 +1,40 @@
+﻿.coreshop-view-content { padding: 0 27.27rpx 54.54rpx; margin-top: -63.63rpx; }
+    .coreshop-view-content .coreshop-user-info-order-box { border-radius: 18.18rpx; }
+        .coreshop-view-content .coreshop-user-info-order-box .cu-list.grid.no-border { padding: 0; }
+            .coreshop-view-content .coreshop-user-info-order-box .cu-list.grid.no-border > .cu-item { padding-bottom: 9.09rpx; }
+    .coreshop-view-content .cu-list.grid > .cu-item text { color: inherit; }
+    .coreshop-view-content .coreshop-user-info-money-box { border-radius: 18.18rpx; }
+        .coreshop-view-content .coreshop-user-info-money-box .money-col { padding: 0 9.09rpx 9.09rpx; }
+            .coreshop-view-content .coreshop-user-info-money-box .money-col .money-item { position: relative; padding: 9.09rpx; }
+                .coreshop-view-content .coreshop-user-info-money-box .money-col .money-item .money-item-view { border: 1.81rpx solid #f3f2f3; border-radius: 18.18rpx; position: relative; padding: 9.09rpx; }
+                    .coreshop-view-content .coreshop-user-info-money-box .money-col .money-item .money-item-view .cu-avatar { position: absolute; left: 9.09rpx; }
+                    .coreshop-view-content .coreshop-user-info-money-box .money-col .money-item .money-item-view .money-content { position: relative; margin-left: 109.09rpx; margin-bottom: 27.27rpx; top: 12.72rpx; }
+    .coreshop-view-content .coreshop-user-info-tools-box { border-radius: 18.18rpx; }
+        .coreshop-view-content .coreshop-user-info-tools-box .tools-view { position: relative; }
+            .coreshop-view-content .coreshop-user-info-tools-box .tools-view .tools-title { padding-right: 81.81rpx; }
+            .coreshop-view-content .coreshop-user-info-tools-box .tools-view .tools-right { position: absolute; right: 9.09rpx; bottom: 23.63rpx; }
+
+/*.bg-gradual-red { background-image: linear-gradient(45deg, #f43f3b, #ec008c); color: #ffffff; }*/
+.my-box .head-box { padding-top: 0; padding-bottom: 72.72rpx; background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center; }
+    /*.my-box .head-box .user-info-box {*/ /* #ifdef MP */ /*padding-top: calc(var(--status-bar-height) + 50rpx);*/ /* #endif */ /*}*/
+    .my-box .head-box .user-info-box { /* #ifdef MP */ padding-top: 30rpx; /* #endif */ }
+        .my-box .head-box .user-info-box .login-user-view { position: relative; text-align: center; }
+            .my-box .head-box .user-info-box .login-user-view .login-user-avatar-view { position: relative; margin-bottom: 18.18rpx; }
+.text-border-x { margin-right: 25.45rpx; position: relative; }
+    .text-border-x:after { position: absolute; background: #dddddd; top: 10.45rpx; width: 1.81rpx; right: -12.72rpx; height: 16.36rpx; content: " "; }
+.u-tips-color { color: #909399; }
+
+.userItem { padding: 16rpx 10rpx 0rpx 10rpx; height: 140rpx; -webkit-box-pack: end; -webkit-justify-content: flex-end; justify-content: flex-end; -webkit-box-align: center; -webkit-align-items: center; align-items: center; }
+
+
+.head-bg-box { position: fixed; width: 100%; top: 0; z-index: 9999; background-color: rgba(229, 77, 66,0); padding-top: calc(var(--status-bar-height) + 15rpx); transition: top .25s; }
+
+.my-box .head-box .user-info-tip-box { position: relative; margin: 18.18rpx 27.27rpx; border-radius: 9.09rpx; padding: 18.18rpx 27.27rpx; }
+    .my-box .head-box .user-info-tip-box .text-cut { padding-right: 45.45rpx; }
+    .my-box .head-box .user-info-tip-box .icon { position: absolute; right: 27.27rpx; top: 23.63rpx; }
+
+.account-face { height: 60px; width: 60px; flex: 0 0 60px; background-color: transparent; border-radius: 500px; display: -webkit-inline-box; display: -webkit-inline-flex; display: inline-flex; -webkit-box-align: center; -webkit-align-items: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center; font-size: 28rpx; color: #606266; -webkit-border-radius: 10px; border-radius: 10px; position: relative; }
+
+
+.yqhy { background-image: url(/static/images/my/1.png); }
+.yqhy2 { background-image: url(/static/images/my/2.png); }

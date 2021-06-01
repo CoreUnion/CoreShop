@@ -1,0 +1,107 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsUserServicesOrder-detailsForm" id="LAY-app-CoreCmsUserServicesOrder-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="serviceOrderId">服务订单编号</label>
+                </td>
+                <td>
+                    {{ d.params.data.serviceOrderId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="userId">关联用户</label>
+                </td>
+                <td>
+                    {{ d.params.data.userId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="servicesId">关联服务</label>
+                </td>
+                <td>
+                    {{ d.params.data.servicesId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isPay">是否支付</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isPay" value="{{d.params.data.isPay}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isPay" {{ d.params.data.isPay ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="payTime">支付时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.payTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="paymentId">支付单号</label>
+                </td>
+                <td>
+                    {{ d.params.data.paymentId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">状态</label>
+                </td>
+                <td>
+                    {{ d.params.data.status || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">订单创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="servicesEndTime">截止服务时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.servicesEndTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsUserServicesOrder-detailsForm');
+        });
+    };
+</script>

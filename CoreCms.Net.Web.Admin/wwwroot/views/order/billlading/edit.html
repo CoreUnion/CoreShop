@@ -1,0 +1,88 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form  layui-form-pane" lay-filter="LAY-app-CoreCmsBillLading-editForm" id="LAY-app-CoreCmsBillLading-editForm">
+
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">提货单号：</label>
+            <div class="layui-form-mid layui-inline-3">{{d.params.data.model.id || '' }}</div>
+            <input type="hidden" name="id" id="id" value="{{d.params.data.model.id || '' }}">
+            <input type="hidden" name="orderId" id="orderId" value="{{d.params.data.model.orderId || '' }}">
+
+            <label class="layui-form-label">订单号：</label>
+            <div class="layui-form-mid layui-inline-3">{{d.params.data.model.orderId || '' }}</div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">提货门店：</label>
+            <div class="layui-input-inline layui-inline-3">
+                <select name="storeId" id="storeId" {{ d.params.data.model.status ? 'disabled="disabled"':''}}>
+                    {{# layui.each(d.params.data.stores, function(index, item){ }}
+                    <option value="{{ item.id }}" {{ item.id=== d.params.data.model.storeId ? 'selected="selected"':''}}>{{ item.storeName }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+
+            <label class="layui-form-label">提货人名：</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input type="text" name="name" id="name" value="{{d.params.data.model.name || '' }}" placeholder="提货人姓名" autocomplete="off" class="layui-input" {{ d.params.data.model.status ? 'disabled="disabled"':''}}>
+            </div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">提货电话：</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input type="text" name="mobile" id="mobile" value="{{d.params.data.model.mobile || '' }}" placeholder="提货人姓名" autocomplete="off" class="layui-input" {{ d.params.data.model.status ? 'disabled="disabled"':''}}>
+            </div>
+
+            <label class="layui-form-label">提货状态：</label>
+            <div class="layui-form-mid layui-inline-3">{{ d.params.data.model.status ? '已提货' : '未提货' }}</div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">提货时间：</label>
+            <div class="layui-form-mid layui-inline-3">{{d.params.data.model.pickUpTime || '' }}</div>
+
+            <label class="layui-form-label">接待店员：</label>
+            <div class="layui-form-mid layui-inline-3">{{d.params.data.model.clerkId || '' }}</div>
+        </div>
+
+        <div class="layui-form-item core-hidden" lay-size="sm">
+            <button class="layui-btn layui-btn-fluid editBtn" lay-submit lay-filter="LAY-app-CoreCmsBillLading-editForm-submit" id="LAY-app-CoreCmsBillLading-editForm-submit" style="display:block;margin:30px auto 0;">修改保存</button>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#editTime-CoreCmsBillLading-pickUpTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsBillLading-createTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsBillLading-updateTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifyid: [/^[\S]{0,20}$/, '提货单号最大只允许输入20位字符，且不能出现空格'],
+                    verifyorderId: [/^[\S]{0,20}$/, '订单号最大只允许输入20位字符，且不能出现空格'],
+                    verifyname: [/^[\S]{0,30}$/, '提货人姓名最大只允许输入30位字符，且不能出现空格'],
+                    verifymobile: [/^[\S]{0,15}$/, '提货手机号最大只允许输入15位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsBillLading-editForm');
+            })
+    };
+</script>

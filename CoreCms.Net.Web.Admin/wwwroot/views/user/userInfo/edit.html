@@ -1,0 +1,149 @@
+<style>
+    .layui-upload-img { width: 92px; height: 92px; margin: 0 10px 10px 0; }
+</style>
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsUser-editForm" id="LAY-app-CoreCmsUser-editForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.model.id || '' }}" />
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" required lay-verify="required|phone" class="layui-input" value="{{d.params.data.model.mobile || '' }}">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">昵称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="nickName" lay-verify="required|verifynickName" class="layui-input" value="{{d.params.data.model.nickName || '' }}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">确认密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="repassword" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">性别：</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sex" value="1" title="男" {{d.params.data.model.sex ===1 ? 'checked="checked"':'' }}>
+                    <input type="radio" name="sex" value="2" title="女" {{d.params.data.model.sex ===2 ? 'checked="checked"':'' }}>
+                    <input type="radio" name="sex" value="3" title="未知" {{d.params.data.model.sex ===3 ? 'checked="checked"':'' }}>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">生日：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="birthday" id="editTime-birthday" class="layui-input" value="{{ d.params.data.model.birthday ? layui.util.toDateString(d.params.data.model.birthday, 'yyyy-MM-dd') : '' }}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">等级：</label>
+                <div class="layui-input-inline">
+                    <select name="grade" lay-verify="required">
+                        <option value="" selected="selected">请选择</option>
+                        {{# layui.each(d.params.data.userGrade, function(index, item){ }}
+                        <option value="{{ item.id }}" {{ item.id == d.params.data.model.grade ? 'selected="selected"' : '' }}>{{ item.title }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">状态：</label>
+                <div class="layui-input-inline">
+                    <select name="status" id="status" lay-verify="required">
+                        {{# layui.each(d.params.data.userStatus, function(index, item){ }}
+                        <option value="{{ item.value }}" {{ item.value === d.params.data.model.status ? 'selected="selected"' : '' }}>{{ item.title }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="avatarImage">头像：</label>
+                <div class="layui-input-inline layui-inline-6">
+                    <input name="avatarImage" id="avatarImage" size="15" autocomplete="off" class="layui-input" lay-reqText="请输入【缩略图】" value="{{d.params.data.model.avatarImage || '' }}" />
+                </div>
+                <div class="layui-input-inline">
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="upBtn">上传图片</button>
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="viewImgBox" src="{{d.params.data.model.avatarImage || layui.setter.noImagePicUrl }}">
+                            <p id="viewTextBox"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <label class="layui-form-label"></label>
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsUser-editForm-submit" id="LAY-app-CoreCmsUser-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    layui.data.sendParams = function (d) {
+        console.log(d);
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //封面图图片上传
+                $('#upBtn').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 1 / 1,
+                        imgSrc: $('#viewImgBox').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBox').attr('src', res.data.fileUrl);
+                                    $("#avatarImage").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                laydate.render({
+                    elem: '#editTime-birthday',
+                });
+
+                form.verify({
+                    verifyuserName: [/^[\S]{0,20}$/, '用户名最大只允许输入20位字符，且不能出现空格'],
+                    verifypassWord: [/^[\S]{0,50}$/, '密码最大只允许输入50位字符，且不能出现空格'],
+                    verifymobile: [/^[\S]{0,15}$/, '手机号最大只允许输入15位字符，且不能出现空格'],
+                    verifyavatarImage: [/^[\S]{0,255}$/, '头像最大只允许输入255位字符，且不能出现空格'],
+                    verifynickName: [/^[\S]{0,50}$/, '昵称最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsUser-editForm');
+            })
+    };
+</script>

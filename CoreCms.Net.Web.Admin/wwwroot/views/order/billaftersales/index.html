@@ -1,0 +1,323 @@
+<title>售后单</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsBillAftersales/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="aftersalesId" id="aftersalesId" placeholder="请输入售后单编号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="orderId" id="orderId" placeholder="请输入订单号" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="type" lay-verify="">
+                        <option value="">请选择商品状态</option>
+                        <option value="1">未收到货</option>
+                        <option value="2">已收到货</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" lay-verify="">
+                        <option value="">请选择审核状态</option>
+                        <option value="1">未审核</option>
+                        <option value="2">审核通过</option>
+                        <option value="3">审核拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsBillAftersales-createTime" placeholder="请输入提交时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsBillAftersales-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillAftersales-tableBox" lay-filter="LAY-app-CoreCmsBillAftersales-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBillAftersales-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+        <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsBillAftersales-tableBox-bar">
+    {{# if(d.status == 1) {}}
+    <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
+    {{# } }}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillAftersales-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillAftersales-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsBillAftersales-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsBillAftersales-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsBillAftersales-tableBox',
+                    url: 'Api/CoreCmsBillAftersales/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsBillAftersales-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'aftersalesId', title: '售后单号', sort: false, width: 150 },
+                            { field: 'orderId', title: '订单号', sort: false, width: 150 },
+                            {
+                                field: 'type', title: '商品状态', sort: false, width: 105, templet: function (d) {
+                                    if (d.type === 1) {
+                                        return "未收到货";
+                                    } else {
+                                        return "已收到货";
+                                    }
+                                }
+                            },
+                            { field: 'statusName', title: '状态', sort: false, width: 105 },
+                            {
+                                field: 'userNickName', title: '用户', sort: false, width: 105, templet: function (d) {
+                                    return d.userNickName + '（' + d.userId + '）';
+                                }
+                            },
+                            { field: 'refundAmount', title: '退款金额', sort: false, width: 105 },
+                            { field: 'reason', title: '退款原因', sort: false },
+                            //{ field: 'mark', title: '卖家备注，如果审核失败了，会显示到前端', sort: false, width: 105 },
+                            { field: 'createTime', title: '申请时间', width: 130, sort: false },
+                            //{ field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsBillAftersales-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsBillAftersales-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.aftersalesId);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsBillAftersales-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsBillAftersales/GetEdit", { id: obj.data.aftersalesId }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['800px', '90%'],
+                                id: 'LAY-popup-CoreCmsBillAftersales-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/billaftersales/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsBillAftersales-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (!!!field.status) {
+                                                    layer.msg("请选择审核状态");
+                                                    return false;
+                                                }
+
+                                                let items = [];
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('nums') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var keyid = 'id[' + i + ']';
+                                                        var keyIsCheck = 'idIsCheck[' + i + ']';
+                                                        var keyNums = 'nums[' + i + ']';
+                                                        var item = {};
+                                                        if (keys.indexOf(keyIsCheck) != -1) {
+                                                            var id = field[keyid];
+                                                            var nums = field[keyNums];
+                                                            item["id"] = parseInt(id);
+                                                            item["nums"] = parseInt(nums);
+                                                            items.push(item);
+                                                        }
+                                                    }
+                                                }
+                                                field.items = items;
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsBillAftersales/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsBillAftersales-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsBillAftersales/GetDetails", { id: obj.data.aftersalesId }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['800px', '500px'],
+                                id: 'LAY-popup-CoreCmsBillAftersales-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/billaftersales/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsBillAftersales/QueryExportExcel", field, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.aftersalesId);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsBillAftersales/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //监听 表格复选框操作
+
+            });
+    };
+</script>

@@ -1,0 +1,135 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-SysUser-editForm" id="LAY-app-SysUser-editForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.model.id || '' }}" />
+
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">组织机构</label>
+            <div class="layui-input-block">
+                <div id="organizationUserEditOrgSel" class="ew-xmselect-tree"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="trueName" class="layui-form-label layui-form-required">角色</label>
+            <div class="layui-input-block">
+                <div id="selectBox" class="xm-select-demo"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="userName" class="layui-form-label layui-form-required">账号</label>
+            <div class="layui-input-block">
+                <input name="userName" id="userName" lay-verType="tips" lay-verify="required|verifyuserName" class="layui-input" placeholder="请输入账号" lay-reqText="请输入账号" value="{{d.params.data.model.userName || '' }}" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="nickName" class="layui-form-label layui-form-required">昵称</label>
+            <div class="layui-input-block">
+                <input name="nickName" id="nickName" lay-verType="tips" lay-verify="required|verifynickName" lay-verType="tips" class="layui-input" placeholder="请输入昵称" lay-reqText="请输入昵称" value="{{d.params.data.model.nickName || '' }}" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="passWord" class="layui-form-label">密码</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="passWord" id="passWord" lay-verType="tips" class="layui-input" placeholder="请输入密码" lay-reqText="请输入密码" value="" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">不修改请留空</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sex" class="layui-form-label layui-form-required">性别</label>
+            <div class="layui-input-block">
+                <select name="sex" id="sex" lay-verType="tips" lay-verify="required" lay-verType="tips" lay-verify="required|number" lay-reqText="请选择性别">
+                    <option value="" selected="selected">请选择</option>
+                    {{# layui.each(d.params.data.userSexTypes, function(index, item){ }}
+                    <option value="{{ item.value }}" {{ d.params.data.model.sex==item.value ? 'selected="selected"' : '' }}>{{ item.title }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="phone" class="layui-form-label layui-form-required">手机号</label>
+            <div class="layui-input-block">
+                <input name="phone" id="phone" lay-verType="tips" lay-verify="required|phone" class="layui-input" placeholder="请输入手机号" lay-reqText="请输入手机号" value="{{d.params.data.model.phone || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysUser-editForm-submit" id="LAY-app-SysUser-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg','xmSelect'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , xmSelect = layui.xmSelect
+                    , coreHelper = layui.coreHelper;
+
+                var selectBox = xmSelect.render({
+                    el: '#selectBox',
+                    tips: '请选择角色?',
+                    filterable: true,
+                    clickClose: true,
+                    toolbar: { show: false },
+                    name: 'roleIds',
+                    //radio: true,
+                    prop: {
+                        name: 'roleName',
+                        value: 'id',
+                    },
+                    data: d.params.data.roles,
+                    initValue: d.params.data.roleIds,
+                })
+
+                // 渲染下拉树
+                var insXmSel = xmSelect.render({
+                    el: '#organizationUserEditOrgSel',
+                    height: '250px',
+                    name: 'organizationUserEditOrgSel',
+                    layVerify: 'required',
+                    data: d.params.treeData,
+                    initValue: d.params.data.model ? [d.params.data.model.organizationId] : [],
+                    model: {label: {type: 'text'}},
+                    prop: {
+                        name: 'organizationName',
+                        value: 'id'
+                    },
+                    name: 'organizationId',
+                    radio: true,
+                    clickClose: true,
+                    tree: {
+                        show: true,
+                        indent: 15,
+                        strict: false,
+                        expandedKeys: true
+                    }
+                });
+
+                form.verify({
+
+                    verifyuserName: [/^[\S]{0,50}$/, '账号最大只允许输入50位字符，且不能出现空格'],
+                    verifypassWord: [/^[\S]{0,100}$/, '密码最大只允许输入100位字符，且不能出现空格'],
+                    verifynickName: [/^[\S]{0,50}$/, '昵称最大只允许输入50位字符，且不能出现空格'],
+                    verifyavatar: [/^[\S]{0,255}$/, '头像最大只允许输入255位字符，且不能出现空格'],
+                    verifyphone: [/^[\S]{0,50}$/, '手机号最大只允许输入50位字符，且不能出现空格'],
+                    verifyemail: [/^[\S]{0,50}$/, '邮箱最大只允许输入50位字符，且不能出现空格'],
+                    verifytrueName: [/^[\S]{0,50}$/, '真实姓名最大只允许输入50位字符，且不能出现空格'],
+                    verifyidCard: [/^[\S]{0,50}$/, '身份证号最大只允许输入50位字符，且不能出现空格'],
+                    verifyintroduction: [/^[\S]{0,500}$/, '个人简介最大只允许输入500位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysUser-editForm');
+            })
+    };
+</script>

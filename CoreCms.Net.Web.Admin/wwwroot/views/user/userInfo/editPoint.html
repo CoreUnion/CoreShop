@@ -1,0 +1,55 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsUser-editPointForm" id="LAY-app-CoreCmsUser-editPointForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.id || '' }}" />
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">当前积分：</label>
+                <div class="layui-form-mid">{{d.params.data.point}}</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">积分变动：</label>
+                <div class="layui-input-inline layui-inline-3">
+                    <input type="text" name="point" id="point" class="layui-input" value="" min="-{{d.params.data.point}}" lay-verify="required|number">
+                </div>
+                <div class="layui-form-mid layui-word-aux">正数为加，负数为减</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">变动说明：</label>
+                <div class="layui-input-inline layui-inline-6">
+                    <input type="text" id="memo" name="memo" class="layui-input" lay-verify="required|verifyPoint">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <label class="layui-form-label"></label>
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsUser-editPointForm-submit" id="LAY-app-CoreCmsUser-editPointForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    layui.data.sendParams = function (d) {
+        console.log(d);
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+                    verifyPoint: [/^[\S]{0,255}$/, '积分最大只允许输入255位字符，且不能出现空格']
+                });
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsUser-editPointForm');
+            })
+    };
+</script>

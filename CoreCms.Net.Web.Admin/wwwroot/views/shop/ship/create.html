@@ -1,0 +1,331 @@
+<style>
+    .selectArea { color: #46a751; }
+    .div-none { display: none; }
+    .layui-form-radio { float: left; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsShip-createForm" id="LAY-app-CoreCmsShip-createForm">
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">配送方式名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入配送方式名称" placeholder="请输入配送方式名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="logiCode" class="layui-form-label">物流公司</label>
+            <div class="layui-input-inline">
+                <div id="logiCode_SelectCreateTree" class="ew-xmselect-tree" lay-verType="tips" lay-reqText="请选择物流公司"></div>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item" pane>
+            <label for="isCashOnDelivery" class="layui-form-label">是否货到付款</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isCashOnDelivery" id="isCashOnDelivery" lay-skin="switch" lay-text="是|否">
+            </div>
+        </div>-->
+        <div class="layui-form-item" pane>
+            <label for="isfreePostage" class="layui-form-label">是否包邮</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isfreePostage" id="isfreePostage" lay-skin="switch" lay-text="是|否">
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isDefault" class="layui-form-label">是否默认</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isDefault" id="isDefault" lay-skin="switch" lay-text="是|否">
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="status" class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="status" value="1" title="启用" checked>
+                <input type="radio" name="status" value="2" title="停用">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">重量设置：</label>
+            <label for="firstUnit" class="layui-form-label">首重</label>
+            <div class="layui-input-inline">
+                <select name="firstUnit" id="firstUnit" lay-verType="tips" lay-verify="required|number">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.shipUnit, function(index, item){ }}
+                    <option value="{{ item.value }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="continueUnit" class="layui-form-label">续重</label>
+            <div class="layui-input-inline">
+                <select name="continueUnit" id="continueUnit" lay-verType="tips" lay-verify="required|number">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.shipUnit, function(index, item){ }}
+                    <option value="{{ item.value }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">配送费用：</label>
+
+            <label for="firstunitPrice" class="layui-form-label">首重费用</label>
+            <div class="layui-input-inline">
+                <input name="firstunitPrice" id="firstunitPrice" lay-verType="tips" value="12" lay-verify="required" class="layui-input" placeholder="请输入首重费用" lay-reqText="请输入首重费用" />
+            </div>
+            <label for="continueunitPrice" class="layui-form-label">续重费用</label>
+            <div class="layui-input-inline">
+                <input name="continueunitPrice" id="continueunitPrice" lay-verType="tips" value="4" lay-verify="required" class="layui-input" placeholder="请输入续重费用" lay-reqText="请输入续重费用" />
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label for="isdefaultAreaFee" class="layui-form-label">按地区配置</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isdefaultAreaFee" id="isdefaultAreaFee" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <div class="layui-form-mid layui-word-aux">是否按地区设置配送费用</div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入配送方式排序 越小越靠前" lay-reqText="请输入配送方式排序 越小越靠前并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">越小越靠前</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="goodsMoney" class="layui-form-label">商品满多少</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="goodsMoney" id="goodsMoney" lay-verType="tips" lay-verify="required|number" class="layui-input" value="50" placeholder="请输入商品总额满多少免运费" lay-reqText="请输入商品总额满多少免运费" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">免运费（此项大于0时参与计算）</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地区类型：</label>
+            <div class="layui-input-inline layui-inline-5">
+                <input type="radio" name="areaType" class="radio-left" value="1" lay-filter="areaType" title="所有地区" checked="">
+                <input type="radio" name="areaType" class="radio-left" value="2" lay-filter="areaType" title="部分地区">
+            </div>
+            <div class="layui-form-mid layui-word-aux">设置部分地区后，未配置地区采用默认配置</div>
+        </div>
+        <div class="layui-form-item div-none">
+            <div class="layui-input-block">
+
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                        <tr>
+                            <th>选择地区</th>
+                            <th>首重费用</th>
+                            <th>续重费用</th>
+                            <th>
+                                操作
+                                <a class="layui-btn layui-btn-xs addarea-class">
+                                    添加地区
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="view">
+                        <tr data-id="0">
+                            <td>
+                                <input type='hidden' name='areaId[0]' value=''>
+                                <input type='hidden' name='areaParentName[0]' value=''>
+                                <a href="javascript:void(0);" class="selectArea">请选择地区</a>
+                            </td>
+                            <td>
+                                <label class="layui-form-label layui-inline-2">首重费用：</label>
+                                <input type="text" name="firstunitAreaPrice[0]" required value="0" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+                            </td>
+                            <td>
+                                <label class="layui-form-label layui-inline-2">续重费用：</label>
+                                <input type="text" name="continueunitAreaPrice[0]" required value="0" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+                            </td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs addarea-class">
+                                    添加地区
+                                </a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs del-class">
+                                    删除
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsShip-createForm-submit" id="LAY-app-CoreCmsShip-createForm-submit" value="确认添加">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tr_tpl" type="text/html">
+    <tr data-id="{{ d.id }}">
+        <td>
+            <input type='hidden' name='areaId[{{ d.id }}]' value=''>
+            <input type='hidden' name='areaParentName[{{ d.id }}]' value=''>
+            <a href="javascript:void(0);" class="selectArea">请选择地区</a>
+        </td>
+        <td>
+            <label class="layui-form-label layui-inline-2">首重费用：</label>
+            <input type="text" name="firstunitAreaPrice[{{ d.id }}]" required value="0" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <label class="layui-form-label layui-inline-2">续重费用：</label>
+            <input type="text" name="continueunitAreaPrice[{{ d.id }}]" required value="0" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-xs addarea-class">
+                添加地区
+            </a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs del-class">
+                删除
+            </a>
+        </td>
+    </tr>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'laytpl', 'util', 'dtree', 'xmSelect'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , laytpl = layui.laytpl
+                    , dtree = layui.dtree
+                    , xmSelect = layui.xmSelect
+                    , coreHelper = layui.coreHelper;
+
+                form.on('radio(areaType)', function (data) {
+                    if (data.value == '2') {
+                        $(".div-none").show();
+                    } else {
+                        $(".div-none").hide();
+                    }
+                });
+
+                // 渲染商品分类
+                var insXmSelGoodsCategoryId = xmSelect.render({
+                    el: '#logiCode_SelectCreateTree',
+                    height: '250px',
+                    data: d.params.data.logistics,
+                    //initValue: mData ? [mData.parentId] : [],
+                    filterable: true,
+                    model: { label: { type: 'text' } },
+                    name: 'logiCode',
+                    prop: {
+                        name: 'logiName',
+                        value: 'logiCode'
+                    },
+                    layVerify: 'required',
+                    layVerType: 'msg',
+                    radio: true,
+                    clickClose: true,
+
+                });
+
+                var headers = {};
+                headers[setter.request.tokenName] = layui.data(setter.tableName)[setter.request.tokenName];
+                //选择地区
+                $(".layui-table").on('click', '.selectArea', function (e) {
+                    var tdObj = $(this);
+                    var tr = tdObj.parent().parent();
+                    var id = tr.attr("data-id");
+                    var value = tdObj.parent().find('input').val();
+                    var DTree;
+                    layer.open({
+                        type: 1,
+                        area: ['700px', '500px'],
+                        data: value,
+                        title: '选择地区',
+                        closeBtn: 0,
+                        shadeClose: true,
+                        content: '<ul id="areaTree" class="dtree" data-id="0"></ul>',
+                        btn: ['保存', '关闭'],
+                        success: function (layero, index) {
+                            var obj = $(layero).find("#areaTree");
+                            DTree = dtree.render({
+                                obj: obj,
+                                initLevel: 1,
+                                request: { "ids": value, "nodeId": 0, "ischecked": 0 },
+                                url: 'Api/Tools/GetArea',
+                                headers: headers,
+                                dataType: 'json',
+                                async: false,  // 只需将该参数设置为false，即可同步加载
+                                checkbar: true,
+                                cache: true,
+                                checkbarType: "no-all",
+                                checkbarData: 'halfChoose',
+                                response: { message: "msg", statusCode: 0 },
+                                dataStyle: "layuiStyle",
+                                //dataFormat: "list"
+                            });
+                        },
+                        yes: function (index, layero) {
+                            var checked = dtree.getCheckbarNodesParam(DTree);
+                            if (checked) {
+                                var html = '已选择地区：';
+                                var areaParentName;
+                                var ids = [];
+                                $.each(checked, function (i, obj) {
+                                    if (obj.parentId <= 0) {
+                                        html = html + obj.context + ',';
+                                        areaParentName = obj.context;
+                                    }
+                                    //ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: obj.ischecked });
+                                    ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: 1 });
+                                });
+                                html = html.substring(0, html.length - 1) + ' <a href="javascript:void(0);" class="selectArea">请选择地区</a>';
+                                html = html + "<input type='hidden' name='areaId[" + id + "]' value='" + JSON.stringify(ids) + "'>";
+                                html = html + "<input type='hidden' name='areaParentName[" + id + "]' value='" + areaParentName + "'>";
+                                tdObj.parent().html(html);
+                                layer.close(index);
+                            }
+                        }
+                    });
+                });
+
+                $(".layui-table").on('click', '.addarea-class', function (e) {
+                    var getTpl = tr_tpl.innerHTML;
+                    var lastId = $(this).parent().parent().parent().find('tr').last().attr('data-id');
+
+                    var tmpData = {};
+                    tmpData.id = parseInt(lastId) + 1;
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        $("#view").append(html);
+                    });
+                });
+
+                $(".layui-table").on('click', '.del-class', function (e) {
+                    $(this).parent().parent().remove();
+                })
+
+                form.verify({
+
+                    verifyname: [/^[\S]{0,50}$/, '配送方式名称最大只允许输入50位字符，且不能出现空格'],
+                    verifylogiName: [/^[\S]{0,50}$/, '物流公司名称最大只允许输入50位字符，且不能出现空格'],
+                    verifylogiCode: [/^[\S]{0,50}$/, '物流公司编码最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsShip-createForm');
+            })
+    };
+</script>

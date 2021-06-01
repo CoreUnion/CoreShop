@@ -1,0 +1,301 @@
+<title>提货单表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsBillLading/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="id" id="id" placeholder="请输入提货码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="orderId" id="orderId" placeholder="请输入订单号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" id="status" autocomplete="off">
+                        <option value="">请选择提货状态</option>
+                        <option value="false">未提货</option>
+                        <option value="true">已提货</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="storeId" id="storeId" autocomplete="off">
+                        <option value="">请选择提货门店</option>
+                        {{# layui.each(d.data.stores, function(index, item){ }}
+                        <option value="{{ item.id }}">{{ item.storeName }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入提货人姓名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" id="mobile" placeholder="请输入提货手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsBillLading-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillLading-tableBox" lay-filter="LAY-app-CoreCmsBillLading-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBillLading-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+        <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsBillLading-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">详情</a>
+    <a class="layui-btn layui-btn-xs" lay-event="ladingOperating">核销</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsBillLading-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsBillLading-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsBillLading-tableBox',
+                    url: 'Api/CoreCmsBillLading/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsBillLading-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '提货码', sort: false, width: 105 },
+                            { field: 'orderId', title: '订单号', sort: false, width: 155 },
+                            {
+                                field: 'storeId', title: '提货门店', sort: false, templet: function (data) {
+                                    for (var i = 0; i < d.data.stores.length; i++) {
+                                        if (data.storeId === d.data.stores[i].id) {
+                                            return d.data.stores[i].storeName;
+                                        }
+                                    }
+                                }
+                            },
+                            { field: 'name', title: '提货人姓名', sort: false, width: 105 },
+                            { field: 'mobile', title: '提货手机号', sort: false, width: 105 },
+                            //{ field: 'clerkId', title: '处理店员ID', sort: false, width: 105 },
+                            { field: 'pickUpTime', title: '提货时间', width: 130, sort: false },
+                            {
+                                field: 'status', title: '是否提货', width: 95, templet: function (data) {
+                                    return data.status ? '已提货' : '未提货';
+                                }, sort: false, unresize: true
+                            },
+                            { field: 'createTime', title: '下单时间', width: 130, sort: false },
+                            //{ field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            //{ field: 'isDel', title: '删除时间', width: 95, templet: '#switch_isDel', sort: false, unresize: true },
+                            { width: 142, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsBillLading-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsBillLading-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsBillLading-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsBillLading-tableBox)', function (obj) {
+                    //查看详情
+                    doEdit(obj)
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsBillLading-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsBillLading-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        } else if (obj.event === 'ladingOperating') {
+                            ladingOperating(obj);
+                        }
+                    });
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsBillLading/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['600px', '400px'],
+                                id: 'LAY-popup-CoreCmsBillLading-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/billlading/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsBillLading-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.status = field.status == 'on';
+                                                field.isDel = field.isDel == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsBillLading/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsBillLading-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsBillLading-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsBillLading/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reload('LAY-app-CoreCmsBillLading-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                //核销数据
+                function ladingOperating(obj) {
+                    if (obj.data.status) {
+                        layer.msg('该提货单已经核销，无需重复核销');
+                    } else {
+                        layer.confirm('确认核销该提货单吗？', function (index) {
+                            coreHelper.Post("Api/CoreCmsBillLading/LadingOperating", { id: obj.data.id }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                table.reload('LAY-app-CoreCmsBillLading-tableBox');
+                                layer.msg(e.msg);
+                            });
+                        });
+                    }
+                }
+
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsBillLading/QueryExportExcel", field, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsBillLading/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+
+            });
+    };
+</script>

@@ -1,0 +1,157 @@
+<script type="text/html" template>
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}-1" rel="stylesheet" />
+</script>
+<div class=container-fluid>
+    <div class="row min-vh-100 align-items-stretch">
+        <div class="col-lg-7 d-none d-md-flex justify-content-center align-items-center gradient-brand-color vh-100">
+            <figure class="figure pattern-svg">
+                <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink width=690px height=519px>
+                    <path fill-rule=evenodd opacity=0.412 fill="rgb(255, 255, 255)" d="M0.010,293.142 L7.857,289.009 L11.990,296.857 L4.142,300.989 L0.010,293.142 Z" />
+                    <path fill-rule=evenodd opacity=0.6 fill="rgb(255, 255, 255)" d="M680.839,148.992 L689.997,154.833 L684.156,163.991 L674.998,158.149 L680.839,148.992 Z" />
+                    <path fill-rule=evenodd opacity=0.2 fill="rgb(255, 255, 255)" d="M145.500,508.000 C148.538,508.000 151.000,510.462 151.000,513.500 C151.000,516.538 148.538,519.000 145.500,519.000 C142.462,519.000 140.000,516.538 140.000,513.500 C140.000,510.462 142.462,508.000 145.500,508.000 Z" />
+                    <path fill-rule=evenodd opacity=0.302 fill="rgb(255, 255, 255)" d="M633.500,357.000 C635.985,357.000 638.000,359.015 638.000,361.500 C638.000,363.985 635.985,366.000 633.500,366.000 C631.015,366.000 629.000,363.985 629.000,361.500 C629.000,359.015 631.015,357.000 633.500,357.000 Z" />
+                    <path fill-rule=evenodd opacity=0.8 fill="rgb(255, 255, 255)" d="M574.672,8.047 L583.310,0.211 L585.650,11.982 L574.672,8.047 Z" />
+                    <path fill-rule=evenodd opacity=0.6 fill="rgb(255, 255, 255)" d="M140.000,18.000 C141.657,18.000 143.000,19.343 143.000,21.000 C143.000,22.657 141.657,24.000 140.000,24.000 C138.343,24.000 137.000,22.657 137.000,21.000 C137.000,19.343 138.343,18.000 140.000,18.000 Z" />
+                </svg>
+            </figure>
+            <div class="w-75 px-4">
+                <div class="swiper-container pt-5 pb-5">
+                    <div class="swiper-wrapper text-center">
+                        <div class="swiper-slide testimony__slide">
+                            <p class=mb-5><strong class="super-lead color--white">“是否有核心，由你来确定。”</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 d-flex align-items-md-baseline py-5 background--light vh-md-100 overflow-auto">
+            <div class="w-75 mt-3 mt-md-5 mx-auto overflow-hidden px-md-5 px-lg-3">
+                <header class="mb-5">
+                    <img src='/static/images/common/logo.png' style="height: 80px;">
+                </header>
+                <main class="main">
+                    <div class="form-validate layui-form">
+                        <div class="row">
+                            <div class="col-sm-12 mb-2">
+                                <div class=form-group>
+                                    <input type="text" name="username" id="LAY-user-login-username" lay-verType="tips" lay-verify="required" placeholder="用户名" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                <div class=form-group>
+                                    <input type="password" name="password" id="LAY-user-login-password" lay-verType="tips" lay-verify="required" placeholder="密码" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <input type="checkbox" name="saveLoginInfo" lay-skin="primary" checked="checked"><small>保存登录信息</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                <button type="button" class="btn btn-info w-100" lay-submit lay-filter="LAY-user-login-submit" id="loginSubmit">登录</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class=mt-5>
+                    <small>©2020 - <a href="http://www.coreshop.com.cn/" target="_blank">CoreShop.Com.Cn</a> All rights reserved. <br><span>推荐使用 <a href="//www.microsoft.com/zh-cn/edge" target=_blank>新版 Microsoft Edge 浏览器</a> 访问本系统</span></small>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body { font-family: 'Inter',sans-serif; line-height: 1.5; color: #4f5464; }
+</style>
+<script>
+    layui.use(['admin', 'form', 'coreHelper'], function () {
+        var $ = layui.$
+            , setter = layui.setter
+            , admin = layui.admin
+            , form = layui.form
+            , router = layui.router()
+            , search = router.search
+            , coreHelper = layui.coreHelper;
+
+        layui.data(setter.tableName, { key: setter.request.tokenName, value: '1111' });
+        console.log(layui.data('CoreCms')['Authorization']);
+
+        var username = coreHelper.getCookie("username");
+        var password = coreHelper.getCookie("password");
+        if (username) {
+            $('#LAY-user-login-username').val(username);
+            console.log(username);
+        }
+        if (password) {
+            $('#LAY-user-login-password').val(password);
+            console.log(password);
+        }
+        //回车事件
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            if (e && e.keyCode == 13) { //回车键的键值为13
+                $("#loginSubmit").click(); //调用登录按钮的登录事件
+            }
+        };
+
+        form.render();
+        form.verify({
+            username: function (value, item) {
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                    return '用户名不能有特殊字符';
+                }
+                if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if (/^\d+\d+\d$/.test(value)) {
+                    return '用户名不能全为数字';
+                }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+        });
+        layui.data(setter.tableName, null);
+        form.on('submit(LAY-user-login-submit)', function (obj) {
+
+            var field = obj.field; //获取提交的字段
+
+            console.log("saveLoginInfo:" + field.saveLoginInfo);
+
+            if (field.saveLoginInfo == 'on') {
+                console.log("保存缓存");
+                coreHelper.setCookie("username", field.username);
+                coreHelper.setCookie("password", field.password);
+            } else {
+                console.log("清空缓存");
+                coreHelper.delCookie("username");
+                coreHelper.delCookie("password");
+            }
+            coreHelper.Post("api/login/getJwtToken", field, function (res) {
+                if (res.code === 0) {
+                    //jwttoekn处理
+                    layui.data(setter.tableName, { key: setter.request.tokenName, value: 'Bearer ' + res.data.token.token });
+                    var curTime = new Date();
+                    var expiredate = new Date(curTime.setSeconds(curTime.getSeconds() + res.data.token.expires_in)); // 定义过期时间
+                    console.log(expiredate);
+                    //layui.data(setter.tableName, { key: 'saveTokenExpire', value: coreHelper.getFullTime(expiredate) });
+                    //window.localStorage.refreshtime = expiredate;
+                    //window.localStorage.TokenExpire = expiredate;
+
+                    console.log('登录：' + layui.data(setter.tableName)[setter.request.tokenName]);
+
+
+                    layer.msg('登入成功,跳转中...', { time: 2000 },
+                        function () {
+                            location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/';
+                            location.reload();
+                        });
+                } else {
+                    layer.msg(res.msg, { time: 1500 });
+                }
+            });
+        });
+    });
+</script>

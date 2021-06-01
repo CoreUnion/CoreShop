@@ -1,0 +1,63 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-SysRole-createForm" id="LAY-app-SysRole-createForm">
+
+        <div class="layui-form-item">
+            <label for="roleName" class="layui-form-label">角色名称</label>
+            <div class="layui-input-block">
+                <input name="roleName" id="roleName" lay-verType="tips" lay-verify="required|verifyroleName" class="layui-input" lay-reqText="请输入角色名称" placeholder="请输入角色名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="roleCode" class="layui-form-label">角色标识</label>
+            <div class="layui-input-block">
+                <input name="roleCode" id="roleCode" lay-verType="tips" lay-verify="required|verifyroleCode" class="layui-input" lay-reqText="请输入角色标识" placeholder="请输入角色标识" />
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="comments" class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="comments" id="comments" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysRole-createForm-submit" id="LAY-app-SysRole-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#createTime-SysRole-createTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#createTime-SysRole-updateTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifyroleName: [/^[\S]{0,50}$/, '角色名称最大只允许输入50位字符，且不能出现空格'],
+                    verifyroleCode: [/^[\S]{0,50}$/, '角色标识最大只允许输入50位字符，且不能出现空格'],
+                    verifycomments: [/^[\S]{0,255}$/, '备注最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysRole-createForm');
+            })
+    };
+</script>

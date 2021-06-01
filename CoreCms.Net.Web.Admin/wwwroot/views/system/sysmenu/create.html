@@ -1,0 +1,145 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-SysMenu-createForm" id="LAY-app-SysMenu-createForm">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label for="parentId" class="layui-form-label">上级菜单</label>
+                    <div class="layui-input-block">
+                        <div id="menuEditParentSel" class="ew-xmselect-tree"></div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="menuName" class="layui-form-label layui-form-required">菜单名称</label>
+                    <div class="layui-input-block">
+                        <input name="menuName" id="menuName" lay-verType="tips" lay-verify="required|verifymenuName" class="layui-input" lay-reqText="请输入菜单名称" placeholder="请输入菜单名称" />
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="menuIcon" class="layui-form-label">菜单图标</label>
+                    <div class="layui-input-block">
+                        <input name="menuIcon" id="menuIcon" class="layui-input" lay-reqText="请输入菜单图标" placeholder="请输入菜单图标" />
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="path" class="layui-form-label">菜单Url</label>
+                    <div class="layui-input-block">
+                        <input name="path" id="path" class="layui-input" lay-reqText="请输入Html地址关键字" placeholder="请输入Html地址关键字" />
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="component" class="layui-form-label">API请求地址</label>
+                    <div class="layui-input-block">
+                        <input name="component" id="component" class="layui-input" lay-reqText="请输入菜单Api地址" placeholder="请输入菜单Api地址" />
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+
+                <div class="layui-form-item">
+                    <label for="path" class="layui-form-label layui-form-required">文件夹标识</label>
+                    <div class="layui-input-block">
+                        <input name="identificationCode" id="identificationCode" class="layui-input" lay-reqText="请输入文件目录英文标识" placeholder="请输入文件目录英文标识" />
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="authority" class="layui-form-label">权限标识</label>
+                    <div class="layui-input-block">
+                        <input name="authority" id="authority" class="layui-input" lay-reqText="请输入权限标识" placeholder="请输入权限标识" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="sortNumber" class="layui-form-label layui-form-required">排序号</label>
+                    <div class="layui-input-block">
+                        <input type="number" min="0" max="999999" name="sortNumber" id="sortNumber" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序号" lay-reqText="请输入排序号并为数字" />
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label for="menuType" class="layui-form-label layui-form-required">菜单类型</label>
+                    <div class="layui-input-block">
+                        <input name="menuType" type="radio" value="0" title="菜单" checked />
+                        <input name="menuType" type="radio" value="1" title="按钮" />
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label for="hide" class="layui-form-label layui-form-required">是否隐藏</label>
+                    <div class="layui-input-block">
+                        <input name="hide" type="radio" value="0" title="显示" checked />
+                        <input name="hide" type="radio" value="1" title="隐藏" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysMenu-createForm-submit" id="LAY-app-SysMenu-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'xmSelect'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , xmSelect = layui.xmSelect;
+
+                var list = [];
+                let item = {
+                    menuName: "无上级",
+                    id: 0
+                }
+                list.push(item);
+                for (var i = 0; i < insTb.options.data.length; i++) {
+                    list.push(insTb.options.data[i]);
+                }
+
+                // 渲染下拉树
+                var insXmSel = xmSelect.render({
+                    el: '#menuEditParentSel',
+                    height: '250px',
+                    data: list,
+                    //initValue: mData ? [mData.parentId] : [],
+                    model: { label: { type: 'text' } },
+                    name: 'parentId',
+                    prop: {
+                        name: 'menuName',
+                        value: 'id'
+                    },
+                    radio: true,
+                    clickClose: true,
+                    tree: {
+                        show: true,
+                        indent: 15,
+                        strict: false,
+                        expandedKeys: []
+                    }
+                });
+
+                form.verify({
+
+                    verifymenuName: [/^[\S]{0,50}$/, '菜单名称最大只允许输入50位字符，且不能出现空格'],
+                    verifymenuIcon: [/^[\S]{0,50}$/, '菜单图标最大只允许输入50位字符，且不能出现空格'],
+                    verifypath: [/^[\S]{0,50}$/, '菜单路由关键字最大只允许输入50位字符，且不能出现空格'],
+                    verifycomponent: [/^[\S]{0,50}$/, '菜单Api地址最大只允许输入50位字符，且不能出现空格'],
+                    verifyauthority: [/^[\S]{0,50}$/, '权限标识最大只允许输入50位字符，且不能出现空格'],
+                    verifytarget: [/^[\S]{0,50}$/, '打开位置最大只允许输入50位字符，且不能出现空格'],
+                    verifyiconColor: [/^[\S]{0,50}$/, '菜单图标颜色最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysMenu-createForm');
+            })
+    };
+</script>

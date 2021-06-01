@@ -1,0 +1,157 @@
+<style>
+    .warning-msg { }
+    .warning-msg-content { background-color: #FFFFCC; border: 1px solid #FFFF33; padding: 10px; margin-bottom: 15px; color: #666; }
+        .warning-msg-content i { display: inline-block; font-size: 16px; margin-right: 5px; color: red; }
+        .warning-msg-content p { display: inline-block; }
+        .warning-msg-content a { color: #20a53a; }
+            .warning-msg-content a:hover { color: #23527c; }
+</style>
+<body>
+    <script type="text/html" template lay-done="layui.data.done(d);">
+        <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsEnterprise-MapForm" id="LAY-app-CoreCmsEnterprise-MapForm">
+            <input type="hidden" name="coordinate" value="{{d.params.data.oldData}}">
+
+            <div class="layui-form-item">
+                <label for="tags" class="layui-form-label">请输入地址</label>
+                <div class="layui-input-inline layui-inline-10">
+                    <input name="tags" class="layui-input" lay-reqText="请输入标签" placeholder="请输入标签" id="place" style="z-index: 99999999" />
+                </div>
+                <!--<div class="layui-form-mid" style="padding: 0 !important;">
+                    <button type="button" class="layui-btn">查询</button>
+                </div>-->
+                <!--<div class="layui-form-mid">输入地区直接回车</div>-->
+                <div class="layui-form-mid" style="padding: 0 !important;float: right">
+                    <button type="button" id="save-map" class="layui-btn" lay-submit lay-filter="formDemo">保存当前位置</button>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <div class="layui-input-inline layui-inline-10" id="container" style="min-width: 100%; min-height: 450px;">
+                </div>
+            </div>
+        </div>
+    </script>
+</body>
+<script>
+    var $;
+    var debug = layui.setter.debug;
+    var coordinateBoxIdName;
+    var addressBoxIdName;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        coordinateBoxIdName = d.params.data.coordinateBoxIdName;
+        addressBoxIdName = d.params.data.addressBoxIdName;
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            $ = layui.$;
+            var setter = layui.setter, admin = layui.admin, coreHelper = layui.coreHelper, form = layui.form;
+            var layer = layui.layer;
+
+            var cityLocation, map, marker, center = null;
+            var markerImage = "http://api.map.baidu.com/images/marker_red_sprite.png";
+            var preLocationCenter = $("input[name=coordinate]").val();
+            if (preLocationCenter == '') {
+                cityLocation = new qq.maps.CityService({
+                    complete: function (result) {
+                        center = new qq.maps.LatLng(result.detail.latLng.lat, result.detail.latLng.lng);
+                        setMap(center);
+                    }
+                });
+                cityLocation.searchLocalCity();
+            } else {
+                var arr = preLocationCenter.split(',');
+                if (arr.length < 2) {
+                    parent.layer.msg("坐标位置错误");
+                    return false;
+                }
+                center = new qq.maps.LatLng(arr[0], arr[1]);
+                setMap(center);
+            }
+            function setMap(center) {
+
+                map = new qq.maps.Map(document.getElementById('container'), {
+                    center: center,
+                    zoom: 13
+                });
+
+                var size = new qq.maps.Size(20, 27);
+                var origin = new qq.maps.Point(0, 0);
+                var icon = new qq.maps.MarkerImage(markerImage, size, origin);
+                //创建一个Marker
+                marker = new qq.maps.Marker({
+                    icon: icon,
+                    position: center,
+                    animation: qq.maps.MarkerAnimation.DOWN,
+                    map: map,
+                    title: '选择企业位置'
+                });
+
+                var jump = function (event) {
+                    marker.setPosition(event.latLng);
+                };
+                qq.maps.event.addListener(map, 'click', jump);
+
+                //搜索框提示
+                var ap = new qq.maps.place.Autocomplete(document.getElementById('place'), {
+                    offset: new qq.maps.Size(0, 5),
+                    location: '北京市',
+                    zIndex: 99999999
+                });
+                var keyword = "";
+
+                //调用Poi检索类。用于进行本地检索、周边检索等服务。
+                var searchService = new qq.maps.SearchService({
+                    complete: function (results) {
+                        if (results.type === "CITY_LIST") {
+                            searchService.setLocation(results.detail.cities[0].cityName);
+                            searchService.search(keyword);
+                            return;
+                        }
+                        var pois = results.detail.pois;
+                        var latlngBounds = new qq.maps.LatLngBounds();
+                        for (var i = 0, l = pois.length; i < l; i++) {
+                            var poi = pois[i];
+                            latlngBounds.extend(poi.latLng);
+                            var marker = new qq.maps.Marker({
+                                map: map,
+                                position: poi.latLng
+                            });
+
+                            marker.setTitle(poi.name);
+                        }
+                        map.fitBounds(latlngBounds);
+                    }
+                });
+                //添加监听事件
+                qq.maps.event.addListener(ap, "confirm", function (res) {
+                    console.log('查询地址');
+                    keyword = res.value;
+                    searchService.search(keyword);
+                });
+            }
+
+            $("#save-map").on('click', function () {
+                parent.$("#" + coordinateBoxIdName).val(marker.position.lat + ',' + marker.position.lng);
+                if (addressBoxIdName) {
+                    setName(marker.position.lat, marker.position.lng);
+                }
+                //parent.layer.closeAll();
+                parent.layer.close(layer.index);
+            });
+
+            form.render(null, 'LAY-app-CoreCmsEnterprise-MapForm');
+        });
+    };
+
+    function setName(lat, lng) {
+        geocoder = new qq.maps.Geocoder({
+            complete: function (result) {
+                parent.$("#"+addressBoxIdName).val(result.detail.address);
+            }
+        });
+        var coord = new qq.maps.LatLng(lat, lng);
+        geocoder.getAddress(coord);
+
+    }
+</script>

@@ -1,0 +1,94 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsPromotion-GroupCreateForm" id="LAY-app-CoreCmsPromotion-GroupCreateForm">
+        <input type="hidden" value="3" name="type" id="type" />
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">名称</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入团购(秒杀)名称" placeholder="请输入团购(秒杀)名称" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过40个字符内容</div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isEnable" class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isEnable" id="isEnable" lay-skin="switch" checked="checked" lay-text="开启|关闭">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">权重</label>
+            <div class="layui-input-inline  layui-inline-1">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="100" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越小，权重越大</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="maxNums" class="layui-form-label">限购数量</label>
+            <div class="layui-input-inline layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxNums" id="maxNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="0" placeholder="请输入每人限购数量" lay-reqText="请输入每人限购数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">每人限购数量，0为不限制</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="maxGoodsNums" class="layui-form-label">总量</label>
+            <div class="layui-input-inline layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxGoodsNums" id="maxGoodsNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="0" placeholder="请输入每个商品活动数量" lay-reqText="请输入每个商品活动数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">活动商品总量。0为不限制，以商品库存准</div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isExclusive" class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="3" title="团购" checked>
+                <input type="radio" name="type" value="4" title="秒杀">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="startTime" class="layui-form-label">起止时间</label>
+            <div class="layui-input-inline layui-inline-6">
+                <input name="startTime" id="createTime-CoreCmsPromotion-startTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入开始时间" lay-reqText="请输入开始时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-GroupCreateForm-submit" id="LAY-app-CoreCmsPromotion-GroupCreateForm-submit" value="确认添加">
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsPromotion-startTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                form.verify({
+
+                    verifyname: [/^[\S]{0,40}$/, '促销名称最大只允许输入40位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsPromotion-GroupCreateForm');
+            })
+    };
+</script>

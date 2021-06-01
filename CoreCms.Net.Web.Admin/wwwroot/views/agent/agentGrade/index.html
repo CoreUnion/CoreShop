@@ -1,0 +1,276 @@
+<title>代理商等级设置表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsAgentGrade/GetIndex" lay-done="layui.data.done(d);">
+    <div class="warning-msg" style="border: 1px solid #e6e6e6;margin: 10px 10px 0 10px;">
+        <div class="warning-msg-content" style="margin-bottom: 0px;">
+            <p>等级排序越大，等级越高</p>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsAgentGrade-tableBox" lay-filter="LAY-app-CoreCmsAgentGrade-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsAgentGrade-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsAgentGrade-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" data-dropdown="#CoreCmsAgentGradeTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide" id="CoreCmsAgentGradeTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary cursor" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal cursor" lay-event="del">确定</a>
+        </div>
+    </div>
+
+
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsAgentGrade-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsAgentGrade-tableBox',
+                    url: 'Api/CoreCmsAgentGrade/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsAgentGrade-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 50, sort: false },
+                            { field: 'name', title: '等级名称', sort: false, width: 105 },
+                            { field: 'isDefault', title: '是否默认等级', width: 95, templet: '#switch_isDefault', sort: false, unresize: true },
+                            { field: 'isAutoUpGrade', title: '是否自动升级', width: 95, templet: '#switch_isAutoUpGrade', sort: false, unresize: true },
+                            {
+                                field: 'defaultSalesPriceType', title: '价格加成方式', sort: false, width: 105, templet: function (data) {
+                                    for (var i = 0; i < d.data.agentDefaultSalesPriceType.length; i++) {
+                                        if (data.defaultSalesPriceType == d.data.agentDefaultSalesPriceType[i].value) {
+                                            return d.data.agentDefaultSalesPriceType[i].description;
+                                        }
+                                    }
+                                    return "";
+                                }
+                            },
+                            { field: 'defaultSalesPriceNumber', title: '价格加成值', sort: false, width: 105 },
+                            { field: 'sortId', title: '等级排序', sort: false, width: 105 },
+                            { field: 'description', title: '等级说明', sort: false },
+                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsAgentGrade-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsAgentGrade-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsAgentGrade-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsAgentGrade-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsAgentGrade-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsAgentGrade/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['400px', '560px'],
+                                id: 'LAY-popup-CoreCmsAgentGrade-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('agent/agentGrade/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAgentGrade-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isDefault = field.isDefault == 'on';
+                                                field.isAutoUpGrade = field.isAutoUpGrade == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAgentGrade/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    /*$(layero).children('.layui-layer-content').css('overflow', 'visible');*/
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsAgentGrade-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGrade/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['400px', '560px'],
+                                id: 'LAY-popup-CoreCmsAgentGrade-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('agent/agentGrade/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAgentGrade-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isDefault = field.isDefault == 'on';
+                                                field.isAutoUpGrade = field.isAutoUpGrade == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAgentGrade/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsAgentGrade-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGrade/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        layer.msg(e.msg);
+                    });
+                }
+
+
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isDefault)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGrade/DoSetisDefault", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isAutoUpGrade)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGrade/DoSetisAutoUpGrade", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否默认等级-->
+<script type="text/html" id="switch_isDefault">
+    <input type="checkbox" name="switch_isDefault" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isDefault" {{ d.isDefault ? 'checked' : '' }}>
+</script>
+
+<!--设置是否自动升级-->
+<script type="text/html" id="switch_isAutoUpGrade">
+    <input type="checkbox" name="switch_isAutoUpGrade" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isAutoUpGrade" {{ d.isAutoUpGrade ? 'checked' : '' }}>
+</script>
+

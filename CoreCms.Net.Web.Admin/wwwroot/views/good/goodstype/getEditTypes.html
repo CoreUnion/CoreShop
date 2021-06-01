@@ -1,0 +1,65 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane editGoodsTypes" lay-filter="LAY-popup-CoreCmsUser-GetEditTypes" id="LAY-popup-CoreCmsUser-GetEditTypes">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.model.id || '' }}" />
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">类型名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" readonly="readonly" disabled="disabled" placeholder="请输入类型名称" lay-reqText="请输入类型名称" value="{{d.params.data.model.name || '' }}" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过20个字符内容</div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">请选择参数</label>
+            <div class="layui-input-block">
+                {{# layui.each(d.params.data.goodsTypeSpec, function(index, item){ }}
+                <div class="spec-item">
+                    {{#  if(d.params.data.goodsTypeSpecRel  && d.params.data.goodsTypeSpecRel.indexOf(item.id) > -1){ }}
+                    <div class="checkboxBox">
+                        <input type="checkbox" name="paramsId[]" lay-skin="switch" value="{{ item.id }}" lay-text="开启|关闭" checked="checked">
+                    </div>
+                    <div class="layui-form-mid">
+                        {{ item.name }}
+                    </div>
+                    {{#  } else { }}
+                    <div class="checkboxBox">
+                        <input type="checkbox" name="paramsId[]" lay-skin="switch" value="{{ item.id }}" lay-text="开启|关闭">
+                    </div>
+                    <div class="layui-form-mid">
+                        {{ item.name }}
+                    </div>
+                    {{#  } }}
+                </div>
+                {{# }); }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-popup-CoreCmsUser-GetEditTypes-submit" id="LAY-popup-CoreCmsUser-GetEditTypes-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+
+                    verifyname: [/^[\S]{0,20}$/, '类型名称最大只允许输入20位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-popup-CoreCmsUser-GetEditTypes');
+            })
+    };
+</script>

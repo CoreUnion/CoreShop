@@ -1,0 +1,455 @@
+<title>商品表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsGoods/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="bn">商品编码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="bn" id="bn" placeholder="请输入商品编码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="name">商品名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入商品名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="goodsCategoryId">商品分类</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="goodsCategoryId" id="goodsCategoryId" placeholder="请输入商品分类ID 关联category.id" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="goodsTypeId">商品类别</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="goodsTypeId" id="goodsTypeId" placeholder="请输入商品类别ID 关联goods_type.id" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="isMarketable">是否上架</label>
+                <div class="layui-input-inline">
+                    <select name="isMarketable" id="isMarketable">
+                        <option value="">请选择</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsGoods-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsGoods-tableBox" lay-filter="LAY-app-CoreCmsGoods-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsGoods-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+        <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsGoods-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    layui.data.done = function (d) {
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsGoods-uptime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsGoods-downtime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsGoods-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsGoods-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsGoods-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsGoods-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsGoods-tableBox',
+                    url: 'Api/CoreCmsGoods/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsGoods-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '商品ID', sort: false, width: 105 },
+                            { field: 'bn', title: '商品编码', sort: false, width: 105 },
+                            { field: 'name', title: '商品名称', sort: false, width: 105 },
+                            { field: 'brief', title: '商品简介', sort: false, width: 105 },
+                            { field: 'price', title: '商品价格', sort: false, width: 105 },
+                            { field: 'costprice', title: '成本价', sort: false, width: 105 },
+                            { field: 'mktprice', title: '市场价', sort: false, width: 105 },
+                            {
+                                field: 'imageIds', title: '默认图片 图片id', width: 80, sort: false,
+                                templet: function (d) {
+                                    if (d.imageIds) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.imageIds + '")><image style="max-width:28px;max-height:28px;" src="' + d.imageIds + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }
+                            },
+                            { field: 'goodsCategoryId', title: '商品分类ID 关联category.id', sort: false, width: 105 },
+                            { field: 'goodsTypeId', title: '商品类别ID 关联goods_type.id', sort: false, width: 105 },
+                            { field: 'brandId', title: '品牌ID 关联brand.id', sort: false, width: 105 },
+                            { field: 'isNomalVirtual', title: '是否虚拟商品', width: 105, templet: '#switch_isNomalVirtual', sort: false, unresize: true },
+                            { field: 'isMarketable', title: '是否上架', width: 105, templet: '#switch_isMarketable', sort: false, unresize: true },
+                            { field: 'stock', title: '库存', sort: false, width: 105 },
+                            { field: 'freezeStock', title: '冻结库存', sort: false, width: 105 },
+                            { field: 'weight', title: '重量', sort: false, width: 105 },
+                            { field: 'unit', title: '商品单位', sort: false, width: 105 },
+                            { field: 'intro', title: '商品详情', sort: false, width: 105 },
+                            { field: 'spes_desc', title: '商品规格序列号存储', sort: false, width: 105 },
+                            { field: 'parameters', title: '参数序列化', sort: false, width: 105 },
+                            { field: 'commentsCount', title: '评论次数', sort: false, width: 105 },
+                            { field: 'viewCount', title: '浏览次数', sort: false, width: 105 },
+                            { field: 'buyCount', title: '购买次数', sort: false, width: 105 },
+                            { field: 'uptime', title: '上架时间', width: 130, sort: false },
+                            { field: 'downtime', title: '下架时间', width: 130, sort: false },
+                            { field: 'sort', title: '商品排序', sort: false, width: 105 },
+                            { field: 'labelIds', title: '标签id逗号分隔', sort: false, width: 105 },
+                            { field: 'newSpec', title: '自定义规格名称', sort: false, width: 105 },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { field: 'isRecommend', title: '是否推荐', width: 105, templet: '#switch_isRecommend', sort: false, unresize: true },
+                            { field: 'isHot', title: '是否热门', width: 105, templet: '#switch_isHot', sort: false, unresize: true },
+                            { field: 'isDel', title: '是否删除', width: 105, templet: '#switch_isDel', sort: false, unresize: true },
+                            { width: 142, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoods-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsGoods-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsGoods-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsGoods/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建数据',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsGoods-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('base/CoreCmsGoods/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsGoods-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isNomalVirtual = field.isNomalVirtual == 'on';
+                                                field.isMarketable = field.isMarketable == 'on';
+                                                field.isRecommend = field.isRecommend == 'on';
+                                                field.isHot = field.isHot == 'on';
+                                                field.isDel = field.isDel == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoods/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoods-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑数据',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsGoods-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('base/CoreCmsGoods/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsGoods-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isNomalVirtual = field.isNomalVirtual == 'on';
+                                                field.isMarketable = field.isMarketable == 'on';
+                                                field.isRecommend = field.isRecommend == 'on';
+                                                field.isHot = field.isHot == 'on';
+                                                field.isDel = field.isDel == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoods/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoods-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '查看详情',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsGoods-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('base/CoreCmsGoods/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsGoods/DoDelete", { id: obj.data.id }, function (e) {
+                            table.reload('LAY-app-CoreCmsGoods-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+                //执行批量删除
+                function doBatchDelete(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择要删除的数据');
+                    }
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            coreHelper.Post("Api/CoreCmsGoods/DoBatchDelete", { id: delidsStr }, function (e) {
+                                table.reload('LAY-app-CoreCmsGoods-tableBox');
+                                layer.msg(e.msg);
+                            });
+                        });
+                }
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsGoods/QueryExportExcel", field, function (e) {
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsGoods/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isNomalVirtual)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/DoSetisNomalVirtual", { id: this.value, data: obj.elem.checked }, function (res) {
+                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isMarketable)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/DoSetisMarketable", { id: this.value, data: obj.elem.checked }, function (res) {
+                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isRecommend)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/DoSetisRecommend", { id: this.value, data: obj.elem.checked }, function (res) {
+                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isHot)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/DoSetisHot", { id: this.value, data: obj.elem.checked }, function (res) {
+                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isDel)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsGoods/DoSetisDel", { id: this.value, data: obj.elem.checked }, function (res) {
+                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否虚拟商品-->
+<script type="text/html" id="switch_isNomalVirtual">
+    <input type="checkbox" name="switch_isNomalVirtual" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isNomalVirtual" {{ d.isNomalVirtual ? 'checked' : '' }}>
+</script>
+
+<!--设置是否上架-->
+<script type="text/html" id="switch_isMarketable">
+    <input type="checkbox" name="switch_isMarketable" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isMarketable" {{ d.isMarketable ? 'checked' : '' }}>
+</script>
+
+<!--设置是否推荐-->
+<script type="text/html" id="switch_isRecommend">
+    <input type="checkbox" name="switch_isRecommend" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isRecommend" {{ d.isRecommend ? 'checked' : '' }}>
+</script>
+
+<!--设置是否热门-->
+<script type="text/html" id="switch_isHot">
+    <input type="checkbox" name="switch_isHot" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isHot" {{ d.isHot ? 'checked' : '' }}>
+</script>
+
+<!--设置是否删除-->
+<script type="text/html" id="switch_isDel">
+    <input type="checkbox" name="switch_isDel" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isDel" {{ d.isDel ? 'checked' : '' }}>
+</script>

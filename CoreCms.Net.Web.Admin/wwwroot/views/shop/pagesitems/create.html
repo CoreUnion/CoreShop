@@ -1,0 +1,85 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsPagesItems-createForm" id="LAY-app-CoreCmsPagesItems-createForm">
+
+        <div class="layui-form-item">
+            <label for="id" class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="id" id="id" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入" lay-reqText="请输入并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="widgetCode" class="layui-form-label">组件编码</label>
+            <div class="layui-input-inline">
+                <input name="widgetCode" id="widgetCode" lay-verType="tips" lay-verify="required|verifywidgetCode" class="layui-input" lay-reqText="请输入组件编码" placeholder="请输入组件编码" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过50个字符内容</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="pageCode" class="layui-form-label">页面编码</label>
+            <div class="layui-input-inline">
+                <input name="pageCode" id="pageCode" lay-verType="tips" lay-verify="required|verifypageCode" class="layui-input" lay-reqText="请输入页面编码" placeholder="请输入页面编码" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过50个字符内容</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="positionId" class="layui-form-label">布局位置</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="positionId" id="positionId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入布局位置" lay-reqText="请输入布局位置并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序，越小越靠前</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序，越小越靠前" lay-reqText="请输入排序，越小越靠前并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="parameters" class="layui-form-label">组件配置内容</label>
+            <div class="layui-input-inline">
+                <input name="parameters" id="parameters" lay-verType="tips" lay-verify="required" class="layui-input" lay-reqText="请输入组件配置内容" placeholder="请输入组件配置内容" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过-1个字符内容</div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPagesItems-createForm-submit" id="LAY-app-CoreCmsPagesItems-createForm-submit" value="确认添加">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+        function () {
+            var $ = layui.$
+                , form = layui.form
+                , admin = layui.admin
+                , laydate = layui.laydate
+                , upload = layui.upload
+                , cropperImg = layui.cropperImg
+                , coreHelper = layui.coreHelper;
+
+	        form.verify({
+
+		        verifywidgetCode: [/^[\S]{0,50}$/,'组件编码最大只允许输入50位字符，且不能出现空格'],
+		        verifypageCode: [/^[\S]{0,50}$/,'页面编码最大只允许输入50位字符，且不能出现空格'],
+	        });
+            //重载form
+            form.render(null, 'LAY-app-CoreCmsPagesItems-createForm');
+        })
+    };
+</script>

@@ -1,0 +1,219 @@
+<title>单页</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsPages/GetIndex" lay-done="layui.data.done(d);">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsPages-tableBox" lay-filter="LAY-app-CoreCmsPages-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsPages-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsPages-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="design">版面设计</a>
+    {{#  if(d.id > 1){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  } }}
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsPages-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsPages-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsPages-tableBox',
+                    url: 'Api/CoreCmsPages/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsPages-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-142',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 80, sort: false },
+                            { field: 'code', title: '可视化区域编码', sort: false, width: 205 },
+                            { field: 'name', title: '可编辑区域名称', sort: false, width: 205 },
+                            { field: 'description', title: '描述', sort: false },
+                            //{ field: 'layout', title: '布局样式编码，1，手机端', sort: false, width: 105 },
+                            //{ field: 'type', title: '1手机端，2PC端', sort: false, width: 105 },
+                            { width: 182, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsPages-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsPages-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsPages-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsPages-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsPages-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsPages-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        } else if (obj.event === 'design') {
+                            doDesign(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsPages/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['600px', '500px'],
+                                id: 'LAY-popup-CoreCmsPages-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/pages/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsPages-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsPages/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsPages-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsPages/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['600px', '500px'],
+                                id: 'LAY-popup-CoreCmsPages-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/pages/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsPages-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsPages/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsPages-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行设计操作
+                function doDesign(obj) {
+                    location.hash = '/shop/pages/design.html?id=' + obj.data.id;
+                }
+
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsPages/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reload('LAY-app-CoreCmsPages-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+            });
+    };
+</script>

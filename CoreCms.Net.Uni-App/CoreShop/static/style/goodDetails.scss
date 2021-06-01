@@ -1,0 +1,274 @@
+﻿
+.basis-1 { flex-basis: 10%; }
+.basis-2 { flex-basis: 20%; }
+.basis-3 { flex-basis: 30%; }
+.basis-4 { flex-basis: 40%; }
+.basis-5 { flex-basis: 50%; }
+.basis-6 { flex-basis: 60%; }
+.basis-7 { flex-basis: 70%; }
+.basis-8 { flex-basis: 80%; }
+.basis-9 { flex-basis: 90%; }
+.basis-10 { flex-basis: 100%; }
+
+
+.coreshop-banner-swiper-box { position: relative; width: 100%;
+    .screen-swiper { min-height: 750rpx; }
+    .tag { font-size: 24upx; vertical-align: middle; position: relative; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 0upx 16upx; height: 48upx; font-family: Helvetica Neue, Helvetica, sans-serif; white-space: nowrap; }
+    .coreshop-page { position: absolute; bottom: 27.27rpx; right: 27.27rpx; padding: 18.18rpx; }
+}
+
+.coreshop-limited-seckill-box { position: relative; background-image: url('/static/images/good/titlebg.png'); background-repeat: no-repeat; background-size: 100% 100%; padding: 18.18rpx 27.27rpx; color: #ffffff; width: 100%;
+    .text-xxl { font-size: 54.54rpx; }
+    .coreshop-cost-price-num { position: absolute; font-weight: 200; left: 199.99rpx; top: 21.81rpx; }
+    .coreshop-cost-price-num.price-6 { left: 254.54rpx; }
+    .coreshop-cost-price-num.price-5 { left: 227.27rpx; }
+    .coreshop-cost-price-num.price-4 { left: 199.99rpx; }
+    .coreshop-cost-price-num.price-3 { left: 163.63rpx; }
+    .coreshop-cost-price-num.price-2 { left: 136.36rpx; }
+    .coreshop-cost-price-num.price-1 { left: 99.99rpx; }
+    .coreshop-time-right { position: absolute; right: 100rpx; top: 10rpx; }
+    .coreshop-share-right { position: absolute; right: 27.27rpx; top: 16.36rpx; }
+}
+    .coreshop-limited-seckill-box::after { content: ""; position: absolute; z-index: -1; background-color: inherit; width: 100%; height: 100%; left: 0; bottom: -10%; border-radius: 10upx; opacity: 0.2; transform: scale(0.9, 0.9); }
+
+
+.coreshop-view-box { position: relative; padding: 18.18rpx 27.27rpx; }
+.coreshop-title-view-box { position: relative; position: relative;
+    .cu-tag { margin-top: -9.09rpx; margin-right: 9.09rpx; }
+    .title-view { display: inline-block; flex-direction: row; align-items: center; }
+    .cu-tag { margin-top: -9.09rpx; margin-right: 9.09rpx; }
+    .coreshop-title-tip-box { position: relative; padding: 9.09rpx 18.18rpx; width: 100%;
+        .text-cut { padding-right: 27.27rpx; }
+        .icon { position: absolute; right: 18.18rpx; top: 12rpx; }
+    }
+}
+.coreshop-service-view-box { position: relative;
+    .flex {
+        .basis-1 { flex-basis: 10%; }
+        .basis-2 { flex-basis: 20%; }
+        .basis-3 { flex-basis: 30%; }
+        .basis-4 { flex-basis: 40%; }
+        .basis-5 { flex-basis: 50%; }
+        .basis-6 { flex-basis: 60%; }
+        .basis-7 { flex-basis: 70%; }
+        .basis-8 { flex-basis: 80%; }
+        .basis-9 { flex-basis: 90%; }
+    }
+    .tag-view-box { position: relative; top: -3.63rpx;
+        .tag-view { margin-right: 18.18rpx; padding: 0; }
+        .cu-tag + .cu-tag { margin-left: 0; }
+    }
+    .tag-view { margin-right: 9.09rpx; }
+    .icon-view { height: 100%; display: flex; align-items: center;
+        .icon { position: absolute; right: 15px; }
+    }
+}
+
+.coreshop-promotion-view-box {
+    .flex {
+        .basis-1 { flex-basis: 10%; }
+        .basis-2 { flex-basis: 20%; }
+        .basis-3 { flex-basis: 30%; }
+        .basis-4 { flex-basis: 40%; }
+        .basis-5 { flex-basis: 50%; }
+        .basis-6 { flex-basis: 60%; }
+        .basis-7 { flex-basis: 70%; }
+        .basis-8 { flex-basis: 80%; }
+        .basis-9 { flex-basis: 90%; }
+    }
+    .text-view { margin-left: 9.09rpx; }
+    .icon-view { height: 100%; display: flex; align-items: center;
+        .icon { position: absolute; right: 15px; }
+    }
+}
+
+.coreshop-select-view-box {
+    .flex {
+        .basis-1 { flex-basis: 10%; }
+        .basis-2 { flex-basis: 20%; }
+        .basis-3 { flex-basis: 30%; }
+        .basis-4 { flex-basis: 40%; }
+        .basis-5 { flex-basis: 50%; }
+        .basis-6 { flex-basis: 60%; }
+        .basis-7 { flex-basis: 70%; }
+        .basis-8 { flex-basis: 80%; }
+        .basis-9 { flex-basis: 90%; }
+    }
+    .coreshop-border-view { position: relative; background: #efebeb; margin: 21.81rpx 0; height: 2rpx; width: 100%; }
+    .icon { position: relative; top: 3.63rpx; }
+}
+
+.coreshop-comment-view-box {
+    .coreshop-border-view { position: relative; background: #efebeb; margin: 0 27.27rpx; height: 2rpx; }
+    .coreshop-view-box {
+        .flex {
+            .basis-1 { flex-basis: 10%; }
+            .basis-2 { flex-basis: 20%; }
+            .basis-3 { flex-basis: 30%; }
+            .basis-4 { flex-basis: 40%; }
+            .basis-5 { flex-basis: 50%; }
+            .basis-6 { flex-basis: 60%; }
+            .basis-7 { flex-basis: 70%; }
+            .basis-8 { flex-basis: 80%; }
+            .basis-9 { flex-basis: 90%; }
+        }
+    }
+}
+
+.coreshop-goods-info-view-box {
+    .coreshop-shop-view { position: relative; width: 100%;
+        .cu-avatar { position: absolute; height: 80rpx; width: 80rpx; }
+        .text-view { padding-left: 99.99rpx; padding-right: 145.45rpx; }
+        .cu-btn { position: absolute; top: 21.81rpx; right: 0; }
+    }
+    .coreshop-border-view { position: relative; background: #efebeb; margin: 21.81rpx 0; height: 2rpx; width: 100%; }
+    .live-tag-view { position: relative; width: 100%;
+        .text-view { padding-right: 127.27rpx;
+            .cu-tag { position: relative; top: -3.63rpx; }
+        }
+        .text-right-view { position: absolute; right: 0; top: 3.63rpx; }
+    }
+    .coreshop-recommend-list-box {
+        .recommend-scroll-box { position: relative; width: 100%;
+            .recommend-scroll { position: relative; height: 363.63rpx; white-space: nowrap; width: 100%;
+                .recommend-scroll-item { display: inline-block; padding-top: 27.27rpx; width: 199.99rpx; padding-right: 18.18rpx; white-space: initial;
+                    .cu-avatar { width: 181.81rpx; height: 181.81rpx; }
+                }
+            }
+        }
+    }
+}
+
+.coreshop-goods-details-box { position: relative; width: 100%;
+    image { width: 100%; }
+}
+
+.coreshop-goods-help-view-box {
+    .flex {
+        .basis-1 { flex-basis: 10%; }
+        .basis-2 { flex-basis: 20%; }
+        .basis-3 { flex-basis: 30%; }
+        .basis-4 { flex-basis: 40%; }
+        .basis-5 { flex-basis: 50%; }
+        .basis-6 { flex-basis: 60%; }
+        .basis-7 { flex-basis: 70%; }
+        .basis-8 { flex-basis: 80%; }
+        .basis-9 { flex-basis: 90%; }
+    }
+    .coreshop-border-view { position: relative; background: #efebeb; margin: 21.81rpx 0; height: 2rpx; width: 100%; }
+}
+
+.coreshop-recommend-list-view-box { padding: 18.18rpx 0;
+    .flex {
+        .img-aau { width: 81.81rpx; margin-top: 12.72rpx; }
+        .text-right {
+            .img-aau { margin-right: 14.54rpx; }
+        }
+        .text-left {
+            .img-aau { margin-left: 14.54rpx; }
+        }
+    }
+    .coreshop-goods-list-box { position: relative; width: 100%; margin: 27.27rpx 0;
+        .col-2 { margin: 0 18.18rpx;
+            .list-itme { padding: 9.09rpx;
+                .list-radius { border-radius: 18.18rpx;
+                    .goods-img { position: relative; width: 100%;
+                        .cu-avatar { width: 340rpx; height: 340rpx; border-radius: 18.18rpx 18.18rpx 0 0; }
+                        .mold-view { position: absolute; bottom: 0; }
+                    }
+                    .view-goods-info { position: relative; padding: 18.18rpx;
+                        .text-lg { font-size: 36.36rpx; }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.navigation { display: flex; position: fixed; bottom: 0; margin-top: 120rpx; border-top: solid 2rpx #f2f2f2; background-color: #ffffff; width: 100%; z-index: 1;
+    .left { display: flex; font-size: 20rpx;
+        .weinButton { margin: 0 30rpx; border: none; border-radius: 0; padding: 0 0; line-height: inherit; background-color: #ffffff; }
+        .weinButton:after { content: ""; display: block; clear: both; border: 0; }
+        .item { margin: 0 30rpx;
+            &.car { text-align: center; position: relative;
+                .car-num { position: absolute; top: -10rpx; right: -10rpx; border: none; }
+            }
+        }
+    }
+    .right { display: flex; font-size: 28rpx; align-items: center;
+        .cu-btn { padding: 0 20rpx; }
+        .cart { background-color: #ed3f14; margin-right: 30rpx; }
+        .buy { background-color: #ff7900; }
+    }
+}
+
+
+
+.coreshop-footer-fixed { display: flex; position: fixed; bottom: 0; margin-top: 120rpx; width: 100%; z-index: 1; border-top: solid 2rpx #f2f2f2; background-color: #ffffff;
+    .cu-bar.tabbar.shop { width: 100%;
+        .action { color: #333333; width: 110rpx; }
+    }
+}
+
+.coreshop-bottom-modal-box {
+    .coreshop-title-bar { position: relative; width: 100%;
+        .close-icon { position: absolute; right: 36.36rpx; }
+    }
+    .coreshop-modal-content { position: relative; width: 100%; overflow-y: auto; height: calc(100vh - 654.54rpx); padding: 0 29.09rpx 29.09rpx; margin-bottom: 118.18rpx;
+        .coreshop-view-box { position: relative; width: 100%; padding: 0; text-align: left; }
+        .coreshop-view-box.service {
+            .text-view { margin-bottom: 18.18rpx; }
+            .text-list-view { position: relative; width: 100%; margin-bottom: 18.18rpx;
+                .text-cut { padding-right: 21rpx; }
+            }
+            .text-list-view + .text-view { margin-top: 36.36rpx; }
+        }
+        .coreshop-view-box.promotion {
+            .text-view { margin-bottom: 18.18rpx;
+                .cu-tag { position: relative; top: -3.63rpx; }
+            }
+            .text-list-view { position: relative; width: 100%; margin-bottom: 18.18rpx;
+                .text-cut { padding-right: 218.18rpx; }
+                .text-right-view { position: absolute; right: 0; top: 2rpx; }
+            }
+            .text-list-view + .text-view { margin-top: 36.36rpx; }
+        }
+        .coreshop-view-box.select {
+            .cu-list.menu-avatar > .cu-item {
+                .content { width: calc(100% - 94.54rpx - 59.99rpx); }
+            }
+            .coreshop-select-btn-list-box {
+                .select-item { padding: 18.18rpx 0; border-bottom: 2rpx solid #f3f3f3;
+                    .select-btn { position: relative; margin-top: 14.54rpx; width: 100%;
+                        .cu-btn { font-size: 23.63rpx; margin: 5rpx 16.36rpx 5rpx 0; padding: 0 10rpx; height: 44rpx; }
+                        .cu-btn.light { border: 1rpx dashed; }
+                        .cu-btn[disabled] { color: #aaaaaa; }
+                    }
+                }
+            }
+        }
+        .coreshop-modal-footer-fixed { padding: 9.09rpx 29.09rpx 29.09rpx; }
+    }
+}
+    .coreshop-bottom-modal-box.cu-modal.bottom-modal {
+        .cu-dialog { border-radius: 36.36rpx 36.36rpx 0 0; }
+    }
+
+
+
+.coreshop-details-view-box { position: relative;
+    .title-view { padding: 9.09rpx 0 18.18rpx; }
+    .col-item { margin: 9.09rpx 0; }
+    .coreshop-text-content-view { margin: 27.27rpx 0; }
+    .coreshop-img-box { position: relative; width: 100%;
+        image { width: 100%; border-radius: 18.18rpx; }
+        image + image { margin-top: 18.18rpx; }
+    }
+}
+
+
+
+.nav-back { width: 100%; height: 44px; /* #ifndef MP-WEIXIN */ padding: 12px 12px 0; /* #endif */ /* #ifdef MP-WEIXIN */ padding: 26px 12px 0; /* #endif */ position: fixed; top: 20rpx; background-color: rgba(255, 255, 255, 0); z-index: 98; }
+.back-btn { height: 32px; width: 32px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.8); }
+    .back-btn .icon { height: 20px; width: 20px; position: relative; top: 50%; left: 46%; transform: translate(-50%, -50%); }

@@ -1,0 +1,74 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoodsTypeSpec-createForm" id="LAY-app-CoreCmsGoodsTypeSpec-createForm">
+        <blockquote class="layui-elem-quote">
+            属性值只支持：中文、英文、数字、中文输入大写符号、英文小写三个符号（-、/、.）
+        </blockquote>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">属性名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入属性名称" placeholder="请输入属性名称" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过30个字符内容</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">属性排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入属性排序" lay-reqText="请输入属性排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">属性值：</label>
+            <div class="layui-input-block">
+                <input type="text" name="value[]" required lay-verType="tips" lay-verify="required" placeholder="请输入属性值" autocomplete="off" class="layui-input" style="width: 80%;display: inline-block;">
+                <div class="layui-btn-group">
+                    <button class="layui-btn layui-btn-sm add_value" style="height: 36px;"><i class="layui-icon"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoodsTypeSpec-createForm-submit" id="LAY-app-CoreCmsGoodsTypeSpec-createForm-submit" value="确认添加">
+    </div>
+</script>
+<script>
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (layui.setter.debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+                    verifyname: [/^[\S]{0,30}$/, '属性名称最大只允许输入30位字符，且不能出现空格'],
+                });
+
+                $(".layui-form-pane").on('click', '.add_value', function () {
+                    var html =
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">属性值：</label>' +
+                        '<div class="layui-input-block">' +
+                        '<input type="text" name="value[]" required  lay-verType="tips" lay-verify="required" placeholder="请输入属性值" autocomplete="off" class="layui-input" style="width: 80%;display: inline-block;">' +
+                        '<div class="layui-btn-group">' +
+                        '<button class="layui-btn  layui-btn-danger layui-btn-sm del_value" style="height: 36px;margin-left:4px !important;"><i class="layui-icon"></i></button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                    $(".layui-form-item").last().after(html);
+                });
+
+                $(".layui-form-pane").on('click', '.del_value', function () {
+                    var html = $(this).parent().parent().parent().remove();
+                });
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsGoodsTypeSpec-createForm');
+            })
+    };
+</script>

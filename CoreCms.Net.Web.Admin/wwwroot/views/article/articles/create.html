@@ -1,0 +1,133 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsArticle-createForm" id="LAY-app-CoreCmsArticle-createForm">
+
+        <div class="layui-form-item">
+            <label for="typeId" class="layui-form-label">分类</label>
+            <div class="layui-input-inline layui-inline-4">
+                <select name="typeId" id="typeId" lay-verify="required">
+                    <option>请选择</option>
+                    {{# layui.each( d.params.data.categories, function(index, item){ }}
+                    <option value="{{ item.id }}">{{ item.name }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="title" class="layui-form-label">标题</label>
+            <div class="layui-input-inline layui-inline-10">
+                <input name="title" id="title" lay-verType="tips" lay-verify="required|verifytitle" class="layui-input" lay-reqText="请输入标题" placeholder="请输入标题" />
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="brief" class="layui-form-label">简介</label>
+            <div class="layui-input-block">
+                <textarea name="brief" id="brief" lay-verType="tips" lay-verify="required|verifybrief" lay-reqText="请输入不超过100个字符内容" placeholder="请输入不超过100个字符内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="coverImage" class="layui-form-label">封面图</label>
+            <div class="layui-input-inline layui-inline-10">
+                <input name="coverImage" id="coverImage" lay-verType="tips" lay-verify="required" class="layui-input" placeholder="请上传封面图" lay-reqText="请上传封面图" />
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="upBtncoverImage">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="viewImgBoxcoverImage" src="{{ layui.setter.noImagePicUrl }}">
+                        <p id="viewTextBoxcoverImage"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="contentBody" class="layui-form-label">文章内容</label>
+            <div class="layui-input-block" id="contentBody">
+                <!--<textarea class="layui-textarea" name="contentBody" id="contentBody"></textarea>-->
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <label for="isPub" class="layui-form-label">是否发布</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isPub" id="isPub" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <label for="isDel" class="layui-form-label">是否删除</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isDel" id="isDel" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <label for="pv" class="layui-form-label">访问量</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="pv" id="pv" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入访问量" lay-reqText="请输入访问量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsArticle-createForm-submit" id="LAY-app-CoreCmsArticle-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+
+<script>
+
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'dtree','cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , dtree = layui.dtree
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //加载编辑器
+                var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+                editor = CKEDITOR.replace('contentBody', {
+                    fileTools_requestHeaders: {
+                        'Authorization': Authorization
+                    }
+                });
+
+                //封面图图片上传
+                $('#upBtncoverImage').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 16 / 9,
+                        imgSrc: $('#viewImgBoxcoverImage').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBoxcoverImage').attr('src', res.data.fileUrl);
+                                    $("#coverImage").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                form.verify({
+
+                    verifytitle: [/^[\S]{0,200}$/, '标题最大只允许输入200位字符，且不能出现空格'],
+                    verifybrief: [/^[\S]{0,100}$/, '简介最大只允许输入100位字符，且不能出现空格'],
+                    verifycoverImage: [/^[\S]{0,255}$/, '封面图最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsArticle-createForm');
+            })
+    };
+</script>

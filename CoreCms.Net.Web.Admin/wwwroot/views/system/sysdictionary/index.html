@@ -1,0 +1,413 @@
+<title>数据字典表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    #dictTable + .layui-table-view .layui-table-tool-temp { padding-right: 0; }
+    #dictTable + .layui-table-view .layui-table-body tbody > tr td { cursor: pointer; }
+    #dictTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click { background-color: #fff3e0; }
+        #dictTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click td:last-child > div:before { position: absolute; right: 6px; content: "\e602"; font-size: 12px; font-style: normal; font-family: layui-icon !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/SysDictionary/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid" style="padding-bottom: 0;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 表格工具栏1 -->
+                        <form class="layui-form toolbar">
+                            <div class="layui-form-item" style="margin-bottom: 10px;">
+                                <input name="dictName" class="layui-input" placeholder="输入字典名称"
+                                       style="max-width: 140px;display: inline-block;" />&emsp;
+                                <button class="layui-btn icon-btn" lay-filter="dictTbSearch" lay-submit>
+                                    <i class="layui-icon">&#xe615;</i>搜索
+                                </button>
+                            </div>
+                        </form>
+                        <!-- 数据表格1 -->
+                        <table id="dictTable" lay-filter="dictTable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 表格工具栏2 -->
+                        <form class="layui-form toolbar">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input name="dictDataName" class="layui-input" placeholder="输入字典名称" />
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input name="dictDataCode" class="layui-input" placeholder="输入字典标识" />
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    &emsp;
+                                    <button class="layui-btn icon-btn" lay-filter="dictDataTbSearch" lay-submit>
+                                        <i class="layui-icon">&#xe615;</i>搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- 数据表格2 -->
+                        <table id="dictDataTable" lay-filter="dictDataTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="dictDataTbBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs"
+       data-dropdown="#dictTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide"
+         id="dictTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除{{d.dictDataName}}吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal" lay-event="del">确定</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper', 'tableX'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , tableX = layui.tableX
+                    , view = layui.view;
+
+                var selObj;  // 左表选中数据
+
+                /* 渲染表格 */
+                var insTb = table.render({
+                    elem: '#dictTable',
+                    url: layui.setter.apiUrl + 'Api/SysDictionary/GetPageList',
+                    method: 'Post',
+                    height: 'full-235',
+                    toolbar: ['<p>',
+                        '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
+                        '<button lay-event="edit" class="layui-btn layui-btn-sm layui-btn-warm icon-btn"><i class="layui-icon">&#xe642;</i>修改</button>&nbsp;',
+                        '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>',
+                        '</p>'].join(''),
+                    defaultToolbar: [],
+                    cols: [[
+                        { type: 'numbers' },
+                        { field: 'dictName', title: '字典名称' }
+                    ]],
+                    done: function (res, curr, count) {
+                        $('#dictTable+.layui-table-view .layui-table-body tbody>tr:first').trigger('click');
+                    }
+                });
+
+                /* 表格搜索 */
+                form.on('submit(dictTbSearch)', function (data) {
+                    insTb.reload({ where: data.field });
+                    return false;
+                });
+
+                /* 表格头工具栏点击事件 */
+                table.on('toolbar(dictTable)', function (obj) {
+                    if (obj.event === 'add') { // 添加
+                        doCreate();
+                    } else if (obj.event === 'edit') { // 修改
+                        doEdit(selObj);
+                    } else if (obj.event === 'del') { // 删除
+                        doDelete(selObj);
+                    }
+                });
+
+                /* 监听行单击事件 */
+                table.on('row(dictTable)', function (obj) {
+                    selObj = obj;
+                    obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+                    insTb2.reload({
+                        where: { dictId: obj.data.id },
+                        page: { curr: 1 },
+                        url: layui.setter.apiUrl + 'Api/SysDictionaryData/GetPageList'
+                    });
+                });
+
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/SysDictionary/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建字典数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysDictionary-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('system/SysDictionary/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysDictionary-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysDictionary/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/SysDictionary/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑字典数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysDictionary-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/SysDictionary/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysDictionary-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysDictionary/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/SysDictionary/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            insTb.reload();
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                /* 渲染表格2 */
+                var insTb2 = tableX.render({
+                    elem: '#dictDataTable',
+                    method: 'Post',
+                    height: 'full-235',
+                    page: true,
+                    toolbar: ['<p>',
+                        '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
+                        '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>&nbsp;',
+                        '</p>'].join(''),
+                    cellMinWidth: 100,
+                    cols: [[
+                        { type: 'checkbox' },
+                        { type: 'numbers' },
+                        { field: 'dictDataName', title: '字典项名称', sort: false },
+                        { field: 'dictDataCode', title: '字典项标识', sort: false },
+                        { field: 'sortNumber', title: '排序号', sort: false, align: 'center', width: 90, minWidth: 90 },
+                        { field: 'comments', title: '备注', sort: false },
+                        { field: 'createTime', title: '创建时间', sort: false },
+                        { title: '操作', toolbar: '#dictDataTbBar', align: 'center', width: 120, minWidth: 120 }
+                    ]]
+                });
+
+                /* 表格2搜索 */
+                form.on('submit(dictDataTbSearch)', function (data) {
+                    insTb2.reload({ where: data.field, page: { curr: 1 } });
+                    return false;
+                });
+
+                /* 表格2工具条点击事件 */
+                table.on('tool(dictDataTable)', function (obj) {
+                    if (obj.event === 'edit') { // 修改
+                        doEditData(obj);
+                    } else if (obj.event === 'del') { // 删除
+                        doDeleteData(obj);
+                    }
+                });
+
+                /* 表格2头工具栏点击事件 */
+                table.on('toolbar(dictDataTable)', function (obj) {
+                    if (obj.event === 'add') { // 添加
+                        doCreateData();
+                    } else if (obj.event === 'del') { // 删除
+                        doBatchDeleteData();
+                    }
+                });
+
+                //执行创建操作
+                function doCreateData() {
+                    coreHelper.Post("Api/SysDictionaryData/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysDictionaryData-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/SysDictionary/createData', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysDictionaryData-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+                                                field.dictId = selObj.data.id;
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysDictionaryData/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb2.reload({ page: { curr: 1 } });
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEditData(obj) {
+                    coreHelper.Post("Api/SysDictionaryData/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysDictionaryData-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/SysDictionary/editData', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysDictionaryData-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysDictionaryData/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb2.reload({ page: { curr: 1 } });
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行批量删除
+                function doBatchDeleteData() {
+                    var checkRows = table.checkStatus('dictDataTable');
+                    if (checkRows.data.length === 0) {
+                        layer.msg('请选择要删除的数据', { icon: 2, anim: 6 });
+                        return;
+                    }
+                    var ids = checkRows.data.map(function (d) {
+                        return d.id;
+                    });
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            coreHelper.Post("Api/SysDictionaryData/DoBatchDelete", { id: ids }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                insTb2.reload({ page: { curr: 1 } });
+                                layer.msg(e.msg);
+                            });
+                        });
+                }
+
+                //执行单个删除
+                function doDeleteData(obj) {
+                    coreHelper.Post("Api/SysDictionaryData/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        insTb2.reload({ page: { curr: 1 } });
+                        layer.msg(e.msg);
+                    });
+                }
+
+            });
+    };
+</script>

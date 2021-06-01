@@ -1,0 +1,143 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsUserServicesTicket-detailsForm" id="LAY-app-CoreCmsUserServicesTicket-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="serviceOrderId">关联购买订单</label>
+                </td>
+                <td>
+                    {{ d.params.data.serviceOrderId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="securityCode">安全码</label>
+                </td>
+                <td>
+                    {{ d.params.data.securityCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="redeemCode">兑换码</label>
+                </td>
+                <td>
+                    {{ d.params.data.redeemCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="serviceId">关联服务项目id</label>
+                </td>
+                <td>
+                    {{ d.params.data.serviceId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="userId">关联用户id</label>
+                </td>
+                <td>
+                    {{ d.params.data.userId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">状态</label>
+                </td>
+                <td>
+                    {{ d.params.data.status || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityType">核销有效期类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityStartTime">核销开始时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityStartTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityEndTime">核销结束时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityEndTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isVerification">是否核销</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isVerification" value="{{d.params.data.isVerification}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isVerification" {{ d.params.data.isVerification ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="verificationTime">核销时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.verificationTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsUserServicesTicket-detailsForm');
+        });
+    };
+</script>

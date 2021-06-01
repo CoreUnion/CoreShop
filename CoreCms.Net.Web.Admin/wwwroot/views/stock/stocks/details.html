@@ -1,0 +1,71 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+
+    <div class="layui-form coreshop-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作类型</label>
+            <div class="layui-inline-4 layui-form-mid">
+                {{ d.params.data.model.type==1 ? '入库':'出库' }}
+            </div>
+            <label class="layui-form-label">操作员</label>
+            <div class="layui-inline-4 layui-form-mid">
+                {{ d.params.data.manager ? d.params.data.manager.nickName :'' }}
+            </div>
+
+            <label class="layui-form-label">时间</label>
+            <div class="layui-inline-4 layui-form-mid">
+                {{ d.params.data.model.createTime || '' }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-inline-12 layui-form-mid">
+                {{ d.params.data.model.memo || '' }}
+            </div>
+        </div>
+    </div>
+    <table class="layui-table layui-form" id="LAY-app-CoreCmsStockLog-tableBox"></table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper', 'table'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , table = layui.table
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+
+            //数据绑定
+            table.render({
+                elem: '#LAY-app-CoreCmsStockLog-tableBox',
+                data: d.params.data.logs,
+                method: 'POST',
+                defaultToolbar: ['filter', 'print', 'exports'],
+                height: '300px',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                page: true,
+                limit: 30,
+                limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                text: { none: '暂无相关数据' },
+                cols: [
+                    [
+                        { field: 'id', title: '序列', width: 40, sort: false },
+                        //{ field: 'stockId', title: '关联单号', sort: false, width: 150 },
+                        { field: 'goodsName', title: '商品名称', sort: false },
+                        { field: 'spesDesc', title: '货品规格', sort: false },
+                        { field: 'sn', title: '货品编码', sort: false, width: 130 },
+                        { field: 'bn', title: '商品编码', sort: false, width: 130 },
+                        { field: 'nums', title: '数量', sort: false, width: 60 },
+                    ]
+                ]
+            });
+
+
+
+            form.render(null, 'LAY-app-CoreCmsStock-detailsForm');
+        });
+    };
+</script>

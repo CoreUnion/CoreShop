@@ -1,0 +1,63 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form seller-alone-form">
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="grid-left">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">总提交：</label>
+                        <div class="layui-form-mid layui-inline-2">{{ d.params.data.totalSubmit || '0' }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="grid-right">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">总金额：</label>
+                        <div class="layui-form-mid layui-inline-2">{{ d.params.data.sumSubmit || '0' }}元</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div id="main" class="main" style="width: 100%;height: 360px;"></div>
+                <div carousel-item id="LAY-index-normcol">
+                    <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+
+
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper', 'echarts'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , echarts = layui.echarts
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+
+            var myChart = echarts.init(document.getElementById('main'));
+            var option = {
+                tooltip: { show: true },
+                legend: { "data": ["提交量"] },
+                yAxis: [{ type: 'value' }],
+                xAxis: [{ "type": "category", "data": d.params.data.day }],
+                series: [{ "name": "提交量", "type": "line", "data": d.params.data.data }]
+            };
+            myChart.setOption(option);
+
+            form.render(null, 'LAY-app-CoreCmsForm-detailsForm');
+        });
+    };
+</script>

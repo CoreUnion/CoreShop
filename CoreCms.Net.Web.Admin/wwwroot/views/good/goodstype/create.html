@@ -1,0 +1,274 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoodsType-createForm" id="LAY-app-CoreCmsGoodsType-createForm">
+        <blockquote class="layui-elem-quote">
+            1、商品参数的【参数选项】内容请使用小写逗号（,）进行分隔<br />
+            2、商品属性的【属性值】内容请使用小写的竖线（|）进行分隔
+        </blockquote>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">类型名称</label>
+            <div class="layui-input-block">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入类型名称" placeholder="请输入类型名称" />
+            </div>
+        </div>
+
+        <div class="layui-tab layui-tab-brief">
+
+            <ul class="layui-tab-title">
+                <li class="layui-this">商品参数</li>
+                <li>商品属性</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>参数名称</th>
+                                <th>参数类型</th>
+                                <th>参数选项</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="params_view">
+                            <tr data-id="0">
+                                <td>
+                                    <input type="hidden" name="params_id[0]" value="0">
+                                    <input type="text" name="params_name[0]" value="" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+                                </td>
+                                <td>
+                                    <select name="params_type[0]" id="type">
+                                        <option value="text">文本框</option>
+                                        <option value="radio">单选框</option>
+                                        <option value="checkbox">复选框</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="params_value[0]" value="" placeholder="小写逗号（,）分隔" autocomplete="off" class="layui-input layui-inline-1">
+                                </td>
+                                <td style="width: 110px;">
+                                    <a class="layui-btn layui-btn-xs select-params-class">
+                                        选择
+                                    </a>
+                                    <a class="layui-btn layui-btn-xs add-params-class">添加</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-tab-item">
+
+                    <div class="layui-tab-item layui-show">
+                        <table class="layui-table" lay-size="sm">
+                            <thead>
+                                <tr>
+                                    <th>属性名称</th>
+                                    <th>排序</th>
+                                    <th>属性值</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="type_view">
+                                <tr data-id="0">
+                                    <td>
+                                        <input type="hidden" name="type_id[0]" value="0">
+                                        <input type="text" name="type_name[0]" value="" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="type_sort[0]" value="100" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="type_value[0]" value="" placeholder="小写的竖线（|）分隔" autocomplete="off" class="layui-input layui-inline-1">
+                                    </td>
+                                    <td>
+                                        <a class="layui-btn layui-btn-xs select-type-class">选择</a>
+                                        <a class="layui-btn layui-btn-xs add-type-class">添加</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoodsType-createForm-submit" id="LAY-app-CoreCmsGoodsType-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+
+<script id="params_tpl" type="text/html">
+    <tr data-id="{{ d.id }}">
+        <td>
+            <input type="hidden" name="params_id[{{ d.id }}]" value="0">
+            <input type="text" name="params_name[{{ d.id }}]" required value="" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <select name="params_type[{{ d.id }}]">
+                <option value="text">文本框</option>
+                <option value="radio">单选框</option>
+                <option value="checkbox">复选框</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" name="params_value[{{ d.id }}]" value="" placeholder="空格分隔" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-xs select-params-class">选择</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs del-params-class">删除</a>
+        </td>
+    </tr>
+</script>
+
+<script id="type_l_tpl" type="text/html">
+    <tr data-id="{{ d.id }}">
+        <td>
+            <input type="hidden" name="type_id[{{ d.id }}]" value="0">
+            <input type="text" name="type_name[{{ d.id }}]" required value="" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <input type="text" name="type_sort[{{ d.id }}]" required value="100" lay-verType="tips" lay-verify="required" placeholder="" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <input type="text" name="type_value[{{ d.id }}]" required value="" lay-verType="tips" lay-verify="required" placeholder="空格分隔" autocomplete="off" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-xs select-type-class">选择</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs del-type-class">删除</a>
+        </td>
+    </tr>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'table', 'element', 'view'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , view = layui.view
+                    , coreHelper = layui.coreHelper;
+                var table = layui.table;
+                var laytpl = layui.laytpl;
+                var element = layui.element;
+
+                form.verify({
+                    verifyname: [/^[\S]{0,20}$/, '类型名称最大只允许输入20位字符，且不能出现空格'],
+                });
+
+                $(".layui-tab").on('click', '.add-type-class', function (e) {
+                    var getTpl = type_l_tpl.innerHTML;
+                    var lastId = $(this).parent().parent().parent().find('tr').last().attr('data-id');
+                    var tmpData = {};
+                    tmpData.id = parseInt(lastId) + 1;
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        $("#type_view").append(html);
+                    });
+                    form.render();
+                });
+
+                $(".layui-tab").on('click', '.add-params-class', function (e) {
+                    var getTpl = params_tpl.innerHTML;
+                    var lastId = $(this).parent().parent().parent().find('tr').last().attr('data-id');
+                    var tmpData = {};
+                    tmpData.id = parseInt(lastId) + 1;
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        $("#params_view").append(html);
+                    });
+                    form.render();
+
+                });
+
+                $(".layui-tab").on('click', '.del-type-class,.del-params-class', function (e) {
+                    $(this).parent().parent().remove();
+                })
+
+                //选择已有参数
+                var selectParamsId = 0;
+                $(".layui-tab").on('click', '.select-params-class', function (e) {
+                    selectParamsId = $(this).parent().parent().attr('data-id');
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetGoodsParams", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '选择属性',
+                                area: ['650px', '70%'],
+                                id: 'LAY-popup-CoreCmsGoodsType-Getgoodsparams',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/getgoodsparams', { data: e.data }).done(function () {
+                                        //监听提交
+
+                                        //监听工具条
+                                        table.on('tool(LAY-app-CoreCmsGoodsParams-tableBox)',
+                                            function (obj) {
+                                                var data = obj.data; //获得当前行数据
+                                                if (obj.event === 'selectParams') {
+                                                    clearInterval('selectParams')
+                                                    console.log(obj);
+                                                    $("input[name='params_id[" + selectParamsId + "]']").val(data.id);
+                                                    $("input[name='params_name[" + selectParamsId + "]']").val(data.name);
+                                                    $("input[name='params_value[" + selectParamsId + "]']").val(data.value);
+                                                    $("select[name='params_type[" + selectParamsId + "]']").val(data.type);
+                                                    form.render('select');
+                                                    layer.close(index);
+                                                }
+                                            });
+
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+
+                //选择已有属性
+                var selectTypeId = 0;
+                $(".layui-tab").on('click', '.select-type-class', function (e) {
+                    selectTypeId = $(this).parent().parent().attr('data-id');
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetTypeSpecIndex", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '选择属性',
+                                area: ['650px', '70%'],
+                                id: 'LAY-popup-CoreCmsGoodsType-GetTypeSpecIndex',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/getgoodstypespec', { data: e.data }).done(function () {
+                                        //监听提交
+                                        //监听工具条
+                                        table.on('tool(LAY-app-CoreCmsGoodsTypeSpec-tableBox)', function (obj) {
+                                            var data = obj.data; //获得当前行数据
+                                            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                            if (layEvent === 'selectType') { //选择
+                                                var value = '';
+                                                if (data.specValues.length > 0) {
+                                                    $.each(data.specValues, function (i, j) {
+                                                        value += j.value + "|";
+                                                    });
+                                                    value = value.substr(0, value.length - 1);
+                                                }
+                                                $("input[name='type_id[" + selectTypeId + "]']").val(data.id);
+                                                $("input[name='type_name[" + selectTypeId + "]']").val(data.name);
+                                                $("input[name='type_value[" + selectTypeId + "]']").val(value);
+                                                $("select[name='type_sort[" + selectTypeId + "]']").val(data.sort);
+                                                form.render('select');
+                                                layer.close(index);
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsGoodsType-createForm');
+            })
+    };
+</script>

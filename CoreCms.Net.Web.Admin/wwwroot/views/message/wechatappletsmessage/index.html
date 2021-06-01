@@ -1,0 +1,312 @@
+<title>微信小程序订阅消息</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsUserWeChatMsgTemplate/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">微信小程序订阅消息</div>
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote">
+                            案例使用的小程序类目是：商家自营 > 食品，其他类目可以对应取舍，只要字段名称大体符合表述即可。<br />
+                            1、下单通知：指下单成功后反馈给用户的提醒，一般使用【新订单提醒】模板。<br />
+                            2、催付通知：指下单成功后一定时间内没有付款，定时任务自动推送提醒消息，一般使用【待付款提醒】模板。<br />
+                            3、支付通知：指下单成功并支付成功后的提醒，一般使用【订单支付成功通知】模板。<br />
+                            4、发货通知：指由商家对订单进行发货处理，填写快递单号后的提醒，一般使用【订单发货通知】模板。<br />
+                            5、售后通知：当客户对订单申请了售后，后台对售后订单进行审核处理的提醒，一般使用【订单售后审核通知】模板。<br />
+                            6、退款通知：对于审核通过后的订单，如果商家财务模块做了退款处理，则会进行提醒，一般使用【退款通知】模板。<br />
+                        </blockquote>
+
+                        <div class="layui-form">
+                            <div class="layui-form coreshop-form" lay-filter="LAY-app-wechatAppletsMessage-editForm" id="LAY-app-wechatAppletsMessage-editForm">
+                                <div class="layui-tab layui-tab-brief">
+                                    <ul class="layui-tab-title">
+                                        <li class="layui-this">下单通知</li>
+                                        <li>催付通知</li>
+                                        <li>支付通知</li>
+                                        <li>发货通知</li>
+                                        <li>售后通知</li>
+                                        <li>退款通知</li>
+                                    </ul>
+                                    <div class="layui-tab-content">
+                                        <div class="layui-tab-item layui-show">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">
+                                                    模板ID：
+                                                </label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][templateId]" required="" lay-verify="required" value="{{d.data.order.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][data01]" required="" lay-verify="required" value="{{d.data.order.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单金额：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][data02]" required="" lay-verify="required" value="{{d.data.order.data02 || ''}}" placeholder="请输入订单金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">收货人名：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][data03]" required="" lay-verify="required" value="{{d.data.order.data03 || ''}}" placeholder="请输入收货人名" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">收货电话：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][data04]" required="" lay-verify="required" value="{{d.data.order.data04 || ''}}" placeholder="请输入收货电话" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">收货地址：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[0][data05]" required="" lay-verify="required" value="{{d.data.order.data05 || ''}}" placeholder="请输入收货地址" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">模板ID：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[1][templateId]" required="" lay-verify="required" value="{{d.data.cancel.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[1][data01]" required="" lay-verify="required" value="{{d.data.cancel.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单金额：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[1][data02]" required="" lay-verify="required" value="{{d.data.cancel.data02 || ''}}" placeholder="请输入订单金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">下单时间：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[1][data03]" required="" lay-verify="required" value="{{d.data.cancel.data03 || ''}}" placeholder="请输入下单时间" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">温馨提示：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[1][data04]" required="" lay-verify="required" value="{{d.data.cancel.data04 || ''}}" placeholder="请输入温馨提示" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">模板ID：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[2][templateId]" required="" lay-verify="required" value="{{d.data.pay.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[2][data01]" required="" lay-verify="required" value="{{d.data.pay.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">支付金额：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[2][data02]" required="" lay-verify="required" value="{{d.data.pay.data02 || ''}}" placeholder="请输入支付金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">支付时间：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[2][data03]" required="" lay-verify="required" value="{{d.data.pay.data03 || ''}}" placeholder="请输入支付时间" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">模板ID：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[3][templateId]" required="" lay-verify="required" value="{{d.data.ship.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[3][data01]" required="" lay-verify="required" value="{{d.data.ship.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">快递公司：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[3][data02]" required="" lay-verify="required" value="{{d.data.ship.data02 || ''}}" placeholder="请输入快递公司，例如：{{!character_string2.DATA!}}" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">快递编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[3][data03]" required="" lay-verify="required" value="{{d.data.ship.data03 || ''}}" placeholder="请输入快递编号，例如：{{!character_string3.DATA!}}" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">模板ID：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[4][templateId]" required="" lay-verify="required" value="{{d.data.aftersale.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[4][data01]" required="" lay-verify="required" value="{{d.data.aftersale.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单金额：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[4][data02]" required="" lay-verify="required" value="{{d.data.aftersale.data02 || ''}}" placeholder="请输入订单金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">售后单号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[4][data03]" required="" lay-verify="required" value="{{d.data.aftersale.data03 || ''}}" placeholder="请输入售后单号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">售后状态：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[4][data04]" required="" lay-verify="required" value="{{d.data.aftersale.data04 || ''}}" placeholder="请输入售后状态" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">模板ID：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][templateId]" required="" lay-verify="required" value="{{d.data.refund.templateId || ''}}" placeholder="请输入模板ID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单编号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][data01]" required="" lay-verify="required" value="{{d.data.refund.data01 || ''}}" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">售后单号：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][data02]" required="" lay-verify="required" value="{{d.data.refund.data02 || ''}}" placeholder="请输入售后单号" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">退款金额：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][data03]" required="" lay-verify="required" value="{{d.data.refund.data03 || ''}}" placeholder="请输入退款金额" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">退款方式：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][data04]" required="" lay-verify="required" value="{{d.data.refund.data04 || ''}}" placeholder="请输入退款方式" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">退款时间：</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="setting[5][data05]" required="" lay-verify="required" value="{{d.data.refund.data05 || ''}}" placeholder="请输入退款时间" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"></label>
+                                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-wechatAppletsMessage-editForm-submit" id="LAY-app-wechatAppletsMessage-editForm-submit" value="提交数据">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper', 'element', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , element = layui.element
+                    , view = layui.view;
+
+                form.render();
+
+                //监听提交
+                form.on('submit(LAY-app-wechatAppletsMessage-editForm-submit)',
+                    function (data) {
+                        var field = data.field; //获取提交的字段
+
+                        var list = []
+                        var titlearr = ['order', 'cancel', 'pay', 'ship', 'aftersale', 'refund']
+                        for (var i = 0; i < 6; i++) {
+                            var paramsModel = {};
+                            var str = 'setting[' + i + ']'
+                            paramsModel.id = 0;
+                            paramsModel.templateTitle = titlearr[i];
+                            paramsModel.templateId = field[str + '[templateId]'];
+                            paramsModel.templateDes = '';
+                            paramsModel.data01 = field[str + '[data01]'] ? field[str + '[data01]'] : '';
+                            paramsModel.data02 = field[str + '[data02]'] ? field[str + '[data02]'] : '';
+                            paramsModel.data03 = field[str + '[data03]'] ? field[str + '[data03]'] : '';
+                            paramsModel.data04 = field[str + '[data04]'] ? field[str + '[data04]'] : '';
+                            paramsModel.data05 = field[str + '[data05]'] ? field[str + '[data05]'] : '';
+                            list.push(paramsModel);
+                        }
+                        var title = "temp";
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        coreHelper.Post("Api/CoreCmsUserWeChatMsgTemplate/DoEdit", { title: title, list: list }, function (e) {
+                            console.log(e)
+                            if (e.code === 0) {
+                                admin.events.refresh();
+                                layer.msg(e.msg);
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        });
+                    });
+            });
+    };
+</script>

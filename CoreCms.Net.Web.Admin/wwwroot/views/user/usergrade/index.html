@@ -1,0 +1,264 @@
+<title>用户等级表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsUserGrade/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="title" placeholder="请输入标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="isDefault" id="isDefault">
+                        <option value="">请选择是否默认</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsUserGrade-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUserGrade-tableBox" lay-filter="LAY-app-CoreCmsUserGrade-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUserGrade-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsUserGrade-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    layui.data.done = function (d) {
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'coreHelper'],
+            function () {
+                var admin = layui.admin, table = layui.table, form = layui.form, laydate = layui.laydate, setter = layui.setter, coreHelper = layui.coreHelper, view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsUserGrade-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsUserGrade-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsUserGrade-tableBox',
+                    url: 'Api/CoreCmsUserGrade/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsUserGrade-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', sort: false, width: 60 },
+                            { field: 'title', title: '标题', sort: false },
+                            { field: 'isDefault', title: '是否默认', width: 105, templet: '#switch_isDefault', sort: false, unresize: true },
+                            { width: 142, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsUserGrade-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsUserGrade-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsUserGrade-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsUserGrade-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsUserGrade-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsUserGrade-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsUserGrade/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['400px', '300px'],
+                                id: 'LAY-popup-CoreCmsUserGrade-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/usergrade/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUserGrade-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                field.isDefault = field.isDefault == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUserGrade/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUserGrade-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUserGrade-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsUserGrade/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['400px', '300px'],
+                                id: 'LAY-popup-CoreCmsUserGrade-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/usergrade/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUserGrade-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isDefault = field.isDefault == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUserGrade/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUserGrade-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUserGrade-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsUserGrade/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['400px', '300px'],
+                                id: 'LAY-popup-CoreCmsUserGrade-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/usergrade/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                                , btn: ['取消']
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsUserGrade/DoDelete", { id: obj.data.id }, function (e) {
+                            table.reload('LAY-app-CoreCmsUserGrade-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isDefault)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsUserGrade/DoSetisDefault", { id: this.value, data: obj.elem.checked }, function (res) {
+                        layui.table.reload('LAY-app-CoreCmsUserGrade-tableBox');
+                        layer.msg(res.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否默认-->
+<script type="text/html" id="switch_isDefault">
+    <input type="checkbox" name="switch_isDefault" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isDefault" {{ d.isDefault ? 'checked' : '' }}>
+</script>

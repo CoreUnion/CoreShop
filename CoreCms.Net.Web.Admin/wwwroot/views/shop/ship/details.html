@@ -1,0 +1,188 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsShip-detailsForm" id="LAY-app-CoreCmsShip-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id"></label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">配送方式名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.name || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isCashOnDelivery">是否货到付款</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isCashOnDelivery" value="{{d.params.data.isCashOnDelivery}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isCashOnDelivery" {{ d.params.data.isCashOnDelivery ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="firstUnit">首重</label>
+                </td>
+                <td>
+                    {{ d.params.data.firstUnit || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="continueUnit">续重</label>
+                </td>
+                <td>
+                    {{ d.params.data.continueUnit || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isdefaultAreaFee">是否按地区设置配送费用是否启用默认配送费用</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isdefaultAreaFee" value="{{d.params.data.isdefaultAreaFee}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isdefaultAreaFee" {{ d.params.data.isdefaultAreaFee ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="areaType">地区类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.areaType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="firstunitPrice">首重费用</label>
+                </td>
+                <td>
+                    {{ d.params.data.firstunitPrice || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="continueunitPrice">续重费用</label>
+                </td>
+                <td>
+                    {{ d.params.data.continueunitPrice || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="exp">配送费用计算表达式</label>
+                </td>
+                <td>
+                    {{ d.params.data.exp || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="logiName">物流公司名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.logiName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="logiCode">物流公司编码</label>
+                </td>
+                <td>
+                    {{ d.params.data.logiCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isDefault">是否默认</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isDefault" value="{{d.params.data.isDefault}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isDefault" {{ d.params.data.isDefault ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sort">配送方式排序 越小越靠前</label>
+                </td>
+                <td>
+                    {{ d.params.data.sort || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">状态 1=正常 2=停用</label>
+                </td>
+                <td>
+                    {{ d.params.data.status || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isfreePostage">是否包邮</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isfreePostage" value="{{d.params.data.isfreePostage}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isfreePostage" {{ d.params.data.isfreePostage ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="areaFee">地区配送费用</label>
+                </td>
+                <td>
+                    {{ d.params.data.areaFee || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="goodsMoney">商品总额满多少免运费</label>
+                </td>
+                <td>
+                    {{ d.params.data.goodsMoney || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsShip-detailsForm');
+        });
+    };
+</script>

@@ -1,0 +1,70 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-SysDictionaryData-createForm" id="LAY-app-SysDictionaryData-createForm">
+
+        <div class="layui-form-item">
+            <label for="dictDataName" class="layui-form-label  layui-form-required">字典项名称</label>
+            <div class="layui-input-block">
+                <input name="dictDataName" lay-verType="tips" lay-verify="required|verifydictDataName" class="layui-input" lay-reqText="请输入字典项名称" placeholder="请输入字典项名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="dictDataCode" class="layui-form-label  layui-form-required">字典项标识</label>
+            <div class="layui-input-block">
+                <input name="dictDataCode" lay-verType="tips" lay-verify="required|verifydictDataCode" class="layui-input" lay-reqText="请输入字典项标识" placeholder="请输入字典项标识" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sortNumber" class="layui-form-label  layui-form-required">排序号</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="sortNumber" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序号" lay-reqText="请输入排序号并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="comments" class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="comments" placeholder="请输入备注" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysDictionaryData-createForm-submit" id="LAY-app-SysDictionaryData-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#createTime-SysDictionaryData-createTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#createTime-SysDictionaryData-updateTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifydictDataCode: [/^[\S]{0,50}$/, '字典项标识最大只允许输入50位字符，且不能出现空格'],
+                    verifydictDataName: [/^[\S]{0,50}$/, '字典项名称最大只允许输入50位字符，且不能出现空格'],
+                    verifycomments: [/^[\S]{0,50}$/, '备注最大只允许输入50位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysDictionaryData-createForm');
+            })
+    };
+</script>

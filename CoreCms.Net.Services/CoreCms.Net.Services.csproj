@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mediator\Job\**" />
+    <EmbeddedResource Remove="Mediator\Job\**" />
+    <None Remove="Mediator\Job\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Essensoft.AspNetCore.Payment.WeChatPay" Version="3.3.2" />
+    <PackageReference Include="Flurl.Http" Version="3.2.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
+    <PackageReference Include="Senparc.CO2NET" Version="1.3.300" />
+    <PackageReference Include="Senparc.Weixin.MP" Version="16.11.400" />
+    <PackageReference Include="Senparc.Weixin.WxOpen" Version="3.10.401" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreCms.Net.Auth\CoreCms.Net.Auth.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.Caching\CoreCms.Net.Caching.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.Configuration\CoreCms.Net.Configuration.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.Core\CoreCms.Net.Core.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.IRepository\CoreCms.Net.IRepository.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.IServices\CoreCms.Net.IServices.csproj" />
+  </ItemGroup>
+
+</Project>

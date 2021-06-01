@@ -1,0 +1,187 @@
+<title>支付方式表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsPayments/GetIndex" lay-done="layui.data.done(d);">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsPayments-tableBox" lay-filter="LAY-app-CoreCmsPayments-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsPayments-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsPayments-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsPayments-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsPayments-tableBox',
+                    url: 'Api/CoreCmsPayments/GetPageList',
+                    method: 'POST',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '排序', width: 80, sort: false },
+                            { field: 'name', title: '支付类型名称', sort: false, width: 150 },
+                            { field: 'code', title: '支付类型编码', sort: false, width: 150 },
+                            { field: 'isOnline', title: '是否线上支付', width: 150, templet: '#switch_isOnline', sort: false, unresize: true },
+                            { field: 'sort', title: '排序', sort: false, width: 105 },
+                            { field: 'memo', title: '方式描述', sort: false },
+                            { field: 'isEnable', title: '是否启用', width: 95, templet: '#switch_isEnable', sort: false, unresize: true },
+                            //{ width: 102, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsPayments-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsPayments-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsPayments-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsPayments-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsPayments-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsPayments/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑数据',
+                                area: ['600px', '600px'],
+                                id: 'LAY-popup-CoreCmsPayments-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('financial/payments/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsPayments-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isOnline = field.isOnline == 'on';
+                                                field.isEnable = field.isEnable == 'on';
+
+                                                if (field.code == 'wechatpay') {
+                                                    var parameters = {
+                                                        "mch_id": field.mch_id,
+                                                        "key": field.key,
+                                                    }
+                                                    field.parameters = JSON.stringify(parameters);
+                                                } else if (field.code == 'alipay') {
+                                                    var parameters = {
+                                                        "appid": field.appid,
+                                                        "rsa_private_key": field.rsa_private_key,
+                                                        "alipay_public_key": field.alipay_public_key,
+                                                    }
+                                                    field.parameters = JSON.stringify(parameters);
+                                                } else {
+                                                    field.parameters = "";
+                                                }
+                                                field.sort = parseInt(field.sort);
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsPayments/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsPayments-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //监听 表格复选框操作
+                layui.form.on('switch(switch_isOnline)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsPayments/DoSetisOnline", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reload('LAY-app-CoreCmsPayments-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_isEnable)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsPayments/DoSetisEnable", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reload('LAY-app-CoreCmsPayments-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否线上支付-->
+<script type="text/html" id="switch_isOnline">
+    <!--<input type="checkbox" name="switch_isOnline" disabled="disabled" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isOnline" {{ d.isOnline ? 'checked' : '' }}>-->
+    {{ d.isOnline ? '是' : '否' }}
+</script>
+
+<!--设置是否启用-->
+<script type="text/html" id="switch_isEnable">
+    <input type="checkbox" name="switch_isEnable" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isEnable" {{ d.isEnable ? 'checked' : '' }}>
+</script>

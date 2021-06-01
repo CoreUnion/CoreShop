@@ -1,0 +1,143 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsFormSubmit-detailsForm" id="LAY-app-CoreCmsFormSubmit-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="formName">表单名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.formName || '' }}
+                </td>
+                <td>
+                    <label for="userId">会员</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.userName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="money">总金额</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.money || '0' }}
+                </td>
+                <td>
+                    <label for="payStatus">是否支付</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="payStatus" value="{{d.params.data.model.payStatus}}" lay-skin="switch" lay-text="是|否" lay-filter="payStatus" {{ d.params.data.model.payStatus ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">是否处理</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="status" value="{{d.params.data.model.status}}" lay-skin="switch" lay-text="是|否" lay-filter="status" {{ d.params.data.model.status ? 'checked' : '' }}>
+                </td>
+                <td>
+                    <label for="ip">提交人ip</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.ip || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.createTime || '' }}
+                </td>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.updateTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="feedback">表单反馈</label>
+                </td>
+                <td colspan="3">
+                    {{ d.params.data.model.feedback || '' }}
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    <div id="printDiv">
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="compatibility">提交明细</a></legend>
+        </fieldset>
+
+        <table id="formItem"></table>
+    </div>
+
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'table', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , table = layui.table
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+
+            layui.form.render();
+            layui.table.render({
+                elem: '#formItem'
+                , size: 'sm'
+                , limit: '20000000'
+                , cols: [[ //标题栏
+                    { field: 'name', title: '字段名', width: 200 }
+                    , {
+                        field: 'value', title: '字段值', minWidth: 150, templet: function (e) {
+                            //todo 地图处理
+                            if (e.type == 'image') {
+                                var arr = e.value.split(',');
+                                var html = '';
+                                $.each(arr, function (i, j) {
+                                    html += '<img src="' + j + '" style="width: 30px;height: 30px;" onclick=layui.coreHelper.viewImage("' + j + '")>';
+                                });
+                                return html;
+                            } else if (Array.isArray(e.value) && e.type == 'goods') {
+                                var html = '';
+                                $.each(e.value, function (i, j) {
+                                    html += j + '、';
+                                });
+                                html = html.substr(0, html.length - 1);
+                                return html;
+                            } else {
+                                return e.value;
+                            }
+                        }
+                    }
+                ]]
+                , data: d.params.data.items
+                , even: true
+            });
+
+
+            form.render(null, 'LAY-app-CoreCmsFormSubmit-detailsForm');
+        });
+    };
+</script>

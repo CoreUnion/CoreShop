@@ -1,0 +1,176 @@
+<style>
+    /*    .coreshop-form { overflow-y: auto; height: 100%; box-sizing: border-box; }
+    */
+</style>
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form  layui-form-pane myOrderDetails" lay-filter="LAY-app-CoreCmsOrder-editForm" id="LAY-app-CoreCmsOrder-editForm">
+        {{# if (d.params.data.orderModel.store){}}
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单号</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{d.params.data.orderModel.orderId}}
+            </div>
+            <input type="hidden" name="orderId" value="{{d.params.data.orderModel.orderId}}">
+            <input type="hidden" name="editType" value="2">
+            <label class="layui-form-label">收货门店</label>
+            <div class="layui-input-inline layui-inline-3 address-class">
+                <select name="storeId">
+                    {{# layui.each(d.params.data.storeList, function(index, item){ }}
+                    <option value="{{item.id}}" {{item.id==d.params.data.orderModel.store.id?'selected="selected"':''}}>{{item.storeName}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提货人名</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input type="text" value="{{d.params.data.orderModel.shipName}}" name="shipName" class="layui-input">
+            </div>
+            <label class="layui-form-label">提货人电话</label>
+            <div class="layui-input-inline layui-inline-4">
+                <input type="text" value="{{d.params.data.orderModel.shipMobile}}" name="shipMobile" class="layui-input">
+            </div>
+        </div>
+        {{# }else {  }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单号</label>
+            <div class="layui-input-inline  layui-inline-3 layui-form-mid ">
+                {{d.params.data.orderModel.orderId}}
+            </div>
+            <input type="hidden" name="orderId" value="{{d.params.data.orderModel.orderId}}">
+            <input type="hidden" name="editType" value="1">
+            <label class="layui-form-label">订单总金额</label>
+            {{#  if(d.params.data.orderModel.payStatus==1){ }}
+            <div class="layui-input-inline layui-inline-3">
+                <input type="number" name="orderAmount" value="{{d.params.data.orderModel.orderAmount}}" class="layui-input">
+            </div>
+            {{#  } else { }}
+            <div class="layui-input-inline layui-form-mid layui-inline-3">{{d.params.data.orderModel.orderAmount}}</div>
+            {{#  } }}
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货人姓名</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input type="text" name="shipName" value="{{d.params.data.orderModel.shipName}}" class="layui-input">
+            </div>
+            <label class="layui-form-label">收货人电话</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input type="text" name="shipMobile" value="{{d.params.data.orderModel.shipMobile}}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货区域</label>
+            <div class="layui-input-inline layui-inline-4 address-class">
+                <input type="hidden" name="shipAreaId" value="{{d.params.data.orderModel.shipAreaId}}" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="shipAddress" value="{{d.params.data.orderModel.shipAddress}}" class="layui-input">
+            </div>
+        </div>
+        {{# } }}
+        <div class="layui-form-item core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsOrder-editForm-submit" id="LAY-app-CoreCmsOrder-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                coreHelper.Post("Api/Tools/GetAreaCheckedList", { id: d.params.data.orderModel.shipAreaId }, function (data) {
+                    if (debug) { console.log(data); } //开启调试返回数据
+                    var str = "";
+                    $.each(data, function (i, n) {
+                        str += "<select lay-ignore name='areaId_" + (i + 1) + "' dep='" + (i + 1) + "'  class='select-address'>";
+                        str += "<option value='' >请选择</option>";
+                        $.each(n.list, function (h, z) {
+                            if (n.hasOwnProperty('info') && n.info.id == z.id) {
+                                str += "<option value='" + z.id + "' selected='selected'>" + z.name + "</option>";
+                            } else {
+                                str += "<option value='" + z.id + "' >" + z.name + "</option>";
+                            }
+                        });
+                        str += "</select>";
+
+                    });
+                    $("input[name='shipAreaId']").after(str);
+                    //以上数据输出完，以下绑定事件
+                    $.each(data, function (i, n) {
+                        if (i < (data.length)) {
+                            $("select[name='areaId_" + (i + 1) + "']").change(function () {
+                                changeareaIdArea(i + 1, data.length);
+                            });
+                        }
+                    });
+
+                });
+                function changeareaIdArea(i, max_i) {
+                    //清除后面节点
+                    for (var x = i + 1; x <= 6; x++) {  //最多6层，足够了
+                        $("select[name='areaId_" + x + "']").remove();
+                    }
+                    var val = $("select[name='areaId_" + i + "']").val();
+                    if (val != "") {
+                        //取子节点数据，然后显示下一级
+                        coreHelper.Post("Api/Tools/GetAreaChildren", { id: val }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+
+                            if (e.length > 0) {
+                                var str = "";
+                                str += "<select lay-ignore name='areaId_" + (i + 1) + "' dep='" + (i + 1) + "'  class='select-address'>";
+                                str += "<option value='' >请选择</option>";
+                                $.each(e, function (h, z) {
+                                    str += "<option value='" + z.id + "' >" + z.name + "</option>";
+                                });
+                                str += "</select>";
+                                $("select[name='areaId_" + i + "']").after(str);
+                                //以上数据输出完，以下绑定事件
+                                $("select[name='areaId_" + (i + 1) + "']").change(function () {
+                                    changeareaIdArea(i + 1, i + 2);
+                                });
+
+                                //如果有返回值，就说明省市区没有选择到最终节点
+                                if (1 == 1) {
+                                    $("input[name='shipAreaId']").val("");
+                                } else {
+                                    $("input[name='shipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                                }
+                            } else {
+                                $("input[name='shipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                            }
+                        });
+                    } else {
+                        if (1 == 1) {
+                            $("input[name='shipAreaId']").val("");
+                        } else {
+                            //第一级的元素就直接赋值为空就是了
+                            if (i == 1) {
+                                $("input[name='shipAreaId']").val("");
+                            } else {
+                                i--;
+                                $("input[name='shipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                            }
+
+                        }
+                    }
+                }
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsOrder-editForm');
+            })
+    };
+</script>

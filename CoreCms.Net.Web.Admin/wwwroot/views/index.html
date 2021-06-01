@@ -1,0 +1,390 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="layui-icon layui-icon-app"></i>快捷方式</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/good/goods/">
+                                                <i class="layui-icon layui-icon-cart-simple"></i>
+                                                <cite>商品</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/order/orders/">
+                                                <i class="layui-icon layui-icon-form"></i>
+                                                <cite>订单</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/user/userInfo/">
+                                                <i class="layui-icon layui-icon-username"></i>
+                                                <cite>会员</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/shop/notice/">
+                                                <i class="layui-icon layui-icon-notice"></i>
+                                                <cite>公告</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/promotion/promotion/">
+                                                <i class="layui-icon layui-icon-gift"></i>
+                                                <cite>促销</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/system/ship/">
+                                                <i class="layui-icon layui-icon-release"></i>
+                                                <cite>配送</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/distribution/distributor/">
+                                                <i class="layui-icon layui-icon-snowflake"></i>
+                                                <cite>分销商</cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" lay-href="/system/setting/">
+                                                <i class="layui-icon layui-icon-set"></i>
+                                                <cite>平台设置</cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="layui-icon layui-icon-tabs"></i>待办事项</div>
+                        <div class="layui-card-body" id="backlogDiv">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="/order/orders/" class="layadmin-backlog-body">
+                                                <h3>待支付</h3>
+                                                <p><cite>{{d.unpaidCount || '0'}}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="/order/orders/" class="layadmin-backlog-body">
+                                                <h3>待发货</h3>
+                                                <p><cite>{{d.unshipCount || '0'}}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="/order/billaftersales/" class="layadmin-backlog-body">
+                                                <h3>待售后</h3>
+                                                <p><cite>{{d.aftersalesCount || '0'}}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="/good/goods/" class="layadmin-backlog-body">
+                                                <h3>库存报警</h3>
+                                                <p><cite style="color: #FF5722;">{{d.goodsStaticsTotalWarn || '0'}}</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="layui-icon layui-icon-speaker"></i>版本信息</div>
+                <div class="layui-card-body layui-text">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>当前版本</td>
+                                <td>
+                                    <script type="text/html" template>
+                                        {{ layui.setter.version }}
+                                        <a href="http://www.corecms.net/" target="_blank" style="padding-left: 10px;">日志</a>
+                                    </script>
+                                    <a href="http://www.corecms.net/" target="_blank" style="padding-left: 5px;">检查更新</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>基于框架</td>
+                                <td>
+                                    <script type="text/html" template>
+                                        Asp.Net Core 5.1
+                                    </script>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>主要特色</td>
+                                <td>单页面 / 响应式 / 清爽 / 极简</td>
+                            </tr>
+                            <tr>
+                                <td>获取渠道</td>
+                                <td style="padding-bottom: 0;">
+                                    <div class="layui-btn-container">
+                                        <a href="http://www.corecms.net/" target="_blank" class="layui-btn layui-btn-danger">获取授权</a>
+                                        <a href="http://www.corecms.net/" target="_blank" class="layui-btn">立即下载</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <i class="layui-icon layui-icon-form"></i>订单统计
+                </div>
+                <div class="layui-card-body">
+                    <div id="graphic" class="">
+                        <div id="main" class="main" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <i class="layui-icon layui-icon-user"></i>会员统计
+                </div>
+                <div class="layui-card-body">
+                    <div id="graphics" class="">
+                        <div id="users" class="main" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header loading-more">
+                    <div><i class="layui-icon layui-icon-form"></i>最近登录</div>
+                    <a href="javascript:;" lay-href="/logs/sysloginrecord/">查看更多>></a>
+                </div>
+                <div class="layui-card-body">
+                    <table id="loginLog" lay-filter="loginLogFilter"></table>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header loading-more">
+                    <div><i class="layui-icon layui-icon-form"></i>全局日志</div>
+                    <a href="javascript:;" lay-href="/logs/sysnlogrecords/">查看更多>></a>
+                </div>
+                <div class="layui-card-body">
+                    <table id="nlogTable" lay-filter="nlogTableFilter"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="backlog" type="text/html">
+    <div class="layui-carousel layadmin-carousel layadmin-backlog">
+        <div carousel-item>
+            <ul class="layui-row layui-col-space10">
+                <li class="layui-col-xs6">
+                    <a lay-href="/order/orders/" class="layadmin-backlog-body">
+                        <h3>待支付</h3>
+                        <p><cite>{{d.unpaidCount || '0'}}</cite></p>
+                    </a>
+                </li>
+                <li class="layui-col-xs6">
+                    <a lay-href="/order/orders/" class="layadmin-backlog-body">
+                        <h3>待发货</h3>
+                        <p><cite>{{d.unshipCount || '0'}}</cite></p>
+                    </a>
+                </li>
+                <li class="layui-col-xs6">
+                    <a lay-href="/order/billaftersales/" class="layadmin-backlog-body">
+                        <h3>待售后</h3>
+                        <p><cite>{{d.aftersalesCount || '0'}}</cite></p>
+                    </a>
+                </li>
+                <li class="layui-col-xs6">
+                    <a lay-href="/order/orders/" class="layadmin-backlog-body">
+                        <h3>库存报警</h3>
+                        <p><cite style="color: #FF5722;">{{d.goodsStaticsTotalWarn || '0'}}</cite></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.use(['index', 'table', 'laydate', 'util', 'coreHelper', 'laytpl', 'echarts', 'carousel'],
+        function () {
+            var $ = layui.$;
+            var admin = layui.admin;
+            var table = layui.table;
+            var form = layui.form;
+            var laydate = layui.laydate;
+            var setter = layui.setter;
+            var coreHelper = layui.coreHelper;
+            var util = layui.util;
+            var laytpl = layui.laytpl;
+            var carousel = layui.carousel;
+
+            getBackLog();
+            ordersEcharts();
+            usersEcharts();
+            //获取历史登录记录
+            coreHelper.Post("Api/Tools/GetSysLoginRecord",
+                {}, function (data) {
+                    if (data.code == 0) {
+
+                        table.render({
+                            elem: '#loginLog'
+                            , data: data.data
+                            , page: false //开启分页
+                            , cols: [[ //表头
+                                { field: 'os', title: '状态' }
+                                , { field: 'username', title: '登录用户' }
+                                , { field: 'createTime', title: '记录时间' }
+                                , { field: 'ip', title: '登录IP' }
+                            ]]
+                        });
+
+                    }
+                });
+            //获取全局Nlog日志
+            coreHelper.Post("Api/Tools/GetSysNLogRecords",
+                {}, function (data) {
+                    if (data.code == 0) {
+
+                        table.render({
+                            elem: '#nlogTable'
+                            , data: data.data
+                            , page: false //开启分页
+                            , cols: [[ //表头
+                                { field: 'logType', title: '类型', width: 80 }
+                                , { field: 'logDate', title: '时间', width: 130 }
+                                , { field: 'message', title: '内容' }
+                                , { field: 'logLevel', title: '级别', width: 80 }
+                            ]]
+                        });
+
+                    }
+                });
+
+            function getBackLog() {
+                coreHelper.Post("Api/Tools/GetBackLog", {}, function (data) {
+                    if (data.code == 0) {
+                        var getTpl = backlog.innerHTML,
+                            view = document.getElementById('backlogDiv');
+                        laytpl(getTpl).render(data.data, function (html) {
+                            view.innerHTML = html;
+                        })
+
+                        var t = (layui.admin, layui.carousel), a = layui.element, i = layui.device();
+                        $(".layadmin-carousel").each(function () {
+                            var a = $(this);
+                            t.render({
+                                elem: this,
+                                width: "100%",
+                                arrow: "none",
+                                interval: a.data("interval"),
+                                autoplay: a.data("autoplay") === !0,
+                                trigger: i.ios || i.android ? "click" : "hover",
+                                anim: a.data("anim")
+                            });
+                        }), a.render("progress");
+
+                    }
+                });
+            }
+
+            function ordersEcharts() {
+                var myChart = echarts.init(document.getElementById('main'));
+                var option = {
+                    title: {
+                        text: '最近7天订单量统计'
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {},
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    xAxis: [],
+                    series: []
+                };
+
+                coreHelper.Post("Api/Tools/GetOrdersStatistics",
+                    {}, function (data) {
+                        if (data.code == 0) {
+                            myChart.setOption({
+                                legend: data.data.legend,
+                                xAxis: data.data.xAxis,
+                                series: data.data.series
+                            });
+                        }
+                    });
+                myChart.setOption(option);
+            }
+
+            function usersEcharts() {
+                var myChart = echarts.init(document.getElementById('users'));
+                var option = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {},
+                    xAxis: [],
+                    yAxis: [],
+                    series: []
+                };
+
+                coreHelper.Post("Api/Tools/GetUsersStatistics",
+                    {}, function (data) {
+                        if (data.code == 0) {
+                            myChart.setOption({
+                                legend: data.data.legend,
+                                xAxis: data.data.xAxis,
+                                series: data.data.series
+                            });
+                        }
+                    });
+                myChart.setOption(option);
+            }
+
+            //重载form
+            form.render();
+        });
+</script>
+<style>
+    .loading-more { overflow: hidden; }
+        .loading-more > div { display: inline-block; }
+        .loading-more a { float: right; font-size: 12px; margin-top: 5px; }
+    .layui-card-header .layui-icon { position: initial; margin-right: 10px; }
+</style>

@@ -1,0 +1,589 @@
+<title>用户表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsUser/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" id="mobile" placeholder="请输入手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="nickName" id="nickName" placeholder="请输入昵称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="sex" id="sex">
+                        <option value="">请选择性别</option>
+                        {{# layui.each(d.data.sexTypes, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.title }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" id="status">
+                        <option value="">请选择等级</option>
+                        {{# layui.each(d.data.userGrade, function(index, item){ }}
+                        <option value="{{ item.id }}">{{ item.title }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" id="status">
+                        <option value="">请选择状态</option>
+                        {{# layui.each(d.data.userStatus, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.title }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <!--<div class="layui-inline">
+                <label class="layui-form-label" for="createTime">创建时间</label>
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="createTime" id="searchTime-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>-->
+
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsUser-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUser-tableBox" lay-filter="LAY-app-CoreCmsUser-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUser-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+        <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsUser-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="editBalance">修改余额</a>
+    <a class="layui-btn layui-btn-xs" lay-event="editPoint">修改积分</a>
+</script>
+
+<script>
+    var indexData;
+    layui.data.done = function (d) {
+        indexData = d.data;
+        console.log(d.data);
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-createTime',
+                    range: '到',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#searchTime-updataTime',
+                    range: '到',
+                    type: 'datetime'
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsUser-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsUser-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsUser-tableBox',
+                    url: 'Api/CoreCmsUser/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsUser-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', sort: false, width: 70 },
+                            { field: 'mobile', title: '手机号', sort: false, width: 100 },
+                            {
+                                field: 'sex', title: '性别', sort: false, width: 60, templet: function (data) {
+                                    if (data.sex) {
+                                        for (i = 0; i < d.data.sexTypes.length; i++) {
+                                            if (data.sex === d.data.sexTypes[i].value) {
+                                                return d.data.sexTypes[i].title;
+                                            }
+                                        }
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                            },
+                            {
+                                field: 'avatarImage', title: '头像', sort: false,
+                                templet: function (d) {
+                                    if (d.avatarImage) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.avatarImage + '")><image style="max-width:28px;max-height:28px;" src="' + d.avatarImage + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }, width: 60
+                            },
+                            {
+                                field: 'userWx', title: '第三方账号', align: "center",
+                                templet: function (data) {
+                                    var str = '';
+                                    for (i = 0; i < d.data.userAccountTypes.length; i++) {
+                                        if (data.type === d.data.userAccountTypes[i].value) { str = d.data.userAccountTypes[i].title }
+                                    }
+                                    //return str;
+                                    return "<img src='/static/images/common/userwx_" + data.type + ".jpg' style='width:28px;' title='" + str + "' />";
+
+                                }, width: 90
+                            },
+                            { field: 'nickName', title: '昵称', sort: false },
+                            {
+                                field: 'balance', title: '余额', sort: false, width: 70, templet: function (data) {
+                                    var html = '<a class="link-hot option-show balance" data-id="' + data.id + '">' + data.balance + '</a>';
+                                    return html;
+                                }
+                            },
+                            {
+                                field: 'point', title: '积分', sort: false, width: 70, templet: function (data) {
+                                    var html = '<a class="link-hot option-show point" data-id="' + data.id + '">' + data.point + '</a>';
+                                    return html;
+                                }
+                            },
+                            {
+                                field: 'grade', title: '用户等级', sort: false, width: 105, templet: function (data) {
+                                    if (data.grade) {
+                                        for (i = 0; i < d.data.userGrade.length; i++) {
+                                            if (data.grade === d.data.userGrade[i].id) {
+                                                return '<span class="layui-badge layui-badge-gray">' + d.data.userGrade[i].title + '</span>';
+                                            }
+                                        }
+                                        return "";
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                            },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            {
+                                field: 'status', title: '状态', sort: false, width: 65, templet: function (data) {
+                                    if (data.status) {
+                                        for (i = 0; i < d.data.userStatus.length; i++) {
+                                            if (data.status === d.data.userStatus[i].value) {
+                                                return d.data.userStatus[i].title;
+                                            }
+                                        }
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                            },
+                            {
+                                field: 'parentId', title: '推荐人', sort: false, templet: function (d) {
+                                    if (d.parentNickName) {
+                                        return d.parentNickName + "(" + d.parentId + ")";
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                            },
+                            //{ field: 'isDelete', title: '删除标志', width: 105, templet: '#switch_isDelete', sort: false, unresize: true },
+                            { width: 202, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsUser-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsUser-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsUser-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsUser-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsUser-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        } else if (obj.event === 'editBalance') {
+                            doEditBalance(obj);
+                        } else if (obj.event === 'editPoint') {
+                            doEditPoint(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsUser/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['670px', '600px'],
+                                id: 'LAY-popup-CoreCmsUser-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUser-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isDelete = field.isDelete == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUser/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUser-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsUser/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['670px', '600px'],
+                                id: 'LAY-popup-CoreCmsUser-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUser-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isDelete = field.isDelete == 'on';
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUser/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUser-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行编辑余额
+                function doEditBalance(obj) {
+                    coreHelper.Post("Api/CoreCmsUser/GetEditBalance", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '修改余额',
+                                area: ['500px', '300px'],
+                                id: 'LAY-popup-CoreCmsUser-EditBalance',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/editBalance', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUser-editBalanceForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                field.data = parseFloat(field.data).toFixed(2);
+
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUser/DoEditBalance", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUser-editBalanceForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行编辑积分
+                function doEditPoint(obj) {
+                    coreHelper.Post("Api/CoreCmsUser/GetEditPoint", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '修改余额',
+                                area: ['500px', '300px'],
+                                id: 'LAY-popup-CoreCmsUser-EditPoint',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/editPoint', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsUser-editPointForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsUser/DoEditPoint", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsUser-editPointForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsUser/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsUser-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                                , btn: ['取消']
+                                , btnAlign: 'c'
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //积分记录
+                $(document).on('click', '.point', function () {
+                    var id = $(this).attr('data-id');
+                    coreHelper.Post("Api/CoreCmsUser/GetDetailsPointLog", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['90%', '90%'],
+                                id: 'LAY-popup-CoreCmsUser-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/detailsPointLog', { data: e.data, id: id }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                                , btn: ['取消']
+                                , btnAlign: 'c'
+
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+                //余额明细
+                $(document).on('click', '.balance', function () {
+                    var id = $(this).attr('data-id');
+                    coreHelper.Post("Api/CoreCmsUser/GetDetailsBalanceLog", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['90%', '90%'],
+                                id: 'LAY-popup-CoreCmsUser-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/userInfo/detailsBalanceLog', { data: e.data, id: id }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                                , btn: ['取消']
+                                , btnAlign: 'c'
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsUser/DoDelete", { id: obj.data.id }, function (e) {
+                            table.reload('LAY-app-CoreCmsUser-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+                //执行批量删除
+                function doBatchDelete(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择要删除的数据');
+                    }
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            coreHelper.Post("Api/CoreCmsUser/DoBatchDelete", { id: delidsStr }, function (e) {
+                                table.reload('LAY-app-CoreCmsUser-tableBox');
+                                layer.msg(e.msg);
+                            });
+                        });
+                }
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsUser/QueryExportExcel", field, function (e) {
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsUser/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isDelete)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsUser/DoSetisDelete", { id: this.value, data: obj.elem.checked }, function (res) {
+                        layer.msg(res.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置删除标志 有数据就是删除-->
+<script type="text/html" id="switch_isDelete">
+    <input type="checkbox" name="switch_isDelete" value="{{d.id}}" lay-skin="switch" lay-text="已删除|正常" lay-filter="switch_isDelete" {{ d.isDelete ? 'checked' : '' }}>
+</script>

@@ -1,0 +1,293 @@
+<title>促销表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsPromotion/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入促销名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="isExclusive" id="isExclusive">
+                        <option value="">请选择是否排他</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="isEnable" id="isEnable">
+                        <option value="">请选择是否开启</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="startTime" id="searchTime-CoreCmsPromotion-startTime" placeholder="请输入起止时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsPromotion-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsPromotion-tableBox" lay-filter="LAY-app-CoreCmsPromotion-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsPromotion-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsPromotion-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">设置参数</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsPromotion-startTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsPromotion-endTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsPromotion-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsPromotion-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsPromotion-tableBox',
+                    url: 'Api/CoreCmsPromotion/GetPageList',
+                    method: 'POST',
+                    where: { types: 1 },
+                    toolbar: '#LAY-app-CoreCmsPromotion-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'name', title: '促销名称', sort: false },
+                            { field: 'sort', title: '权重', sort: false, width: 60 },
+                            { field: 'isExclusive', title: '是否排他', width: 80, templet: '#switch_isExclusive', sort: false, unresize: true },
+                            { field: 'isEnable', title: '是否开启', width: 80, templet: '#switch_isEnable', sort: false, unresize: true },
+                            { field: 'startTime', title: '开始时间', width: 130, sort: false },
+                            { field: 'endTime', title: '结束时间', width: 130, sort: false },
+                            { width: 142, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsPromotion-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsPromotion-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsPromotion-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsPromotion-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsPromotion-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsPromotion/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['800px', '400px'],
+                                id: 'LAY-popup-CoreCmsPromotion-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('promotion/promotion/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsPromotion-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isExclusive = field.isExclusive == 'on';
+                                                field.isAutoReceive = field.isAutoReceive == 'on';
+                                                field.isEnable = field.isEnable == 'on';
+                                                field.isDel = field.isDel == 'on';
+                                                if (field.startTime) {
+                                                    var times = field.startTime.split("到");
+                                                    field.startTime = times[0].replace(/^\s*|\s*$/g, "");
+                                                    field.endTime = times[1].replace(/^\s*|\s*$/g, "");
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsPromotion/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsPromotion/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['800px', '90%'],
+                                id: 'LAY-popup-CoreCmsPromotion-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('promotion/promotion/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsPromotion-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isExclusive = field.isExclusive == 'on';
+                                                field.isAutoReceive = field.isAutoReceive == 'on';
+                                                field.isEnable = field.isEnable == 'on';
+                                                field.isDel = field.isDel == 'on';
+                                                if (field.startTime) {
+                                                    var times = field.startTime.split("到");
+                                                    field.startTime = times[0].replace(/^\s*|\s*$/g, "");
+                                                    field.endTime = times[1].replace(/^\s*|\s*$/g, "");
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsPromotion/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsPromotion/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isExclusive)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsPromotion/DoSetisExclusive", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+                layui.form.on('switch(switch_isEnable)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsPromotion/DoSetisEnable", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+            });
+    };
+</script>
+
+<!--设置是否排他-->
+<script type="text/html" id="switch_isExclusive">
+    <input type="checkbox" name="switch_isExclusive" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isExclusive" {{ d.isExclusive ? 'checked' : '' }}>
+</script>
+
+<!--设置是否开启-->
+<script type="text/html" id="switch_isEnable">
+    <input type="checkbox" name="switch_isEnable" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isEnable" {{ d.isEnable ? 'checked' : '' }}>
+</script>

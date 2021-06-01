@@ -1,0 +1,93 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsBillRefund-editForm" id="LAY-app-CoreCmsBillRefund-editForm">
+        <input type="hidden" name="refundId" value="{{d.params.data.model.refundId || '' }}" />
+        <div class="layui-form-item">
+            <label for="refundId" class="layui-form-label ">退款单ID</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.model.refundId }}
+            </div>
+            <label for="aftersalesId" class="layui-form-label ">售后单id</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.model.aftersalesId }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="userId" class="layui-form-label ">用户</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.userInfo.nickName }}（{{d.params.data.model.userId }}）
+            </div>
+            <label for="money" class="layui-form-label ">状态</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.refundStatus}}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label ">单据类型</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.paymentsResourceTypes }}
+            </div>
+            <label for="sourceId" class="layui-form-label ">单据id</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                {{d.params.data.model.sourceId }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="money" class="layui-form-label ">退款金额</label>
+            <div class="layui-form-mid layui-word-aux  layui-inline-3">
+                ￥ {{d.params.data.model.money }}
+            </div>
+            <label for="paymentCode" class="layui-form-label ">退款方式</label>
+            <div class="layui-input-inline layui-inline-3">
+                <select name="paymentCode" id="paymentCode" lay-search lay-verType="tips" lay-verify="required|verifylogiCode">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.paymentCode, function(index, item){ }}
+                    <option value="{{item.title}}" {{item.title===d.params.data.model.paymentCode?'selected="selected"':''}}>{{item.description}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label ">审核结果</label>
+            <div class="layui-input-block">
+                <input name="status" value="2" title="通过" checked="" type="radio">
+                <input name="status" value="4" title="拒绝" type="radio">
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsBillRefund-editForm-submit" id="LAY-app-CoreCmsBillRefund-editForm-submit" value="确认审核">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+
+                    verifyrefundId: [/^[\S]{0,20}$/, '退款单ID最大只允许输入20位字符，且不能出现空格'],
+                    verifyaftersalesId: [/^[\S]{0,20}$/, '售后单id最大只允许输入20位字符，且不能出现空格'],
+                    verifysourceId: [/^[\S]{0,20}$/, '资源id，根据type不同而关联不同的表最大只允许输入20位字符，且不能出现空格'],
+                    verifypaymentCode: [/^[\S]{0,50}$/, '退款支付类型编码 默认原路返回 关联支付单表支付编码最大只允许输入50位字符，且不能出现空格'],
+                    verifytradeNo: [/^[\S]{0,50}$/, '第三方平台交易流水号最大只允许输入50位字符，且不能出现空格'],
+                    verifymemo: [/^[\S]{0,100}$/, '退款失败原因最大只允许输入100位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsBillRefund-editForm');
+            })
+    };
+</script>

@@ -1,0 +1,246 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsDistributionCondition-createForm" id="LAY-app-CoreCmsDistributionCondition-createForm">
+        <input type="hidden" name="gradeId" value="{{d.params.gradeId }}" />
+        <div class="layui-form-item">
+            <label for="code" class="layui-form-label  layui-form-required">升级条件</label>
+            <div class="layui-input-block">
+                <select name="condition_code" id="condition_code" lay-verType="tips" lay-verify="required" lay-reqText="请选择升级条件" lay-filter="conditionCode">
+                    <option value="">请选择升级条件</option>
+                    {{# layui.each(d.params.data.distributionConditionsCode, function(index, item){ }}
+                    <option value="{{ item.title }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div id="conditionBox"></div>
+
+        <div class="layui-form-item text-center">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistributionCondition-createForm-submit" id="LAY-app-CoreCmsDistributionCondition-createForm-submit" value="提交升级条件">
+        </div>
+    </div>
+</script>
+
+<script id="user_orders_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">个人消费</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">满多少：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <input name="money" lay-verify="title" autocomplete="off" value="1" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">消费金额满多少的时候，升级</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">期限：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <select name="limit_day">
+                <option value="0">不限制</option>
+                <option value="7">7天</option>
+                <option value="30">1个月</option>
+            </select>
+        </div>
+        <div class="layui-form-mid layui-word-aux">在指定时间内消费够，升级</div>
+    </div>
+</script>
+
+<script id="user_ordersnum_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">个人订单量</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单量：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <input name="num" lay-verify="title" autocomplete="off" value="1" placeholder="数量" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">消费多少笔订单的时候，升级</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">期限：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <select name="limit_day">
+                <option value="0">不限制</option>
+                <option value="7">7天</option>
+                <option value="30">1个月</option>
+            </select>
+        </div>
+        <div class="layui-form-mid layui-word-aux">选择后，在指定时间内消费够订单数量，升级</div>
+    </div>
+</script>
+
+<script id="goods_all_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">所有商品都满足条件</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件：</label>
+        <div class="layui-form-mid">
+            无需设置任何条件，直接点击“完成”吧。
+        </div>
+    </div>
+</script>
+
+<script id="goodsIds_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">指定商品id</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品id：</label>
+        <div class="layui-input-block">
+            <div id="goods_box" class="select_seller_goods_box">
+                <div>
+                    <button class="layui-btn" lay-active="goods_show"><i class="layui-icon layui-icon-ok"></i>选择商品</button>
+                </div>
+                <input type="hidden" name="goodsId" id="goodsId" value="">
+                <ul id="goods_list" class="sellect_seller_goods_list">
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="user_grade_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">指定用户等级</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="required-color">*</i>请选择：</label>
+        <div class="layui-input-block">
+            {{# layui.each(d.data.userGrades, function(index, item){ }}
+            <input type="radio" name="grade" lay-skin="primary" value="{{ item.id }}" title="{{ item.title }}" {{ item.isDefault? 'checked="checked"':'' }}>
+            {{# }); }}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <input name="num" lay-verify="title" autocomplete="off" value="" placeholder="数量" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">下线指定等级达到多少数量，升级</div>
+    </div>
+</script>
+
+<script id="group_orders_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">条件名称：</label>
+        <div class="layui-form-mid">团队消费</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">满多少：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <input name="money" lay-verify="title" autocomplete="off" value="" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">消费金额满多少的时候，升级</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">期限：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <select name="limit_day">
+                <option value="0">不限制</option>
+                <option value="7">7天</option>
+                <option value="30">1个月</option>
+            </select>
+        </div>
+        <div class="layui-form-mid layui-word-aux">在指定时间内消费够，升级</div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'laytpl', 'util', 'view', 'table'],
+            function () {
+                var $ = layui.$, form = layui.form, admin = layui.admin, util = layui.util, upload = layui.upload, coreHelper = layui.coreHelper, laytpl = layui.laytpl, view = layui.view, table = layui.table;
+
+                form.on('select(conditionCode)', function (data) {
+                    $('#code').val(data.value);
+                    var view = document.getElementById('conditionBox');
+                    $("#conditionBox").empty();
+
+                    if (data.value === 'USER_ORDERS') {//个人消费总额(已完成的订单)
+                        var getTpl = user_orders_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'USER_ORDERSNUM') { //个人订单数量(已完成的订单)
+                        var getTpl = user_ordersnum_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GOODS_ALL') { //所有商品满足条件
+                        var getTpl = goods_all_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GOODS_IDS') { //购买指定商品
+                        var getTpl = goodsIds_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'USER_GRADE') { //直推几个指定用户等级
+                        var getTpl = user_grade_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GROUP_ORDERS') { //团队消费总额
+                        var getTpl = group_orders_tpl.innerHTML;
+                        laytpl(getTpl).render(d.params, function (html) { view.innerHTML = html; });
+                    }
+                    form.render();
+                });
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    goods_show: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择商品',
+                            area: ['750xp', '600px'],
+                            id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
+                            success: function (layero, index) {
+                                view(this.id).render('common/getGoodIds', null).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+                                    form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                        function (data) {
+                                            if (Object.getOwnPropertyNames(ids).length === 0) {
+                                                layer.msg("请先选择商品");
+                                                return;
+                                            }
+                                            //判断个数是否满足
+                                            if (Object.getOwnPropertyNames(ids).length > 10) {
+                                                layer.msg("最多只能选择" + 10 + "个");
+                                                return false;
+                                            }
+                                            $("#goods_list").empty();
+                                            var the_val = "";
+                                            for (var key in ids) {
+                                                $("#goods_list").append('<li><span id="' + key + '"  lay-active="goodsDelete">×</span>' + ids[key].name + '</li>');
+                                                the_val += "," + key;
+                                            }
+                                            $("#goodsId").val(the_val.slice(1));
+                                            layer.close(index);
+                                        });
+
+                                });
+                            }
+                        });
+                    },
+                    goodsDelete: function () {
+                        var ids_array = $("#goodsId").val().split(",");
+                        for (var i = 0; i < ids_array.length; i++) {
+                            if (ids_array[i] == $(this).attr("id")) {
+                                ids_array.splice(i, 1);
+                            }
+                        }
+                        $("#goodsId").val(ids_array.join(","));
+                        $(this).parent().remove();
+                    }
+                });
+
+                form.verify({
+                    verifycode: [/^[\S]{0,50}$/, '升级条件编码最大只允许输入50位字符，且不能出现空格'],
+                    verifyparameters: [/^[\S]{0,255}$/, '其它参数最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsDistributionCondition-createForm');
+            })
+    };
+</script>

@@ -1,0 +1,85 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsServiceDescription-detailsForm" id="LAY-app-CoreCmsServiceDescription-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="title">名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.title || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="type">类型</label>
+                </td>
+                <td>
+                    {{# layui.each(d.params.data.serviceNoteType, function(index, item){ }}
+                    {{#  if(item.value === d.params.data.model.type){ }}
+                    <button class="layui-btn layui-btn-xs">{{ item.description }}</button>
+                    {{#  } }}
+                    {{# }); }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="description">描述</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.description || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isShow">是否展示</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isShow" value="{{d.params.data.model.isShow}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isShow" {{ d.params.data.model.isShow ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sortId">排序</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.sortId || '' }}
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsServiceDescription-detailsForm');
+        });
+    };
+</script>

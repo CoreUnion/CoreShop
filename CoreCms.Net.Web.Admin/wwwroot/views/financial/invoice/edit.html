@@ -1,0 +1,100 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsInvoice-editForm" id="LAY-app-CoreCmsInvoice-editForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.model.id || '' }}" />
+
+        <div class="layui-form-item">
+            <label for="category" class="layui-form-label">开票类型</label>
+            <div class="layui-input-inline layui-inline-3">
+
+                <select name="category" id="category" lay-search lay-verType="tips" disabled="disabled">
+                    {{# layui.each(d.params.data.orderTaxCategory, function(index, item){ }}
+                    <option value="{{item.value}}" {{item.value===d.params.data.model.category?'selected="selected"':''}}>{{item.description}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="sourceId" class="layui-form-label">资源ID</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input name="sourceId" id="sourceId" lay-verType="tips" lay-verify="required|verifytitle" class="layui-input" value="{{d.params.data.model.sourceId || '' }}" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">开票状态</label>
+            <div class="layui-input-inline layui-inline-3">
+                <select name="status" id="status" lay-search lay-verType="tips" lay-verify="required|verifylogiCode">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.orderTaxStatus, function(index, item){ }}
+                    <option value="{{item.value}}" {{item.value===d.params.data.model.status?'selected="selected"':''}}>{{item.description}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="type" class="layui-form-label">发票类型</label>
+            <div class="layui-input-inline layui-inline-3">
+                <select name="type" id="type" lay-search lay-verType="tips" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="2" {{d.params.data.model.type===2?'selected="selected"':''}}>个人发票</option>
+                    <option value="3" {{d.params.data.model.type===3?'selected="selected"':''}}>公司发票</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">发票抬头</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="title" id="title" lay-verType="tips" lay-verify="required|verifytitle" class="layui-input" placeholder="请输入发票抬头" lay-reqText="请输入发票抬头" value="{{d.params.data.model.title || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item" lay-size="sm">
+            <label for="taxNumber" class="layui-form-label">发票税号</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input name="taxNumber" id="taxNumber" lay-verType="tips" class="layui-input" placeholder="请输入发票税号" lay-reqText="请输入发票税号" value="{{d.params.data.model.taxNumber || '' }}" />
+            </div>
+            <label for="amount" class="layui-form-label">发票金额</label>
+            <div class="layui-input-inline layui-inline-3">
+                <input name="amount" id="amount" lay-verType="tips" lay-verify="required" class="layui-input" placeholder="请输入发票金额" lay-reqText="请输入发票金额" value="{{d.params.data.model.amount || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="remarks" class="layui-form-label">开票备注</label>
+            <div class="layui-input-block">
+                <textarea name="remarks" id="remarks" class="layui-textarea">{{d.params.data.model.remarks || '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsInvoice-editForm-submit" id="LAY-app-CoreCmsInvoice-editForm-submit" value="确认编辑">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+
+                    verifysourceId: [/^[\S]{0,32}$/, '资源ID最大只允许输入32位字符，且不能出现空格'],
+                    verifytitle: [/^[\S]{0,255}$/, '发票抬头最大只允许输入255位字符，且不能出现空格'],
+                    verifytaxNumber: [/^[\S]{0,32}$/, '发票税号最大只允许输入32位字符，且不能出现空格'],
+                    verifyremarks: [/^[\S]{0,2000}$/, '开票备注最大只允许输入2000位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsInvoice-editForm');
+            })
+    };
+</script>

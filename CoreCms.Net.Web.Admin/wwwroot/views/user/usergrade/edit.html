@@ -1,0 +1,44 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsUserGrade-editForm" id="LAY-app-CoreCmsUserGrade-editForm">
+        <input type="hidden" name="id" id="id" value="{{d.params.data.id || '' }}" />
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">标题</label>
+            <div class="layui-input-inline">
+                <input name="title" id="title" lay-verType="tips" lay-verify="required|verifytitle" class="layui-input" lay-reqText="请输入【标题】" value="{{d.params.data.title || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="isDefault" class="layui-form-label">是否默认</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" lay-filter="switch" name="isDefault" id="isDefault" {{ d.params.data.isDefault ? 'checked' : '' }} lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <label class="layui-form-label"></label>
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsUserGrade-editForm-submit" id="LAY-app-CoreCmsUserGrade-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    layui.data.sendParams = function (d) {
+        layui.use(['admin', 'form', 'laydate', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+                    verifytitle: [/^[\S]{0,60}$/, '标题最大只允许输入60位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsUserGrade-editForm');
+            })
+    };
+</script>

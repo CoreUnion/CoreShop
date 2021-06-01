@@ -1,0 +1,140 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsUserServicesTicket-createForm" id="LAY-app-CoreCmsUserServicesTicket-createForm">
+
+        <div class="layui-form-item">
+            <label for="id" class="layui-form-label  layui-form-required">序列</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="id" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入序列" lay-reqText="请输入序列并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="serviceOrderId" class="layui-form-label  layui-form-required">关联购买订单</label>
+            <div class="layui-input-block">
+                <input name="serviceOrderId" lay-verType="tips" lay-verify="required|verifyserviceOrderId" class="layui-input" lay-reqText="请输入关联购买订单" placeholder="请输入关联购买订单" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="securityCode" class="layui-form-label  layui-form-required">安全码</label>
+            <div class="layui-input-block">
+                <input name="securityCode" lay-verType="tips" lay-verify="required" class="layui-input" placeholder="请输入安全码" lay-reqText="请输入安全码" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="redeemCode" class="layui-form-label  layui-form-required">兑换码</label>
+            <div class="layui-input-block">
+                <input name="redeemCode" lay-verType="tips" lay-verify="required|verifyredeemCode" class="layui-input" lay-reqText="请输入兑换码" placeholder="请输入兑换码" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="serviceId" class="layui-form-label  layui-form-required">关联服务项目id</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="serviceId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入关联服务项目id" lay-reqText="请输入关联服务项目id并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="userId" class="layui-form-label  layui-form-required">关联用户id</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="userId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入关联用户id" lay-reqText="请输入关联用户id并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label  layui-form-required">状态</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="status" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入状态" lay-reqText="请输入状态并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="validityType" class="layui-form-label  layui-form-required">核销有效期类型</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="validityType" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入核销有效期类型" lay-reqText="请输入核销有效期类型并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="validityStartTime" class="layui-form-label  layui-form-required">核销开始时间</label>
+            <div class="layui-input-block">
+                <input name="validityStartTime" id="createTime-CoreCmsUserServicesTicket-validityStartTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入核销开始时间" lay-reqText="请输入核销开始时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="validityEndTime" class="layui-form-label  layui-form-required">核销结束时间</label>
+            <div class="layui-input-block">
+                <input name="validityEndTime" id="createTime-CoreCmsUserServicesTicket-validityEndTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入核销结束时间" lay-reqText="请输入核销结束时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="createTime" class="layui-form-label  layui-form-required">创建时间</label>
+            <div class="layui-input-block">
+                <input name="createTime" id="createTime-CoreCmsUserServicesTicket-createTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入创建时间" lay-reqText="请输入创建时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isVerification" class="layui-form-label  layui-form-required">是否核销</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isVerification" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="verificationTime" class="layui-form-label  layui-form-required">核销时间</label>
+            <div class="layui-input-block">
+                <input name="verificationTime" id="createTime-CoreCmsUserServicesTicket-verificationTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入核销时间" lay-reqText="请输入核销时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsUserServicesTicket-createForm-submit" id="LAY-app-CoreCmsUserServicesTicket-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+        function () {
+            var $ = layui.$
+                , form = layui.form
+                , admin = layui.admin
+                , laydate = layui.laydate
+                , upload = layui.upload
+                , cropperImg = layui.cropperImg
+                , coreHelper = layui.coreHelper;
+
+            laydate.render({
+                elem: '#createTime-CoreCmsUserServicesTicket-validityStartTime',
+                type: 'datetime'
+            });
+            laydate.render({
+                elem: '#createTime-CoreCmsUserServicesTicket-validityEndTime',
+                type: 'datetime'
+            });
+            laydate.render({
+                elem: '#createTime-CoreCmsUserServicesTicket-createTime',
+                type: 'datetime'
+            });
+            laydate.render({
+                elem: '#createTime-CoreCmsUserServicesTicket-verificationTime',
+                type: 'datetime'
+            });
+	        form.verify({
+
+		        verifyserviceOrderId: [/^[\S]{0,50}$/,'关联购买订单最大只允许输入50位字符，且不能出现空格'],
+		        verifyredeemCode: [/^[\S]{0,50}$/,'兑换码最大只允许输入50位字符，且不能出现空格'],
+	        });
+            //重载form
+            form.render(null, 'LAY-app-CoreCmsUserServicesTicket-createForm');
+        })
+    };
+</script>

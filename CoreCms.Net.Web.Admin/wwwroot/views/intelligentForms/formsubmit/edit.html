@@ -1,0 +1,43 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsFormSubmit-editForm" id="LAY-app-CoreCmsFormSubmit-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.id || '' }}" />
+
+
+        <div class="layui-form-item layui-form-text">
+            <label for="feedback" class="layui-form-label  layui-form-required">表单反馈</label>
+            <div class="layui-input-block">
+                <textarea name="data" lay-verify="required|verifyfeedback" class="layui-textarea" placeholder="请输入表单反馈" lay-reqText="请输入表单反馈">
+                {{d.params.data.feedback || '' }}
+                </textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item text-right core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsFormSubmit-editForm-submit" id="LAY-app-CoreCmsFormSubmit-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+                    verifyfeedback: [/^.{0,250}$/, '表单反馈最大只允许输入127位字符'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsFormSubmit-editForm');
+            })
+    };
+</script>

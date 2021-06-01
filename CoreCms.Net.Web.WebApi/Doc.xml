@@ -1,0 +1,1475 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreCms.Net.Web.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.AdvertController">
+            <summary>
+            广告api控制器
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AdvertController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsAdvertPositionServices,CoreCms.Net.IServices.ICoreCmsAdvertisementServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="articleServices"></param>
+            <param name="advertPositionServices"></param>
+            <param name="advertisementServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AdvertController.GetAdvertList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取广告列表
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AdvertController.GetPositionList(CoreCms.Net.Model.FromBody.WxAdvert)">
+            <summary>
+            获取广告位置信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.AgentController">
+            <summary>
+            代理请求接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsAgentServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsAgentOrderServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsAgentGoodsServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="agentServices"></param>
+            <param name="settingServices"></param>
+            <param name="agentOrderServices"></param>
+            <param name="userServices"></param>
+            <param name="goodsServices"></param>
+            <param name="agentGoodsServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.GetStoreInfo(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取店铺信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.GetGoodsPageList(CoreCms.Net.Model.FromBody.FMPageByWhereOrder)">
+            <summary>
+            根据查询条件获取分页数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.Info">
+            <summary>
+            查询用户是否可以成为代理商
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.ApplyAgent(CoreCms.Net.Model.FromBody.FMAgentApply)">
+            <summary>
+            申请成为代理商接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.GetTeamSum">
+            <summary>
+            获取我的下级用户数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.GetOrderSum">
+            <summary>
+            获取我的订单统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.MyOrder(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            我推广的订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.SetStore(CoreCms.Net.Model.FromBody.FMSetAgentStorePost)">
+            <summary>
+            店铺设置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.AgentController.GetAgentRanking(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取代理商排行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.ArticleController">
+            <summary>
+            文章api控制器
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ArticleController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="articleServices"></param>
+            <param name="articleTypeServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ArticleController.NoticeList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取通知列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ArticleController.GetArticleList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取文章列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ArticleController.GetArticleDetail(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取单个文章内容
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.CartController">
+            <summary>
+            购物车操作
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsCartServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.AddCart(CoreCms.Net.Model.FromBody.FMCartAdd)">
+            <summary>
+            添加单个货品到购物车
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.GetList(CoreCms.Net.Model.FromBody.FMCartGetList)">
+            <summary>
+            获取购物车列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取购物车列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.SetCartNum(CoreCms.Net.Model.ViewModels.View.FMSetCartNum)">
+            <summary>
+            设置购物车商品数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.GetCartAvailableCoupon(CoreCms.Net.Model.FromBody.FMCouponForUserCouponPost)">
+            <summary>
+            根据提交的数据判断哪些购物券可以使用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.CommonController">
+            <summary>
+            通用调用接口数据
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.#ctor(CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsAreaServices,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsServiceDescriptionServices,CoreCms.Net.IServices.ICoreCmsSettingServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.InterFaceTest">
+            <summary>
+            接口测试反馈
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.GetConfigV2">
+            <summary>
+            返回配置数据文件V2.0
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.GetAreas">
+            <summary>
+            获取层级分配后的区域信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.GetServiceDescription">
+            <summary>
+            获取商城关键词说明列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.UploadImages">
+            <summary>
+            上传附件通用接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.CouponController">
+            <summary>
+            优惠券接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsPromotionServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="couponServices"></param>
+            <param name="promotionServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.CouponList(CoreCms.Net.Model.FromBody.FMCouponForUserCouponPost)">
+            <summary>
+            获取 可领取的优惠券
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.CouponDetail(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取优惠券 详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.UserCoupon(CoreCms.Net.Model.FromBody.FMCouponForUserCouponPost)">
+            <summary>
+            获取用户已领取的优惠券
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.GetCoupon(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            用户领取优惠券
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.GetCouponKey(CoreCms.Net.Model.FromBody.FMCouponForGetCouponKeyPost)">
+            <summary>
+            用户输入code领取优惠券
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.DemoController">
+            <summary>
+                默认接口示例
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DemoController.Index">
+            <summary>
+                默认首页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.DistributionController">
+            <summary>
+                分销请求接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsDistributionServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsDistributionOrderServices)">
+            <summary>
+                构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.GetStoreInfo(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+                获取店铺信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.Info">
+            <summary>
+                查询用户是否可以成为分销商
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.ApplyDistribution(CoreCms.Net.Model.FromBody.FMDistributionApply)">
+            <summary>
+                申请成为分销商接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.MyOrder(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+                我推广的订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.SetStore(CoreCms.Net.Model.FromBody.FMSetDistributionStorePost)">
+            <summary>
+                店铺设置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.GetOrderSum">
+            <summary>
+                获取我的订单统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.GetTeamSum">
+            <summary>
+                获取我的下级用户数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.DistributionController.GetDistributionRanking(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+                获取分销商排行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.FormController">
+            <summary>
+            表单接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.FormController.#ctor(CoreCms.Net.IServices.ICoreCmsFormServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="formServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.FormController.GetFormDetial(CoreCms.Net.Model.FromBody.FmGetForm)">
+            <summary>
+            万能表单/获取活动商品详情
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.FormController.AddSubmit(CoreCms.Net.Model.FromBody.FmAddSubmit)">
+            <summary>
+            万能表单/提交表单
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.GoodController">
+            <summary>
+            商品相关接口处理
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.#ctor(AutoMapper.IMapper,CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsBrandServices,CoreCms.Net.IServices.ICoreCmsOrderItemServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetAllCategories">
+            <summary>
+            获取所有商品分类栏目数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetGoodsPageList(CoreCms.Net.Model.FromBody.FMPageByWhereOrder)">
+            <summary>
+            根据查询条件获取分页数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetDetial(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取商品详情
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetProductInfo(CoreCms.Net.Model.FromBody.FMGetProductInfo)">
+            <summary>
+            获取单个货品信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetGoodsComment(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取商品评价列表分页数据
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetGoodsParams(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取单个商品参数
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetGoodsRecommendList(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取随机推荐商品
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.GetDetialByToken(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            根据Token获取商品详情
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.GroupController">
+            <summary>
+            团购调用接口数据
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GroupController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsGoodsServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GroupController.GetList(CoreCms.Net.Model.FromBody.FMGroupGetListPost)">
+            <summary>
+            获取秒杀团购列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GroupController.GetGoodsDetial(CoreCms.Net.Model.FromBody.FMGetGoodsDetial)">
+            <summary>
+            获取秒杀团购详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.NoticeController">
+            <summary>
+            公告控制器
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.NoticeController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsNoticeServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="noticeServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.NoticeController.NoticeList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.NoticeController.NoticeInfo(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取单个公告内容
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.OrderController">
+            <summary>
+            订单调用接口数据
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ICoreCmsBillReshipServices,CoreCms.Net.IServices.ICoreCmsShipServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsStoreServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetTaxCode(CoreCms.Net.Model.ViewModels.View.GetTaxCodePost)">
+            <summary>
+            发票模糊查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.CreateOrder(CoreCms.Net.Model.ViewModels.View.CreateOrder)">
+            <summary>
+            创建订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.OrderDetails(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            订单预览
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderStatusNum(CoreCms.Net.Model.ViewModels.View.GetOrderStatusNumPost)">
+            <summary>
+            获取订单不同状态的数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderList(CoreCms.Net.Model.ViewModels.View.GetOrderListPost)">
+            <summary>
+            获取个人订单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.CancelOrder(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            取消订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.DeleteOrder(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            删除订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.OrderConfirm(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            确认签收订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.AddAftersales(CoreCms.Net.Model.ViewModels.View.ToAddBillAfterSalesPost)">
+            <summary>
+            添加售后单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.AftersalesList(CoreCms.Net.Model.FromBody.FMPageByStringId)">
+            <summary>
+            获取售后单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.Aftersalesinfo(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            获取售后单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.SendReship(CoreCms.Net.Model.FromBody.FMBillReshipForSendReshipPost)">
+            <summary>
+            提交售后发货快递信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetShip(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取配送方式列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.LogisticsByApi(CoreCms.Net.Model.FromBody.FMApiLogisticsByApiPost)">
+            <summary>
+            前台物流查询接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.PageController">
+            <summary>
+            页面接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PageController.#ctor(AutoMapper.IMapper,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsPagesServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsUserServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PageController.GetPageConfig(CoreCms.Net.Model.FromBody.FMWxPost)">
+            <summary>
+            获取页面布局数据
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PageController.GetRecod(CoreCms.Net.Model.FromBody.FMGetRecodPost)">
+            <summary>
+            获取用户购买记录
+            </summary>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.PaymentsController">
+            <summary>
+            支付调用接口数据
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsPaymentsServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="billPaymentsServices"></param>
+            <param name="paymentsServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.GetList">
+            <summary>
+            获取支付方式列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.CheckPay(CoreCms.Net.Model.ViewModels.View.CheckPayPost)">
+            <summary>
+            支付确认页面取信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.GetInfo(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            获取支付单详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController">
+            <summary>
+            支付宝异步通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.#ctor(Essensoft.AspNetCore.Payment.Alipay.IAlipayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.AspNetCore.Payment.Alipay.AlipayOptions})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="client"></param>
+            <param name="optionsAccessor"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.Gateway">
+            <summary>
+            应用网关
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.Precreate">
+            <summary>
+            扫码支付异步通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.AppPay">
+            <summary>
+            APP支付异步通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.PagePay">
+            <summary>
+            电脑网站支付异步通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.WapPay">
+            <summary>
+            手机网站支付异步通知
+            </summary>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController">
+            <summary>
+                微信支付异步通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.V2.IWeChatPayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.AspNetCore.Payment.WeChatPay.WeChatPayOptions},CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillRefundServices,CoreCms.Net.Caching.AutoMate.RedisCache.IRedisOperationRepository)">
+            <summary>
+                构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController.Unifiedorder">
+            <summary>
+                统一下单支付结果通知
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController.Refund">
+            <summary>
+                退款结果通知
+            </summary>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.PinTuanController">
+            <summary>
+            拼团接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PinTuanController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsPinTuanGoodsServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsPinTuanRecordServices,CoreCms.Net.IServices.ICoreCmsGoodsServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PinTuanController.GetList(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            拼团列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PinTuanController.GetGoodsInfo(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取拼团商品信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PinTuanController.GetProductInfo(CoreCms.Net.Model.FromBody.FMGetProductInfo)">
+            <summary>
+            获取货品信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PinTuanController.GetPinTuanTeam(CoreCms.Net.Model.FromBody.FMGetPinTuanTeamPost)">
+            <summary>
+            根据订单id取拼团信息，用在订单详情页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.ServiceController">
+            <summary>
+            服务卡控制器
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.#ctor(CoreCms.Net.IServices.ICoreCmsServicesServices,CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsClerkServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketVerificationLogServices,CoreCms.Net.IServices.ICoreCmsStoreServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="servicesServices"></param>
+            <param name="user"></param>
+            <param name="userServicesOrderServices"></param>
+            <param name="userServicesTicketServices"></param>
+            <param name="userServices"></param>
+            <param name="clerkServices"></param>
+            <param name="ticketVerificationLogServices"></param>
+            <param name="storeServices"></param>
+            <param name="userGradeServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.GetPageList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得服务卡列表信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取服务卡详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.AddServiceOrder(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            取得服务卡列表信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.VerificationPageList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            店铺核销的服务券列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.LogDelete(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            软删除服务券核销单数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.GetTicketInfo(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            获取单个提货单详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.ServiceController.VerificationTicket(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            核销服务券
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.StoreController">
+            <summary>
+            门店调用接口数据
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsStoreServices,CoreCms.Net.IServices.ICoreCmsClerkServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsBillLadingServices,CoreCms.Net.IServices.ICoreCmsOrderServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetDefaultStore">
+            <summary>
+            获取默认的门店
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetStoreList(CoreCms.Net.Model.FromBody.FMGetStoreQueryPageByCoordinate)">
+            <summary>
+            获取门店列表数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetRecommendKeys">
+            <summary>
+            获取推荐关键词
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetStoreSwitch">
+            <summary>
+            判断是否开启门店自提
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetStoreById(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            根据序列获取门店数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.IsClerk">
+            <summary>
+            判断访问用户是否是店员
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetStoreByUserId">
+            <summary>
+            根据用户序列获取门店数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetOrderPageByMerchant(CoreCms.Net.Model.ViewModels.View.GetOrderPageByMerchantPost)">
+            <summary>
+            获取个人订单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.StoreLadingList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            店铺提货单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.LadingDelete(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            删除提货单数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.LadingInfo(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            获取单个提货单详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.Lading(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            核销订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.UserController">
+            <summary>
+            用户操作事件
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.Auth.Policys.PermissionRequirement,CoreCms.Net.IServices.ICoreCmsSmsServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices,CoreCms.Net.IServices.ICoreCmsUserLogServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsGoodsBrowsingServices,CoreCms.Net.IServices.ICoreCmsCartServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserShipServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsUserBankCardServices,CoreCms.Net.IServices.ICoreCmsUserTocashServices,CoreCms.Net.IServices.ICoreCmsUserBalanceServices,CoreCms.Net.IServices.ICoreCmsInvoiceServices,CoreCms.Net.IServices.ICoreCmsUserPointLogServices,CoreCms.Net.IServices.ICoreCmsShareServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsServicesServices,CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices,CoreCms.Net.IServices.ICoreCmsStoreServices,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsOrderServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.OnLogin(CoreCms.Net.Model.FromBody.FMWxPost)">
+            <summary>
+            wx.login登陆成功之后发送的请求
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.DecodeEncryptedData(CoreCms.Net.Model.FromBody.FMWxLoginDecodeEncryptedData)">
+            <summary>
+            核验数据并获取用户详细资料
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SendSms(CoreCms.Net.Model.FromBody.FMWxSendSMS)">
+            <summary>
+            用户短信发送
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SmsLogin(CoreCms.Net.Model.FromBody.FMWxAccountCreate)">
+            <summary>
+            手机短信验证码登陆，同时兼有手机短信注册的功能，还有第三方账户绑定的功能
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.DecryptPhoneNumber(CoreCms.Net.Model.FromBody.FMWxLoginDecryptPhoneNumber)">
+            <summary>
+            微信小程序授权拉取手机号码
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SmsLogin2(CoreCms.Net.Model.FromBody.FMWxAccountCreate)">
+            <summary>
+            用户短信注册并返回jwt token(弃用)
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetAreaId(CoreCms.Net.Model.ViewModels.View.GetAreaIdPost)">
+            <summary>
+            获取区域ID
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.LogOut">
+            <summary>
+            注销登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.IsPoint">
+            <summary>
+            判断是否开启积分
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Share(CoreCms.Net.Model.FromBody.FMShare)">
+            <summary>
+            统一分享url处理
+            新的分享，不管是二维码，还是地址，都走这个
+            page	场景值		1店铺首页，2商品详情页，3拼团详情页,4邀请好友（店铺页面,params里需要传store）,5文章页面,6参团页面，7自定义页面，8智能表单，9团购，10秒杀，11代理
+            url：前端地址
+            params：参数，根据场景值不一样而内容不一样
+            1
+            2 goodsId:商品ID
+            3 goodsId:商品ID，teamId:拼团ID
+            4 store:店铺code
+            5 articleId:文章ID，articleType:文章类型
+            6 goodsId:商品ID，groupId:参团ID，teamId:拼团ID
+            7 pageCode:自定义页面code
+            8 id：智能表单ID
+            9 goodsId:商品ID，groupId:团购秒杀ID
+                type	类型，1url，2二维码，3海报
+                token	可以保存推荐人的信息
+                client	终端，1普通h5，2微信小程序，3微信公众号（h5），4头条系小程序,5pc，6阿里小程序
+            10 store:店铺code
+            </summary>
+            <param name="entity"></param>
+            <returns>array</returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.DeShare(CoreCms.Net.Model.FromBody.FMDeShare)">
+            <summary>
+            统一分享解码
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SyncWeChatInfo(CoreCms.Net.Model.FromBody.FMWxSync)">
+            <summary>
+            同步微信用户数据
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserInfo">
+            <summary>
+            获取用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetCartNumber">
+            <summary>
+            获取购物车商品数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GoodsCollectionCreateOrDelete(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            商品取消/添加收藏
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserDefaultShip">
+            <summary>
+            获取用户获取用户默认收货地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SetDefShip(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            设置默认地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserPoint(CoreCms.Net.Model.ViewModels.View.GetUserPointPost)">
+            <summary>
+            判断用户下单可以使用多少积分
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserShip">
+            <summary>
+            获取用户的收货地址列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SaveUserShip(CoreCms.Net.Model.ViewModels.View.SaveUserShipPost)">
+            <summary>
+            保存用户地址
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetShipDetail(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取用户单个地址详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.RemoveShip(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            收货地址删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Pay(CoreCms.Net.Model.ViewModels.View.PayPost)">
+            <summary>
+            支付
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.OrderEvaluate(CoreCms.Net.Model.ViewModels.View.OrderEvaluatePost)">
+            <summary>
+            订单评价
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetMyBankcardsList">
+            <summary>
+            我的银行卡列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.AddBankCards(CoreCms.Net.Model.Entities.CoreCmsUserBankCard)">
+            <summary>
+            添加银行卡
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SetDefaultBankCard(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            设置默认银行卡
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetBankCardInfo(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            获取银行卡信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetDefaultBankCard">
+            <summary>
+            获取用户默认银行卡信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Removebankcard(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            删除银行卡信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetBankCardsOrganization(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            获取银行卡组织信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Cash(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            提现申请
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.CashList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            提现记录列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.UserBalance(CoreCms.Net.Model.FromBody.FMGetBalancePost)">
+            <summary>
+            获取我的余额明细列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.UserInvoiceList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            我的发票列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.UserPointLog(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            我的积分列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GoodsCollectionList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得商品收藏记录（关注）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GoodsCollection(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            添加商品收藏（关注）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Goodsbrowsing(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.AddGoodsBrowsing(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            添加商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.DelGoodsBrowsing(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            删除商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.ChangeAvatar(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            更换头像
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.EditInfo(CoreCms.Net.Model.FromBody.EditInfoPost)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.EditPwd(CoreCms.Net.Model.FromBody.EditPwdPost)">
+            <summary>
+            修改用户密码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.MyInvite">
+            <summary>
+            邀请好友(获取我的要求相关信息)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SetMyInvite(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            设置我的上级邀请人
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetMyInvite">
+            <summary>
+            获取我的上级邀请人
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetMyChildSum">
+            <summary>
+            获取我的下级用户数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Recommend(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取用户推荐列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.ShareCode">
+            <summary>
+            获取用户邀请码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.IsSign">
+            <summary>
+            判断是否签到
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Sign">
+            <summary>
+            用户签到
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.ForgetPwd(CoreCms.Net.Model.FromBody.FMForgetPwdPost)">
+            <summary>
+            用户找回密码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetServicesPageList(CoreCms.Net.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得服务卡列表信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetServicesTickets(CoreCms.Net.Model.FromBody.FMPageByStringId)">
+            <summary>
+            取得服务卡列表信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController">
+            <summary>
+            微信小程序消息订阅接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsUserWeChatMsgTemplateServices,CoreCms.Net.IServices.ICoreCmsUserWeChatMsgSubscriptionSwitchServices,CoreCms.Net.IServices.ICoreCmsUserWeChatMsgSubscriptionServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController.IsTip">
+            <summary>
+            获取用户是否订阅
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController.CloseTip">
+            <summary>
+            用户取消订阅
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController.Tmpl">
+            <summary>
+            获取订阅模板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatAppletsMessageController.SetTip(CoreCms.Net.Model.FromBody.SetWeChatAppletsMessageTip)">
+            <summary>
+            设置订阅信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController">
+            <summary>
+            微信公众号消息推送接口
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController.Get(Senparc.Weixin.MP.Entities.Request.PostModel,System.String)">
+            <summary>
+            微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url填写如：http://sdk.weixin.senparc.com/weixin
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController.Post(Senparc.Weixin.MP.Entities.Request.PostModel)">
+            <summary>
+            【异步方法】用户发送消息后，微信平台自动Post一个请求到这里，并等待响应XML。
+            PS：此方法为简化方法，效果与OldPost一致。
+            v0.8之后的版本可以结合Senparc.Weixin.MP.MvcExtension扩展包，使用WeixinResult，见MiniPost方法。
+            </summary>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller">
+            <summary>
+            微信公众号拉取授权
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.appId">
+            <summary>
+            appid与微信公众账号后台的AppId设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.appSecret">
+            <summary>
+            与微信公众账号后台的AppId设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.#ctor(CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="userWeChatInfoServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.UserInfoCallback(System.String,System.String,System.String)">
+            <summary>
+            OAuthScope.snsapi_userinfo方式回调
+            </summary>
+            <param name="code"></param>
+            <param name="state"></param>
+            <param name="returnUrl">用户最初尝试进入的页面</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.BaseCallback(System.String,System.String,System.String)">
+            <summary>
+            OAuthScope.snsapi_base方式回调
+            </summary>
+            <param name="code"></param>
+            <param name="state"></param>
+            <param name="returnUrl">用户最初尝试进入的页面</param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController">
+            <summary>
+            微信小程序请求对接Controller
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Token">
+            <summary>
+            //与微信小程序后台的Token设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.EncodingAesKey">
+            <summary>
+            //与微信小程序后台的EncodingAESKey设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.WxOpenAppId">
+            <summary>
+            //与微信小程序后台的AppId设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.WxOpenAppSecret">
+            <summary>
+            //与微信小程序账号后台的AppId设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.#ctor(CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="userWeChatInfoServices"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Get(Senparc.Weixin.WxOpen.Entities.Request.PostModel,System.String)">
+            <summary>
+            GET请求用于处理微信小程序后台的URL验证
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Post(Senparc.Weixin.WxOpen.Entities.Request.PostModel)">
+            <summary>
+            用户发送消息后，微信平台自动Post一个请求到这里，并等待响应XML。
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.RequestData(System.String)">
+            <summary>
+            返回数据回调测试
+            </summary>
+            <param name="nickName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.OnLogin(System.String)">
+            <summary>
+            wx.login登陆成功之后发送的请求
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.CheckWxOpenSignature(System.String,System.String,System.String)">
+            <summary>
+            校验签名
+            </summary>
+            <param name="sessionId"></param>
+            <param name="rawData"></param>
+            <param name="signature"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecodeEncryptedData(System.String,System.String,System.String,System.String)">
+            <summary>
+            解码数据
+            </summary>
+            <param name="type"></param>
+            <param name="sessionId"></param>
+            <param name="encryptedData"></param>
+            <param name="iv"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecryptPhoneNumber(System.String,System.String,System.String)">
+            <summary>
+            解密电话号码
+            </summary>
+            <param name="sessionId"></param>
+            <param name="encryptedData"></param>
+            <param name="iv"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecryptRunData(System.String,System.String,System.String)">
+            <summary>
+            解密运动步数
+            </summary>
+            <param name="sessionId"></param>
+            <param name="encryptedData"></param>
+            <param name="iv"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.GetQrCode(System.String,System.String,System.String)">
+            <summary>
+            获取二维码
+            </summary>
+            <param name="sessionId"></param>
+            <param name="useBase64"></param>
+            <param name="codeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.SubscribeMessage(System.String,System.String)">
+            <summary>
+            订阅消息
+            </summary>
+            <param name="sessionId"></param>
+            <param name="templateId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Program">
+            <summary>
+            启动类
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Program.Main(System.String[])">
+            <summary>
+                启动配置
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Program.CreateHostBuilder(System.String[])">
+            <summary>
+                创建启动支撑
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Startup">
+            <summary>
+            启动配置
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configuration"></param>
+            <param name="env"></param>
+        </member>
+        <member name="P:CoreCms.Net.Web.WebApi.Startup.Configuration">
+            <summary>
+            配置属性
+            </summary>
+        </member>
+        <member name="P:CoreCms.Net.Web.WebApi.Startup.Env">
+            <summary>
+            web环境
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            This method gets called by the runtime. Use this method to add services to the container.
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
+            <summary>
+                Autofac规则配置
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Options.IOptions{Senparc.CO2NET.SenparcSetting},Microsoft.Extensions.Options.IOptions{Senparc.Weixin.Entities.SenparcWeixinSetting})">
+            <summary>
+             This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+            <param name="senparcSetting"></param>
+            <param name="senparcWeixinSetting"></param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,113 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form " lay-filter="LAY-app-SysOrganization-createForm" id="LAY-app-SysOrganization-createForm">
+
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级机构:</label>
+                    <div class="layui-input-block">
+                        <div id="organizationEditParentSel" class="ew-xmselect-tree"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">机构名称:</label>
+                    <div class="layui-input-block">
+                        <input name="organizationName" value="" placeholder="请输入机构名称" class="layui-input"
+                               lay-verType="tips" lay-verify="required" required />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">机构全称:</label>
+                    <div class="layui-input-block">
+                        <input name="organizationFullName" id="organizationFullName" lay-verType="tips" lay-verify="required|verifyorganizationFullName" class="layui-input" placeholder="请输入机构名称" lay-reqText="请输入机构名称" value="" />
+                    </div>
+                </div>
+                <!--<div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">机构代码:</label>
+                    <div class="layui-input-block">
+                        <input name="organizationCode" placeholder="请输入机构代码" class="layui-input"
+                               lay-verType="tips" lay-verify="required" required />
+                    </div>
+                </div>-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">机构类型:</label>
+                    <div class="layui-input-block">
+                        <select name="organizationType" lay-verType="tips" lay-verify="required" required>
+                            <option value="">请选择</option>
+                            {{# layui.each(d.params.data.dictData, function(index, item){ }}
+                            <option value="{{item.id}}">{{item.dictDataName}}</option>
+                            {{# }); }}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-required">排序号:</label>
+                    <div class="layui-input-block">
+                        <input type="number" min="0" max="999999" name="sortNumber" id="sortNumber" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序号" lay-reqText="请输入排序号并为数字" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注:</label>
+                    <div class="layui-input-block">
+                        <textarea name="comments" id="comments" placeholder="请输入备注" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysOrganization-createForm-submit" id="LAY-app-SysOrganization-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'xmSelect', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , xmSelect = layui.xmSelect
+                    , coreHelper = layui.coreHelper;
+
+                // 渲染下拉树
+                var insXmSel = xmSelect.render({
+                    el: '#organizationEditParentSel',
+                    height: '250px',
+                    data: d.params.treeData,
+                    initValue: d.params.parentId ? [d.params.parentId] : [],
+                    model: { label: { type: 'text' } },
+                    prop: {
+                        name: 'organizationName',
+                        value: 'id'
+                    },
+                    name: 'parentId',
+                    radio: true,
+                    clickClose: true,
+                    tree: {
+                        show: true,
+                        indent: 15,
+                        strict: false,
+                        expandedKeys: true
+                    }
+                });
+
+                form.verify({
+
+                    verifyorganizationName: [/^[\S]{0,50}$/, '机构名称最大只允许输入50位字符，且不能出现空格'],
+                    verifyorganizationFullName: [/^[\S]{0,50}$/, '机构名称最大只允许输入50位字符，且不能出现空格'],
+                    verifycomments: [/^[\S]{0,500}$/, '备注最大只允许输入500位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysOrganization-createForm');
+            })
+    };
+</script>

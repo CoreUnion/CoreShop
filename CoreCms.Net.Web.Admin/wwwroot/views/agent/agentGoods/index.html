@@ -1,0 +1,409 @@
+<title>代理商品池</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsAgentGoods/GetIndex" lay-done="layui.data.done(d);">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsAgentGoods-tableBox" lay-filter="LAY-app-CoreCmsAgentGoods-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsAgentGoods-toolbar">
+
+    <div class="layui-form  coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="isEnable">是否启用</label>
+                <div class="layui-input-inline">
+                    <select name="isEnable">
+                        <option value="">请选择</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="createTime">创建时间</label>
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsAgentGoods-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="updateTime">最后更新时间</label>
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="updateTime" id="searchTime-CoreCmsAgentGoods-updateTime" placeholder="请输入最后更新时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsAgentGoods-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加商品</button>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/html" id="LAY-app-CoreCmsAgentGoods-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" id="brn-{{d.id}}">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" data-dropdown="#CoreCmsAgentGoodsTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide" id="CoreCmsAgentGoodsTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary cursor" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal cursor" lay-event="del">确定</a>
+        </div>
+    </div>
+
+
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsAgentGoods-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsAgentGoods-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsAgentGoods-tableBox',
+                    url: 'Api/CoreCmsAgentGoods/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsAgentGoods-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'goodId', title: '商品序列', sort: false, width: 80 },
+                            {
+                                field: 'goodImage', title: '缩略图', width: 70, sort: false,
+                                templet: function (d) {
+                                    if (d.goodImage) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.goodImage + '")><image style="max-width:30px;max-height:30px;" src="' + d.goodImage + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }
+                            },
+                            { field: 'goodName', title: '商品名称', sort: false },
+                            { field: 'sortId', title: '排序', sort: false, width: 60 },
+                            {
+                                field: 'isEnable', title: '是否需要同步', width: 95, templet: function (d) {
+                                    if (d.goodRefreshTime == d.goodUpdateTime) {
+                                        return "<button type='button' class='layui-btn layui-btn-xs layui-btn-disabled'>否</button>";
+                                    } else {
+                                        return "<button type='button' class='layui-btn layui-btn-xs layui-btn-danger'>请立即同步</button>";
+                                    }
+                                }
+                            },
+                            { field: 'isEnable', title: '是否启用', width: 95, templet: '#switch_isEnable', sort: false, unresize: true },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '最后更新时间', width: 130, sort: false },
+                            { width: 162, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsAgentGoods-tableBox-bar' }
+                        ]
+                    ]
+                });
+
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsAgentGoods-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsAgentGoods-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsAgentGoods-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsAgentGoods-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsAgentGoods-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsAgentGoods-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsAgentGoods-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsAgentGoods/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '添加代理商品',
+                                area: ['1200px', '90%'],
+                                id: 'LAY-popup-CoreCmsAgentGoods-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('agent/agentGoods/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAgentGoods-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                console.log(field);
+
+                                                field.isEnable = field.isEnable == 'on';
+
+                                                var good = {
+                                                    goodId: field.goodId,
+                                                    sortId: field.sortId,
+                                                    isEnable: field.isEnable,
+                                                }
+                                                var postData = {};
+                                                postData.good = good;
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('agentGradePrice') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                //多参数产品库生成列表集合
+                                                var products = [];
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var productModel = {};
+                                                        productModel.goodId = field['goodId[' + i + ']'];
+                                                        productModel.productId = field['productId[' + i + ']'];
+                                                        productModel.productCostPrice = field['productCostPrice[' + i + ']'];
+                                                        productModel.productPrice = field['productPrice[' + i + ']'];
+                                                        productModel.agentGradeId = field['agentGradeId[' + i + ']'];
+                                                        productModel.agentGradePrice = field['agentGradePrice[' + i + ']'];
+                                                        products.push(productModel);
+                                                    }
+                                                } else {
+                                                    layer.msg('请设置货品价格体系')
+                                                    return false;
+                                                }
+                                                postData.products = products;
+
+                                                if (debug) { console.log(postData); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAgentGoods/DoCreate", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsAgentGoods-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsAgentGoods-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGoods/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['1200px', '90%'],
+                                id: 'LAY-popup-CoreCmsAgentGoods-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('agent/agentGoods/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAgentGoods-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isEnable = field.isEnable == 'on';
+
+                                                var good = {
+                                                    id: field.id,
+                                                    goodId: field.goodId,
+                                                    sortId: field.sortId,
+                                                    isEnable: field.isEnable,
+                                                }
+                                                var postData = {};
+                                                postData.good = good;
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('agentGradePrice') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                //多参数产品库生成列表集合
+                                                var products = [];
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var productModel = {};
+                                                        productModel.goodId = field['goodId[' + i + ']'];
+                                                        productModel.productId = field['productId[' + i + ']'];
+                                                        productModel.productCostPrice = field['productCostPrice[' + i + ']'];
+                                                        productModel.productPrice = field['productPrice[' + i + ']'];
+                                                        productModel.agentGradeId = field['agentGradeId[' + i + ']'];
+                                                        productModel.agentGradePrice = field['agentGradePrice[' + i + ']'];
+                                                        products.push(productModel);
+                                                    }
+                                                } else {
+                                                    layer.msg('请设置货品价格体系')
+                                                    return false;
+                                                }
+                                                postData.products = products;
+
+                                                if (debug) { console.log(postData); } //开启调试返回数据
+
+                                                if (debug) { console.log(postData); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAgentGoods/DoEdit", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsAgentGoods-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGoods/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['1200px', '90%'],
+                                id: 'LAY-popup-CoreCmsAgentGoods-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('agent/agentGoods/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGoods/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reload('LAY-app-CoreCmsAgentGoods-tableBox');
+                        layer.msg(e.msg);
+                    });
+                }
+
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isEnable)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsAgentGoods/DoSetisEnable", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reload('LAY-app-CoreCmsAgentGoods-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否启用-->
+<script type="text/html" id="switch_isEnable">
+    <input type="checkbox" name="switch_isEnable" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isEnable" {{ d.isEnable ? 'checked' : '' }}>
+</script>
+
+

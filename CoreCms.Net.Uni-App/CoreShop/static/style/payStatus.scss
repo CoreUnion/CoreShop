@@ -1,0 +1,18 @@
+page { background-color: #EFF5F8; }
+.coreshop-status-view { position: relative; text-align: center; margin: 90.9rpx 0 54.54rpx; display: flex; height: 116.36rpx; align-items: center; justify-content: center;
+    .status-img { position: absolute; width: 127.27rpx; }
+    .status-bg-view { position: relative; border-radius: 50%; border: 6rpx solid #fff; width: 54.54rpx; height: 54.54rpx; top: -63.63rpx; left: 69.09rpx; display: flex; justify-content: center; align-items: center;
+        .icon { font-size: 32.72rpx; }
+    }
+}
+.coreshop-padding { position: relative; padding: 50rpx 63.63rpx; line-height: 2; }
+.coreshop-btn-view { position: relative; display: flex; align-items: center; justify-content: center;
+    .cu-btn { background: #FFFFFF; }
+}
+.coreshop-ad-view { margin-top: 72.72rpx;
+    .qrcode-img-view { display: flex; justify-content: center; align-items: center; margin-top: 18.18rpx;
+        .qrcode-img { width: 327.27rpx; border-radius: 3%; }
+    }
+}
+
+.chsop-pay-result-price { margin-top: 30rpx; color: #FF7159 !important; }

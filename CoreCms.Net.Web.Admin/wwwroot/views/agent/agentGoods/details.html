@@ -1,0 +1,114 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsAgentGoods-detailsForm" id="LAY-app-CoreCmsAgentGoods-detailsForm">
+
+        <div class="layui-form-item">
+            <label for="goodId" class="layui-form-label ">商品</label>
+            <div class="layui-input-inline layui-inline-100  layui-form-mid">
+                {{ d.params.data.goods.name || '' }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sortId" class="layui-form-label ">排序</label>
+            <div class="layui-input-inline layui-inline-2 layui-form-mid">
+                {{ d.params.data.model.sortId || '' }}
+            </div>
+            <label for="isEnable" class="layui-form-label ">是否启用</label>
+            <div class="layui-input-inline layui-inline-2 layui-form-mid">
+                <input type="checkbox" disabled name="isEnable" value="{{d.params.data.model.isEnable}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isEnable" {{ d.params.data.model.isEnable ? 'checked' : '' }}>
+            </div>
+            <label for="isEnable" class="layui-form-label ">创建时间</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.model.createTime || '' }}
+            </div>
+            <label for="isEnable" class="layui-form-label ">更新时间</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.model.updateTime || '' }}
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title"> <legend style="font-size:14px;">货品信息</legend> </fieldset>
+
+
+        <div id="productBox" class="productBox"></div>
+
+    </div>
+</script>
+
+
+
+<script id="productBoxTmp" type="text/html">
+    <table class="layui-table" lay-size="sm">
+        <thead>
+            <tr>
+                <th>货品规格</th>
+                <th style="width: 60px">成本价格</th>
+                <th style="width: 60px">销售价格</th>
+                {{#  layui.each(d.agentGrade, function(index, item){ }}
+                <th style="width: 70px">{{ item.name }}</th>
+                {{#  }); }}
+            </tr>
+        </thead>
+        <tbody>
+
+            {{#  layui.each(d.list, function(index, item){ }}
+            <tr>
+                <td style="text-align: left;">{{ item.spesDesc || '无规格'}}</td>
+                <td>{{ item.costprice }}￥</td>
+                <td>{{ item.price }}￥</td>
+
+                {{#  layui.each(d.agentGrade, function(key, grade){ }}
+                <td>
+                    {{#  layui.each(d.agentProducts, function(apkey, ap){ }}
+
+                    {{#  if(ap.agentGradeId == grade.id && ap.productId == item.id){ }}
+                    {{ ap.agentGradePrice }}￥
+                    {{#  } }}
+
+                    {{#  }); }}
+
+                </td>
+                {{#  }); }}
+            </tr>
+            {{#  }); }}
+        </tbody>
+    </table>
+
+</script>
+
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'xmSelect', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , xmSelect = layui.xmSelect
+                    , cropperImg = layui.cropperImg
+                    , laytpl = layui.laytpl
+                    , coreHelper = layui.coreHelper;
+
+                var data = {
+                    list: d.params.data.products,
+                    agentGrade: d.params.data.agentGrade,
+                    agentProducts: d.params.data.agentProducts,
+                }
+
+                var getTpl = productBoxTmp.innerHTML, view = document.getElementById('productBox');
+                laytpl(getTpl).render(data, function (html) {
+                    view.innerHTML = html;
+                });
+                form.render();
+
+
+                form.render(null, 'LAY-app-CoreCmsAgentGoods-detailsForm');
+            });
+    };
+</script>

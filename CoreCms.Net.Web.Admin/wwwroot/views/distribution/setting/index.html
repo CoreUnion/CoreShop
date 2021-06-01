@@ -1,0 +1,389 @@
+<title>标题</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+    .layui-form-item label { width: 140px; }
+    .classifyimg { margin-bottom: 20px; width: 672px !important; }
+    .classifyimg-item { display: inline-block; width: 140px; }
+    .classifyimg img { width: 100px; display: block; }
+    .classifyimg .layui-form-radio { vertical-align: top; display: block; margin-bottom: 10px; }
+    .image_storage_type .item { display: none; }
+    .layui-elem-quote { margin: 10px; }
+    .layui-tab-content { padding: 15px 0; }
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsDistributionSetting/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <!--<div class="layui-card-header">
+                        分销设置
+                    </div>-->
+
+                    <div class="layui-card-body">
+
+                        <div class="layui-tab  layui-tab-card" lay-filter="setting">
+                            <ul class="layui-tab-title">
+                                <li lay-id="agent" class="layui-this">分销设置</li>
+                                <li lay-id="platform">用户须知、分销协议</li>
+                            </ul>
+                            <div class="layui-tab-content">
+
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-form coreshop-form">
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['showInviterInfo']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="showInviterInfo" name="showInviterInfo" value="1" title="开启" {{d.data.configs['showInviterInfo']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="showInviterInfo" name="showInviterInfo" value="2" title="不开启" {{d.data.configs['showInviterInfo']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['openDistribution']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="openDistribution" name="openDistribution" value="1" title="开启" {{d.data.configs['openDistribution']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="openDistribution" name="openDistribution" value="2" title="不开启" {{d.data.configs['openDistribution']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['distributionLevel']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="distributionLevel" name="distributionLevel" value="1" title="一层" {{d.data.configs['distributionLevel']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionLevel" name="distributionLevel" value="2" title="二层" {{d.data.configs['distributionLevel']['sValue']==="2" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionLevel" name="distributionLevel" value="3" title="三层" {{d.data.configs['distributionLevel']['sValue']==="3" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['distributionStore']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="distributionStore" name="distributionStore" value="1" title="开启" {{d.data.configs['distributionStore']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionStore" name="distributionStore" value="2" title="不开启" {{d.data.configs['distributionStore']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                                            <legend>成为分销商</legend>
+                                        </fieldset>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['distributionType']['sKey']}}：</label>
+                                            <div class="layui-input-block">
+                                                <input type="radio" lay-filter="distributionType" name="distributionType" value="1" title="无条件（需要审核）" {{d.data.configs['distributionType']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionType" name="distributionType" value="2" title="申请（需要审核）" {{d.data.configs['distributionType']['sValue']==="2" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionType" name="distributionType" value="3" title="无需审核" {{d.data.configs['distributionType']['sValue']==="3" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['distributionMoney']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="distributionMoney" value="{{d.data.configs['distributionMoney']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">元</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['distributionGoods']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="distributionGoods" name="distributionGoods" lay-filter="distributionGoods" value="1" title="关闭" {{d.data.configs['distributionGoods']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionGoods" name="distributionGoods" lay-filter="distributionGoods" value="2" title="任意商品" {{d.data.configs['distributionGoods']['sValue']==="2" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="distributionGoods" name="distributionGoods" lay-filter="distributionGoods" value="3" title="指定商品" {{d.data.configs['distributionGoods']['sValue']==="3" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item select-goods" id="distributionGoods" {{#  if(d.data.configs['distributionGoodsId']['sValue'] === '0'){ }} style="display: none;" {{#  } }}>
+                                            <label class="layui-form-label">选择商品：</label>
+                                            <div class="layui-input-block">
+                                                <div id="goods_box" class="select_seller_goods_box">
+                                                    <div>
+                                                        <button class="layui-btn layui-btn-xs" lay-active="goods_show">选择商品</button>
+                                                    </div>
+                                                    <input type="hidden" name="distributionGoodsId" id="distributionGoodsId" value="{{d.data.configs['distributionGoodsId']['sValue'] ? d.data.configs['distributionGoodsId']['sValue']:'0'}}">
+                                                    <ul id="goods_list" class="sellect_seller_goods_list">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-tab-item">
+
+
+                                    <div class="layui-fluid">
+                                        <div class="layui-row layui-col-space10">
+                                            <div class="layui-col-md6">
+                                                <fieldset class="layui-elem-field layui-field-title site-title">
+                                                    <legend><a>{{d.data.configs['distributionNotes']['sKey']}}</a></legend>
+                                                </fieldset>
+                                                <div id="distributionNotes"></div>
+                                            </div>
+                                            <div class="layui-col-md6">
+                                                <fieldset class="layui-elem-field layui-field-title site-title">
+                                                    <legend><a>{{d.data.configs['distributionAgreement']['sKey']}}</a></legend>
+                                                </fieldset>
+                                                <div id="distributionAgreement"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">&nbsp;</label>
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="saveEditor">保存更改</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
+
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+        indexData = d.data;
+        layui.use(['admin', 'form', 'coreHelper', 'element', 'table', 'util', 'view', 'table', 'cropperImg'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form
+                , element = layui.element
+                , table = layui.table
+                , util = layui.util
+                , view = layui.view
+                , cropperImg = layui.cropperImg
+                , router = layui.router()
+                , search = router.search;
+            form.render();
+
+
+            //加载编辑器
+            var toolbar = [
+                {
+                    "name": "basicstyles",
+                    "groups": ["basicstyles"]
+                },
+                {
+                    "name": "paragraph",
+                    "groups": ["list", "blocks"]
+                },
+                {
+                    "name": "document",
+                    "groups": ["mode"]
+                },
+                {
+                    "name": "insert",
+                    "groups": ["insert"]
+                },
+                {
+                    "name": "styles",
+                    "groups": ["styles"]
+                }
+            ];
+            var removeButtons = 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,Iframe,PageBreak,SpecialChar,Smiley,Print,Preview,ExportPdf,NewPage,Save,CreateDiv';
+            var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+            var editor = CKEDITOR.replace('distributionNotes', {
+                fileTools_requestHeaders: {
+                    'Authorization': Authorization
+                },
+                toolbarGroups: toolbar,
+                removeButtons: removeButtons
+            });
+            editor.setData(d.data.configs['distributionNotes']['sValue']);
+
+            var editor2 = CKEDITOR.replace('distributionAgreement', {
+                fileTools_requestHeaders: {
+                    'Authorization': Authorization
+                },
+                toolbarGroups: toolbar,
+                removeButtons: removeButtons
+            });
+            editor2.setData(d.data.configs['distributionAgreement']['sValue']);
+
+
+
+
+            //监听购买商品成为分销商按钮
+            form.on('radio(distributionGoods)', function (data) {
+                if (data.value === "3") {
+                    $('#distributionGoods').show();
+                } else {
+                    $('#distributionGoods').hide();
+                }
+            });
+
+
+            //初始化分销设置是否选中商品
+            if (d.data.configs.distributionGoodsId) {
+                var obj = d.data.configs.distributionGoodsId;
+                if (obj.sValue) {
+                    var goodsIds = obj.sValue.split(',');
+                    coreHelper.Post("Api/Tools/GetGoodsByIds", { id: goodsIds }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        $("#goods_list").empty();
+                        var the_val = "";
+                        for (var i = 0; i < e.data.length; i++) {
+                            $("#goods_list").append('<li><span id="' + e.data[i].id + '"  lay-active="goodsDelete">×</span>' + e.data[i].name + '</li>');
+                            the_val += "," + e.data[i].id;
+                        }
+                        //$("#goods").val(the_val.slice(1));
+                    });
+                }
+            }
+
+            //处理属性 为 lay-active 的所有元素事件
+            util.event('lay-active', {
+                goods_show: function () {
+                    admin.popup({
+                        shadeClose: false,
+                        title: '选择商品',
+                        area: ['750xp', '600px'],
+                        id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
+                        success: function (layero, index) {
+                            view(this.id).render('common/getGoodIds', null).done(function () {
+                                form.render();
+                                //监听商品列表页工具条
+                                var obj_goodsIds = {};
+                                form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                    function (data) {
+                                        if (Object.getOwnPropertyNames(ids).length === 0) {
+                                            layer.msg("请先选择商品");
+                                            return;
+                                        }
+                                        //判断个数是否满足
+                                        if (Object.getOwnPropertyNames(ids).length > 1) {
+                                            layer.msg("最多只能选择" + 1 + "个");
+                                            return false;
+                                        }
+                                        $("#goods_list").empty();
+                                        var the_val = "";
+                                        for (var key in ids) {
+                                            $("#goods_list").append('<li><span id="' + key + '"  lay-active="goodsDelete">×</span>' + ids[key].name + '</li>');
+                                            the_val += "," + key;
+                                        }
+                                        $("#distributionGoodsId").val(the_val.slice(1));
+                                        layer.close(index);
+                                    });
+                            });
+                        }
+                    });
+                },
+                goodsDelete: function () {
+                    var ids_array = $("#distributionGoodsId").val().split(",");
+                    for (var i = 0; i < ids_array.length; i++) {
+                        if (ids_array[i] == $(this).attr("id")) {
+                            ids_array.splice(i, 1);
+                        }
+                    }
+                    $("#distributionGoodsId").val(ids_array.join(","));
+                    if (ids_array.length <= 0) {
+                        $("#distributionGoodsId").val(0);
+                    }
+                    $(this).parent().remove();
+                },
+            });
+
+
+            form.verify({
+                money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入合法整数或小数'],
+            });
+
+            //保存数据
+            form.on('submit(save)', function (data) {
+                formData = data.field;
+                if (!formData) {
+                    layer.msg('请先完善数据', {
+                        time: 1300
+                    });
+                    return false;
+                }
+                var field = data.field;
+                var keys = Object.keys(field);
+                var postData = [];
+                for (var i = 0; i < keys.length; i++) {
+                    var keyName = Object.keys(field)[i];
+
+                    var entity = {};
+                    entity.sKey = keyName;
+                    entity.sValue = field[keyName];
+                    postData.push(entity);
+                }
+                console.log(postData);
+                coreHelper.Post("Api/CoreCmsDistributionSetting/DoSave", { entity: postData }, function (e) {
+                    if (debug) { console.log(e); } //开启调试返回数据
+                    layer.msg(e.msg);
+                });
+            });
+
+
+            //保存编辑器数据
+            form.on('submit(saveEditor)', function (data) {
+                formData = data.field;
+                var field = data.field;
+                var keys = Object.keys(field);
+                var postData = [];
+
+                var distributionNotes = editor.getData();
+                if (!!!distributionNotes) {
+                    layer.msg(d.data.configs['distributionNotes']['sKey'] + '不能为空', { icon: 5 });
+                    return false;
+                } else {
+                    var entity = {};
+                    entity.sKey = 'distributionNotes';
+                    entity.sValue = distributionNotes;
+                    postData.push(entity);
+                }
+
+                var distributionAgreement = editor2.getData();
+                if (!!!distributionAgreement) {
+                    layer.msg(d.data.configs['distributionAgreement']['sKey'] + '不能为空', { icon: 5 });
+                    return false;
+                } else {
+                    var entity = {};
+                    entity.sKey = 'distributionAgreement';
+                    entity.sValue = distributionAgreement;
+                    postData.push(entity);
+                }
+
+                console.log(postData);
+                coreHelper.Post("Api/CoreCmsAgentSetting/DoSave", { entity: postData }, function (e) {
+                    if (debug) { console.log(e); } //开启调试返回数据
+                    layer.msg(e.msg);
+                });
+            });
+
+
+        });
+    }
+</script>

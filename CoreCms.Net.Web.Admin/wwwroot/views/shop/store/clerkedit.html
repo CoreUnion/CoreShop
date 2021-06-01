@@ -1,0 +1,37 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsStore-clerkEditForm" id="LAY-app-CoreCmsStore-clerkEditForm">
+        <input type="hidden" name="id" value="{{d.params.data.id || '' }}" />
+        <input type="hidden" name="storeId" value="{{d.params.data.storeId || '' }}" />
+
+        <div class="layui-form-item layui-form-text">
+            <label for="userId" class="layui-form-label  layui-form-required">已注册用户手机号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" lay-verType="tips" lay-verify="required|phone" class="layui-input" value="{{d.params.data.mobile || '' }}" placeholder="请输入已注册用户手机号码" lay-reqText="请输入已注册用户手机号码" />
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsStore-clerkEdit-submit" id="LAY-app-CoreCmsStore-clerkEdit-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsStore-clerkEditForm');
+            })
+    };
+</script>

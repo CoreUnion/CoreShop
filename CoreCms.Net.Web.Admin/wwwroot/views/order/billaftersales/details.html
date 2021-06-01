@@ -1,0 +1,93 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-table layui-form coreshop-form" lay-filter="LAY-app-CoreCmsBillAftersales-detailsForm" id="LAY-app-CoreCmsBillAftersales-detailsForm">
+
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">售后单号：</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.aftersalesId || '' }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户：</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.userNickName || '' }}
+            </div>
+            <label class="layui-form-label">退款金额：</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.refundAmount || '' }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">售后类型：</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.type === 1 ? '未收到货':'已收到货' }}
+            </div>
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                {{ d.params.data.statusName || '' }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">原因：</label>
+            <div class="layui-input-inline layui-inline-8 layui-form-mid">
+                {{ d.params.data.reason || '' }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片：</label>
+            <div class="layui-input-inline layui-inline-8 layui-form-mid">
+                {{# layui.each(d.params.data.images, function(index, item){ }}
+                <a onclick="layui.coreHelper.viewImage('{{item.imageUrl}}')" style="padding:1px;border:1px solid #cdcdcd;height:50px;width:50px;display:block;float:left;margin-right:1px;">
+                    <img style="max-width:50px;max-height:50px;position: relative;top: 50%;left: 50%;transform: translate(-50%,-50%)" src="{{ item.imageUrl }}" />
+                </a>
+                {{# }); }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">退货商品：</label>
+            <div class="layui-input-block">
+                <table id="billAftersalesItems" lay-filter="billAftersalesItems"></table>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-inline layui-inline-8 layui-form-mid">
+                {{ d.params.data.mark || '' }}
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper', 'table'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+
+            layui.table.render({
+                elem: '#billAftersalesItems', size: 'sm', cols: [
+                    [//标题栏
+                        { field: 'name', title: '商品名称' },
+                        { field: 'nums', title: '退货数量', width: 80 }
+                    ]
+                ], data: d.params.data.items
+                //,skin: 'line' //表格风格
+                , even: true
+                //,page: true //是否显示分页
+                //,limits: [5, 7, 10]
+                //,limit: 5 //每页默认显示的数量
+            });
+
+            form.render(null, 'LAY-app-CoreCmsBillAftersales-detailsForm');
+        });
+    };
+</script>

@@ -1,0 +1,460 @@
+<style>
+    .myOrderDetails .layui-form-label { width: 90px; padding: 8px 5px; height: 38px; line-height: 20px; border-width: 1px; border-style: solid; border-radius: 2px 0 0 2px; text-align: center; background-color: #FBFBFB; overflow: hidden; box-sizing: border-box; }
+   /* .myOrderDetails .layui-form-mid { float: left; display: block; padding: 8px 5px 8px 5px !important; line-height: 20px; margin-right: 10px; color: #999 !important; position: relative; border-width: 1px; border-style: solid; border-color: #e6e6e6; }*/
+    .coreshop-form { overflow-y: auto; height: 100%; box-sizing: border-box; }
+    .myOrderDetails .layui-input-inline { padding-left: 5px; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+
+    <div class="layui-form coreshop-form  layui-form-pane myOrderDetails">
+        <div class="layui-tab layui-tab-brief" lay-filter="LAY-app-CoreCmsOrder-DetailsForm" id="LAY-app-CoreCmsOrder-DetailsForm">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>商品信息</li>
+                <li>支付单/退款单</li>
+                {{#  if(d.params.data.storeId != 0){ }}
+                <li>发货单/提货单/退货单</li>
+                {{#  } else { }}
+                <li>发货单/退货单</li>
+                {{#  } }}
+                <li>优惠券记录</li>
+                <li>订单记录</li>
+                <li>订单备注</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!--订单信息-->
+                <div class="layui-tab-item layui-show">
+                    <!--订单信息-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">订单信息</legend>
+                    </fieldset>
+                    <div class="layui-form-item" lay-size="sm">
+                        <label class="layui-form-label">订单号</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.orderId}}</div>
+
+                        <label class="layui-form-label">下单来源</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.sourceText}}</div>
+
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.createTime}}</div>
+
+                        <label class="layui-form-label">支付方式</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.paymentCodeText}}</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">订单状态</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.statusText}}</div>
+
+                        <label class="layui-form-label">发货状态</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.shipStatusText}}</div>
+
+                        <label class="layui-form-label">配送方式</label>
+
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{# if (d.params.data.logistics) { }}
+                            {{ d.params.data.logistics.name }}
+                            {{# } else{  }}  无 {{# }  }}
+                        </div>
+
+                        <label class="layui-form-label">商品总重量</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.weight}}</div>
+                    </div>
+
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">付款信息</legend>
+                    </fieldset>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">商品总价</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.goodsAmount}}</div>
+
+                        <label class="layui-form-label">配送费用</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.costFreight}}元</div>
+
+                        <label class="layui-form-label">应付金额</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.goodsAmount + d.params.data.costFreight}}元</div>
+
+                        <label class="layui-form-label">支付状态</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.payStatusText}}</div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">订单优惠金额</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.orderDiscountAmount}}</div>
+
+                        <label class="layui-form-label">商品优惠金额</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.goodsDiscountAmount}}</div>
+
+                        <label class="layui-form-label">优惠券优惠</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.couponDiscountAmount}}</div>
+
+                        <label class="layui-form-label">积分优惠</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.pointMoney}}</div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+
+                        <label class="layui-form-label">优惠后金额</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.orderAmount}}元</div>
+
+                        <label class="layui-form-label">已支付金额</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">￥{{d.params.data.payedAmount}}元</div>
+                    </div>
+
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">发票信息</legend>
+                    </fieldset>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发票类型</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.taxTypeText}}</div>
+                        <label class="layui-form-label">发票内容</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">
+                            {{# if (d.params.data.invoice.type != 1) { }}商品明细{{# } else{  }}  无 {{# }  }}
+                        </div>
+                        <label class="layui-form-label">税号</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.invoice.taxNumber||'无'}}</div>
+
+                        <label class="layui-form-label">发票抬头</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.invoice.title||'无'}}</div>
+                    </div>
+
+                    <!--收货人信息-->
+                    {{# if (d.params.data.store) { }}
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">提货信息</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">店铺联系电话</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.store.mobile}}</div>
+                        <label class="layui-form-label">店铺地址</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-10">{{d.params.data.store.allAddress}}</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">自提店铺名</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.store.storeName}}</div>
+                        <label class="layui-form-label">店铺联系人</label>
+                        <div class="layui-input-inline layui-form-mid">{{d.params.data.store.linkMan}}</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提货人名</label>
+                        <div class="layui-input-inline  layui-inline-3 layui-form-mid">{{d.params.data.shipName}}</div>
+
+                        <label class="layui-form-label">提货人电话</label>
+                        <div class="layui-input-inline layui-form-mid">{{d.params.data.shipMobile}}</div>
+                    </div>
+                    {{# }else {}}
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">收货人信息</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货人姓名</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.shipName}}</div>
+
+                        <label class="layui-form-label">收货人电话</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.shipMobile}}</div>
+
+                        <label class="layui-form-label">收货状态</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.confirmStatusText}}</div>
+
+                        <label class="layui-form-label">收货时间</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{#  if(d.params.data.confirmStatus == 2){ }}{{d.params.data.confirmTime}}{{#  } else { }}无{{#  } }}
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-14">{{d.params.data.shipAreaName}} - {{d.params.data.shipAddress}}</div>
+                    </div>
+                    {{# } }}
+
+                    <!--买家备注-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">买家备注</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">买家备注</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-10">{{d.params.data.memo||'无'}}</div>
+                    </div>
+                </div>
+
+                <!--商品详情-->
+                <div class="layui-tab-item">
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th width="24">商品<br />单价</th>
+                                <th width="24">购买<br />数量</th>
+                                <th width="24">商品<br />总价</th>
+                                <th width="130">货品编码</th>
+                                <th width="130">商品编码</th>
+                                <th>商品总重量</th>
+                                <th width="24">发货<br />数量</th>
+                                <th width="24">退货<br />数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.items, function(index, item){ }}
+                            <tr>
+                                <td>{{item.name}} - {{item.addon}}</td>
+                                <td>{{item.price}}</td>
+                                <td>{{item.nums}}</td>
+                                <td>{{item.amount}}</td>
+                                <td>{{item.sn}}</td>
+                                <td>{{item.bn}}</td>
+                                <td>{{item.weight}}</td>
+                                <td>{{#  if(item.sendnums == 2){ }}{{item.sendnums}}{{#  } else { }}0{{#  } }}    </td>
+                                <td>{{item.reshipNums}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--支付单/退款单-->
+                <div class="layui-tab-item">
+                    <!--支付单-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">支付单</legend>
+                    </fieldset>
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>支付单号</th>
+                                <th>支付方式</th>
+                                <th>第三方支付单号</th>
+                                <th>支付金额</th>
+                                <th>支付状态</th>
+                                <th>说明</th>
+                                <th>支付时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.paymentRelItem, function(index, item){ }}
+                            <tr>
+                                <td>{{item.bill.paymentId}}</td>
+                                <td>{{item.bill.paymentCodeName}}</td>
+                                <td>{{item.bill.tradeNo || ''}}</td>
+                                <td>{{item.bill.money}}</td>
+                                <td>{{item.bill.statusName}}</td>
+                                <td>{{item.bill.payedMsg || ''}}</td>
+                                <td>{{item.bill.updateTime || ''}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+
+                    <!--退款单-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">退款单</legend>
+                    </fieldset>
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>退款单号</th>
+                                <th>退款方式</th>
+                                <th>第三方支付单号</th>
+                                <th>退款金额</th>
+                                <th>退款状态</th>
+                                <th>申请时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.refundItem, function(index, item){ }}
+                            <tr>
+                                <td>{{item.refundId}}</td>
+                                <td>{{item.paymentCodeName}}</td>
+                                <td>{{item.tradeNo}}</td>
+                                <td>{{item.money}}</td>
+                                <td>{{item.statusName}}</td>
+                                <td>{{item.createTime}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--发货单/提货单/退货单-->
+                <div class="layui-tab-item">
+                    <!--发货单-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">发货单</legend>
+                    </fieldset>
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>发货单号</th>
+                                <th>快递公司</th>
+                                <th>快递单号</th>
+                                <th>收货人名</th>
+                                <th>收货电话</th>
+                                <th>收货地址</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {{# layui.each(d.params.data.delivery, function(index, item){ }}
+                            <tr>
+                                <td>{{item.deliveryId}}</td>
+                                <td>{{item.logiName}}</td>
+                                <td>{{item.logiNo}}</td>
+                                <td>{{item.shipName}}</td>
+                                <td>{{item.shipMobile}}</td>
+                                <td>{{item.shipAreaIdName}}-{{item.shipAddress}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                    {{#  if(d.params.data.storeId != 0){ }}
+                    <!--提货单-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">提货单</legend>
+                    </fieldset>
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>提货单号</th>
+                                <th>提货门店</th>
+                                <th>提货人名</th>
+                                <th>提货电话</th>
+                                <th>提货状态</th>
+                                <th>提货时间</th>
+                                <th>接待店员</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {{# layui.each(d.params.data.ladingItem, function(index, item){ }}
+                            <tr>
+                                <td>{{item.id}}</td>
+                                <td>{{item.storeName}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.mobile}}</td>
+                                <td>{{item.statusName}}</td>
+                                <td>{{item.updateTime}}</td>
+                                <td>{{item.clerkIdName}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                    {{#  } }}
+
+                    <!--退货单-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">退货单</legend>
+                    </fieldset>
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>退货单号</th>
+                                <th>快递公司</th>
+                                <th>快递单号</th>
+                                <th>退货状态</th>
+                                <th>退货时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.returnItem, function(index, item){ }}
+                            <tr>
+                                <td>{{item.reshipId}}</td>
+                                <td>{{item.logiName}}</td>
+                                <td>{{item.logiNo}}</td>
+                                <td>{{item.statusName}}</td>
+                                <td>{{item.updateTime}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!--优惠券记录-->
+                <div class="layui-tab-item">
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>优惠券编码</th>
+                                <th>优惠券名称</th>
+                                <th>创建时间</th>
+                                <th>使用时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.couponObj, function(index, item){ }}
+                            <tr>
+                                <td>{{item.couponCode}}</td>
+                                <td>{{item.couponName}}</td>
+                                <td>{{item.createTime}}</td>
+                                <td>{{item.updateTime}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--订单记录-->
+                <div class="layui-tab-item">
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>操作类型</th>
+                                <th>描述</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{# layui.each(d.params.data.orderLog, function(index, item){ }}
+                            <tr>
+                                <td>{{item.orderId}}</td>
+                                <td>{{item.typeText}}</td>
+                                <td>{{item.msg}}</td>
+                                <td>{{item.createTime}}</td>
+                            </tr>
+                            {{# }); }}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--订单备注-->
+                <div class="layui-tab-item">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">备注内容</legend>
+                    </fieldset>
+                    <input type="hidden" name="id" value="{{d.params.data.orderId}}">
+                    <textarea name="data" class="layui-input" lay-verType="tips" lay-verify="required" style="padding:10px;height:190px;">{{d.params.data.mark || ''}}</textarea>
+                    <button class="layui-btn layui-btn-fluid mark-save" style="width:200px;margin:20px auto 0;display:block;" lay-submit lay-filter="LAY-app-order-saveMark-submit" id="LAY-app-order-saveMark-submit">保存备注</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsOrder-DetailsForm');
+            })
+    };
+</script>

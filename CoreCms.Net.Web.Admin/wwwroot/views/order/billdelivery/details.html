@@ -1,0 +1,157 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-table layui-form coreshop-form" lay-filter="LAY-app-CoreCmsBillDelivery-detailsForm" id="LAY-app-CoreCmsBillDelivery-detailsForm">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">发货信息</li>
+                <li>发货明细</li>
+                <li>物流明细</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发货单号：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.deliveryId || '' }}
+                        </div>
+                        <label class="layui-form-label">收货人：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.shipName || '' }}
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">订单号：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-100">
+                            {{d.params.data.model.orderId || '' }}
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快递公司：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.logiName || '' }}
+                        </div>
+                        <label class="layui-form-label">快递单号：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.logiNo || '' }}
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货电话：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.shipMobile || '' }}
+                        </div>
+                        <label class="layui-form-label">创建时间：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-3">
+                            {{d.params.data.model.createTime || '' }}
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-100">
+                            {{d.params.data.model.shipAddress || '' }}
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发货备注：</label>
+                        <div class="layui-input-inline layui-form-mid layui-inline-100">
+                            {{d.params.data.model.memo || '' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col>
+                                <col width="100">
+                                <col width="100">
+                                <col width="90">
+                                <col width="90">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>商品编码</th>
+                                    <th>货品编码</th>
+                                    <th>发货数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{# layui.each(d.params.data.items, function(index, item){ }}
+                                <tr>
+                                    <td>{{ item.name }} - {{ item.addon }}</td>
+                                    <td>{{ item.bn }}</td>
+                                    <td>{{ item.sn }}</td>
+                                    <td>{{ item.nums }}</td>
+                                </tr>
+                                {{# }); }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="layui-tab-item">
+                    <div class="layui-form-item" id="LogisticsDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="logisticsBox" type="text/html">
+    {{# layui.each(d.list, function(index, item){ }}
+    <ul class="layui-timeline">
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <h4 class="layui-timeline-title">{{ item.time }} </h4>
+                <p style="font-size: 12px;">
+                    {{ item.context }}
+                </p>
+            </div>
+        </li>
+    </ul>
+    {{# }); }}
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper', 'element', 'laytpl'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , laytpl = layui.laytpl
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+
+            coreHelper.Post("Api/Tools/LogisticsByApi", { code: d.params.data.model.logiCode, no: d.params.data.model.logiNo }, function (e) {
+                console.log(e);
+                if (e.code === 0) {
+                    if (e.data.data.length > 0) {
+                        //下拉重新赋值
+                        var getTpl = logisticsBox.innerHTML, view = document.getElementById('LogisticsDiv');
+
+                        var tmpData = {};
+                        tmpData.list = e.data.data;
+                        laytpl(getTpl).render(tmpData, function (html) {
+                            view.innerHTML = html;
+                        });
+                        form.render();
+                        layer.msg(e.msg);
+                    } else {
+                        layer.msg(e.msg);
+                    }
+                } else {
+                    layer.msg(e.msg);
+                }
+            });
+
+            form.render(null, 'LAY-app-CoreCmsBillDelivery-detailsForm');
+        });
+    };
+</script>

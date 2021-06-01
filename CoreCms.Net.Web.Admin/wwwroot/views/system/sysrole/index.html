@@ -1,0 +1,341 @@
+<title>角色表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/SysRole/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="roleName" id="roleName" placeholder="请输入角色名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="roleCode" id="roleCode" placeholder="请输入角色标识" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-SysRole-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-SysRole-tableBox" lay-filter="LAY-app-SysRole-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-SysRole-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-SysRole-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" data-dropdown="#roleTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="roleSet">权限分配</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide" id="roleTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除【{{d.roleName}}】吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary cursor" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal cursor" lay-event="del">确定</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper', 'zTree'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-SysRole-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-SysRole-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-SysRole-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-SysRole-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-SysRole-tableBox',
+                    url: 'Api/SysRole/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-SysRole-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '角色id', width: 80, sort: false },
+                            { field: 'roleName', title: '角色名称', sort: false, width: 205 },
+                            { field: 'roleCode', title: '角色标识', sort: false, width: 205 },
+                            { field: 'comments', title: '备注', sort: false },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '修改时间', width: 130, sort: false },
+                            { width: 212, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-SysRole-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-SysRole-tableBox)', function (obj) {
+                    table.reload('LAY-app-SysRole-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-SysRole-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-SysRole-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        } else if (obj.event === 'roleSet') {
+                            doRoleSet(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/SysRole/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysRole-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/SysRole/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysRole-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysRole/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-SysRole-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/SysRole/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑数据',
+                                area: ['380px', '400px'],
+                                id: 'LAY-popup-SysRole-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/SysRole/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysRole-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (debug) {
+                                                    console.log(field);
+                                                } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysRole/DoEdit",
+                                                    field,
+                                                    function (e) {
+                                                        console.log(e)
+                                                        if (e.code === 0) {
+                                                            layui.table.reload('LAY-app-SysRole-tableBox'); //重载表格
+                                                            layer.close(index); //再执行关闭
+                                                            layer.msg(e.msg);
+                                                        } else {
+                                                            layer.msg(e.msg);
+                                                        }
+                                                    });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行权限设置操作
+                function doRoleSet(obj) {
+                    console.log(obj);
+                    admin.popup({ shadeClose: false,
+                        title: '角色权限分配',
+                        area: ['600px', '90%'],
+                        btn: ['保存', '全选','取消全选','取消'],
+                        content: '<ul id="roleAuthTree" class="ztree" style="padding-left: 15px;min-height: 500px;"></ul>',
+                        success: function (layero, dIndex) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post('Api/SysRole/GetSysMenu', { id: obj.data.id }, function (res) {
+                                layer.close(loadIndex);
+                                if (0 === res.code) {
+                                    $.fn.zTree.init($('#roleAuthTree'), {
+                                        check: { enable: true },
+                                        data: {
+                                            key: { name: "menuName" },
+                                            simpleData: {
+                                                enable: true,
+                                                idKey: "id",
+                                                pIdKey: "parentId", rootPId: 0
+                                            }
+                                        }
+                                    }, res.data);
+                                } else {
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                            // 超出一定高度滚动
+                            //$(layero).children('.layui-layer-content').css({ 'max-height': '300px', 'overflow': 'auto' });
+                        },
+                        yes: function (dIndex) {
+                            var checkedRows = $.fn.zTree.getZTreeObj('roleAuthTree').getCheckedNodes(true);
+                            var ids = [];
+                            for (var i = 0; i < checkedRows.length; i++) {
+                                ids.push(checkedRows[i].id);
+                            }
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post('Api/SysRole/DoSetSysMenu', { id: obj.data.id, data: ids }, function (res) {
+                                layer.close(loadIndex);
+                                if (0 === res.code) {
+                                    layer.msg(res.msg, { icon: 1 });
+                                    layer.close(dIndex);
+                                } else {
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        },
+                        btn2: function (index, layero) {
+                            var zTree = $.fn.zTree.getZTreeObj("roleAuthTree"),
+                                type = 'checkAllTrue',
+                                nodes = zTree.getSelectedNodes();
+                            zTree.checkAllNodes(true);
+                            return false;
+                        },
+                        btn3: function (index, layero) {
+                            var zTree = $.fn.zTree.getZTreeObj("roleAuthTree"),
+                                type = 'checkAllFalse',
+                                nodes = zTree.getSelectedNodes();
+                            zTree.checkAllNodes(false);
+                            return false;
+                        }
+                    });
+                }
+
+                //执行单个删除
+                function doDelete(obj) {
+                    coreHelper.Post("Api/SysRole/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reload('LAY-app-SysRole-tableBox');
+                        layer.msg(e.msg);
+                    });
+                }
+                //执行批量删除
+                function doBatchDelete(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择要删除的数据');
+                    }
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            coreHelper.Post("Api/SysRole/DoBatchDelete", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                table.reload('LAY-app-SysRole-tableBox');
+                                layer.msg(e.msg);
+                            });
+                        });
+                }
+
+            });
+    };
+</script>

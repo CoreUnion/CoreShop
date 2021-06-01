@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CrudTemplete\Controllers\Controller.tpl" />
+    <EmbeddedResource Include="CrudTemplete\DbModel\Model.tpl" />
+    <EmbeddedResource Include="CrudTemplete\Repositories\IRepository.tpl" />
+    <EmbeddedResource Include="CrudTemplete\Repositories\Repository.tpl" />
+    <EmbeddedResource Include="CrudTemplete\Services\IServices.tpl" />
+    <EmbeddedResource Include="CrudTemplete\Services\Services.tpl" />
+    <EmbeddedResource Include="CrudTemplete\View\Create.tpl" />
+    <EmbeddedResource Include="CrudTemplete\View\Details.tpl" />
+    <EmbeddedResource Include="CrudTemplete\View\Edit.tpl" />
+    <EmbeddedResource Include="CrudTemplete\View\Index.tpl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotLiquid" Version="2.1.436" />
+    <PackageReference Include="sqlSugarCore" Version="5.0.2.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreCms.Net.Model\CoreCms.Net.Model.csproj" />
+  </ItemGroup>
+
+</Project>

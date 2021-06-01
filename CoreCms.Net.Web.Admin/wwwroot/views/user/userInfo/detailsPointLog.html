@@ -1,0 +1,124 @@
+<title>用户积分记录表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <label class="layui-form-label" for="type">类型</label>
+                <div class="layui-input-inline">
+                    <select name="type" id="type">
+                        <option>请选择</option>
+                        {{# layui.each(d.params.data.userPointSourceTypes, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.description }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="remarks">备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="remarks" id="remarks" placeholder="请输入备注" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="createTime">创建时间</label>
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="createTime" id="searchTimeDetailsPointLog-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsUserPointLog-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUserPointLog-tableBox" lay-filter="LAY-app-CoreCmsUserPointLog-tableBox"></table>
+</div>
+
+<script>
+    var indexData;
+    layui.data.done = function (d) {
+        indexData = d.params.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTimeDetailsPointLog-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsUserPointLog-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsUserPointLog-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsUserPointLog-tableBox',
+                    url: 'Api/CoreCmsUser/GetUserPointLogPageList',
+                    method: 'POST',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    //height: 'full-189',//无面包屑127,搜索框189,1行62
+                    where: { userId: d.params.id },
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { field: 'id', title: 'ID', sort: true, width: 105 },
+                            {
+                                field: 'type', title: '类型', sort: true, width: 105, templet: function (data) {
+                                    for (i = 0; i < indexData.userPointSourceTypes.length; i++) {
+                                        if (data.type === indexData.userPointSourceTypes[i].value) {
+                                            return indexData.userPointSourceTypes[i].description;
+                                        }
+                                    }
+                                }
+                            },
+                            { field: 'num', title: '积分数量', sort: true, width: 105 },
+                            { field: 'balance', title: '积分余额', sort: true, width: 105 },
+                            { field: 'remarks', title: '备注', sort: true },
+                            { field: 'createTime', title: '创建时间', width: 170, sort: true },
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsUserPointLog-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsUserPointLog-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+            });
+    };
+</script>

@@ -1,0 +1,94 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsSms-detailsForm" id="LAY-app-CoreCmsSms-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="mobile">手机号码</label>
+                </td>
+                <td>
+                    {{ d.params.data.mobile || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="code">发送编码</label>
+                </td>
+                <td>
+                    {{ d.params.data.code || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="params">参数</label>
+                </td>
+                <td>
+                    {{ d.params.data.params || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="contentBody">内容</label>
+                </td>
+                <td>
+                    {{ d.params.data.contentBody || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="ip">ip</label>
+                </td>
+                <td>
+                    {{ d.params.data.ip || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isUsed">是否使用</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isUsed" value="{{d.params.data.isUsed}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isUsed" {{ d.params.data.isUsed ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    layui.data.done = function (d) {
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsSms-detailsForm');
+        });
+    };
+</script>

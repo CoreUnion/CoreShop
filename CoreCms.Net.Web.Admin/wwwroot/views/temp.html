@@ -1,0 +1,60 @@
+<title>标题</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">YYY</div>
+                <div class="layui-card-body">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">ZZZ</div>
+                <div class="layui-card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form','coreHelper'], function () {
+
+        var $ = layui.$
+            , setter = layui.setter
+            , admin = layui.admin
+            , coreHelper = layui.coreHelper
+            , form = layui.form
+            , router = layui.router()
+            , search = router.search;
+
+        //var accressToken = layui.data(setter.tableName)[setter.request.tokenName];
+        //console.log(accressToken);
+
+        //admin.req({
+        //    url: '/api/v2/VersionsDemo/Get',
+        //    type: "Get",
+        //    done: function (res) {
+        //        console.log(res);
+
+        //    },
+        //    error: function (res) {
+        //        console.log(res);
+        //    }
+        //});
+
+    });
+</script>

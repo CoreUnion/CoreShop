@@ -1,0 +1,63 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsArea-createForm" id="LAY-app-CoreCmsArea-createForm">
+        <input type="hidden" name="parentId" value="{{d.params.data.id}}" />
+        <input type="hidden" name="depth" value="{{d.params.data.depth+1}}" />
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">上级名称 </label>
+            <div class="layui-input-block">
+                <input class="layui-input" value="{{d.params.data.name}}" readonly="readonly" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">地区名称</label>
+            <div class="layui-input-block">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入地区名称" placeholder="请输入地区名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="postalCode" class="layui-form-label">邮编</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="postalCode" id="postalCode" lay-verType="tips" lay-verify="required|number" class="layui-input" value="0" placeholder="请输入邮编" lay-reqText="请输入邮编" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">地区排序</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入地区排序" lay-reqText="请输入地区排序并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsArea-createForm-submit" id="LAY-app-CoreCmsArea-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+
+                    verifyname: [/^[\S]{0,50}$/, '地区名称最大只允许输入50位字符，且不能出现空格'],
+                    verifypostalCode: [/^[\S]{0,10}$/, '邮编最大只允许输入10位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsArea-createForm');
+            })
+    };
+</script>

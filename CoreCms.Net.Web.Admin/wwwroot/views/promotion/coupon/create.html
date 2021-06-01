@@ -1,0 +1,105 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsPromotion-createForm" id="LAY-app-CoreCmsPromotion-createForm">
+        <input type="hidden" value="2" name="type" id="type" />
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">优惠券名称</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入优惠券名称" placeholder="请输入优惠券名称" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过40个字符内容</div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isEnable" class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isEnable" id="isEnable" lay-skin="switch" checked="checked" lay-text="开启|关闭">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">权重</label>
+            <div class="layui-input-inline  layui-inline-1">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="100" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越小，权重越大</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">总数量</label>
+            <div class="layui-input-inline  layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxRecevieNums" id="maxRecevieNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="100" placeholder="请输入总数量" lay-reqText="请输入总数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">设置能领取的总数量，不管是否被兑换，将停止再被领取（0为不限制）</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">每人限领数量</label>
+            <div class="layui-input-inline  layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxNums" id="maxNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入每人限领数量" lay-reqText="请输入每人限领数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">0为不限制</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="isExclusive" class="layui-form-label">用户领取</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isAutoReceive" id="isAutoReceive" lay-skin="switch" checked="checked" lay-text="开启|关闭">
+            </div>
+            <div class="layui-form-mid layui-word-aux">启用后，用户可在前台直接领取</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="startTime" class="layui-form-label">起止时间</label>
+            <div class="layui-input-inline layui-inline-6">
+                <input name="startTime" id="createTime-CoreCmsPromotion-startTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入开始时间" lay-reqText="请输入开始时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="effectiveDays" class="layui-form-label  layui-form-required">有效天数</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="effectiveDays" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入有效天数" lay-reqText="请输入有效天数并为数字" />
+            </div>
+            <label for="effectiveHours" class="layui-form-label  layui-form-required">有效小时</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="effectiveHours" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入有效小时" lay-reqText="请输入有效小时并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">设置后，领取的优惠券将在领取时间上增加有效时间</div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-createForm-submit" id="LAY-app-CoreCmsPromotion-createForm-submit" value="确认添加">
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsPromotion-startTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                form.verify({
+
+                    verifyname: [/^[\S]{0,40}$/, '促销名称最大只允许输入40位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsPromotion-createForm');
+            })
+    };
+</script>

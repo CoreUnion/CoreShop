@@ -1,0 +1,179 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsServices-detailsForm" id="LAY-app-CoreCmsServices-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="title">项目名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.title || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="thumbnail">项目缩略图</label>
+                </td>
+                <td>
+                    {{ d.params.data.thumbnail || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="description">项目概述</label>
+                </td>
+                <td>
+                    {{ d.params.data.description || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="contentBody">项目详细说明</label>
+                </td>
+                <td>
+                    {{ d.params.data.contentBody || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="allowedMembership">允许购买会员级别</label>
+                </td>
+                <td>
+                    {{ d.params.data.allowedMembership || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="status">项目状态</label>
+                </td>
+                <td>
+                    {{ d.params.data.status || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="maxBuyNumber">项目重复购买次数</label>
+                </td>
+                <td>
+                    {{ d.params.data.maxBuyNumber || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="amount">项目可销售数量</label>
+                </td>
+                <td>
+                    {{ d.params.data.amount || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="startTime">项目开始时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.startTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="endTime">项目截止时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.endTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityType">核销有效期类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityStartTime">核销开始时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityStartTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="validityEndTime">核销结束时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.validityEndTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="ticketNumber">核销服务券数量</label>
+                </td>
+                <td>
+                    {{ d.params.data.ticketNumber || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">项目创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">项目更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsServices-detailsForm');
+        });
+    };
+</script>

@@ -1,0 +1,56 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoodsParams-createForm" id="LAY-app-CoreCmsGoodsParams-createForm">
+        <blockquote class="site-text layui-elem-quote">
+            如果选择的是【单选】或者【复选框】，则多个参数值之间使用小写逗号（,）分隔。
+        </blockquote>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">参数名称</label>
+            <div class="layui-input-block">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入参数名称" placeholder="请输入参数名称" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">参数类型</label>
+            <div class="layui-input-block">
+                <select name="type" id="type" lay-verType="tips" lay-verify="required|verifytype" lay-reqText="请输入参数类型" placeholder="请输入参数类型">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.goodsParamTypes, function(index, item){ }}
+                    <option value="{{ item.title }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="value" class="layui-form-label">参数值</label>
+            <div class="layui-input-block">
+                <input name="value" id="value" class="layui-input" lay-reqText="请输入参数值" placeholder="多个用小写逗号分开,文本框类型可不填" />
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoodsParams-createForm-submit" id="LAY-app-CoreCmsGoodsParams-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (layui.setter.debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+                    verifyname: [/^[\S]{0,10}$/, '参数名称最大只允许输入10位字符，且不能出现空格'],
+                    verifytype: [/^[\S]{0,10}$/, '参数类型最大只允许输入10位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsGoodsParams-createForm');
+            })
+    };
+</script>

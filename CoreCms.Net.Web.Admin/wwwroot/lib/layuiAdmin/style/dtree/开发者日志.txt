@@ -1,0 +1,321 @@
+大改》 修复 》 优化 》 新增 》  更新 》 移除
+基础属性 》 checkbar属性 》 menubar属性 》 toolbar属性 》 iframe属性 》  基础方法 》 内置方法
+
+------------------------v2.5.7(2020/?/?)【优化】：------------------------
+【修复】select模块修复：当设置默认值时，存在点击select面板后，默认值消失的问题。
+【修复】内置属性修复：修复response设置了checked和type映射却无效的问题
+【新增】内置函数新增：fuzzySearch，模糊查询，搜索节点，保留父节点。
+【优化】内置函数优化：setDisabledNodes，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【新增】内置函数新增：setDisabledNode，设置单个节点的禁用
+【优化】内置函数优化：cancelDisabledNodes，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【新增】内置函数新增：cancelDisabledNode，设置单个节点的取消禁用
+【优化】内置函数优化：getDisabledNodesParam，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【优化】内置函数优化：setHideNodes，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【新增】内置函数新增：setHideNode，设置单个节点的隐藏
+【优化】内置函数优化：cancelHideNodes，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【新增】内置函数新增：cancelHideNode，设置单个节点的取消隐藏
+【优化】内置函数优化：getHideNodesParam，现支持传入单个数据、带分隔符的字符串、数组、二维数组。
+【优化】内置函数优化：chooseDataInit，现支持传入单个数据、带分隔符的字符串、数组、二维数组（多级复选框）。
+【新增】基础方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数，选中数据横向存储
+【新增】基础方法新增：beforeSend，异步加载发送ajax请求之前的回调
+【新增】基础方法新增：serialize，序列化json对象
+【优化】基础方法优化：success方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，加载子节点时也可以回调该方法。
+【优化】基础方法优化：done方法，新增一个入参，表示是否第一次渲染数据，并支持在增量加载时，在加载子节点时也可以回调该方法。
+【优化】内置方法优化：dataInit方法，仅支持一个节点改变背景色的优化。
+【优化】内置方法优化：init方法，入参新增一个异步加载完成后的回调函数，内部使用。
+【优化】内置方法优化：getChild方法，入参新增一个异步加载完成后的回调函数，内部使用。
+【优化】异步加载优化：使用data加载，也会出现load效果。
+【优化】toolbat模块优化：当设置dataFormat时，默认的增删改数据中会出现dataFormat配置的元素，优化之后仅获取文字。
+【优化】select模块优化：自适应当前组件的位置，向上或向下展开树。
+【新增】基础属性新增：asyncLoad，异步加载初始加载层级树组
+【新增】基础属性新增：selectCardHeight，树面板的高度
+【新增】内置方法新增：loadTreeInit，初始化加载树
+【新增】内置方法新增：loadChildTreeInit，初始化加载子节点
+【新增】内置方法新增：dataLoadTree，用data加载树
+【新增】内置方法新增：asyncLoadTree，异步加载树
+
+
+------------------------v2.5.6(2019/10/24)【新增】：------------------------
+【修复】标签属性修复：ul标签上data-value属性设置无效的问题
+【优化】数据格式:获取格式中的basicData和recordData将提前转化为JSON格式，不在需要手动转换。
+【优化】基础方法优化：render，支持加载下拉树
+【优化】基础方法优化：reload，支持重载下拉树
+【新增】基础属性新增：bak，内置属性，备份Html。
+【新增】事件监听：changeSelect，下拉树面板开闭状态改变后，触发事件。
+【新增】内置方法新增：rollbackHtml，基于备份的Html数据回滚
+【新增】内置方法新增：setDisabledAllNodes，设置全部节点为disabled
+【新增】内置方法新增：reloadSelectSetting，重新设置下拉树的基本参数
+【新增】内置方法新增：reloadSelectDom，重新渲染下拉树的Dom结构
+【新增】内置方法新增：selectCheckboxVal，设置复选框模式中的下拉树的值
+【新增】内置方法新增：getCheckbarJsonArrParam，获取基于返回参数的树的复选框参数数组
+【新增】内置方法新增：checkAllNode，复选框全选
+【新增】内置方法新增：cancelCheckedNode，取消全部复选框选中
+【新增】内置方法新增：invertCheckedNode，反选复选框
+【新增】内置方法新增：removeCheckedNode，删除选中节点
+
+------------------------v2.5.5(2019/10/12)【新增】：------------------------
+【修复】内置方法修复：partialRefreshEdit，支持修改parentId后及时返显到下挂节点
+【优化】单页模式中树的缓存问题
+【优化】基础属性优化，开启line时，toolbar的fixed显示不正常
+【优化】基础属性优化，开启line时，div选中 悬停背景对齐
+【优化】基础方法优化：success方法的放置位置，可以将不同的数据格式在success方法内做转换，或添加根节点。
+【优化】iframe模块优化：将原来用iframe包住的属性提出，撤销iframe这一层。
+【优化】内置属性优化：scroll属性更名为scroll。
+【优化】内置方法优化：当异步加载出现异常时，以文字形式而非弹框形式提示。
+【新增】标签属性新增：ul标签上新增data-value属性，用于指定下拉树的初始展示值
+【新增】基础属性新增：width，设置树的宽度
+【新增】基础属性新增：select，设置树模式为下拉树
+【新增】基础属性新增：selectTips，设置下拉树时的输入框提示文字
+【新增】基础属性新增：selectInputName，设置下拉树内部表单标签的name
+【新增】基础属性新增：selectInitVal，设置下拉树的初始展示值
+【新增】基础属性新增：withCredentials，用于开启生成跨域的XHR对象，设置后可指定同源session，默认false。
+【新增】基础方法新增：set，可以增加同一次引用中，dtree的公共属性指定，所有基础属性都可以指定。
+【新增】基础方法新增：renderSelect，初始化下拉树
+【新增】基础方法新增：selectVal，设置下拉树的初始展示值
+【新增】内置方法新增：selectVal，设置下拉树的初始展示值
+【新增】内置方法新增：selectSetting，设置下拉树的初始元素
+【新增】内置方法新增：renderSelectDom，渲染下拉树的Dom结构
+【新增】内置方法新增：clickNodeCheckbar，点击节点选中复选框
+【更新】内置方法更新：getNoneDom方法，添加errText子方法，显示错误信息。
+
+------------------------v2.5.4(2019/6/14)【修复】：------------------------
+【修复】内置方法中，使用data方法获取值不到的问题。
+【优化】基础属性优化：ficon，可以设置Array型数据，与icon的配置方式相同
+【优化】基础属性优化：skin，其中设置layui看起来更像layui的风格，新增laySimple风格，遵从简约版layui树形菜单。
+【优化】内置方法优化：涉及样式的一系列内置方法优化
+【新增】基础属性新增：height，调整高度，与table用法一致
+【新增】基础属性新增：response中新增ficonClass，可以指定一级图标样式。
+【新增】内置方法新增：cancelNavThis，取消选中div。
+【更新】内置方法更新：parseData：增加对ficonClass属性的解析
+【更新】内置方法更新：changeCheck，可以通过传递参数的方式传递复选框dom。
+【移除】基础属性移除：dot，移除一级图标小圆点的单独设置，改为在ficon中配置，与icon的配置方式相同
+【移除】基础属性移除：firstIconArray，与nodeIconArray合并。
+
+------------------------v2.5.0(2019/6/01)【适配】：------------------------
+【适配】对layui2.5适配
+【修复】基础属性修复，error方法，现在可以正确的获取参数列表中的参数，如无定义则默认打印textStatus。
+【修复】基础属性修复，complete方法，现在可以正确的获取参数列表中的参数
+【优化】一系列内置方法优化
+【新增】基础属性新增：line，用于指定树线
+【新增】内置方法新增：showLine：用于显示树线
+【新增】内置方法新增：showLineLi：作用在单个LI显示树线
+
+------------------------v2.5.0(2019/5/20)【大版本】：------------------------
+【大改】数据格式:reponse中isLast属性更换为last属性。
+【大改】数据格式:reponse中isChecked属性更换为checked属性。
+【大改】数据格式:defaultRequest中isLeaf属性更换为leaf属性。
+【大改】数据格式:defaultRequest中isChecked属性更换为checked属性。
+【大改】内置属性:record开启后，原来记录节点的全部数据（排除children和basicData）改为只记录用户自定义的数据（同样排除children和basicData）
+【修复】toolbar模块修复：自定义的toolbar的回调函数的第二个$div参数修复，现在可以取到值
+【修复】toolbar模块修复：内置函数：changeTreeNodeEdit中的title未定义的问题。
+【修复】menubar模块修复：将dtree放在form中，menubar的默认按钮单击之后会提交表单的问题。
+【修复】iframe模块修复：配置了iframeDefaultRequest时，只会显示iframeDefaultRequest中的参数的问题。
+【优化】toolbar模块优化：内置的三个按钮中的label均加上title提示
+【优化】基础方法优化：render方法和reload方法中，如果树在当前页面中被加载过一次了，再次加载会从缓存中取出树，并将树上次点击的节点作为参数记录下载，现在优化为还是从缓存中取，但是会重置上次记录的参数。
+【优化】内置函数优化：getLiItemDom 当parentId为0时组件自动判定为false从而使用内置parentId的问题。
+【新增】基础属性新增：iconfont属性，用于定义使用图标数组或string
+【新增】基础属性新增：iconfontStyle属性，用于自定义树的每个关键部位使用的图标
+【新增】基础属性新增：accordion属性，用于开启手风琴模式
+【新增】基础属性新增：contentType属性，用于可以显示配置发送信息至服务器时内容编码类型
+【新增】基础属性新增：response属性中新增disabled，标识节点禁用。
+【新增】基础属性新增：response属性中新增isHide，标识节点隐藏。
+【新增】基础属性新增：formatter属性，用于对树展示节点的文字信息格式化处理。
+【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。
+【新增】基础属性新增：none，用于定于树初始化未加载节点时的提示文字。
+【新增】基础属性新增：error：用于异步加载中出现异常时的用户自定义函数。
+【新增】基础属性新增：errDataShow属性，标识是否在递归数据出现错误后，显示错误信息。
+【新增】基础属性新增：drawable属性，用于开启拖拽。
+【新增】基础方法新增：getParam： 获取指定节点选中值
+【新增】基础方法新增：getAllParentParam： 获取指定节点的全部上级节点
+【新增】基础方法新增：initNoAllCheck： 复选框半选状态初始化设置
+【新增】基础方法新增：initAllCheck： 复选框选中状态初始化设置
+【新增】基础方法新增：click：模拟单击事件
+【新增】checkbar模块新增：checkbarData新增属性："halfChoose"，用于记录选中和半选中的数据
+【新增】menubar模块新增：menubar内置新增三个默认方法：checkAll：全选，unCheckAll：全不选，invertAll：反选
+【新增】toolbar模块新增：toolbar内置新增两个默认方法：pulldown：展开当前节点下的全部节点，pullup：收缩当前节点下的全部节点
+【新增】toolbar模块新增：toolbar新增属性：toolbarWay，工具栏显示方式，contextmenu:右键，follow:跟随节点，fixed:固定在节点右侧
+【新增】toolbar模块新增：toolbarBtn中新增一系列的属性（id、placeholder、verify、defElem、readonly、disabled、filter）
+【新增】toolbar模块新增：toolbarBtn中,optionsData支持使用function回调
+【新增】内置属性新增：errNode属性，记录在渲染节点时有问题的数据。
+【新增】内置属性新增：usefontStyle属性，用于最终指定树的每个关键部位使用的图标
+【新增】内置方法新增：replaceDom：替换节点的dom值，或指定值。
+【新增】内置方法新增：partialRefreshAdd：局部刷新树--当前节点新增子节点时
+【新增】内置方法新增：partialRefreshEdit：局部刷新树--当前节点选中时
+【新增】内置方法新增：partialRefreshDel：局部刷新树--当前节点选中被删除时
+【新增】内置方法新增：ensureTheme：确认最终主题。
+【新增】内置方法新增：useDefaultOrUserDefineFnodeStyle：赋值一级图标
+【新增】内置方法新增：useDefaultOrUserDefineSnodeStyle：赋值二级图标
+【新增】内置方法新增：useDefaultOrUserDefineCheckboxStyle：赋值复选框图标
+【新增】内置方法新增：useDefaultOrUserDefineMenubarStyle：赋值菜单栏图标
+【新增】内置方法新增：useDefaultOrUserDefineMenubarExtStyle：赋值扩展菜单栏图标
+【新增】内置方法新增：useDefaultOrUserDefineToolbarStyle：赋值扩展菜单栏图标
+【新增】内置方法新增：useDefaultOrUserDefineToolbarExtStyle：赋值扩展工具栏图标
+【新增】内置方法新增：operateIcon： 设置图标的展开关闭，以及展开时/关闭时是最后一级图标的处理
+【新增】内置方法新增：msgErrNode： 判断在数据加载时是否存在错误数据，并是否打印错误数据
+【新增】内置方法新增：getParam： 获取指定节点选中值
+【新增】内置方法新增：getAllParentParam： 获取指定节点的全部上级节点
+【新增】内置方法新增：getNodeDom： 根据具体的id获取基于当前id的div以及对应的其他dom元素
+【新增】内置方法新增：getNode： 获取指定节点Div
+【新增】内置方法新增：accordionUL： 开启手风琴模式时对其他节点的处理
+【新增】内置方法新增：setDisabledNodes： 设置节点为disabled
+【新增】内置方法新增：cancelDisabledNodes：将节点的disabled取消
+【新增】内置方法新增：getDisabledNodesParam： 获取指定disabled节点的值
+【新增】内置方法新增：getAllDisabledNodesParam： 获取全部disabled节点的值
+【新增】内置方法新增：setHideNodes： 设置节点为hide
+【新增】内置方法新增：cancelHideNodes： 将节点的hide取消
+【新增】内置方法新增：getHideNodesParam： 获取指定hide节点的值
+【新增】内置方法新增：getAllHideNodesParam： 获取全部hide节点的值
+【新增】内置方法新增：toolbarHide：隐藏toolbar
+【新增】内置方法新增：toolbarMethod：toolbar内置方法
+【新增】内置方法新增：toolbarListener：toolbar内置监听
+【新增】内置方法新增：getNowNodeOrNull：获取当前选中div，没有选中则为null
+【新增】内置方法新增：navThis：选中div
+【新增】内置方法新增：getNoneDom：当无节点数据时显示dom信息
+【新增】内置方法新增：dynamicToolbarDom：在节点后动态绑定fixed和follow条件的工具栏
+【更新】内置方法更新：setToolbarDom，设置工具栏按钮，现在区别开来哪种toolbar的创建方式
+【更新】内置方法更新：changeTreeNodeAdd新增一个回传参数：refresh，用于新增完成后，局部刷新
+【更新】内置方法更新：parseData新增一个回传参数：fmtTitle，用于获取formatter标记过的内容，原来的title函数只获取原始title信息
+
+
+
+------------------------v2.4.5_finally(2018/12/22)【修复】：------------------------
+1.【修复】单页应用中，未开启toolbar导致body上的所有事件失效。
+2.【优化】更新dist文件夹中的dtree压缩
+3.【优化】toolbar模块优化:新增节点时，当开启了record参数时不会将参数新增到节点上的问题。
+
+
+------------------------v2.4.5_finally(2018/12/21)【优化】：------------------------
+1.【优化】menubar模块优化:点击收缩时，当前页的所有树都收缩的问题。
+2.【优化】menubar模块优化:点击删除复选框时，展开和收缩节点会报错，现在改为删除的节点如果有子集的话，子集会一并删除，但是回调函数中只会提供你勾中的数据。
+3.【优化】基础方法优化:dataInit方法回显数据时，当前选中的数据无法被获取到的问题。
+4.【优化】基础方法优化:parseData方法的basicData()方法，basicData如果未指定，前端的该项属性无数据，而不是""
+5.【优化】异步属性优化:使用data加载时，可以允许指定的data为[]。
+6.【优化】异步属性优化:使用data加载时，现在也有success和done的回调
+7.【新增】checkbar模块新增：checkbarType新增属性："only"，用于模拟单选，只能同时选择一个复选框。
+8.【新增】异步回调方法新增:新增success回调，用于数据加载完毕后的回调，在done之前执行
+9.【新增】异步属性新增:filterRequest属性，用于过滤树自动发起的请求中你不需要的参数。
+10.【新增】基础属性新增：record属性，开启数据记录模式，用于记录用户提供的JSON数据串中，指定当前节点的JSON数据（排除basicData字段和children字段）
+11.【新增】基础属性新增：load属性，是否开启加载遮罩。
+12.【新增】内置函数新增：getFilterRequestParam，获取filterParam过滤后的requestParam
+
+------------------------v2.4.5_finally_beta(2018/12/07)【大改】：------------------------
+0.【新增】提供的内容中新增dist/dtree.js压缩js文件。
+1.【大改】css：css样式均加上dtree前缀。
+2.【大改】图标：iconfont更改为dtreefont。
+3.【大改】事件监听：图标点击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。
+4.【大改】事件监听：节点点击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。
+5.【大改】事件监听：节点双击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。
+6.【大改】事件监听：复选框点击事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。
+7.【大改】事件监听：iframe加载完毕事件返回的参数改为一个JSON对象，具体查看基础文档的事件监听。
+8.【新增】基础方法新增：getChildParam,获取全部下级节点
+9.【新增】menubar模块新增：menubarTips属性,用于指定menubar的依附方式。
+10.【新增】toolbar模块新增：toolbarFun新增loadToolbarBefore函数，用于呈现右键菜单之前调用的函数。
+11.【新增】内置函数新增：initTreePlus 用于初始化菜单栏和工具栏的div。
+12.【新增】内置函数新增：openTreePlus 用于开启工具栏和菜单栏。
+13.【新增】内置函数新增：getMenubarDom 用于获取菜单栏。
+14.【新增】内置函数新增：getExtMenubarDom 用于获取扩展菜单栏。
+15.【新增】内置函数新增：getMenubarToolDom 用于获取依附在工具栏的菜单栏。
+16.【新增】内置函数新增：getExtMenubarToolDom 用于获取依附在工具栏的扩展菜单栏。
+17.【新增】内置函数新增：menubarMethod 用于menubar内置调用方法。
+17.【新增】内置函数新增：menubarListener 用于menubar内置监听。
+18.【新增】内置函数新增：setToolbarDom 用于设置工具栏按钮。
+19.【新增】内置函数新增：unbindBrowserEvent 用于解绑浏览器事件。
+19.【新增】内置属性新增：response属性中新增spread。
+20.【优化】优化了图标显示。
+21.【优化】toolbar模块:单页应用中，右键菜单的显示位置问题。
+22.【优化】menubar模块:在开启了toolbar模块时按钮点击失效的问题。
+23.【优化】iframe模块:iframeuUrl指定了"?"时，实际发送的url会出现两个"?"的问题。
+23.【优化】数据格式:默认数据格式中非必须指定isLast属性，移除level属性的作用。
+24.【修复】数据格式:在开启了list风格参数时，修复必须指定isLast返回的问题和设置initLevel无效的问题。
+25.【修复】toolbar模块:新增节点返回json格式后显示数据未定义的问题。
+26.【移除】内置函数移除：refreshTree，现放置在menubarMethod方法中。
+27.【移除】内置函数移除：openAllNode，现放置在menubarMethod方法中。
+28.【移除】内置函数移除：closeAllNode，现放置在menubarMethod方法中。
+28.【移除】内置函数移除：loadChildTree。
+29.【移除】内置函数移除：openMenubar。
+30.【移除】内置函数移除：openToolbar。
+31.【移除】内置属性移除：level。
+32.【移除】内置属性移除：response属性中移除level。
+
+
+------------------------v2.4.5(2018/11/30)【修复】：------------------------
+1.【修复】基础方法修复：dataInit方法的返回数据异常。
+2.【修复】基础方法修复：render函数自动识别是否重载树，代码再次修复(针对单页应用)。
+3.【新增】内置函数新增：refreshTree,用于刷新树。
+4.【新增】内置函数新增：parseData 用于解析数据。
+5.【优化】checkbar模块：checkArr属性支持传递字符串。 
+6.【修复】toolbar模块:拼接新增节点内容的代码异常 。
+
+------------------------v2.4.5(2018/11/25)【修复】：------------------------
+1.【修复】render函数自动识别是否重载树，代码修复。
+2.【修复】内部代码bug。
+3.【优化】修改了右键菜单弹出的动画效果。
+
+------------------------v2.4.5(2018/11/25)【新增】：------------------------
+1.【优化】优化了图标显示。
+2.【新增】内置图标新增。
+3.【新增】ficon属性：用于用户自定义一级图标
+4.【新增】firstIconArray属性：用于用户自定义扩展一级图标
+5.【新增】异步加载模块添加headers属性。
+6.【新增】toolbar模块:新增属性toolbarExt，用于自定义扩展工具栏右键菜单按钮
+7.【新增】checkbar模块:新增checkbarFun中的回调方法：chooseBefore，用于复选框点击前回调
+8.【新增】内置函数新增:changeCheck,用于改变复选框状态。
+9.【优化】render函数自动识别是否重载树。
+10.【优化】内部代码优化。
+11.【更新】更新了帮助文档
+
+------------------------v2.4.5(2018/11/23)【修复】：------------------------
+1.【修复】toolbar模块点击删除按钮时，控制台报错。
+2.【修复】配置了dot:false时，toolbar模块新增节点后一级图标不显示的问题。
+3.【修复】内置函数优化：initNoAllCheck，修复了显示bug
+4.【新增】内置函数新增：initAllCheck，复选框选中状态初始化设置
+5.【新增】内置函数新增：checkStatus，设置复选框选中/未选中/半选
+6.【优化】toolbar模块：点击删除时，当删除了某个节点下的最后一个子节点，那该节点也会改变样式变成叶子节点。
+7.【优化】toolbar模块:addTreeNode方法优化，ajax请求不限于同步，方法无需返回
+8.【新增】内置函数新增：changeTreeNodeAdd，新增节点后改变节点内容
+9.【优化】toolbar模块:editTreeNode方法优化，ajax请求不限于同步，方法无需返回
+10.【新增】内置函数新增：changeTreeNodeEdit，编辑节点后改变节点内容
+11.【优化】toolbar模块:delTreeNode方法优化，ajax请求不限于同步，方法无需返回
+12.【新增】内置函数新增：changeTreeNodeDel，删除节点后改变节点内容
+13.【优化】toolbar模块:editTreeLoad方法优化，ajax请求不限于同步，方法无需返回
+14.【新增】内置函数新增：changeTreeNodeDone，编辑页打开后显示编辑页内容
+15.【更新】更新了帮助文档
+
+------------------------v2.4.5(2018/11/22)【修复】：------------------------
+1.【修复】树重载时，使用data属性会造成数据重复加载问题。
+2.【修复】输出参数的字段，spared修改为spread（之前单词拼错了。。。。）。
+3.【新增】toolbar模块中新增属性：toolbarStyle，用于自定义toolbar的显示文字，弹框大小。
+4.【移除】基础属性中移除了addIndex属性。
+5.【新增】skin属性：用于用户自定义主题。
+6.【更新】更新了帮助文档
+
+------------------------v2.4.5(2018/11/21)【修复】：------------------------
+1.【修复】使用dataFormat属性时，直接使用data属性配置节点内容失效的问题。
+2.【修复】parentId为null导致节点数据加载失效的问题。
+3.【优化】反选节点时将选中哪一级的节点展开，单选和多选均生效。
+4.【新增】dot属性，用于用户自定义一级图标中的小圆点是否显示。
+5.【更新】更新了帮助文档
+
+------------------------v2.4.5(2018/11/21)【新增】：------------------------
+1.【新增】toolbar取消按钮的显示，开始绑定右键点击事件。
+2.【新增】toolbar模块新增一个属性：scroll 用于绑定树的上级div容器，让树可以显示滚动条的div容器，右键菜单绑定必填项。
+3.【新增】toolbar模块新增编辑页数据回显功能。
+4.【新增】树加载完毕后的回调函数
+5.【新增】dataStyle属性，用于用户配置layui通用的json数据风格
+6.【新增】dataFormat属性，用于用户自定义data中的数据格式（即支持传入一个大的list）
+7.【更新】更新了帮助文档
+
+------------------------v2.4.5(2018/11/09)【优化】：------------------------
+1.【优化】更新了图标库，精简了图标(60个)
+
+------------------------v2.4.5(2018/11/09)【初始】：------------------------
+1.【初始】基本树形展示，无限级，支持自定义修改树的展示图标
+2.【初始】支持异步/同步数据加载，支持静态数据加载，支持数据缓存
+3.【初始】支持自定义返回json格式，支持自定义异步/同步加载参数
+4.【初始】支持复选框，1-N级，支持复选框的四种选中形式，支持记录复选框选中/更改数据的回调
+5.【初始】支持工具栏，即可直接修改当前树节点，新增/ 编辑/删除等
+6.【初始】支持菜单栏，即可直接对树进行全部节点展开/收缩、删除全部选中节点、刷新树、搜索树等
+7.【初始】支持加载iframe，即点击树节点时，可以带上一个访问iframe的url，这个设计在左树右内容风格的页面极为有用
+8.【初始】支持数据回调，单击节点回调、双击节点回调、复选框选中回调、iframe加载完毕回调等
+9.【初始】支持数据获取，即获取当前选中节点数据，当前选中复选框节点数据等
+10.【初始】支持数据反显，即加载树之后将需要反显的节点高亮显示或选中

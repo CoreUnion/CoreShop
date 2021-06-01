@@ -1,0 +1,66 @@
+<style type="text/css">
+    .pay-table { width: 100%; }
+    .view-head { border: 1px solid #ccc; background-color: #f7f7f7; padding: 0 22px; text-align: center; }
+    .view-data { width: 70%; padding: 0 7px; height: 37px; border-bottom: 1px solid #ccc; }
+    .pop-table table { border: 1px solid #ccc; border-collapse: collapse; margin-bottom: 20px; }
+    .layui-form-pane { overflow-y: auto; height: 100%; box-sizing: border-box; }
+</style>
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form  pop-table" lay-filter="LAY-app-CoreCmsOrder-payForm" id="LAY-app-CoreCmsOrder-payForm">
+
+        <input type="hidden" name="orderId" value="{{d.params.data.orderId}}">
+        <input type="hidden" name="type" value="{{d.params.data.type}}">
+
+        {{# layui.each(d.params.data.rel.rel, function(index, item){ }}
+        <table class="pay-table">
+            <tr>
+                <th class="view-head">编号</th>
+                <td class="view-data">{{item.sourceId}}</td>
+            </tr>
+            <tr>
+                <td class="view-head">总价</td>
+                <td class="view-data">￥{{item.money}}元</td>
+            </tr>
+        </table>
+        {{# }); }}
+
+        <hr>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付方式：</label>
+            <div class="layui-input-block">
+                <select name="paymentCode" id="paymentCode" lay-verType="tips" lay-verify="required" lay-search="">
+                    {{# layui.each(d.params.data.payments, function(index, item){ }}
+                    <option value="{{item.code}}">{{item.name}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsOrder-payForm-submit" id="LAY-app-CoreCmsOrder-payForm-submit" value="确认支付">
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsOrder-payForm');
+            })
+    };
+</script>

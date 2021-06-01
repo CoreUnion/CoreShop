@@ -1,0 +1,117 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsDistributionOrder-detailsForm" id="LAY-app-CoreCmsDistributionOrder-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="userId">用户分销商id</label>
+                </td>
+                <td>
+                    {{ d.params.data.userId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="buyUserId">下单用户id</label>
+                </td>
+                <td>
+                    {{ d.params.data.buyUserId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="orderId">订单编号</label>
+                </td>
+                <td>
+                    {{ d.params.data.orderId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="amount">结算金额</label>
+                </td>
+                <td>
+                    {{ d.params.data.amount || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isSettlement">是否结算</label>
+                </td>
+                <td>
+                    {{ d.params.data.isSettlement || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="level">层级</label>
+                </td>
+                <td>
+                    {{ d.params.data.level || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isDelete">是否删除</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isDelete" value="{{d.params.data.isDelete}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isDelete" {{ d.params.data.isDelete ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsDistributionOrder-detailsForm');
+        });
+    };
+</script>

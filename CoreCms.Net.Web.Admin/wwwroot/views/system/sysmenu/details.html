@@ -1,0 +1,161 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysMenu-detailsForm" id="LAY-app-SysMenu-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">菜单id</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="parentId">上级id,0是顶级</label>
+                </td>
+                <td>
+                    {{ d.params.data.parentId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="menuName">菜单名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.menuName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="menuIcon">菜单图标</label>
+                </td>
+                <td>
+                    {{ d.params.data.menuIcon || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="path">菜单路由关键字</label>
+                </td>
+                <td>
+                    {{ d.params.data.path || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="component">菜单组件地址</label>
+                </td>
+                <td>
+                    {{ d.params.data.component || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="menuType">类型,0菜单,1按钮</label>
+                </td>
+                <td>
+                    {{ d.params.data.menuType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sortNumber">排序号</label>
+                </td>
+                <td>
+                    {{ d.params.data.sortNumber || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="authority">权限标识</label>
+                </td>
+                <td>
+                    {{ d.params.data.authority || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="target">打开位置</label>
+                </td>
+                <td>
+                    {{ d.params.data.target || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="iconColor">菜单图标颜色</label>
+                </td>
+                <td>
+                    {{ d.params.data.iconColor || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="hide">是否隐藏,0否,1是</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="hide" value="{{d.params.data.hide}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="hide" {{ d.params.data.hide ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="deleted">是否删除,0否,1是</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="deleted" value="{{d.params.data.deleted}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="deleted" {{ d.params.data.deleted ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysMenu-detailsForm');
+        });
+    };
+</script>

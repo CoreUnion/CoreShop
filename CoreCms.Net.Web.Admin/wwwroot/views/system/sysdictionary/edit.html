@@ -1,0 +1,71 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-SysDictionary-editForm" id="LAY-app-SysDictionary-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.id || '' }}" />
+
+        <div class="layui-form-item">
+            <label for="dictName" class="layui-form-label  layui-form-required">字典名称</label>
+            <div class="layui-input-block">
+                <input name="dictName" lay-verType="tips" lay-verify="required|verifydictName" class="layui-input" placeholder="请输入字典名称" lay-reqText="请输入字典名称" value="{{d.params.data.dictName || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="dictCode" class="layui-form-label  layui-form-required">字典标识</label>
+            <div class="layui-input-block">
+                <input name="dictCode" lay-verType="tips" lay-verify="required|verifydictCode" class="layui-input" placeholder="请输入字典标识" lay-reqText="请输入字典标识" value="{{d.params.data.dictCode || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sortNumber" class="layui-form-label  layui-form-required">排序号</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="sortNumber" lay-verType="tips" lay-verify="required|number" class="layui-input" value="{{d.params.data.sortNumber}}" placeholder="请输入排序号" lay-reqText="请输入排序号并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="comments" class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="comments" placeholder="请输入备注" class="layui-textarea">{{d.params.data.comments || '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-SysDictionary-editForm-submit" id="LAY-app-SysDictionary-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#editTime-SysDictionary-createTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-SysDictionary-updateTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifydictCode: [/^[\S]{0,50}$/, '字典标识最大只允许输入50位字符，且不能出现空格'],
+                    verifydictName: [/^[\S]{0,50}$/, '字典名称最大只允许输入50位字符，且不能出现空格'],
+                    verifycomments: [/^[\S]{0,500}$/, '备注最大只允许输入500位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-SysDictionary-editForm');
+            })
+    };
+</script>

@@ -1,0 +1,359 @@
+<title>商品类型</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsGoodsType/GetIndex" lay-done="layui.data.done(d);">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsGoodsType-tableBox" lay-filter="LAY-app-CoreCmsGoodsType-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsGoodsType-toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsGoodsType-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsGoodsType-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsGoodsType-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsGoodsType-tableBox',
+                    url: 'Api/CoreCmsGoodsType/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsGoodsType-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'name', title: '类型名称', sort: false, width: 105 },
+                            //{ field: 'parameters', title: '参数序列号存储', sort: false, width: 105 },
+                            {
+                                field: 'params', title: '参数', templet: function (data) {
+                                    if (typeof (data.parameter) == "undefined" || data.parameter.length == 0) {
+                                        var html = '<a class="layui-btn layui-btn-xs layui-btn-normal addParams" data-id="' + data.id + '">关联参数</a>';
+                                        return html;
+                                    } else {
+                                        var html = ' <a class="layui-btn layui-btn-xs layui-btn-normal addParams" data-id="' + data.id + '">变更参数</a>';
+                                        $.each(data.parameter, function (i, j) {
+                                            html = html + '<a class="layui-btn layui-btn-xs">' + j.name + '</a>';
+                                        });
+                                        html = html.substr(1);
+                                        return html;
+                                    }
+                                }
+                            },
+                            {
+                                field: 'spec', title: '属性', templet: function (data) {
+                                    if (typeof (data.spec) == "undefined" || data.spec.length == 0) {
+                                        var html = '<a class="layui-btn layui-btn-xs layui-btn-normal addRel" data-id="' + data.id + '" >关联属性</a>';
+                                        return html;
+                                    } else {
+                                        var html = ' <a class="layui-btn layui-btn-xs layui-btn-normal addRel" data-id="' + data.id + '" >变更属性</a>';
+                                        $.each(data.spec, function (i, j) {
+                                            html = html + '<a class="layui-btn layui-btn-xs">' + j.name + '</a>';
+                                        });
+                                        html = html.substr(1);
+                                        return html;
+                                    }
+                                }
+                            },
+                            { width: 142, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoodsType-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsGoodsType-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsGoodsType-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsGoodsType-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsGoodsType-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建数据',
+                                area: ['1000px', '500px'],
+                                id: 'LAY-popup-CoreCmsGoodsType-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsGoodsType-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                var keys = Object.keys(field);
+                                                var paramsIds = 0;
+                                                var typeIds = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf("params_id") != -1) { paramsIds++; };
+                                                    if (keys[i].indexOf("type_id") != -1) { typeIds++; };
+                                                }
+                                                if (paramsIds > 0) {
+                                                    var arr = [];
+                                                    for (var i = 0; i < paramsIds; i++) {
+                                                        var id = 'params_id[' + i + ']';
+                                                        var name = 'params_name[' + i + ']';
+                                                        var type = 'params_type[' + i + ']';
+                                                        var value = 'params_value[' + i + ']';
+                                                        if (field[name]) {
+                                                            var paramsModel = {};
+                                                            paramsModel.paramsId = parseInt(field[id]);
+                                                            paramsModel.paramsName = field[name];
+                                                            paramsModel.paramsType = field[type];
+                                                            paramsModel.paramsValue = field[value];
+                                                            arr.push(paramsModel)
+                                                        }
+                                                    }
+                                                    field.parameters = arr;
+                                                };
+                                                if (typeIds > 0) {
+                                                    var arr = [];
+                                                    for (var i = 0; i < typeIds; i++) {
+                                                        var id = 'type_id[' + i + ']';
+                                                        var name = 'type_name[' + i + ']';
+                                                        var type = 'type_sort[' + i + ']';
+                                                        var value = 'type_value[' + i + ']';
+                                                        if (field[name]) {
+                                                            var typeModel = {};
+                                                            typeModel.typeId = parseInt(field[id]);
+                                                            typeModel.typeName = field[name];
+                                                            typeModel.typeType = field[type];
+                                                            typeModel.typeValue = field[value];
+                                                            arr.push(typeModel)
+                                                        }
+                                                    }
+                                                    field.types = arr;
+                                                }
+                                                if (debug) { console.log(field); console.log('paramsIds：' + paramsIds); console.log('typeIds：' + typeIds); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsType/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoodsType-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '编辑数据',
+                                area: ['350px', '200px'],
+                                id: 'LAY-popup-CoreCmsGoodsType-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsGoodsType-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsType/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoodsType-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsGoodsType/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reload('LAY-app-CoreCmsGoodsType-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+                //变更参数
+                $(document).on('click', '.addParams', function () {
+                    var id = $(this).attr('data-id');
+                    console.log(id);
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetEditParameters", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '查看详情',
+                                area: ['550px', '70%'],
+                                id: 'LAY-popup-CoreCmsUser-GetEditParameters',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/getEditParameters', { data: e.data, id: id }).done(function () {
+                                        form.render();
+                                        //监听提交
+                                        form.on('submit(LAY-popup-CoreCmsUser-GetEditParameters-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                var keys = Object.keys(field);
+                                                field.data = [];
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf("paramsId") != -1) {
+                                                        var keyName = Object.keys(field)[i];
+                                                        field.data.push(field[keyName]);
+                                                    };
+                                                }
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsType/DoEditParameters", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoodsType-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+                //变更属性
+                $(document).on('click', '.addRel', function () {
+                    var id = $(this).attr('data-id');
+                    console.log(id);
+                    coreHelper.Post("Api/CoreCmsGoodsType/GetEditTypes", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '查看详情',
+                                area: ['550px', '70%'],
+                                id: 'LAY-popup-CoreCmsUser-GetEditTypes',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodstype/getEditTypes', { data: e.data, id: id }).done(function () {
+                                        form.render();
+                                        //监听提交
+                                        form.on('submit(LAY-popup-CoreCmsUser-GetEditTypes-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                var keys = Object.keys(field);
+                                                field.data = [];
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf("paramsId") != -1) {
+                                                        var keyName = Object.keys(field)[i];
+                                                        field.data.push(field[keyName]);
+                                                    };
+                                                }
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsType/DoEditTypes", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsGoodsType-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+            });
+    };
+</script>

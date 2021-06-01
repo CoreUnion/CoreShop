@@ -1,0 +1,34 @@
+﻿[
+  {
+    "outputFile": "wwwroot/ui/css/login.css",
+    "inputFile": "wwwroot/ui/css/login.less"
+  },
+  {
+    "outputFile": "wwwroot/ui/css/overWrite.css",
+    "inputFile": "wwwroot/ui/css/overWrite.less"
+  },
+  {
+    "outputFile": "wwwroot/layuiAdmin/style/overWrite.css",
+    "inputFile": "wwwroot/layuiAdmin/style/overWrite.less"
+  },
+  {
+    "outputFile": "wwwroot/style/overWrite.css",
+    "inputFile": "wwwroot/style/overWrite.less"
+  },
+  {
+    "outputFile": "wwwroot/lib/layuiAdmin/style/overWrite.css",
+    "inputFile": "wwwroot/lib/layuiAdmin/style/overWrite.less"
+  },
+  {
+    "outputFile": "wwwroot/StyleSheet.css",
+    "inputFile": "wwwroot/StyleSheet.less"
+  },
+  {
+    "outputFile": "wwwroot/demo/StyleSheet.css",
+    "inputFile": "wwwroot/demo/StyleSheet.less"
+  },
+  {
+    "outputFile": "wwwroot/lib/layuiAdmin/index.es5.js",
+    "inputFile": "wwwroot/lib/layuiAdmin/index.js"
+  }
+]

@@ -1,0 +1,163 @@
+<style>
+    .layui-form-item .layui-form-checkbox[lay-skin="primary"] { margin: 0; }
+    #aftersales_form .layui-table-view { margin: 0; }
+    .seller-alone-form .layui-form-radio * { font-size: 12px; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form " lay-filter="LAY-app-CoreCmsBillAftersales-editForm" id="LAY-app-CoreCmsBillAftersales-editForm">
+        <input name="aftersalesId" id="aftersalesId" value="{{d.params.data.aftersalesId}}" type="hidden" />
+
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">售后单号：</label>
+            <div class="layui-input-inline layui-inline-2">
+                <div class="layui-form-mid">{{d.params.data.aftersalesId}}</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">订单号：</label>
+            <div class="layui-input-inline layui-inline-2">
+                <div class="layui-form-mid">{{d.params.data.orderId}}</div>
+            </div>
+            <label class="layui-form-label">用户：</label>
+            <div class="layui-input-inline layui-inline-2">
+                <div class="layui-form-mid">{{d.params.data.userNickName}}</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">原因：</label>
+            <div class="layui-input-inline layui-inline-8">
+                <div class="layui-form-mid">{{d.params.data.reason}}</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片：</label>
+            <div class="layui-input-inline layui-inline-8">
+                <div class="layui-form-mid">
+                    {{# layui.each(d.params.data.images, function(index, item){ }}
+                    <a href="{{ item.imageUrl }}" target="_blank"
+                       style="padding:1px;border:1px solid #cdcdcd;height:50px;width:50px;display:block;float:left;margin-right:1px;">
+                        <img style="max-width:50px;max-height:50px;position: relative;top: 50%;left: 50%;transform: translate(-50%,-50%)"
+                             src="{{ item.imageUrl }}" />
+                    </a>
+                    {{# }); }}
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:10px;">
+            <label class="layui-form-label">退货商品：</label>
+            <div class="layui-input-block">
+                <table id="billAftersalesItems" lay-filter="billAftersalesItems"></table>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">退款金额：</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input name="refund" value="{{ d.params.data.refundAmount }}" required="" lay-verType="tips" lay-verify="required"
+                       placeholder="退款金额" autocomplete="off" class="layui-input" type="text">
+            </div>
+            <div class="layui-form-mid">订单支付金额：{{ d.params.data.order.payedAmount }},已退款金额：{{ d.params.data.order.refunded }}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货与否：</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="type" value="1" title="未收到货" {{ d.params.data.type==1?'checked':'' }} type="radio">
+                <input name="type" value="2" title="已收到货" {{ d.params.data.type==2?'checked':'' }} type="radio">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核结果：</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="status" value="2" title="通过" type="radio" lay-verType="tips" lay-verify="required">
+                <input name="status" value="3" title="拒绝" type="radio" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <input name="mark" value="" required="" lay-verType="tips" lay-verify="required" placeholder="请输入备注" style="width:100%;"
+                       autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明：</label>
+            <div class="layui-input-block">
+                1. 选择”未收到货“是退未发货的商品，选择”已收到货“是退已发货的商品，选择”未收到货“不会生成退货单，选择”已收到货“会生成退货单，<span style="color:red;">未发货的商品和已发货的商品不能混合着退</span>。<br />
+                2. "售后数量"里的数字包含已提交的售后和审核通过的售后的商品数量，后面如果有括号，表示已发货的商品的退货数量。
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsBillAftersales-editForm-submit" id="LAY-app-CoreCmsBillAftersales-editForm-submit" value="确认提交">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'table'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                layui.table.render({
+                    elem: '#billAftersalesItems',
+                    size: 'sm',
+                    cols: [[ //标题栏
+                        {
+                            field: 'id', title: '', width: 50, templet: function (data) {
+                                if (data.atPresentReshipNums > 0) {
+                                    return '<input name="idIsCheck[' + data.LAY_TABLE_INDEX + ']" lay-skin="primary" checked="" title="" type="checkbox" value="1">';
+                                } else {
+                                    return '<input name="idIsCheck[' + data.LAY_TABLE_INDEX + ']" lay-skin="primary" title="" type="checkbox" value="1">';
+                                }
+                            }
+                        },
+                        {
+                            field: 'name', title: '商品名称', templet: function (data) {
+                                return data.name + ' ' + data.addon;
+                            }
+                        },
+                        { field: 'nums', title: '购买数量', width: 80 },
+                        { field: 'sendNums', title: '发货数量', width: 80 },
+                        {
+                            field: 'reshipNums', title: '售后数量', width: 80, templet: function (data) {
+                                return data.reshipNums + '(' + data.reshipedNums + ')';
+                            }
+                        },
+                        {
+                            field: 'atPresentReshipNums', title: '退货数量', width: 80, templet: function (data) {
+                                return '<input name="nums[' + data.LAY_TABLE_INDEX + ']" style="width:50px;" value="' + data.atPresentReshipNums + '"  type="text"><input name="id[' + data.LAY_TABLE_INDEX + ']" type="hidden" value="' + data.id + '">';
+                            }
+                        }
+                    ]],
+                    data: d.params.data.order.items,
+                    even: true
+                });
+
+                form.verify({
+                    verifyaftersalesId: [/^[\S]{0,20}$/, '售后单id最大只允许输入20位字符，且不能出现空格'],
+                    verifyorderId: [/^[\S]{0,20}$/, '订单ID最大只允许输入20位字符，且不能出现空格'],
+                    verifyreason: [/^[\S]{0,255}$/, '退款原因最大只允许输入255位字符，且不能出现空格'],
+                    verifymark: [/^[\S]{0,255}$/, '卖家备注，如果审核失败了，会显示到前端最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsBillAftersales-editForm');
+            })
+    };
+</script>

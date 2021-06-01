@@ -1,0 +1,458 @@
+<title>机构管理</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+
+<style>
+    /* 左树 */
+    #organizationTreeBar { padding: 10px 15px; border: 1px solid #e6e6e6; background-color: #f2f2f2; }
+    #organizationTree { border: 1px solid #e6e6e6; border-top: none; padding: 10px 5px; overflow: auto; height: -webkit-calc(100vh - 258px); height: -moz-calc(100vh - 258px); height: calc(100vh - 258px); }
+    .layui-tree-entry .layui-tree-txt { padding: 0 5px; border: 1px transparent solid; text-decoration: none !important; }
+    .layui-tree-entry.ew-tree-click .layui-tree-txt { background-color: #fff3e0; border: 1px #FFE6B0 solid; }
+    /* 右表搜索表单 */
+    #organizationUserTbSearchForm .layui-form-label { box-sizing: border-box !important; width: 90px !important; }
+    #organizationUserTbSearchForm .layui-input-block { margin-left: 90px !important; }
+    /* 主管标识 */
+    td .leader-flag { background: #52c41a; color: #fff; font-size: 12px; line-height: 18px; position: absolute; padding: 0 15px; right: -15px; top: 2px; -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-transform-origin: center; transform-origin: center; }
+</style>
+<!-- 正文开始 -->
+<script type="text/html" template lay-type="Post" lay-url="Api/SysOrganization/GetIndex" lay-done="layui.data.done(d);">
+
+    <div class="layui-fluid" style="padding-bottom: 0;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 树工具栏 -->
+                        <div class="layui-form toolbar" id="organizationTreeBar">
+                            <button id="organizationAddBtn" class="layui-btn layui-btn-sm icon-btn">
+                                <i class="layui-icon">&#xe654;</i>添加
+                            </button>&nbsp;
+                            <button id="organizationEditBtn" class="layui-btn layui-btn-sm layui-btn-warm icon-btn">
+                                <i class="layui-icon">&#xe642;</i>修改
+                            </button>&nbsp;
+                            <button id="organizationDelBtn"
+                                    class="layui-btn layui-btn-sm layui-btn-danger icon-btn">
+                                <i class="layui-icon">&#xe640;</i>删除
+                            </button>
+                        </div>
+                        <!-- 左树 -->
+                        <div id="organizationTree"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <div class="layui-card-body" style="padding: 10px;">
+                        <!-- 数据表格 -->
+                        <table id="organizationUserTable" lay-filter="organizationUserTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="organizationUserTbBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs"
+       data-dropdown="#userTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs"
+       data-dropdown="#userOrgTbSetDrop{{d.LAY_INDEX}}" no-shade="true">设为主管</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide"
+         id="userTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除{{d.nickName}}吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal" lay-event="del">确定</a>
+        </div>
+    </div>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide"
+         id="userOrgTbSetDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要设为主管吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal" lay-event="set">确定</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'tree', 'coredropdown', 'tableX', 'coreHelper', 'treeTable'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , ztree = layui.ztree
+                    , treeTable = layui.treeTable
+                    , tableX = layui.tableX
+                    , view = layui.view;
+                var tree = layui.tree;
+                var selObj, treeData;  // 左树选中数据
+
+                /* 渲染树形 */
+                function renderTree() {
+                    coreHelper.Post('Api/SysOrganization/GetPageList', null, function (res) {
+                        if (res.code !== 0) {
+                            return layer.msg(res.msg, { icon: 2 });
+                        }
+                        for (var i = 0; i < res.data.length; i++) {
+                            res.data[i].title = res.data[i].organizationName;
+                            res.data[i].id = res.data[i].id;
+                            res.data[i].spread = true;
+                        }
+                        treeData = layui.treeTable.pidToChildren(res.data, 'id', 'parentId');
+                        tree.render({
+                            elem: '#organizationTree',
+                            onlyIconControl: true,
+                            data: treeData,
+                            click: function (obj) {
+                                selObj = obj;
+                                $('#organizationTree').find('.ew-tree-click').removeClass('ew-tree-click');
+                                $(obj.elem).children('.layui-tree-entry').addClass('ew-tree-click');
+                                insTb.reload({
+                                    where: { organizationId: obj.data.id },
+                                    url: layui.setter.apiUrl + 'Api/SysUser/GetPageList',
+                                    method: 'post'
+                                });
+                            }
+                        });
+                        $('#organizationTree').find('.layui-tree-entry:first>.layui-tree-main>.layui-tree-txt').trigger('click');
+                    });
+                }
+                renderTree();
+
+                /* 添加 */
+                $('#organizationAddBtn').click(function () {
+                    doCreate(selObj ? selObj.data.parentId : null);
+                });
+                /* 修改 */
+                $('#organizationEditBtn').click(function () {
+                    if (!selObj) return layer.msg('未选择机构', { icon: 2, anim: 6 });
+                    doEdit(selObj.data)
+                });
+                /* 删除 */
+                $('#organizationDelBtn').click(function () {
+                    if (!selObj) return layer.msg('未选择机构', { icon: 2, anim: 6 });
+                    console.log(selObj);
+                    doDelete(selObj);
+                });
+                //执行创建操作
+                function doCreate(parentId) {
+                    coreHelper.Post("Api/SysOrganization/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['700px', '350px'],
+                                id: 'LAY-popup-SysOrganization-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('system/SysOrganization/create', { data: e.data, treeData: treeData, parentId: parentId }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysOrganization-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+                                                if (!field.parentId) {
+                                                    field.parentId = 0;
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysOrganization/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        renderTree();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    console.log(obj);
+                    coreHelper.Post("Api/SysOrganization/GetEdit", { id: obj.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['700px', '350px'],
+                                id: 'LAY-popup-SysOrganization-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('system/SysOrganization/edit', { data: e.data, treeData: treeData }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysOrganization-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.deleted = field.deleted == 'on';
+                                                if (!field.parentId) {
+                                                    field.parentId = 0;
+                                                }
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysOrganization/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        renderTree();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定要删除' + obj.data.organizationName + '吗？',
+                        function (index) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("Api/SysOrganization/DoDelete", { id: obj.data.id }, function (res) {
+                                if (debug) { console.log(res); } //开启调试返回数据
+                                layer.close(loadIndex);
+                                if (0 === res.code) {
+                                    layer.msg(res.msg, { icon: 1 });
+                                    renderTree();
+                                } else {
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        });
+
+                }
+
+                /* 渲染表格 */
+                var insTb = tableX.render({
+                    elem: '#organizationUserTable',
+                    data: [],
+                    height: 'full-185',
+                    page: false,
+                    toolbar: ['<p>',
+                        '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加用户</button>&nbsp;',
+                        '</p>'].join(''),
+                    cellMinWidth: 100,
+                    cols: [[
+                        { type: 'numbers', fixed: 'left' },
+                        { field: 'userName', title: '账号', sort: true },
+                        {
+                            field: 'nickName', title: '用户名', templet: function (d) {
+                                if (selObj.data.leaderId === d.id) return d.nickName + '<span class="leader-flag">主管</span>';
+                                return d.nickName;
+                            }, sort: true, style: 'overflow: hidden;'
+                        },
+                        //{ field: 'sex', title: '性别', sort: true },
+                        { field: 'phone', title: '手机号', sort: true },
+                        {
+                            field: 'roleName', title: '角色', templet: function (d) {
+                                return d.roles.map(function (item) {
+                                    return '<span class="layui-badge layui-badge-gray">' + item.roleName + '</span>';
+                                }).join('&nbsp;&nbsp;');
+                            }, sort: true
+                        },
+                        {
+                            field: 'createTime', title: '创建时间', templet: function (d) {
+                                return util.toDateString(d.createTime);
+                            }, sort: true, width: 160
+                        },
+                        {
+                            title: '操作', toolbar: '#organizationUserTbBar', unresize: true,
+                            align: 'center', fixed: 'right', width: 200, minWidth: 200
+                        }
+                    ]],
+                    done: function () {
+                        var $flag = $('#organizationUserTable+div .leader-flag');
+                        $flag.parent().parent().append($flag);
+                    }
+                });
+
+                /* 表格工具条点击事件 */
+                table.on('tool(organizationUserTable)', function (obj) {
+                    if (obj.event === 'edit') { // 修改
+                        doEditUser(obj);
+                    } else if (obj.event === 'del') { // 删除
+                        doDeleteUser(obj);
+                    } else if (obj.event === 'set') { // 设为负责人
+                        console.log(selObj);
+                        console.log(obj);
+                        if (selObj.data.leaderId === obj.data.id) return layer.msg('已是主管', { icon: 1 });
+                        var loadIndex = layer.load(2);
+                        coreHelper.Post('Api/SysOrganization/DoSetSysOrganizationLeader', {
+                            organizationId: selObj.data.id,
+                            leaderId: obj.data.id,
+                            parentId: selObj.data.parentId
+                        }, function (res) {
+                            layer.close(loadIndex);
+                            if (0 === res.code) {
+                                layer.msg(res.msg, { icon: 1 });
+                                selObj.data.leaderId = obj.data.id;
+                                insTb.reload();
+                            } else {
+                                layer.msg(res.msg, { icon: 2 });
+                            }
+                        }, 'put');
+                    }
+                });
+
+                /* 表格头工具栏点击事件 */
+                table.on('toolbar(organizationUserTable)', function (obj) {
+                    if (obj.event === 'add') { // 添加
+                        doCreateUser();
+                    }
+                });
+
+                //执行创建操作
+                function doCreateUser() {
+                    coreHelper.Post("Api/SysUser/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['380px', '450px'],
+                                id: 'LAY-popup-SysUser-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/sysorganization/createUser', { data: e.data, treeData: treeData }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysUser-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.emailVerified = field.emailVerified == 'on';
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (!field.organizationId) {
+                                                    layer.msg("请选择组织机构", { icon: 2 });
+                                                    return false;
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysUser/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEditUser(obj) {
+                    coreHelper.Post("Api/SysUser/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['380px', '450px'],
+                                id: 'LAY-popup-SysUser-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('System/sysorganization/editUser', { data: e.data, treeData: treeData }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-SysUser-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.emailVerified = field.emailVerified == 'on';
+                                                field.deleted = field.deleted == 'on';
+
+                                                if (!field.organizationId) {
+                                                    layer.msg("请选择组织机构", { icon: 2 });
+                                                    return false;
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/SysUser/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        insTb.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDeleteUser(obj) {
+                    coreHelper.Post("Api/SysUser/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        insTb.reload();
+                        layer.msg(e.msg);
+                    });
+                }
+
+            });
+    };
+</script>

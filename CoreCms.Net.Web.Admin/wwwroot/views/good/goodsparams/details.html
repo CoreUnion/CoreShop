@@ -1,0 +1,76 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsGoodsParams-detailsForm" id="LAY-app-CoreCmsGoodsParams-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">参数名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.name || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="value">参数值</label>
+                </td>
+                <td>
+                    {{ d.params.data.value || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="type">参数类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.type || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    layui.data.done = function (d) {
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsGoodsParams-detailsForm');
+        });
+    };
+</script>

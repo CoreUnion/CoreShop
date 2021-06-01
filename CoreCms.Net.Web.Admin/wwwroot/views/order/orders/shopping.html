@@ -1,0 +1,115 @@
+﻿<style>
+    .btn-print { width: 100%; margin-top: 20px; height: 50px; color: #fff; background-color: #009688; border: none; cursor: pointer }
+    #printDiv table { background: #fff; }
+</style>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div style="width: calc(100% -40px); margin: 0 auto; background: #fff; padding: 20px; " id="printDiv">
+        <table style="width: 100%; border-spacing: 0; font-family: '微软雅黑';">
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center;"><h3>{{d.params.data.shopName}}购物清单</h3></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: left;">
+                    客户：{{d.params.data.order.shipName}}，地址：{{d.params.data.order.shipAreaName}} - {{d.params.data.order.shipAddress}}，电话：{{d.params.data.order.shipMobile}}
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%; border-spacing: 0; text-align: left; font-family: '微软雅黑';">
+            <colgroup>
+                <col width="50%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: left;" colspan="2">
+                        <b>订单号：{{d.params.data.order.orderId}}</b>
+                    </th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: right;" colspan="4">
+                        <b>订购日期：{{d.params.data.order.createTime}}</b>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: left">商品名称</th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">货号</th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">单价</th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">重量</th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">数量</th>
+                    <th style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">小计</th>
+                </tr>
+                {{# layui.each(d.params.data.order.items, function(index, item){ }}
+                <tr class="">
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: left">
+                        {{item.name}} {{#  if(item.addon){ }} - {{item.addon}} {{#  } }}
+                    </td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">{{item.sn}} </td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">￥{{item.price}} </td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">{{item.weight}}g</td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">
+                        {{item.nums-item.sendNums-item.reshipNums+item.reshipedNums}}
+                    </td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">￥ {{  item.price * (item.nums-item.sendNums-item.reshipNums+item.reshipedNums) }}</td>
+                </tr>
+                {{# }); }}
+            </tbody>
+        </table>
+        <table class="table table-condensed text-right" style="width: 100%; border-spacing: 0; text-align: right; font-family: '微软雅黑';">
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">商品总价：￥{{d.params.data.order.goodsAmount}}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">订单优惠：￥{{d.params.data.order.orderDiscountAmount}}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">运费价格：￥{{d.params.data.order.costFreight}}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">订单价格：￥{{d.params.data.order.orderAmount}}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;" align="left">订单附言：{{d.params.data.order.memo}}</td>
+            </tr>
+        </table>
+        <table style="width: 100%; border-spacing: 0; font-family: '微软雅黑';">
+            <tr>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">商家：{{d.params.data.shopName}}</td>
+                <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">手机：{{d.params.data.shopMobile}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row  layui-col-space10">
+            <div class="layui-col-md12">
+                <input type="submit" class="btn btn-print" lay-submit lay-filter="LAY-app-order-shoppingPrint-submit" id="LAY-app-order-shoppingPrint-submit" value="打印（需安装打印插件）" />
+            </div>
+            <!--<div class="layui-col-md6">
+                <button type="submit" class="btn btn-print" lay-submit lay-filter="LAY-app-order-shoppingPrint-htmltopdf-submit" id="LAY-app-order-shoppingPrint-htmltopdf-submit">导出PDF</button>
+            </div>-->
+        </div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render();
+            })
+    };
+</script>

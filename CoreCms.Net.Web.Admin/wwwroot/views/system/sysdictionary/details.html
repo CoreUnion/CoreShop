@@ -1,0 +1,98 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysDictionary-detailsForm" id="LAY-app-SysDictionary-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">字典id</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="dictCode">字典标识</label>
+                </td>
+                <td>
+                    {{ d.params.data.dictCode || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="dictName">字典名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.dictName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="comments">备注</label>
+                </td>
+                <td>
+                    {{ d.params.data.comments || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sortNumber">排序号</label>
+                </td>
+                <td>
+                    {{ d.params.data.sortNumber || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="deleted">是否删除,0否,1是</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="deleted" value="{{d.params.data.deleted}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="deleted" {{ d.params.data.deleted ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">修改时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysDictionary-detailsForm');
+        });
+    };
+</script>

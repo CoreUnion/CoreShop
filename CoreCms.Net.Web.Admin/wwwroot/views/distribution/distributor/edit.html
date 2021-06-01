@@ -1,0 +1,96 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsDistribution-editForm" id="LAY-app-CoreCmsDistribution-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.model.id || '' }}" />
+        <input type="hidden" name="userId" value="{{d.params.data.model.userId || '' }}" />
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label  layui-form-required">分销商名称</label>
+            <div class="layui-input-inline">
+                <input name="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" placeholder="请输入分销商名称" lay-reqText="请输入分销商名称" value="{{d.params.data.model.name || '' }}" />
+            </div>
+            <label for="mobile" class="layui-form-label  layui-form-required">手机号</label>
+            <div class="layui-input-inline">
+                <input name="mobile" lay-verType="tips" lay-verify="required|verifymobile" class="layui-input" placeholder="请输入手机号" lay-reqText="请输入手机号" value="{{d.params.data.model.mobile || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="weixin" class="layui-form-label  layui-form-required">微信号</label>
+            <div class="layui-input-inline">
+                <input name="weixin" lay-verType="tips" lay-verify="required|verifyweixin" class="layui-input" placeholder="请输入微信号" lay-reqText="请输入微信号" value="{{d.params.data.model.weixin || '' }}" />
+            </div>
+            <label for="qq" class="layui-form-label  layui-form-required">qq号</label>
+            <div class="layui-input-inline">
+                <input name="qq" lay-verType="tips" lay-verify="required|verifyqq" class="layui-input" placeholder="请输入qq号" lay-reqText="请输入qq号" value="{{d.params.data.model.qq || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="gradeId" class="layui-form-label  layui-form-required">分销等级</label>
+            <div class="layui-input-inline">
+                <select name="gradeId" id="gradeId">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.grades, function(index, item){ }}
+                    <option value="{{ item.id }}" {{item.id==d.params.data.model.gradeId?'selected="selected"':''}}>{{ item.name }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="verifyStatus" class="layui-form-label  layui-form-required">审核状态</label>
+            <div class="layui-input-inline">
+
+                <select name="verifyStatus" id="verifyStatus">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.distributionVerifyStatus, function(index, item){ }}
+                    <option value="{{ item.value }}" {{item.value==d.params.data.model.verifyStatus?'selected="selected"':''}}>{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistribution-editForm-submit" id="LAY-app-CoreCmsDistribution-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                laydate.render({
+                    elem: '#editTime-CoreCmsDistribution-createTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsDistribution-updateTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsDistribution-verifyTime',
+                    type: 'datetime'
+                });
+                form.verify({
+
+                    verifyname: [/^[\S]{0,255}$/, '分销商名称最大只允许输入255位字符，且不能出现空格'],
+                    verifymobile: [/^[\S]{0,50}$/, '手机号最大只允许输入50位字符，且不能出现空格'],
+                    verifyweixin: [/^[\S]{0,50}$/, '微信号最大只允许输入50位字符，且不能出现空格'],
+                    verifyqq: [/^[\S]{0,50}$/, 'qq号最大只允许输入50位字符，且不能出现空格'],
+                    verifystoreName: [/^[\S]{0,255}$/, '店铺名称最大只允许输入255位字符，且不能出现空格'],
+                    verifystoreLogo: [/^[\S]{0,255}$/, '店铺Logo最大只允许输入255位字符，且不能出现空格'],
+                    verifystoreBanner: [/^[\S]{0,255}$/, '店铺Banner最大只允许输入255位字符，且不能出现空格'],
+                    verifystoreDesc: [/^[\S]{0,255}$/, '店铺简介最大只允许输入255位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsDistribution-editForm');
+            })
+    };
+</script>

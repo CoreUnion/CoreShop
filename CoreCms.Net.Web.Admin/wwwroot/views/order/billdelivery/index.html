@@ -1,0 +1,285 @@
+<title>发货单表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsBillDelivery/GetIndex" lay-done="layui.data.done(d);">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillDelivery-tableBox" lay-filter="LAY-app-CoreCmsBillDelivery-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBillDelivery-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="deliveryId" id="deliveryId" placeholder="请输入发货单序列" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="logiNo" id="logiNo" placeholder="请输入物流单号" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="shipMobile" id="shipMobile" placeholder="请输入收货电话" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 260px;">
+                    <input type="text" name="confirmTime" id="searchTime-CoreCmsBillDelivery-confirmTime" placeholder="请输入确认收货时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsBillDelivery-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+                <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+                <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/html" id="LAY-app-CoreCmsBillDelivery-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsBillDelivery-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsBillDelivery-tableBox', { where: field });
+
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsBillDelivery-tableBox',
+                    url: 'Api/CoreCmsBillDelivery/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsBillDelivery-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'orderId', title: '订单号', sort: false, width: 125 },
+                            { field: 'deliveryId', title: '发货单序列', sort: false, width: 125 },
+                            { field: 'logiName', title: '物流公司', sort: false, width: 125 },
+                            { field: 'logiNo', title: '物流单号', sort: false, width: 125 },
+                            //{ field: 'logiInformation', title: '快递物流信息', sort: false, width: 105 },
+                            //{ field: 'logiStatus', title: '快递是否不更新', width: 95, templet: '#switch_logiStatus', sort: false, unresize: true },
+                            //{ field: 'shipAreaId', title: '收货地区ID', sort: false, width: 105 },
+                            { field: 'shipAddress', title: '收货详细地址', sort: false },
+                            { field: 'shipName', title: '收货人姓名', sort: false, width: 105 },
+                            { field: 'shipMobile', title: '收货电话', sort: false, width: 125 },
+                            //{ field: 'status', title: '状态', sort: false, width: 105 },
+                            //{ field: 'memo', title: '备注', sort: false, width: 105 },
+                            //{ field: 'confirmTime', title: '确认收货时间', width: 130, sort: false },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            //{ field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { width: 102, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsBillDelivery-tableBox-bar' }
+                        ]
+                    ]
+                });
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillDelivery-confirmTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillDelivery-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillDelivery-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsBillDelivery-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsBillDelivery-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsBillDelivery/GetEdit", { id: obj.data.deliveryId }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['650px', '340px'],
+                                id: 'LAY-popup-CoreCmsBillDelivery-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/billdelivery/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsBillDelivery-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsBillDelivery/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reload('LAY-app-CoreCmsBillDelivery-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsBillDelivery-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsBillDelivery/GetDetails", { id: obj.data.deliveryId }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['800px', '500px'],
+                                id: 'LAY-popup-CoreCmsBillDelivery-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/billdelivery/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsBillDelivery/QueryExportExcel", field, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.deliveryId);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsBillDelivery/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+            });
+    };
+</script>

@@ -1,0 +1,135 @@
+<title>拼团记录表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsPinTuanRecord/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="teamId" id="teamId" placeholder="请输入团序列" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" id="status">
+                        <option value="">请选择状态</option>
+                        {{# layui.each(d.data.status, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.description }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="orderId">订单序列</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="orderId" id="orderId" placeholder="请输入订单序列" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsPinTuanRecord-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsPinTuanRecord-tableBox" lay-filter="LAY-app-CoreCmsPinTuanRecord-tableBox"></table>
+</div>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsPinTuanRecord-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reload('LAY-app-CoreCmsPinTuanRecord-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsPinTuanRecord-tableBox',
+                    url: 'Api/CoreCmsPinTuanRecord/GetPageList',
+                    method: 'POST',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'teamId', title: '团序列', sort: false, width: 60 },
+                            {
+                                field: 'userAvatar', title: '用户', sort: false,
+                                templet: function (d) {
+                                    if (d.userAvatar) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.userAvatar + '")><image style="max-width:28px;max-height:28px;" src="' + d.userAvatar + '" /></a>' + ' ' + d.nickName + '（' + d.userId + '）';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>' + ' ' + d.nickName + '（' + d.userId + '）';
+                                    }
+                                }
+                            },
+                            { field: 'ruleName', title: '参与活动', sort: false },
+                            { field: 'goodName', title: '购买商品', sort: false },
+                            { field: 'status', title: '状态', sort: false, width: 85, templet: '#get_status_des' },
+                            { field: 'orderId', title: '订单序列', sort: false, width: 130 },
+                            { field: 'closeTime', title: '关闭时间', width: 130, sort: false },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsPinTuanRecord-tableBox)', function (obj) {
+                    table.reload('LAY-app-CoreCmsPinTuanRecord-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+            });
+    };
+</script>
+
+<script type="text/html" id="get_status_des">
+    {{# layui.each(indexData.status, function(index, item){ }}
+    {{#  if(d.status== item.value){ }}
+    <a class="layui-btn layui-btn-xs">{{ item.description }}</a>
+    {{#  } }}
+    {{# }); }}
+</script>

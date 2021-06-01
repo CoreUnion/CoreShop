@@ -1,0 +1,515 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsDistributionGrade-editForm" id="LAY-app-CoreCmsDistributionGrade-editForm">
+        <input type="hidden" name="id" value="{{ d.params.data.model.id }}" />
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">等级名称：</label>
+            <div class="layui-input-block">
+                <input name="name" lay-verify="required|verifyname" class="layui-input" placeholder="请输入等级名称" lay-reqText="请输入等级名称" value="{{d.params.data.model.name || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isDefault" class="layui-form-label">是否默认等级</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isDefault" {{ d.params.data.model.isDefault ? 'checked' : '' }} lay-skin="switch" lay-text="是|否">
+            </div>
+            <div class="layui-form-mid layui-word-aux">当前等级是否默认分销商等级</div>
+        </div>
+
+
+        <div class="layui-form-item" pane>
+            <label for="isAutoUpGrade" class="layui-form-label">自动升级</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isAutoUpGrade" {{ d.params.data.model.isAutoUpGrade ? 'checked' : '' }} lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <div class="layui-form-mid layui-word-aux">开启后，可根据升级条件自动升级</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sortId" class="layui-form-label">等级排序</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="sortId" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.sortId || '0' }}" placeholder="请输入等级排序" lay-reqText="请输入等级排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越大，等级越高</div>
+
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="description" class="layui-form-label">等级说明</label>
+            <div class="layui-input-block">
+                <textarea name="description" lay-verify="required|verifydescription" class="layui-textarea" placeholder="请输入等级说明" lay-reqText="请输入等级说明">{{d.params.data.model.description || '' }}</textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                升级条件：
+            </label>
+            <div class="layui-input-block" style="padding: 10px;">
+                <button class="layui-btn layui-btn-xs" lay-submit lay-filter="conditionAdd">添加条件</button>
+                <table id="condition" lay-filter="condition"></table>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                佣金设置：
+            </label>
+            <div class="layui-input-block" style="padding: 10px;">
+                <button class="layui-btn layui-btn-xs" lay-submit lay-filter="resultAdd">添加佣金</button>
+                <table id="result" lay-filter="result"></table>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-center">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistributionGrade-editForm-submit" id="LAY-app-CoreCmsDistributionGrade-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-condition-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="conditionEdit">编辑</a>
+    <a class="layui-btn  layui-btn-danger  layui-btn-xs" lay-event="conditionDel">删除</a>
+</script>
+
+<script type="text/html" id="LAY-app-result-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="resultEdit">编辑</a>
+    <a class="layui-btn  layui-btn-danger  layui-btn-xs" lay-event="resultDel">删除</a>
+</script>
+
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'view', 'table'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , view = layui.view
+                    , table = layui.table
+                    , coreHelper = layui.coreHelper;
+                //升级条件表格渲染
+                var conditionTables = layui.table.render({
+                    elem: '#condition'
+                    , size: 'sm'
+                    , method: 'post'
+                    , url: "Api/CoreCmsDistributionGrade/GetDistributionConditionPageList"
+                    , where: { gradeId: d.params.data.model.id }
+                    , cols: [[ //标题栏
+                        { field: 'code', width: 140, title: '条件代码' },
+                        { field: 'name', width: 140, title: '条件名称' }
+                        , { field: 'parameters', title: '参数' }
+                        , { width: 120, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-condition-tableBox-bar' }
+                    ]]
+                    , even: true
+                });
+
+                //监听工具条
+                table.on('tool(condition)',
+                    function (obj) {
+                        if (obj.event === 'conditionEdit') {
+                            doCnditionEdit(obj);
+                        } else if (obj.event === 'conditionDel') {
+                            doConditionDel(obj)
+                        }
+                    });
+
+                //添加升级条件
+                form.on('submit(conditionAdd)', function (data) {
+                    coreHelper.Post("Api/CoreCmsDistributionGrade/GetDistributionConditionCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '添加升级条件',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsDistributionCondition-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('distribution/grade/conditionCreate', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsDistributionCondition-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (!!!field.condition_code) {
+                                                    layer.msg("请先选择促销条件");
+                                                    return false;
+                                                }
+
+                                                var postData = {};
+                                                var parameters = {};
+
+                                                postData.gradeId = field.gradeId;
+                                                postData.code = field.condition_code;
+
+                                                if (field.condition_code === 'USER_ORDERS') {//个人消费总额(已完成的订单)
+                                                    if (!!!field.money) {
+                                                        layer.msg("请输入金额");
+                                                        return false;
+                                                    }
+                                                    parameters.money = field.money;
+                                                    parameters.limit_day = field.limit_day;
+
+                                                } else if (field.condition_code === 'USER_ORDERSNUM') { //个人订单数量(已完成的订单)
+                                                    if (!!!field.num) {
+                                                        layer.msg("请输入订单量");
+                                                        return false;
+                                                    }
+                                                    parameters.num = field.num;
+                                                    parameters.limit_day = field.limit_day;
+                                                } else if (field.condition_code === 'GOODS_ALL') { //所有商品满足条件
+                                                    parameters.num = 1;
+
+                                                } else if (field.condition_code === 'GOODS_IDS') { //购买指定商品
+                                                    if (!!!field.goodsId) {
+                                                        layer.msg("请选择商品");
+                                                        return false;
+                                                    }
+                                                    parameters.goodsId = field.goodsId;
+                                                } else if (field.condition_code === 'USER_GRADE') { //直推几个指定用户等级
+                                                    if (!!!field.num) {
+                                                        layer.msg("请输入等级数量");
+                                                        return false;
+                                                    }
+                                                    parameters.num = field.num;
+                                                    parameters.num = field.grade;
+                                                } else if (field.condition_code === 'GROUP_ORDERS') { //团队消费总额
+                                                    if (!!!field.money) {
+                                                        layer.msg("请输入金额");
+                                                        return false;
+                                                    }
+                                                    parameters.money = field.money;
+                                                    parameters.limit_day = field.limit_day;
+                                                }
+
+                                                postData.parameters = JSON.stringify(parameters);
+                                                if (debug) { console.log(field); console.log(postData); } //开启调试返回数据
+
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionConditionCreate", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        conditionTables.reload(); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                    return false;
+                });
+                //升级条件编辑
+                function doCnditionEdit(obj) {
+                    var id = obj.data.id;
+                    coreHelper.Post("Api/CoreCmsDistributionGrade/GetDistributionConditionEdit", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑升级条件',
+                                area: ['800px', '600px'],
+                                id: 'LAY-popup-CoreCmsDistributionCondition-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('distribution/grade/conditionEdit', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsDistributionCondition-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                if (!!!field.condition_code) {
+                                                    layer.msg("请先选择促销条件");
+                                                    return false;
+                                                }
+                                                var postData = {};
+                                                var parameters = {};
+
+                                                postData.id = field.id;
+                                                postData.gradeId = field.gradeId;
+                                                postData.code = field.condition_code;
+
+                                                if (field.condition_code === 'USER_ORDERS') {//个人消费总额(已完成的订单)
+                                                    if (!!!field.money) {
+                                                        layer.msg("请输入金额");
+                                                        return false;
+                                                    }
+                                                    parameters.money = field.money;
+                                                    parameters.limit_day = field.limit_day;
+
+                                                } else if (field.condition_code === 'USER_ORDERSNUM') { //个人订单数量(已完成的订单)
+                                                    if (!!!field.num) {
+                                                        layer.msg("请输入订单量");
+                                                        return false;
+                                                    }
+                                                    parameters.num = field.num;
+                                                    parameters.limit_day = field.limit_day;
+                                                } else if (field.condition_code === 'GOODS_ALL') { //所有商品满足条件
+                                                    parameters.num = 1;
+
+                                                } else if (field.condition_code === 'GOODS_IDS') { //购买指定商品
+                                                    if (!!!field.goodsId) {
+                                                        layer.msg("请选择商品");
+                                                        return false;
+                                                    }
+                                                    parameters.goodsId = field.goodsId;
+                                                } else if (field.condition_code === 'USER_GRADE') { //直推几个指定用户等级
+                                                    if (!!!field.num) {
+                                                        layer.msg("请输入等级数量");
+                                                        return false;
+                                                    }
+                                                    parameters.num = field.num;
+                                                    parameters.num = field.grade;
+                                                } else if (field.condition_code === 'GROUP_ORDERS') { //团队消费总额
+                                                    if (!!!field.money) {
+                                                        layer.msg("请输入金额");
+                                                        return false;
+                                                    }
+                                                    parameters.money = field.money;
+                                                    parameters.limit_day = field.limit_day;
+                                                }
+
+                                                postData.parameters = JSON.stringify(parameters);
+                                                if (debug) { console.log(field); console.log(postData); } //开启调试返回数据
+
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionConditionEdit", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        conditionTables.reload(); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                };
+                //升级条件删除
+                function doConditionDel(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            var id = obj.data.id;
+                            coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionConditionDelete", { id: id }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                conditionTables.reload(); //重载表格
+                                layer.msg(e.msg);
+                            });
+                        });
+                };
+
+                //佣金设置表格渲染
+                var resultTables = layui.table.render({
+                    elem: '#result'
+                    , size: 'sm'
+                    , method: 'post'
+                    , url: "Api/CoreCmsDistributionGrade/GetDistributionResultPageList"
+                    , where: { gradeId: d.params.data.model.id }
+                    , cols: [[ //标题栏
+                        { field: 'code', width: 140, title: '佣金代码' },
+                        {
+                            field: 'name', width: 140, title: '佣金名称', templet: function (d) {
+                                if (d.code == 'COMMISSION_1') {
+                                    return '一级佣金';
+                                } else if (d.code == 'COMMISSION_2') {
+                                    return '二级佣金';
+                                } else if (d.code == 'COMMISSION_3') {
+                                    return '三级佣金';
+                                }
+                            }
+                        }
+                        , { field: 'parameters', title: '参数' }
+                        , { width: 120, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-result-tableBox-bar' }
+                    ]]
+                    , even: true
+                });
+
+                //监听工具条
+                table.on('tool(result)',
+                    function (obj) {
+                        if (obj.event === 'resultEdit') {
+                            doResultEdit(obj);
+                        } else if (obj.event === 'resultDel') {
+                            doResultDel(obj)
+                        }
+                    });
+
+                //添加佣金设置
+                form.on('submit(resultAdd)', function (data) {
+                    coreHelper.Post("Api/CoreCmsDistributionGrade/GetDistributionResultCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建佣金设置',
+                                area: ['800px', '550px'],
+                                id: 'LAY-popup-CoreCmsDistributionResult-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('distribution/grade/resultCreate', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsDistributionResult-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (!!!field.result_code) {
+                                                    layer.msg("请先选择促销条件");
+                                                    return false;
+                                                }
+
+                                                var postData = {};
+                                                var parameters = {};
+
+                                                postData.gradeId = field.gradeId;
+                                                postData.code = field.result_code;
+                                                if (!!!field.commissionType) {
+                                                    layer.msg("请选择类型");
+                                                    return false;
+                                                }
+                                                parameters.commissionType = field.commissionType;
+                                                if (!!!field.discount) {
+                                                    layer.msg("请输入佣金值");
+                                                    return false;
+                                                }
+                                                parameters.discount = field.discount;
+
+                                                var commissionTypeValue = Number(parameters.commissionType);
+                                                var discountValue = Number(parameters.discount);
+                                                if (commissionTypeValue == 1 && discountValue > 100) {
+                                                    layer.msg("百分比数字不能大于100");
+                                                    return false;
+                                                }
+
+                                                postData.parameters = JSON.stringify(parameters);
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionResultCreate", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        resultTables.reload();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                });
+                //佣金设置编辑
+                function doResultEdit(obj) {
+                    var id = obj.data.id;
+                    coreHelper.Post("Api/CoreCmsDistributionGrade/GetDistributionResultEdit", { id: id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑佣金设置',
+                                area: ['800px', '550px'],
+                                id: 'LAY-popup-CoreCmsDistributionResult-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('distribution/grade/resultEdit', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsDistributionResult-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (!!!field.result_code) {
+                                                    layer.msg("请先选择促销条件");
+                                                    return false;
+                                                }
+
+                                                var postData = {};
+                                                var parameters = {};
+
+                                                postData.id = field.id;
+                                                postData.gradeId = field.gradeId;
+                                                postData.code = field.result_code;
+                                                if (!!!field.commissionType) {
+                                                    layer.msg("请选择类型");
+                                                    return false;
+                                                }
+                                                parameters.commissionType = field.commissionType;
+                                                if (!!!field.discount) {
+                                                    layer.msg("请输入佣金值");
+                                                    return false;
+                                                }
+                                                parameters.discount = field.discount;
+
+                                                var commissionTypeValue = Number(parameters.commissionType);
+                                                var discountValue = Number(parameters.discount);
+                                                if (commissionTypeValue == 1 && discountValue > 100) {
+                                                    layer.msg("百分比数字不能大于100");
+                                                    return false;
+                                                }
+
+                                                postData.parameters = JSON.stringify(parameters);
+                                                if (debug) { console.log(field); } //开启调试返回数据
+
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionResultEdit", postData, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        resultTables.reload(); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+
+                };
+                //佣金设置删除
+                function doResultDel(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。',
+                        function (index) {
+                            var id = obj.data.id;
+                            coreHelper.Post("Api/CoreCmsDistributionGrade/DoDistributionResultDelete", { id: id }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                resultTables.reload();
+                                layer.msg(e.msg);
+                            });
+                        });
+                };
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsDistributionGrade-editForm');
+            })
+    };
+</script>

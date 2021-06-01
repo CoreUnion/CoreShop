@@ -1,0 +1,128 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsGoodsComment-detailsForm" id="LAY-app-CoreCmsGoodsComment-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="commentId">评价用户</label>
+                </td>
+                <td>
+                    <a href="javascript:void(0);" onclick="layui.coreHelper.viewImage('{{ d.params.data.avatarImage || setter.noImagePicUrl }}')"><image style="max-width:60px;max-height:60px;border-radius: 30px;" src="{{d.params.data.avatarImage || setter.noImagePicUrl }}" /></a>   {{ d.params.data.nickName || '' }}  【{{ d.params.data.mobile || '' }}】
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="score">评价星级</label>
+                </td>
+                <td>
+                    {{ d.params.data.score || '' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="goodsId">商品名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.goodName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="orderId">评价订单</label>
+                </td>
+                <td>
+                    {{ d.params.data.orderId || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="addon">货品规格</label>
+                </td>
+                <td>
+                    {{ d.params.data.addon || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="images">评价图片</label>
+                </td>
+                <td>
+                    {{#  layui.each(d.params.data.imagesArr, function(index, item){ }}
+                    <a href="javascript:void(0);" onclick="layui.coreHelper.viewImage('{{ item || '' }}')"><image style="max-width:128px;max-height:128px;" src="{{item || '' }}" /></a>&nbsp;
+                    {{#  }); }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="contentBody">评价内容</label>
+                </td>
+                <td>
+                    {{ d.params.data.contentBody || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="sellerContent">商家回复</label>
+                </td>
+                <td>
+                    {{ d.params.data.sellerContent || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isDisplay">前台显示</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isDisplay" value="{{d.params.data.isDisplay}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isDisplay" {{ d.params.data.isDisplay ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsGoodsComment-detailsForm');
+        });
+    };
+</script>

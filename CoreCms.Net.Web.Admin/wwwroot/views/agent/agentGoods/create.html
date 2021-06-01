@@ -1,0 +1,164 @@
+
+
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsAgentGoods-createForm" id="LAY-app-CoreCmsAgentGoods-createForm">
+
+        <div class="layui-form-item">
+            <label for="goodId" class="layui-form-label  layui-form-required">商品选择</label>
+            <div class="layui-input-block">
+                <!--<input type="number" min="0" max="999999" name="goodId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入商品序列" lay-reqText="请输入商品序列并为数字" />-->
+                <div id="goodId" class="xm-select-demo"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sortId" class="layui-form-label  layui-form-required">排序</label>
+            <div class="layui-input-inline layui-inline-4">
+                <input type="number" min="0" max="999999" name="sortId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <label for="isEnable" class="layui-form-label  layui-form-required">是否启用</label>
+            <div class="layui-input-inline layui-inline-4">
+                <input type="checkbox" lay-filter="switch" name="isEnable" lay-skin="switch" lay-text="开启|关闭" checked="checked">
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title"> <legend style="font-size:14px;">货品信息</legend> </fieldset>
+
+
+        <div id="productBox" class="productBox"></div>
+
+
+
+
+        <div class="layui-form-item text-right core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAgentGoods-createForm-submit" id="LAY-app-CoreCmsAgentGoods-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+
+
+<script id="productBoxTmp" type="text/html">
+    <table class="layui-table" lay-size="sm">
+        <thead>
+            <tr>
+                <th>货品规格</th>
+                <th style="width: 60px">成本价格</th>
+                <th style="width: 60px">销售价格</th>
+                {{#  layui.each(d.agentGrade, function(index, item){ }}
+                <th style="width: 70px">{{ item.name }}</th>
+                {{#  }); }}
+            </tr>
+        </thead>
+        <tbody>
+
+            {{#  layui.each(d.list, function(index, item){ }}
+            <tr>
+                <td style="text-align: left;">{{ item.spesDesc || '默认货品（无规格）'}}</td>
+                <td>{{ item.costprice }}￥</td>
+                <td>{{ item.price }}￥</td>
+
+                {{#  layui.each(d.agentGrade, function(key, grade){ }}
+                <td>
+
+                    <input type="hidden" name="goodId[{{index* d.agentGrade.length + key}}]" value="{{item.goodsId}}">
+                    <input type="hidden" name="productId[{{index* d.agentGrade.length + key}}]" value="{{item.id}}">
+                    <input type="hidden" name="productCostPrice[{{index* d.agentGrade.length + key}}]" value="{{item.costprice}}">
+                    <input type="hidden" name="productPrice[{{index* d.agentGrade.length + key}}]" value="{{item.price}}">
+                    <input type="hidden" name="agentGradeId[{{index* d.agentGrade.length + key}}]" value="{{grade.id}}">
+
+                    {{#  if(grade.defaultSalesPriceType === 1){ }}
+                    <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ layui.coreHelper.toDecimal2(item.costprice + item.costprice * grade.defaultSalesPriceNumber / 100 , 2) }}" lay-verify="required|number" class="layui-input">
+                    {{#  }else{ }}
+                    <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ item.costprice + grade.defaultSalesPriceNumber }}" lay-verify="required|number" class="layui-input">
+                    {{#  } }}
+                </td>
+                {{#  }); }}
+            </tr>
+            {{#  }); }}
+        </tbody>
+    </table>
+
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    var agentGrade;
+    layui.data.done = function (d) {
+        agentGrade = d.params.data.agentGrade;
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'xmSelect', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , xmSelect = layui.xmSelect
+                    , cropperImg = layui.cropperImg
+                    , laytpl = layui.laytpl
+                    , coreHelper = layui.coreHelper;
+
+                xmSelect.render({
+                    el: '#goodId',
+                    toolbar: {
+                        show: true,
+                    },
+                    name: 'goodId',
+                    layVerify: 'required',
+                    layVerType: 'msg',
+                    filterable: true,
+                    radio: true,
+                    clickClose: true,
+                    paging: true,
+                    pageSize: 10,
+                    prop: {
+                        name: 'title',
+                        value: 'value',
+                    },
+                    height: '500',
+                    data: d.params.data.goods,
+                    on: function (data) {
+                        //arr:  当前多选已选中的数据
+                        var arr = data.arr;
+                        //change, 此次选择变化的数据,数组
+                        var change = data.change;
+                        //isAdd, 此次操作是新增还是删除
+                        var isAdd = data.isAdd;
+                        getProducts(arr[0].value);
+                        console.log(data);
+                        //可以return一个数组, 代表想选中的数据
+                        //return []
+                    },
+                })
+
+
+                function getProducts(goodId) {
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    coreHelper.Post("Api/Tools/GetProducts", { id: goodId }, function (e) {
+                        console.log(e)
+                        if (e.code === 0) {
+                            var data = {
+                                list: e.data,
+                                agentGrade: agentGrade
+                            }
+                            var getTpl = productBoxTmp.innerHTML, view = document.getElementById('productBox');
+                            laytpl(getTpl).render(data, function (html) {
+                                view.innerHTML = html;
+                            });
+                            form.render();
+                            layer.msg(e.msg);
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+
+
+                form.verify();
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsAgentGoods-createForm');
+            })
+    };
+</script>

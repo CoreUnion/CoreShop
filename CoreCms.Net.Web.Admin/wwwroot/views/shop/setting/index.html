@@ -1,0 +1,1130 @@
+<title>标题</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+    .layui-form-item label { width: 140px; }
+    .classifyimg { margin-bottom: 20px; width: 672px !important; }
+    .classifyimg-item { display: inline-block; width: 140px; }
+    .classifyimg img { width: 100px; display: block; }
+    .classifyimg .layui-form-radio { vertical-align: top; display: block; margin-bottom: 10px; }
+    .image_storage_type .item { display: none; }
+    .layui-elem-quote { margin: 10px; }
+    .layui-tab-content { padding: 15px 0; }
+</style>
+<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsSetting/GetIndex" lay-done="layui.data.done(d);">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <!--<div class="layui-card-header">
+
+                    </div>-->
+
+                    <div class="layui-card-body">
+                        <div class="layui-tab  layui-tab-card" lay-filter="setting">
+                            <ul class="layui-tab-title">
+                                <li lay-id="platform" class="layui-this">特殊开关</li>
+                                <li lay-id="platform">平台设置</li>
+                                <li lay-id="share">分享设置</li>
+                                <li lay-id="users">会员设置</li>
+                                <li lay-id="goods">商品设置</li>
+                                <li lay-id="order">订单管理</li>
+                                <li lay-id="points">积分设置</li>
+                                <li lay-id="cash">提现设置</li>
+                                <li lay-id="inviteFriends">邀请好友设置</li>
+                                <li lay-id="filesStorage">附件设置</li>
+                                <li lay-id="other">其他设置</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+
+                                    <blockquote class="layui-elem-quote" style="padding-top: 20px;line-height: 30px;">
+                                        1、如果开启【显示门店列表】模块，则微信小程序审核如果发现可能会失败，并提示“<text style="color: #ff0000;">【小程序涉及多个商家提供商品的在线交易及配送，请补充选择：电商平台-电商平台类目。】</text>”，可先关闭，审核后再开启。<br />
+                                        2、如果开启【显示充值】模块，则微信小程序审核如果发现可能会失败，并提示“<text style="color: #ff0000;">【小程序页面内容涉及账户充值服务，需补充商家自营-预付卡销售-发行方类目。】</text>”，可先关闭，审核后再开启。<br />
+                                    </blockquote>
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['showStoresSwitch']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="showStoresSwitch" name="showStoresSwitch" value="1" title="开启" {{d.data.configs['showStoresSwitch']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="showStoresSwitch" name="showStoresSwitch" value="2" title="不开启" {{d.data.configs['showStoresSwitch']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['showStoreBalanceRechargeSwitch']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="showStoreBalanceRechargeSwitch" name="showStoreBalanceRechargeSwitch" value="1" title="开启" {{d.data.configs['showStoreBalanceRechargeSwitch']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="showStoreBalanceRechargeSwitch" name="showStoreBalanceRechargeSwitch" value="2" title="不开启" {{d.data.configs['showStoreBalanceRechargeSwitch']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="layui-tab-item">
+
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shopName']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="shopName" value="{{d.data.configs['shopName']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="请输入平台名称" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">平台名称会显示到前台，请合理输入此名称</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shopDesc']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5" style="margin-bottom: 10px">
+                                                <textarea name="shopDesc" class="layui-textarea">{{d.data.configs['shopDesc']['sValue']}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shopBeian']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="shopBeian" value="{{d.data.configs['shopBeian']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="请输入ICP备案号" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">如：湘ICP备15004965号-2</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['aboutArticleId']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5" style="margin-bottom: 10px">
+                                                <input type="text" id="aboutArticle" name="aboutArticle" readonly="readonly" value="{{d.data.configs['aboutArticle']['sValue']}}" required placeholder="请选择广告文章" autocomplete="off" class="layui-input">
+                                                <input type="hidden" id="articleId" name="aboutArticleId" value="{{d.data.configs['aboutArticleId']['sValue']}}">
+                                            </div>
+                                            <button class="layui-btn" lay-active="getAboutArticle">选择文章</button>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['userAgreementId']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5" style="margin-bottom: 10px">
+                                                <input type="text" id="userAgreement" name="userAgreement" readonly="readonly" value="{{d.data.configs['userAgreement']['sValue']}}" required placeholder="请选择广告文章" autocomplete="off" class="layui-input" lay-active="article_list('userAgreementId', 'userAgreement')">
+                                                <input type="hidden" id="userAgreementId" name="userAgreementId" value="{{d.data.configs['userAgreementId']['sValue']}}">
+                                            </div>
+                                            <button class="layui-btn" lay-active="getUserAgreement">选择文章</button>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['privacyPolicyId']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5" style="margin-bottom: 10px">
+                                                <input type="text" id="privacyPolicy" name="privacyPolicy" readonly="readonly" value="{{d.data.configs['privacyPolicy']['sValue']}}" required placeholder="请选择广告文章" autocomplete="off" class="layui-input" lay-active="article_list('privacyPolicyId', 'privacyPolicy')">
+                                                <input type="hidden" id="privacyPolicyId" name="privacyPolicyId" value="{{d.data.configs['privacyPolicyId']['sValue']}}">
+                                            </div>
+                                            <button class="layui-btn" lay-active="getPrivacyPolicy">选择文章</button>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shopLogo']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-6">
+                                                <input type="hidden" name="shopLogo" id="shopLogo" value="{{d.data.configs['shopLogo']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                <div class="layui-upload">
+                                                    <button type="button" class="layui-btn" id="upLogoBtn">上传图片</button>
+                                                    <div class="layui-upload-list">
+                                                        <img class="layui-upload-img" id="viewLogoImgBox" src="{{d.data.configs['shopLogo']['sValue'] ? d.data.configs['shopLogo']['sValue']:'/static/images/common/empty.png'}}">
+                                                        <p id="viewLogoTextBox"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux"></div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shopDefaultImage']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-6">
+                                                <input type="hidden" name="shopDefaultImage" id="shopDefaultImage" value="{{d.data.configs['shopDefaultImage']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                <div class="layui-upload">
+                                                    <button type="button" class="layui-btn" id="upDefaultImageBtn">上传图片</button>
+                                                    <div class="layui-upload-list">
+                                                        <img class="layui-upload-img" id="viewImgBox" src="{{d.data.configs['shopDefaultImage']['sValue'] ? d.data.configs['shopDefaultImage']['sValue']:'/static/images/common/empty.png'}}">
+                                                        <p id="viewTextBox"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['storeSwitch']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="storeSwitch" name="storeSwitch" value="1" title="开启" {{d.data.configs['storeSwitch']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="storeSwitch" name="storeSwitch" value="2" title="不开启" {{d.data.configs['storeSwitch']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['invoiceSwitch']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="invoiceSwitch" name="invoiceSwitch" value="1" title="开启" {{d.data.configs['invoiceSwitch']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="invoiceSwitch" name="invoiceSwitch" value="2" title="不开启" {{d.data.configs['invoiceSwitch']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item" style="margin-top: 20px;">
+                                            <label class="layui-form-label">{{d.data.configs['recommendKeys']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="recommendKeys" value="{{d.data.configs['recommendKeys']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="搜索发现关键字" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">多个【搜索发现】关键字请用 | 分割</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['cateStyle']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-12 classifyimg">
+                                                <div class="classifyimg-item">
+                                                    <input type="radio" lay-filter="cateStyle" name="cateStyle" value="1" title="一级大图" {{d.data.configs['cateStyle']['sValue']==="1" ? 'checked':''}}>
+                                                    <img src="/static/images/common/one-big.png" onclick="layui.coreHelper.viewImage('/static/images/common/one-big.png')">
+                                                </div>
+                                                <div class="classifyimg-item">
+                                                    <input type="radio" lay-filter="cateStyle" name="cateStyle" value="2" title="一级小图" {{d.data.configs['cateStyle']['sValue']==="2" ? 'checked':''}}>
+                                                    <img src="/static/images/common/one-small.png" onclick="layui.coreHelper.viewImage('/static/images/common/one-small.png')">
+                                                </div>
+                                                <div class="classifyimg-item">
+                                                    <input type="radio" lay-filter="cateStyle" name="cateStyle" value="3" title="二级小图" {{d.data.configs['cateStyle']['sValue']==="3" ? 'checked':''}}>
+                                                    <img src="/static/images/common/two-small.png" onclick="layui.coreHelper.viewImage('/static/images/common/two-small.png')">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux list-tag">
+                                                    1、一级大图分类图标尺寸建议：350px*150px<br />
+                                                    2、一级小图分类图标尺寸建议：105px*105px<br />
+                                                    3、二级分类图标尺寸建议：60px*60px<br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shareTitle']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="shareTitle" value="{{d.data.configs['shareTitle']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="请输入分享的标题" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">微信小程序首页分享的标题</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shareDesc']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="text" name="shareDesc" value="{{d.data.configs['shareDesc']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="请输入分享的描述" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">只在支付宝小程序分享中显示</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['shareImage']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="hidden" name="shareImage" id="shareImage" value="{{d.data.configs['shareImage']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                <div class="layui-upload">
+                                                    <button type="button" class="layui-btn" id="upShareImageBtn">上传图片</button>
+                                                    <div class="layui-upload-list">
+                                                        <img class="layui-upload-img" id="viewShareImgBox" src="{{d.data.configs['shareImage']['sValue'] ? d.data.configs['shareImage']['sValue']:'/static/images/common/empty.png'}}">
+                                                        <p id="viewShareTextBox"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">微信小程序首页分享的图片</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['isBindMobile']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-4">
+                                                <input type="radio" lay-filter="isBindMobile" name="isBindMobile" value="1" title="绑定" {{d.data.configs['isBindMobile']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="isBindMobile" name="isBindMobile" value="2" title="不绑定" {{d.data.configs['isBindMobile']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">第三方登录的时候是否需要绑定手机号码，强烈建议绑定手机号码。</div>
+                                        </div>
+                                        <div class="layui-form-item" style="margin-top: 20px;">
+                                            <label class="layui-form-label">{{d.data.configs['shopMobile']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="shopMobile" value="{{d.data.configs['shopMobile']['sValue']}}" lay-verify="title|phone" autocomplete="off" placeholder="请输入接收通知手机号" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">前台下单时给商家发送短信通知</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['goodsStocksWarn']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="goodsStocksWarn" value="{{d.data.configs['goodsStocksWarn']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="数量" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">商品中只要有货品库存低于报警数量，就会在后台提示</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['orderCancelTime']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" min="1" max="999999" name="orderCancelTime" value="{{d.data.configs['orderCancelTime']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" list="defaultNumbers">
+                                            </div>
+
+                                            <div class="layui-form-mid layui-word-aux">未付款订单取消的时间间隔，单位为【分钟】，请设置10分钟以上时间，因为订单取消时间5分钟执行一次</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['orderCompleteTime']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" min="1" max="999999" name="orderCompleteTime" value="{{d.data.configs['orderCompleteTime']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" list="defaultNumbers">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">已付款的订单完成的时间间隔，单位为【天】，一般设置3天</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['orderAutoSignTime']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" min="1" max="999999" name="orderAutoSignTime" value="{{d.data.configs['orderAutoSignTime']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" list="defaultNumbers">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">发货后的订单自动确认收货时间,单位为【天】，一般设置12天</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['orderAutoEvalTime']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" min="1" max="999999" name="orderAutoEvalTime" value="{{d.data.configs['orderAutoEvalTime']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" list="defaultNumbers">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">确认收货后的订单自动评价时间间隔,单位为【天】，一般设置3天</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['remindOrderTime']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" min="1" max="999999" name="remindOrderTime" value="{{d.data.configs['remindOrderTime']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">订单催付款时间,单位为【分钟】，请设置10分钟以上时间，因为催付款任务5分钟执行一次</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['reshipName']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-3">
+                                                <input type="text" name="reshipName" value="{{d.data.configs['reshipName']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="收货人名称" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">用户退货时的收货人姓名</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['reshipMobile']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-3">
+                                                <input type="text" name="reshipMobile" value="{{d.data.configs['reshipMobile']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="收货人手机号码" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">用户退货时的收货人联系方式</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['reshipAreaId']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-4 address-class">
+                                                <!--<input type="text" name="reshipAreaId" value="{{d.data.configs['reshipAreaId']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">-->
+                                                <input type="hidden" name="reshipAreaId" value="{{d.data.configs['reshipAreaId']['sValue']}}">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">退货区域设置</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['reshipCoordinate']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="reshipCoordinate" id="coordinateBox" lay-active="showMap" value="{{d.data.configs['reshipCoordinate']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="退货坐标" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">退货坐标</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['reshipAddress']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="reshipAddress" value="{{d.data.configs['reshipAddress']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="退货地址" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">退货的详细地址</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['pointSwitch']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="pointSwitch" name="pointSwitch" value="1" title="开启" {{d.data.configs['pointSwitch']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="pointSwitch" name="pointSwitch" value="2" title="不开启" {{d.data.configs['pointSwitch']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['pointDiscountedProportion']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" name="pointDiscountedProportion" value="{{d.data.configs['pointDiscountedProportion']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" min="0">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">多少积分可以折现1元人民币</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['ordersPointProportion']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" name="ordersPointProportion" value="{{d.data.configs['ordersPointProportion']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" max="100" min="0">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">（%）单个订单积分折现最大百分比</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['ordersRewardProportion']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="number" name="ordersRewardProportion" value="{{d.data.configs['ordersRewardProportion']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input" min="0">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">订单多少人民币奖励1个积分</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['signPointType']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="signPointType" name="signPointType" value="1" title="固定奖励" {{d.data.configs['signPointType']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="signPointType" name="signPointType" value="2" title="随机奖励" {{d.data.configs['signPointType']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                            <input type="hidden" id="signPointType" value="{{d.data.configs['signPointType']['sValue']}}">
+                                        </div>
+                                        <div class="sign-random">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['signRandomMin']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-2">
+                                                    <input type="text" name="signRandomMin" value="{{d.data.configs['signRandomMin']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">签到随机最小奖励积分</div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['signRandomMax']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-2">
+                                                    <input type="text" name="signRandomMax" value="{{d.data.configs['signRandomMax']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">签到随机最大奖励积分</div>
+                                            </div>
+                                        </div>
+                                        <div class="sign-fixed">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['firstSignPoint']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-2">
+                                                    <input type="text" name="firstSignPoint" value="{{d.data.configs['firstSignPoint']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">起始签到奖励积分</div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['continuitySignAdditional']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-2">
+                                                    <input type="text" name="continuitySignAdditional" value="{{d.data.configs['continuitySignAdditional']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">连续签到追加积分</div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['signMostPoint']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-2">
+                                                    <input type="text" name="signMostPoint" value="{{d.data.configs['signMostPoint']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="请输入正整数" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">连续签到奖励积分单日上限</div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['tocashMoneyLow']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="tocashMoneyLow" value="{{d.data.configs['tocashMoneyLow']['sValue']}}" lay-verify="title|money" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">最低提现标准，默认0不限制</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['tocashMoneyRate']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="tocashMoneyRate" value="{{d.data.configs['tocashMoneyRate']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="%" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">提现费率，默认0% 没有费率</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['tocashMoneyLimit']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="tocashMoneyLimit" value="{{d.data.configs['tocashMoneyLimit']['sValue']}}" lay-verify="title|number" autocomplete="off" placeholder="%" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">每日提现上限，默认0不限制</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                         
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <blockquote class="layui-elem-quote">
+                                            佣金设置（当不开启三级分销时候，推广好友三级统一返现比例）
+                                        </blockquote>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['commissionType']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="commissionType" name="commissionType" value="1" title="百分比" {{d.data.configs['distributionStore']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="commissionType" name="commissionType" value="2" title="固定金额" {{d.data.configs['distributionStore']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['commissionFirst']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="commissionFirst" value="{{d.data.configs['commissionFirst']['sValue']}}" lay-verify="title|money" autocomplete="off" placeholder="%" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['commissionSecond']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="commissionSecond" value="{{d.data.configs['commissionSecond']['sValue']}}" lay-verify="title|money" autocomplete="off" placeholder="%" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['commissionThird']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-2">
+                                                <input type="text" name="commissionSecond" value="{{d.data.configs['commissionThird']['sValue']}}" lay-verify="title|money" autocomplete="off" placeholder="%" class="layui-input">
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['filesStorageType']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                {{# layui.each(d.data.filesStorageOptionsType, function(index, item){ }}
+                                                <input type="radio" name="filesStorageType" value="{{ item.title }}" lay-filter="filesStorageType" title="{{ item.description }}" {{d.data.configs['filesStorageType']['sValue']=== item.title ? 'checked':''}}>
+                                                {{# }); }}
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['filesStorageFileSuffix']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-10">
+                                                <input type="text" name="filesStorageFileSuffix" value="{{d.data.configs['filesStorageFileSuffix']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">使用小写逗号分割</div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['filesStorageFileMaxSize']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="filesStorageFileMaxSize" value="{{d.data.configs['filesStorageFileMaxSize']['sValue']}}" lay-verify="number" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">M（兆），一般10M即可，超过网络容易缓慢</div>
+                                        </div>
+
+                                        <div id="cloudConfig">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageBucketBindUrl']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageBucketBindUrl" value="{{d.data.configs['filesStorageBucketBindUrl']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">独立绑定的域名最好，也可以用云存储提供的多级域名</div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageAccessKeyId']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageAccessKeyId" value="{{d.data.configs['filesStorageAccessKeyId']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageAccessKeySecret']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageAccessKeySecret" value="{{d.data.configs['filesStorageAccessKeySecret']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="tencentCloud">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageTencentAccountId']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageTencentAccountId" value="{{d.data.configs['filesStorageTencentAccountId']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageTencentCosRegion']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageTencentCosRegion" value="{{d.data.configs['filesStorageTencentCosRegion']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="aliyun">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageAliYunEndpoint']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageAliYunEndpoint" value="{{d.data.configs['filesStorageAliYunEndpoint']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageAliYunBucketName']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageAliYunBucketName" value="{{d.data.configs['filesStorageAliYunBucketName']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="layui-tab-item">
+                                    <div class="layui-form coreshop-form">
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> <legend>客服</legend></fieldset>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['entId']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="entId" value="{{d.data.configs['entId']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">客服ID，找客服开通</div>
+                                        </div>
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> <legend>腾讯地图</legend></fieldset>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['qqMapKey']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="qqMapKey" value="{{d.data.configs['qqMapKey']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">腾讯地图key，申请地址：https://lbs.qq.com/</div>
+                                        </div>
+
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> <legend>易源接口</legend></fieldset>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['showApiAppid']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="showApiAppid" value="{{d.data.configs['showApiAppid']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">通用接口平台，接口非常便宜，暂时用于快递查询，申请地址：https://www.showapi.com</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['showApiSecret']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="showApiSecret" value="{{d.data.configs['showApiSecret']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                        </div>
+
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> <legend>快递100</legend></fieldset>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['kuaidi100Customer']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="kuaidi100Customer" value="{{d.data.configs['kuaidi100Customer']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">快递100公司编码，申请地址：https://www.kuaidi100.com</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['kuaidi100Key']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-5">
+                                                <input type="text" name="kuaidi100Key" value="{{d.data.configs['kuaidi100Key']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">快递100授权key，申请地址：https://www.kuaidi100.com</div>
+                                        </div>
+
+                                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> <legend>统计代码</legend></fieldset>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['statisticsCode']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-8">
+                                                <textarea name="statisticsCode" id="statisticsCode" cols="30" rows="10" class="layui-input" style="height: 100px; padding: 10px">{{d.data.configs['statisticsCode']['sValue']}}</textarea>
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">只需要粘贴&lt;script&gt;&lt;/script&gt;内的代码，只统计H5端。微信小程序请使用"小程序数据助手"</div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">&nbsp;</label>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="save">保存更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+        indexData = d.data;
+        layui.use(['admin', 'form', 'coreHelper', 'element', 'table', 'util', 'view', 'table', 'cropperImg'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form
+                , element = layui.element
+                , table = layui.table
+                , util = layui.util
+                , view = layui.view
+                , cropperImg = layui.cropperImg
+                , router = layui.router()
+                , search = router.search;
+            form.render();
+
+            //图片上传
+            //系统默认图
+            $('#upDefaultImageBtn').click(function () {
+                cropperImg.cropImg({
+                    aspectRatio: 1 / 1,
+                    imgSrc: $('#viewImgBox').attr('src'),
+                    onCrop: function (data) {
+                        var loadIndex = layer.load(2);
+                        coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                            if (0 === res.code) {
+                                $('#viewImgBox').attr('src', res.data.fileUrl);
+                                $("#shopDefaultImage").val(res.data.fileUrl);
+                                layer.msg(res.msg);
+                                layer.close(loadIndex);
+                            } else {
+                                layer.close(loadIndex);
+                                layer.msg(res.msg, { icon: 2, anim: 6 });
+                            }
+                        });
+                    }
+                });
+            });
+            //logo
+            $('#upLogoBtn').click(function () {
+                cropperImg.cropImg({
+                    aspectRatio: 1 / 1,
+                    imgSrc: $('#viewLogoImgBox').attr('src'),
+                    onCrop: function (data) {
+                        var loadIndex = layer.load(2);
+                        coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                            if (0 === res.code) {
+                                $('#viewLogoImgBox').attr('src', res.data.fileUrl);
+                                $("#shopLogo").val(res.data.fileUrl);
+                                layer.msg(res.msg);
+                                layer.close(loadIndex);
+                            } else {
+                                layer.close(loadIndex);
+                                layer.msg(res.msg, { icon: 2, anim: 6 });
+                            }
+                        });
+                    }
+                });
+            });
+            //分享图片
+            $('#upShareImageBtn').click(function () {
+                cropperImg.cropImg({
+                    aspectRatio: 1 / 1,
+                    imgSrc: $('#viewShareImgBox').attr('src'),
+                    onCrop: function (data) {
+                        var loadIndex = layer.load(2);
+                        coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                            if (0 === res.code) {
+                                $('#viewShareImgBox').attr('src', res.data.fileUrl);
+                                $("#shareImage").val(res.data.fileUrl);
+                                layer.msg(res.msg);
+                                layer.close(loadIndex);
+                            } else {
+                                layer.close(loadIndex);
+                                layer.msg(res.msg, { icon: 2, anim: 6 });
+                            }
+                        });
+                    }
+                });
+            });
+
+            //退货区域显示处理
+            var reshipAreaId = 0;
+            if (d.data.configs.reshipAreaId.sValue) {
+                reshipAreaId = parseInt(d.data.configs.reshipAreaId.sValue)
+            }
+            coreHelper.Post("Api/Tools/GetAreaCheckedList", { id: reshipAreaId }, function (data) {
+                if (debug) { console.log(data); } //开启调试返回数据
+                var str = "";
+                $.each(data, function (i, n) {
+                    str += "<select lay-ignore name='areaId_" + (i + 1) + "' dep='" + (i + 1) + "'  class='select-address'>";
+                    str += "<option value='' >请选择</option>";
+                    $.each(n.list, function (h, z) {
+                        if (n.hasOwnProperty('info') && n.info.id == z.id) {
+                            str += "<option value='" + z.id + "' selected='selected'>" + z.name + "</option>";
+                        } else {
+                            str += "<option value='" + z.id + "' >" + z.name + "</option>";
+                        }
+                    });
+                    str += "</select>";
+                });
+                $("input[name='reshipAreaId']").after(str);
+                //以上数据输出完，以下绑定事件
+                $.each(data, function (i, n) {
+                    if (i < (data.length)) {
+                        $("select[name='areaId_" + (i + 1) + "']").change(function () {
+                            changeareaIdArea(i + 1, data.length);
+                        });
+                    }
+                });
+            });
+
+            function changeareaIdArea(i, max_i) {
+                //清除后面节点
+                for (var x = i + 1; x <= 6; x++) {  //最多6层，足够了
+                    $("select[name='areaId_" + x + "']").remove();
+                }
+                var val = $("select[name='areaId_" + i + "']").val();
+                if (val != "") {
+                    //取子节点数据，然后显示下一级
+                    coreHelper.Post("Api/Tools/GetAreaChildren", { id: val }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+
+                        if (e.length > 0) {
+                            var str = "";
+                            str += "<select lay-ignore name='areaId_" + (i + 1) + "' dep='" + (i + 1) + "'  class='select-address'>";
+                            str += "<option value='' >请选择</option>";
+                            $.each(e, function (h, z) {
+                                str += "<option value='" + z.id + "' >" + z.name + "</option>";
+                            });
+                            str += "</select>";
+                            $("select[name='areaId_" + i + "']").after(str);
+                            //以上数据输出完，以下绑定事件
+                            $("select[name='areaId_" + (i + 1) + "']").change(function () {
+                                changeareaIdArea(i + 1, i + 2);
+                            });
+
+                            //如果有返回值，就说明省市区没有选择到最终节点
+                            if (1 == 1) {
+                                $("input[name='reshipAreaId']").val("");
+                            } else {
+                                $("input[name='reshipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                            }
+                        } else {
+                            $("input[name='reshipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                        }
+                    });
+                } else {
+                    if (1 == 1) {
+                        $("input[name='reshipAreaId']").val("");
+                    } else {
+                        //第一级的元素就直接赋值为空就是了
+                        if (i == 1) {
+                            $("input[name='reshipAreaId']").val("");
+                        } else {
+                            i--;
+                            $("input[name='reshipAreaId']").val($("select[name='areaId_" + i + "']").val());
+                        }
+                    }
+                }
+            }
+
+            //积分奖励类型切换
+            var type = $("#signPointType").val();
+            if (type == 1) {
+                $(".sign-random").hide();
+                $(".sign-fixed").show();
+            } else {
+                $(".sign-random").show();
+                $(".sign-fixed").hide();
+            }
+            form.on('radio(signPointType)', function (data) {
+                if (data.value == 1) {
+                    $(".sign-random").hide();
+                    $(".sign-fixed").show();
+                } else {
+                    $(".sign-random").show();
+                    $(".sign-fixed").hide();
+                }
+            });
+
+            //监听购买商品成为分销商按钮
+            form.on('radio(distributionGoods)', function (data) {
+                if (data.value === "3") {
+                    $('#distributionGoods').show();
+                } else {
+                    $('#distributionGoods').hide();
+                }
+            });
+
+            form.on('radio(filesStorageType)', function (data) {
+                if (data.value == 'LocalStorage') {
+                    $("#cloudConfig").hide();
+                    $("#tencentCloud").hide();
+                    $("#aliyun").hide();
+                } else if (data.value == 'AliYunOSS') {
+                    $("#cloudConfig").show();
+                    $("#tencentCloud").hide();
+                    $("#aliyun").show();
+                } else if (data.value == 'QCloudOSS') {
+                    $("#cloudConfig").show();
+                    $("#tencentCloud").show();
+                    $("#aliyun").hide();
+                }
+            });
+
+            //初始化附件选中
+            if (d.data.configs.filesStorageType) {
+                var obj = d.data.configs.filesStorageType;
+                if (obj.sValue) {
+                    if (obj.sValue == 'LocalStorage') {
+                        $("#cloudConfig").hide();
+                        $("#tencentCloud").hide();
+                        $("#aliyun").hide();
+                    } else if (obj.sValue == 'AliYunOSS') {
+                        $("#cloudConfig").show();
+                        $("#tencentCloud").hide();
+                        $("#aliyun").show();
+                    } else if (obj.sValue == 'QCloudOSS') {
+                        $("#cloudConfig").show();
+                        $("#tencentCloud").show();
+                        $("#aliyun").hide();
+                    }
+                }
+            }
+
+
+
+
+            //初始化分销设置是否选中商品
+            if (d.data.configs.distributionGoodsId) {
+                var obj = d.data.configs.distributionGoodsId;
+                if (obj.sValue) {
+                    var goodsIds = obj.sValue.split(',');
+                    coreHelper.Post("Api/Tools/GetGoodsByIds", { id: goodsIds }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        $("#goods_list").empty();
+                        var the_val = "";
+                        for (var i = 0; i < e.data.length; i++) {
+                            $("#goods_list").append('<li><span id="' + e.data[i].id + '"  lay-active="goodsDelete">×</span>' + e.data[i].name + '</li>');
+                            the_val += "," + e.data[i].id;
+                        }
+                        //$("#goods").val(the_val.slice(1));
+                    });
+                }
+            }
+
+            //处理属性 为 lay-active 的所有元素事件
+            util.event('lay-active', {
+                showMap: function () {
+                    var oldData = $('#coordinateBox').val();
+                    let data = {
+                        oldData: oldData,
+                        coordinateBoxIdName: 'coordinateBox',
+                        addressBoxIdName: 'addressBox'
+                    }
+
+                    admin.popup({
+                        shadeClose: false,
+                        title: '查看详情',
+                        area: ['1000px', '570px'],
+                        id: 'LAY-popup-common-getQQMap',
+                        success: function (layero, index) {
+                            layui.view(this.id).render('common/getQQMap', { data }).done(function () {
+                                form.render();
+                            });
+                            // 禁止弹窗出现滚动条
+                            $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                        }
+                    });
+                },
+                goods_show: function () {
+                    admin.popup({
+                        shadeClose: false,
+                        title: '选择商品',
+                        area: ['750xp', '600px'],
+                        id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
+                        success: function (layero, index) {
+                            view(this.id).render('common/getGoodIds', null).done(function () {
+                                form.render();
+                                //监听商品列表页工具条
+                                var obj_goodsIds = {};
+                                form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                    function (data) {
+                                        if (Object.getOwnPropertyNames(ids).length === 0) {
+                                            layer.msg("请先选择商品");
+                                            return;
+                                        }
+                                        //判断个数是否满足
+                                        if (Object.getOwnPropertyNames(ids).length > 1) {
+                                            layer.msg("最多只能选择" + 1 + "个");
+                                            return false;
+                                        }
+                                        $("#goods_list").empty();
+                                        var the_val = "";
+                                        for (var key in ids) {
+                                            $("#goods_list").append('<li><span id="' + key + '"  lay-active="goodsDelete">×</span>' + ids[key].name + '</li>');
+                                            the_val += "," + key;
+                                        }
+                                        $("#distributionGoodsId").val(the_val.slice(1));
+                                        layer.close(index);
+                                    });
+                            });
+                        }
+                    });
+                },
+                goodsDelete: function () {
+                    var ids_array = $("#distributionGoodsId").val().split(",");
+                    for (var i = 0; i < ids_array.length; i++) {
+                        if (ids_array[i] == $(this).attr("id")) {
+                            ids_array.splice(i, 1);
+                        }
+                    }
+                    $("#distributionGoodsId").val(ids_array.join(","));
+                    if (ids_array.length <= 0) {
+                        $("#distributionGoodsId").val(0);
+                    }
+                    $(this).parent().remove();
+                },
+                getAboutArticle: function () {
+                    layui.admin.popup({
+                        shadeClose: false,
+                        title: '文章分类列表',
+                        area: ['800px', '550px'],
+                        id: 'LAY-app-CoreCmsCommon-GetArticles',
+                        success: function (layero, index) {
+                            layui.view(this.id).render('common/getArticles', null).done(function () {
+                                window.box = index;
+                                //监听文章列表页工具条
+                                table.on('tool(LAY-app-CoreCmsArticle-ArticleTable-TableBox)',
+                                    function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        var data = obj.data; //获得当前行数据
+                                        console.log(data);
+                                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                        console.log(layEvent);
+                                        var tr = obj.tr; //获得当前行 tr 的DOM对象
+                                        if (layEvent === 'selectArticle') { //选择
+                                            $("#articleId").val(data.id);
+                                            $("#aboutArticle").val(data.title);
+                                            layer.close(window.box);
+                                        }
+                                    });
+
+                            });
+                        }
+                    });
+                },
+                getUserAgreement: function () {
+                    layui.admin.popup({
+                        shadeClose: false,
+                        title: '文章分类列表',
+                        area: ['800px', '550px'],
+                        id: 'LAY-app-CoreCmsCommon-GetArticles',
+                        success: function (layero, index) {
+                            layui.view(this.id).render('common/getArticles', null).done(function () {
+                                window.box = index;
+                                //监听文章列表页工具条
+                                table.on('tool(LAY-app-CoreCmsArticle-ArticleTable-TableBox)',
+                                    function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        var data = obj.data; //获得当前行数据
+                                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                        var tr = obj.tr; //获得当前行 tr 的DOM对象
+                                        if (layEvent === 'selectArticle') { //选择
+                                            $("#userAgreementId").val(data.id);
+                                            $("#userAgreement").val(data.title);
+                                            layer.close(window.box);
+                                        }
+                                    });
+
+                            });
+                        }
+                    });
+                },
+                getPrivacyPolicy: function () {
+                    layui.admin.popup({
+                        shadeClose: false,
+                        title: '文章列表',
+                        area: ['800px', '550px'],
+                        id: 'LAY-app-CoreCmsCommon-GetArticles',
+                        success: function (layero, index) {
+                            layui.view(this.id).render('common/getArticles', null).done(function () {
+                                window.box = index;
+                                //监听文章列表页工具条
+                                table.on('tool(LAY-app-CoreCmsArticle-ArticleTable-TableBox)',
+                                    function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        var data = obj.data; //获得当前行数据
+                                        console.log(data);
+                                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                        console.log(layEvent);
+                                        var tr = obj.tr; //获得当前行 tr 的DOM对象
+                                        if (layEvent === 'selectArticle') { //选择
+                                            $("#privacyPolicyId").val(data.id);
+                                            $("#privacyPolicy").val(data.title);
+                                            layer.close(window.box);
+                                        }
+                                    });
+
+                            });
+                        }
+                    });
+                },
+            });
+
+
+            form.verify({
+                money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入合法整数或小数'],
+            });
+
+            //保存数据
+            form.on('submit(save)', function (data) {
+                formData = data.field;
+                if (!formData) {
+                    layer.msg('请先完善数据', {
+                        time: 1300
+                    });
+                    return false;
+                }
+                var field = data.field;
+                var keys = Object.keys(field);
+                var postData = [];
+                for (var i = 0; i < keys.length; i++) {
+                    var keyName = Object.keys(field)[i];
+
+                    var entity = {};
+                    entity.sKey = keyName;
+                    entity.sValue = field[keyName];
+                    postData.push(entity);
+                }
+                console.log(postData);
+                coreHelper.Post("Api/CoreCmsSetting/DoSave", { entity: postData }, function (e) {
+                    if (debug) { console.log(e); } //开启调试返回数据
+                    layer.msg(e.msg);
+                });
+            });
+        });
+    }
+</script>

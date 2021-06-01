@@ -1,0 +1,78 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm" id="LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm">
+
+        <div class="layui-form-item">
+            <label for="id" class="layui-form-label  layui-form-required">序列</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="id" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入序列" lay-reqText="请输入序列并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="storeId" class="layui-form-label  layui-form-required">核销门店id</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="storeId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入核销门店id" lay-reqText="请输入核销门店id并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="verificationUserId" class="layui-form-label  layui-form-required">核验人</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="verificationUserId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入核验人" lay-reqText="请输入核验人并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="ticketId" class="layui-form-label  layui-form-required">服务券序列</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="999999" name="ticketId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入服务券序列" lay-reqText="请输入服务券序列并为数字" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="ticketRedeemCode" class="layui-form-label  layui-form-required">核验码</label>
+            <div class="layui-input-block">
+                <input name="ticketRedeemCode" lay-verType="tips" lay-verify="required|verifyticketRedeemCode" class="layui-input" lay-reqText="请输入核验码" placeholder="请输入核验码" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="verificationTime" class="layui-form-label  layui-form-required">核验时间</label>
+            <div class="layui-input-block">
+                <input name="verificationTime" id="createTime-CoreCmsUserServicesTicketVerificationLog-verificationTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入核验时间" lay-reqText="请输入核验时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm-submit" id="LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+        function () {
+            var $ = layui.$
+                , form = layui.form
+                , admin = layui.admin
+                , laydate = layui.laydate
+                , upload = layui.upload
+                , cropperImg = layui.cropperImg
+                , coreHelper = layui.coreHelper;
+
+            laydate.render({
+                elem: '#createTime-CoreCmsUserServicesTicketVerificationLog-verificationTime',
+                type: 'datetime'
+            });
+	        form.verify({
+
+		        verifyticketRedeemCode: [/^[\S]{0,50}$/,'核验码最大只允许输入50位字符，且不能出现空格'],
+	        });
+            //重载form
+            form.render(null, 'LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm');
+        })
+    };
+</script>

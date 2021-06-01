@@ -1,0 +1,397 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsPromotion-GroupEditForm" id="LAY-app-CoreCmsPromotion-GroupEditForm">
+
+        <blockquote class="layui-elem-quote">
+            1、促销结果说明：【指定商品一口价】设置的金额必须要小于商品销售价格。<br />
+            2、促销结果只允许存在一种规则。
+        </blockquote>
+
+        <input type="hidden" name="id" id="id" value="{{d.params.data.model.id}}" />
+        <input type="hidden" name="type" id="type" value="{{d.params.data.model.type }}" />
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">名称</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" placeholder="请输入团购(秒杀)名称" lay-reqText="请输入团购(秒杀)名称" value="{{d.params.data.model.name || '' }}" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过40个字符内容</div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label for="isEnable" class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isEnable" id="isEnable" {{ d.params.data.model.isEnable ? 'checked' : '' }} lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">权重</label>
+            <div class="layui-input-inline  layui-inline-1">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.sort || '' }}" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越小，权重越大</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="maxNums" class="layui-form-label">限购数量</label>
+            <div class="layui-input-inline layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxNums" id="maxNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.maxNums }}" placeholder="请输入每人限购数量" lay-reqText="请输入每人限购数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">每人限购数量，0为不限制</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="maxGoodsNums" class="layui-form-label">总量</label>
+            <div class="layui-input-inline layui-inline-1">
+                <input type="number" min="0" max="999999" name="maxGoodsNums" id="maxGoodsNums" lay-verType="tips" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.maxGoodsNums }}" placeholder="请输入每个商品活动数量" lay-reqText="请输入每个商品活动数量并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">活动商品总量。0为不限制，以商品库存准</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="startTime" class="layui-form-label">起止时间</label>
+            <div class="layui-input-inline layui-inline-6">
+                <input name="startTime" id="createTime-CoreCmsPromotion-startTime" type="text" lay-verType="tips" lay-verify="required|datetime" class="layui-input" placeholder="请输入起止时间" lay-reqText="请输入起止时间" value="{{d.params.data.model.startTime}} 到 {{d.params.data.model.endTime }}" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品id：</label>
+            <div class="layui-input-block">
+                <div id="goods_box" class="select_seller_goods_box">
+                    <div>
+                        <button class="layui-btn layui-btn-xs" lay-active="goods_show">选择商品</button>
+                    </div>
+                    <input type="hidden" name="goods" id="goods" value="">
+                    <ul id="goods_list" class="sellect_seller_goods_list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                促销结果：
+            </label>
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-xs" lay-active="resultAdd">添加结果</button>
+                <table id="result" lay-filter="result"></table>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-GroupEditForm-submit" id="LAY-app-CoreCmsPromotion-GroupEditForm-submit" value="确认编辑">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    var objData = {};
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'util', 'view'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , util = layui.util
+                    , view = layui.view
+                    , coreHelper = layui.coreHelper;
+
+                if (d.params.data.model.parameters) {
+                    var obj = JSON.parse(d.params.data.model.parameters);
+                    if (obj.goodsId) {
+                        var goodsIds = obj.goodsId.split(',');
+                        coreHelper.Post("Api/Tools/GetGoodsByIds", { id: goodsIds }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            if (e.data.length > 0) {
+                                objData = e.data[0];
+                            }
+                            $("#goods_list").empty();
+                            var the_val = "";
+                            for (var i = 0; i < e.data.length; i++) {
+                                $("#goods_list").append('<li><span id="' + e.data[i].id + '"  lay-active="goodsDelete">×</span>' + e.data[i].name + '</li>');
+                                the_val += "," + e.data[i].id;
+                            }
+                            $("#goods").val(the_val.slice(1));
+                        });
+                    }
+                }
+
+                //促销结果表格渲染
+                var resultTables = layui.table.render({
+                    elem: '#result'
+                    , size: 'sm'
+                    , url: "Api/CoreCmsPromotion/GetResultList"
+                    , where: { promotionId: d.params.data.model.id }
+                    , method: 'POST'
+                    , cols: [[ //标题栏
+                        { field: 'code', width: 170, title: '结果代码' },
+                        {
+                            field: 'code', title: '条件名称', templet: function (data) {
+                                if (data.code) {
+                                    for (var i = 0; i < d.params.data.promotionResultTypes.length; i++) {
+                                        if (data.code == d.params.data.promotionResultTypes[i].sKey) {
+                                            return d.params.data.promotionResultTypes[i].sDescription;
+                                        }
+                                    }
+                                }
+                            }
+                        }, { field: 'parameters', title: '参数' }
+                        , {
+                            field: 'operating', title: '操作', width: 120, align: 'center', templet: function (data) {
+                                var html = '';
+                                html += '<a  class="layui-btn layui-btn-xs option-result-edit"  lay-active="resultEdit" data-id="' + data.id + '">编辑</a>';
+                                html += '<a  class="layui-btn layui-btn-xs option-result-del" lay-active="resultDelete" data-id="' + data.id + '">删除</a>';
+                                return html;
+                            }
+                        }
+                    ]]
+                    , even: true
+                });
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    //添加促销结果
+                    resultAdd: function () {
+                        coreHelper.Post("Api/CoreCmsPromotion/GetResultCreate", { id: d.params.data.model.id }, function (e) {
+                            if (e.code === 0) {
+                                admin.popup({
+                                    shadeClose: false,
+                                    title: '创建数据',
+                                    area: ['600px', '400px'],
+                                    id: 'LAY-popup-CoreCmsPromotionResult-create',
+                                    success: function (layero, index) {
+                                        view(this.id).render('promotion/group/resultcreate', { data: e.data }).done(function () {
+                                            //监听提交
+                                            form.on('submit(LAY-app-CoreCmsPromotionResult-createForm-submit)',
+                                                function (data) {
+                                                    var field = data.field; //获取提交的字段
+
+                                                    if (!!!field.code) {
+                                                        layer.msg("请先选择促销条件");
+                                                        return false;
+                                                    }
+                                                    var postData = {};
+                                                    var parameters = {};
+                                                    postData.promotionId = field.promotionId;
+                                                    postData.code = field.code;
+
+                                                    if (field.code === 'GOODS_REDUCE') {//指定商品减固定金额
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'GOODS_DISCOUNT') { //指定商品打X折
+                                                        if (!!!field.discount) {
+                                                            layer.msg("请输入折扣");
+                                                            return false;
+                                                        }
+                                                        parameters.discount = field.discount;
+                                                    } else if (field.code === 'GOODS_ONE_PRICE') {//指定商品一口价
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'ORDER_REDUCE') {//订单减指定金额
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'ORDER_DISCOUNT') {//订单打X折
+                                                        if (!!!field.discount) {
+                                                            layer.msg("请输入折扣");
+                                                            return false;
+                                                        }
+                                                        parameters.discount = field.discount;
+                                                    } else if (field.code === 'GOODS_HALF_PRICE') {//指定商品每第几件减指定金额
+                                                        if (!!!field.num) {
+                                                            layer.msg("请输入第几件");
+                                                            return false;
+                                                        }
+                                                        parameters.num = field.num;
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    }
+                                                    postData.parameters = JSON.stringify(parameters);
+                                                    if (debug) { console.log(field); console.log(postData); } //开启调试返回数据
+                                                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                    coreHelper.Post("Api/CoreCmsPromotion/DoResultCreate", postData, function (e) {
+                                                        if (e.code === 0) {
+                                                            resultTables.reload();
+                                                            layer.close(index); //再执行关闭
+                                                            layer.msg(e.msg);
+                                                        } else {
+                                                            layer.msg(e.msg);
+                                                        }
+                                                    });
+                                                });
+                                        });
+                                    }
+                                });
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        });
+                    }
+                    //促销结果编辑
+                    , resultEdit: function () {
+                        var id = $(this).attr('data-id');
+                        coreHelper.Post("Api/CoreCmsPromotion/GetResultEdit", { id: id }, function (e) {
+                            if (e.code === 0) {
+                                admin.popup({
+                                    shadeClose: false,
+                                    title: '编辑促销结果',
+                                    area: ['600px', '400px'],
+                                    id: 'LAY-popup-CoreCmsPromotionResult-edit',
+                                    success: function (layero, index) {
+                                        view(this.id).render('promotion/promotion/resultedit', { data: e.data }).done(function () {
+                                            //监听提交
+                                            form.on('submit(LAY-app-CoreCmsPromotionResult-editForm-submit)',
+                                                function (data) {
+                                                    var field = data.field; //获取提交的字段
+                                                    if (!!!field.code) {
+                                                        layer.msg("请先选择促销条件");
+                                                        return false;
+                                                    }
+                                                    var postData = {};
+                                                    var parameters = {};
+                                                    postData.promotionId = field.promotionId;
+                                                    postData.code = field.code;
+                                                    postData.id = field.id;
+
+                                                    if (field.code === 'GOODS_REDUCE') {//指定商品减固定金额
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'GOODS_DISCOUNT') { //指定商品打X折
+                                                        if (!!!field.discount) {
+                                                            layer.msg("请输入折扣");
+                                                            return false;
+                                                        }
+                                                        parameters.discount = field.discount;
+                                                    } else if (field.code === 'GOODS_ONE_PRICE') {//指定商品一口价
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'ORDER_REDUCE') {//订单减指定金额
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    } else if (field.code === 'ORDER_DISCOUNT') {//订单打X折
+                                                        if (!!!field.discount) {
+                                                            layer.msg("请输入折扣");
+                                                            return false;
+                                                        }
+                                                        parameters.discount = field.discount;
+                                                    } else if (field.code === 'GOODS_HALF_PRICE') {//指定商品每第几件减指定金额
+                                                        if (!!!field.num) {
+                                                            layer.msg("请输入第几件");
+                                                            return false;
+                                                        }
+                                                        parameters.num = field.num;
+                                                        if (!!!field.money) {
+                                                            layer.msg("请输入金额");
+                                                            return false;
+                                                        }
+                                                        parameters.money = field.money;
+                                                    }
+                                                    postData.parameters = JSON.stringify(parameters);
+                                                    if (debug) { console.log(field); console.log(postData); } //开启调试返回数据
+                                                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                    coreHelper.Post("Api/CoreCmsPromotion/DoResultEdit", postData, function (e) {
+                                                        if (e.code === 0) {
+                                                            resultTables.reload();
+                                                            layer.close(index); //再执行关闭
+                                                            layer.msg(e.msg);
+                                                        } else {
+                                                            layer.msg(e.msg);
+                                                        }
+                                                    });
+                                                });
+                                        })
+                                    }
+                                });
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        });
+                    }
+                    //删除促销结果
+                    , resultDelete: function () {
+                        var id = $(this).attr('data-id');
+                        layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                            coreHelper.Post("Api/CoreCmsPromotion/DoResultDelete", { id: id }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                resultTables.reload();
+                                layer.msg(e.msg);
+                            });
+                        });
+                    }
+                    , goods_show: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择商品',
+                            area: ['750xp', '600px'],
+                            id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
+                            success: function (layero, index) {
+                                view(this.id).render('common/getGoodId', { data: objData }).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+                                    var obj_goodsIds = {};
+                                    form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                        function (data) {
+                                            console.log(ids);
+                                            if (!!!ids) {
+                                                layer.msg("请先选择商品");
+                                                return;
+                                            }
+                                            $("#goods_list").empty();
+                                            $("#goods_list").append('<li><span id="' + ids.id + '"  lay-active="goodsDelete">×</span>' + ids.name + '</li>');
+                                            $("#goods").val(ids.id);
+                                            layer.close(index);
+                                        });
+                                });
+                            }
+                        });
+                    },
+                    goodsDelete: function () {
+                        var ids_array = $("#goods").val().split(",");
+                        for (var i = 0; i < ids_array.length; i++) {
+                            if (ids_array[i] == $(this).attr("id")) {
+                                ids_array.splice(i, 1);
+                            }
+                        }
+                        $("#goods").val(ids_array.join(","));
+                        $(this).parent().remove();
+                    }
+                });
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsPromotion-startTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                form.verify({
+                    verifyname: [/^[\S]{0,40}$/, '促销名称最大只允许输入40位字符，且不能出现空格'],
+                });
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsPromotion-GroupEditForm');
+            })
+    };
+</script>

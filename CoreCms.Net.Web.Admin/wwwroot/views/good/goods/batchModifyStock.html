@@ -1,0 +1,50 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoods-batchModifyStock" id="LAY-app-CoreCmsGoods-batchModifyStock">
+        <div class="warning-msg">
+            <div class="warning-msg-content">
+                <p>当前选中{{ d.params.data.entity.id.length }}条数据</p>
+            </div>
+        </div>
+        <input type="hidden" name="ids" value="{{ d.params.data.entity.id }}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">调整类型：</label>
+            <div class="layui-input-inline">
+                <select name="modifyType">
+                    <option value="=">=</option>
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">x</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">调整值：</label>
+            <div class="layui-input-inline">
+                <input type="text" value="" name="modifyValue" lay-verType="tips" lay-verify="required|number" placeholder="请输入调整值" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoods-batchModifyStock-submit" id="LAY-app-CoreCmsGoods-batchModifyStock-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'laydate', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsGoods-batchModifyStock');
+            })
+    };
+</script>

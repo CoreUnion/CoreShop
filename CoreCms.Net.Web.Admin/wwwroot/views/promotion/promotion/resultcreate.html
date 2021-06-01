@@ -1,0 +1,155 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsPromotionResult-createForm" id="LAY-app-CoreCmsPromotionResult-createForm">
+        <input type="hidden" name="promotionId" id="promotionId" value="{{d.params.data.promotionModel.id}}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">促销结果：</label>
+            <div class="layui-input-block">
+                <select name="code" id="code" lay-filter="resultCode">
+                    <option value="">请选择促销结果</option>
+                    {{# layui.each(d.params.data.resultCodes, function(index, item){ }}
+                    <option value="{{ item.sKey }}">{{ item.sDescription }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div id="ResultBox"></div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotionResult-createForm-submit" id="LAY-app-CoreCmsPromotionResult-createForm-submit" value="确认添加">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="goods_reduce_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">指定商品减固定金额</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">商品优惠的金额</div>
+    </div>
+</script>
+<script id="goods_discount_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">指定商品打X折</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">折扣：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="discount" lay-verType="tips" lay-verify="required|discount" autocomplete="off" value="" placeholder="折扣" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">大于0小于10的数字</div>
+    </div>
+</script>
+<script id="goods_one_price_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">指定商品一口价</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">商品的固定价格</div>
+    </div>
+</script>
+<script id="order_reduce_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">订单减指定金额</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">订单总价减XX钱</div>
+    </div>
+</script>
+<script id="order_discount_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">订单打X折</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">折扣：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="discount" lay-verType="tips" lay-verify="required|discount" autocomplete="off" value="" placeholder="折扣" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">大于0小于10的数字</div>
+    </div>
+</script>
+<script id="goods_half_price_tpl" type="text/html">
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果名称：</label>
+        <div class="layui-form-mid">指定商品每第几件减去指定金额</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">第几件：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="num" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="1" placeholder="" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">每第几件商品</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">优惠金额：</label>
+        <div class="layui-input-inline seller-inline-2">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="" placeholder="金额" class="layui-input" type="text">
+        </div>
+        <div class="layui-form-mid layui-word-aux">减去的固定价格</div>
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'util'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , view = layui.view
+                    , laytpl = layui.laytpl
+                    , util = layui.util
+                    , coreHelper = layui.coreHelper;
+
+                form.on('select(resultCode)', function (data) {
+                    $('#code').val(data.value);
+                    var view = document.getElementById('ResultBox');
+                    $("#ResultBox").empty();
+                    if (data.value === 'GOODS_REDUCE') {//指定商品减固定金额
+                        laytpl(goods_reduce_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GOODS_DISCOUNT') { //指定商品打X折
+                        laytpl(goods_discount_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GOODS_ONE_PRICE') {//指定商品一口价
+                        laytpl(goods_one_price_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'ORDER_REDUCE') {//订单减指定金额
+                        laytpl(order_reduce_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'ORDER_DISCOUNT') {//订单打X折
+                        laytpl(order_discount_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    } else if (data.value === 'GOODS_HALF_PRICE') {//指定商品每第几件减指定金额
+                        laytpl(goods_half_price_tpl.innerHTML).render(d.params.data.promotionModel, function (html) { view.innerHTML = html; });
+                    }
+                    form.render();
+                });
+
+                form.verify({
+                    money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入金额'],
+                    discount: [/^(?:([1-9](?:\.[\d]{0,2})?)|(?:0\.[1-9]{1,2})|10)$/, '请输入折扣'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsPromotionResult-createForm');
+            })
+    };
+</script>

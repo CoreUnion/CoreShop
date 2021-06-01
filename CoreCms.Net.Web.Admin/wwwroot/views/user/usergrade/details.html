@@ -1,0 +1,41 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsUserGrade-detailsForm" id="LAY-app-CoreCmsUserGrade-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="title">标题</label>
+                </td>
+                <td>
+                    {{ d.params.data.title || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isDefault">是否默认</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isDefault" value="{{d.params.data.isDefault}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isDefault" {{ d.params.data.isDefault ? 'checked' : '' }}>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    layui.data.done = function (d) {
+        console.log(d);
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsUserGrade-detailsForm');
+        });
+    };
+</script>
