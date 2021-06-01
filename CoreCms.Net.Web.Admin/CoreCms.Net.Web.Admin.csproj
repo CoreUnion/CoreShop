@@ -16,38 +16,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="App_Data\OperRecordLogs\**" />
-    <Compile Remove="App_Data\RecordAccessLogs\**" />
-    <Compile Remove="App_Data\RequestIpInfoLog\**" />
-    <Compile Remove="App_Data\RequestResponseLog\**" />
-    <Compile Remove="App_Data\SenparcTraceLog\**" />
+    <Compile Remove="App_Data\**" />
     <Compile Remove="Controllers\WeChat\**" />
     <Compile Remove="Logs\**" />
     <Compile Remove="wwwroot\dbFiles\**" />
     <Compile Remove="wwwroot\files\**" />
-    <Content Remove="App_Data\OperRecordLogs\**" />
-    <Content Remove="App_Data\RecordAccessLogs\**" />
-    <Content Remove="App_Data\RequestIpInfoLog\**" />
-    <Content Remove="App_Data\RequestResponseLog\**" />
-    <Content Remove="App_Data\SenparcTraceLog\**" />
+    <Content Remove="App_Data\**" />
     <Content Remove="Controllers\WeChat\**" />
     <Content Remove="Logs\**" />
     <Content Remove="wwwroot\dbFiles\**" />
     <Content Remove="wwwroot\files\**" />
-    <EmbeddedResource Remove="App_Data\OperRecordLogs\**" />
-    <EmbeddedResource Remove="App_Data\RecordAccessLogs\**" />
-    <EmbeddedResource Remove="App_Data\RequestIpInfoLog\**" />
-    <EmbeddedResource Remove="App_Data\RequestResponseLog\**" />
-    <EmbeddedResource Remove="App_Data\SenparcTraceLog\**" />
+    <EmbeddedResource Remove="App_Data\**" />
     <EmbeddedResource Remove="Controllers\WeChat\**" />
     <EmbeddedResource Remove="Logs\**" />
     <EmbeddedResource Remove="wwwroot\dbFiles\**" />
     <EmbeddedResource Remove="wwwroot\files\**" />
-    <None Remove="App_Data\OperRecordLogs\**" />
-    <None Remove="App_Data\RecordAccessLogs\**" />
-    <None Remove="App_Data\RequestIpInfoLog\**" />
-    <None Remove="App_Data\RequestResponseLog\**" />
-    <None Remove="App_Data\SenparcTraceLog\**" />
+    <None Remove="App_Data\**" />
     <None Remove="Controllers\WeChat\**" />
     <None Remove="Logs\**" />
     <None Remove="wwwroot\dbFiles\**" />
@@ -434,7 +418,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Controllers\Good\" />
     <Folder Include="Controllers\Order\" />
   </ItemGroup>
