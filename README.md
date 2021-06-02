@@ -98,16 +98,34 @@
 | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/11.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/12.png)  |
 
 
-#### 🎨系统演示二维码  
+#### 🎨系统演示  
 
-| h5演示（搭建中） | 微信小程序演示（搭建中） |
+| h5演示 | 微信小程序演示（搭建中） |
 |---------------------|---------------------|
 | ![h5演示](https://files.cdn.corecms.net/coreshop/images/QRCode/h5qCode.jpg)  | ![微信小程序演示](https://files.cdn.corecms.net/coreshop/images/QRCode/wxqCode.jpg)  |
 
-后端管理演示地址：
+
+1、H5网页演示地址：  
+https://h5.coreshop.corecms.net  
+
+2、后端管理演示地址：  
 https://admin.coreshop.corecms.net  
 账号：coreshop  
 密码：coreshop  
+
+3、后端接口文档地址：  
+https://admin.coreshop.corecms.net/doc  
+
+
+4、接口管理演示地址：  
+https://api.coreshop.corecms.net  
+
+5、接口文档地址：  
+https://api.coreshop.corecms.net/doc  
+
+6、定时任务演示地址：  
+https://api.coreshop.corecms.net/job  
+
 
 
 ### 🌈技术选型
@@ -181,7 +199,7 @@ https://admin.coreshop.corecms.net
 
 
 ### ⛵安装说明
-- 由于文档内容较多，请加QQ群后群内下载安装文档
+- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档
 
 
 ### 🎏版权须知
