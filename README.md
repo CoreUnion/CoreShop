@@ -100,11 +100,14 @@
 
 #### 🎨系统演示二维码  
 
-| h5演示 | 微信小程序演示 |
+| h5演示（搭建中） | 微信小程序演示（搭建中） |
 |---------------------|---------------------|
 | ![h5演示](https://files.cdn.corecms.net/coreshop/images/QRCode/h5qCode.jpg)  | ![微信小程序演示](https://files.cdn.corecms.net/coreshop/images/QRCode/wxqCode.jpg)  |
 
-- 由于经常变动后端演示账户权限，请加QQ群后群内公告查阅最新演示地址及账户密码。
+后端管理演示地址：
+https://admin.coreshop.corecms.net  
+账号：coreshop  
+密码：coreshop  
 
 
 ### 🌈技术选型
@@ -172,8 +175,8 @@
 - （必选）Windows IIS7.5或以上/Docker/k8s等支持环境
 - （必选）sqlserver 2012R2+ / MySQL 5.6+
 - （必选）支持https协议的域名
-- （建议必选）阿里云OSS/腾讯云OSS
-- （建议必选）Redis 5.7或以上版本
+- （必选）阿里云OSS/腾讯云OSS
+- （必选）Redis 5.7或以上版本
 - （可选）易联云网络打印机
 
 
