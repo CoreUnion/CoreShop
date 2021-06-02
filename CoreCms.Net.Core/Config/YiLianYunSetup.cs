@@ -21,17 +21,14 @@ namespace CoreCms.Net.Core.Config
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (AppSettingsConstVars.YiLianYunConfigEnabled)
+            services.AddYilianyunSdk<DefaultYilianyunSdkHook>(opt =>
             {
-                services.AddYilianyunSdk<DefaultYilianyunSdkHook>(opt =>
-                {
-                    // 应用ID请自行前往 dev.10ss.net 获取
-                    opt.ClientId = AppSettingsConstVars.YiLianYunConfigClientId;
-                    opt.ClientSecret = AppSettingsConstVars.YiLianYunConfigClientSecret;
-                    opt.YilianyunClientType = YilianyunClientType.自有应用;
-                    opt.SaveTokenDirPath = "./App_Data/YiLianYunLogs";
-                });
-            }
+                // 应用ID请自行前往 dev.10ss.net 获取
+                opt.ClientId = AppSettingsConstVars.YiLianYunConfigClientId;
+                opt.ClientSecret = AppSettingsConstVars.YiLianYunConfigClientSecret;
+                opt.YilianyunClientType = YilianyunClientType.自有应用;
+                opt.SaveTokenDirPath = "./App_Data/YiLianYunLogs";
+            });
         }
     }
 }
