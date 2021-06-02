@@ -1,0 +1,71 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysTaskLog-detailsForm" id="LAY-app-SysTaskLog-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">任务名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.name || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">完成时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="isSuccess">是否完成</label>
+                </td>
+                <td>
+                    <input type="checkbox" disabled name="isSuccess" value="{{d.params.data.isSuccess}}" lay-skin="switch" lay-text="完成|待办" lay-filter="isSuccess" {{ d.params.data.isSuccess ? 'checked' : '' }}>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="parameters">其他数据</label>
+                </td>
+                <td>
+                    {{ d.params.data.parameters || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysTaskLog-detailsForm');
+        });
+    };
+</script>
