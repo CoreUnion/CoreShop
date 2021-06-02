@@ -84,6 +84,9 @@ namespace CoreCms.Net.Web.WebApi
 
             //添加数据库连接SqlSugar注入支持
             services.AddSqlSugarSetup();
+            //配置跨域（CORS）
+            services.AddCorsSetup();
+
 
             //添加session支持(session依赖于cache进行存储)
             services.AddSession();
@@ -296,6 +299,7 @@ namespace CoreCms.Net.Web.WebApi
 
             #endregion
 
+
             //使用 Session
             app.UseSession();
 
@@ -310,6 +314,9 @@ namespace CoreCms.Net.Web.WebApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // CORS跨域
+            app.UseCors(AppSettingsConstVars.CorsPolicyName);
 
             // Routing
             app.UseRouting();

@@ -33,9 +33,10 @@ namespace CoreCms.Net.Core.Config
                 {
                     c.AddPolicy(AppSettingsConstVars.CorsPolicyName, policy =>
                         {
-                            policy.WithOrigins(AppSettingsConstVars.CorsIPs.Split(','))
-                                .AllowAnyHeader()//Ensures that the policy allows any header.
-                                .AllowAnyMethod();
+                            policy.WithOrigins(AppSettingsConstVars.CorsIPs.Split(','));
+                            policy.AllowAnyHeader();//Ensures that the policy allows any header.
+                            policy.AllowAnyMethod();
+                            policy.AllowCredentials();
                         });
                 }
                 else
