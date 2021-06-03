@@ -123,9 +123,10 @@ https://api.coreshop.corecms.net
 5、接口文档地址：  
 https://api.coreshop.corecms.net/doc  
 
-6、定时任务演示地址：  
+6、定时任务面板演示地址：  
 https://api.coreshop.corecms.net/job  
-
+账号：coreshop  
+密码：coreshop 
 
 
 ### 🌈技术选型
