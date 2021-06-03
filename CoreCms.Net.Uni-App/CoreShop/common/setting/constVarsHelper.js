@@ -4,8 +4,8 @@
  */
 //接口请求地址
 export const apiBaseUrl = 'https://api.demo.coreshop.com.cn';
-//附件资源请求地址
-export const apiFilesUrl = 'https://files.demo.coreshop.com.cn';
+//项目静态资源请求地址，如果使用官方的静态文件地址可以直接替换为：https://files.coreshop.corecms.net
+export const apiFilesUrl = 'https://files.coreshop.corecms.net';
 
 export const h5Url = apiBaseUrl + "wap/"; //H5端网站地址,
 
