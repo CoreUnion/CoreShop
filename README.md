@@ -81,10 +81,11 @@
 
 |  |
 |---------------------|
-| ![首页](https://files.cdn.corecms.net/coreshop/images/WeChat/01.jpg)  |
-| ![商家](https://files.cdn.corecms.net/coreshop/images/WeChat/02.jpg)  |
-| ![代理](https://files.cdn.corecms.net/coreshop/images/WeChat/03.jpg)  |
-| ![分销](https://files.cdn.corecms.net/coreshop/images/WeChat/04.jpg)  |
+| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/01.jpg)  |
+| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/02.jpg)  |
+| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/03.jpg)  |
+| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/04.jpg)  |
+| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/05.jpg)  |
 
 #### 🎏后端截图  
 
