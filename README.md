@@ -100,7 +100,7 @@
 
 #### 🎨系统演示  
 
-| h5演示 | 微信小程序演示（搭建中） |
+| h5演示 | 微信小程序演示 |
 |---------------------|---------------------|
 | ![h5演示](https://files.cdn.corecms.net/coreshop/images/QRCode/h5qCode.jpg)  | ![微信小程序演示](https://files.cdn.corecms.net/coreshop/images/QRCode/wxqCode.jpg)  |
 
