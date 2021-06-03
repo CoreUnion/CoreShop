@@ -125,13 +125,12 @@ https://api.coreshop.corecms.net/doc
 
 6、定时任务演示地址：  
 https://api.coreshop.corecms.net/job  
-账号：coreShop  
-密码：znbmC0cUDjyitl1I  
+
 
 
 ### 🌈技术选型
 
-#### 🏢后端技术选型  
+#### 🏢后端框架结构说明  
 
 
 | 技术 | 名称 | 版本 | 描述 |
@@ -196,11 +195,11 @@ https://api.coreshop.corecms.net/job
 - （必选）支持https协议的域名
 - （必选）阿里云OSS/腾讯云OSS
 - （必选）Redis 5.7或以上版本
-- （可选）易联云小票打印机
+- （可选）易联云网络打印机
 
 
 ### ⛵安装说明
-- 由于文档内容较多，请加QQ群[![](https://img.shields.io/badge/QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)后群内下载安装文档
+- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档
 
 
 ### 🎏版权须知
