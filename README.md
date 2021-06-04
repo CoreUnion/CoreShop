@@ -212,9 +212,16 @@ https://api.coreshop.corecms.net/job
 - 我们的团队水平有限，也是在探索中学习、改进。开源，是为了让认可我们的用户能自由的使用、学习软件的内部架构，让更多的人有机会阅读并发现Bug、对软件项目提出改进意见。
 
 
+### ☀️我们的组织  
+- CoreShop 项目已加入 [dotNET China](https://gitee.com/dotnetchina)  组织。<br/>
+
+- ![dotnetchina](https://images.gitee.com/uploads/images/2021/0324/120117_2da9922c_416720.png "132645_21007ea0_974299.png")
+
+
 ### 🎉鸣谢
-感谢以下开源项目给我们提供了学习和思考的方向：
-- Blog.Core
+感谢以下项目给我们提供了学习和思考的方向：
+- LayUI（贤心）
+- Blog.Core（老张）
 - Crmeb
 - Weshop
 - Jshop
