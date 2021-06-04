@@ -200,9 +200,15 @@ https://api.coreshop.corecms.net/job
 - （可选）易联云网络打印机
 
 
-### ⛵安装说明
+### ⛵安装及说明文档
 - 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码后从代码目录【文档】中获取。
 
+
+### ⚡进度及计划  
+- CoreShop项目虽然目前完成了通用商城该有的功能开发，但是因为业务逻辑层面的功能繁多，bug存在不少，不可否认很多非常明显的bug也存在不少。
+- 我们团队能力有限，但我们也会努力在短期内消灭掉明显的bug，大家看我们团队成员【[大灰灰](https://gitee.com/jianweie)】最近一年的贡献度，应该不会让大家失望。
+- 目前我们主要工作是修复Bug、完善测试、优化业务逻辑、编写文档及官网的建设。
+- 原定新功能的开发暂时会搁置（增加接龙功能，增加微信直播及历史回播功能，增加多商家入驻功能等）。
 
 ### 🎏版权须知
 - 允许个人学习研究使用，支持二次开发。
@@ -213,7 +219,7 @@ https://api.coreshop.corecms.net/job
 
 
 ### ☀️我们的组织  
-- CoreShop 项目已加入 [dotNET China](https://gitee.com/dotnetchina)  组织。<br/>
+- CoreShop 项目已加入 [dotNET China](https://gitee.com/dotnetchina)  组织。
 
 - ![dotnetchina](https://images.gitee.com/uploads/images/2021/0324/120117_2da9922c_416720.png "132645_21007ea0_974299.png")
 
