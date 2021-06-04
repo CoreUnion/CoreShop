@@ -150,7 +150,7 @@ https://api.coreshop.corecms.net/job
 | HangFire | 定时任务 |  [![nuget](https://img.shields.io/nuget/v/HangFire?cacheSeconds=10800)](https://www.nuget.org/packages/HangFire/)  [![nuget](https://img.shields.io/nuget/dt/HangFire)](https://www.nuget.org/packages/HangFire/) |  |
 | Payment  | 在线支付 |   [![nuget](https://img.shields.io/nuget/v/Essensoft.AspNetCore.Payment.WeChatPay?cacheSeconds=10800)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/)  [![nuget](https://img.shields.io/nuget/dt/Essensoft.AspNetCore.Payment.WeChatPay)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/) |  |
 | Senparc.Weixin | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/Senparc.Weixin?cacheSeconds=10800)](https://www.nuget.org/packages/Senparc.Weixin/)  [![nuget](https://img.shields.io/nuget/dt/Senparc.Weixin)](https://www.nuget.org/packages/Senparc.Weixin/) |  |
-| LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/zhangyd-c/JustAuth.svg?style=social)](https://www.layui.com/) |  |
+| LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/sentsin/layui.svg?style=social)](https://www.layui.com/) |  |
 
 
 #### 🍭后端技术看点
@@ -201,7 +201,7 @@ https://api.coreshop.corecms.net/job
 
 
 ### ⛵安装说明
-- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档
+- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码后从代码目录【文档】中获取。
 
 
 ### 🎏版权须知
