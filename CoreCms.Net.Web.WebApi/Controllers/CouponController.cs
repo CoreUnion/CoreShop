@@ -162,7 +162,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 //判断用户是否已领取?领取次数
                 var couponResult = await _couponServices.GetMyCoupon(_user.ID, entity.id, "all", 1, 9999);
-                if (couponResult.status && couponResult.code > promotion.maxNums)
+                if (couponResult.status && couponResult.code >= promotion.maxNums)
                 {
                     jm.msg = GlobalErrorCodeVars.Code15018;
                     return new JsonResult(jm);

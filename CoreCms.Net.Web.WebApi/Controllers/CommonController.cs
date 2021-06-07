@@ -363,6 +363,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 string appid = filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
                 string region = filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
                 CosXmlConfig config = new CosXmlConfig.Builder()
+                    .SetAppid(appid)
                     .IsHttps(true)  //设置默认 HTTPS 请求
                     .SetRegion(region)  //设置一个默认的存储桶地域
                     .SetDebugLog(true)  //显示日志
