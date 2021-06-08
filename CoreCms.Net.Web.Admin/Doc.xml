@@ -3276,7 +3276,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsAreaController.DoCreate(CoreCms.Net.Model.Entities.Entities.CoreCmsArea)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsAreaController.DoCreate(CoreCms.Net.Model.Entities.CoreCmsArea)">
             <summary>
                 创建提交
             </summary>
@@ -3290,7 +3290,7 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsAreaController.DoEdit(CoreCms.Net.Model.Entities.Entities.CoreCmsArea)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsAreaController.DoEdit(CoreCms.Net.Model.Entities.CoreCmsArea)">
             <summary>
                 编辑提交
             </summary>

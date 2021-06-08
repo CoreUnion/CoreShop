@@ -3,152 +3,158 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:58
  *        Description: 暂无
- ***********************************************************************/
-
-using System;
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     表单
+    /// 表单
     /// </summary>
+    [SugarTable("CoreCmsForm",TableDescription = "表单")]
     public partial class CoreCmsForm
     {
         /// <summary>
-        ///     序列
+        /// 表单
+        /// </summary>
+        public CoreCmsForm()
+        {
+        }
+
+        /// <summary>
+        /// 序列
         /// </summary>
         [Display(Name = "序列")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     表单名称
+        /// 表单名称
         /// </summary>
         [Display(Name = "表单名称")]
-        [StringLength(100, ErrorMessage = "{0}不能超过{1}字")]
-        public string name { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单名称", IsNullable = true)]
+        [StringLength(100, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String name { get; set; }
         /// <summary>
-        ///     表单类型
+        /// 表单类型
         /// </summary>
         [Display(Name = "表单类型")]
+        [SugarColumn(ColumnDescription = "表单类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int type { get; set; }
-
+        public System.Int32 type { get; set; }
         /// <summary>
-        ///     表单排序
+        /// 表单排序
         /// </summary>
         [Display(Name = "表单排序")]
+        [SugarColumn(ColumnDescription = "表单排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int sort { get; set; }
-
+        public System.Int32 sort { get; set; }
         /// <summary>
-        ///     图集
+        /// 图集
         /// </summary>
         [Display(Name = "图集")]
-        public string images { get; set; }
-
+        [SugarColumn(ColumnDescription = "图集", IsNullable = true)]
+        public System.String images { get; set; }
         /// <summary>
-        ///     视频地址
+        /// 视频地址
         /// </summary>
         [Display(Name = "视频地址")]
-        [StringLength(255, ErrorMessage = "{0}不能超过{1}字")]
-        public string videoPath { get; set; }
-
+        [SugarColumn(ColumnDescription = "视频地址", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String videoPath { get; set; }
         /// <summary>
-        ///     表单描述
+        /// 表单描述
         /// </summary>
         [Display(Name = "表单描述")]
-        [StringLength(255, ErrorMessage = "{0}不能超过{1}字")]
-        public string description { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单描述", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String description { get; set; }
         /// <summary>
-        ///     表头类型
+        /// 表头类型
         /// </summary>
         [Display(Name = "表头类型")]
+        [SugarColumn(ColumnDescription = "表头类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int headType { get; set; }
-
+        public System.Int32 headType { get; set; }
         /// <summary>
-        ///     表单头值
+        /// 表单头值
         /// </summary>
         [Display(Name = "表单头值")]
-        [StringLength(200, ErrorMessage = "{0}不能超过{1}字")]
-        public string headTypeValue { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单头值", IsNullable = true)]
+        [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String headTypeValue { get; set; }
         /// <summary>
-        ///     表单视频
+        /// 表单视频
         /// </summary>
         [Display(Name = "表单视频")]
-        [StringLength(200, ErrorMessage = "{0}不能超过{1}字")]
-        public string headTypeVideo { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单视频", IsNullable = true)]
+        [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String headTypeVideo { get; set; }
         /// <summary>
-        ///     表单提交按钮名称
+        /// 表单提交按钮名称
         /// </summary>
         [Display(Name = "表单提交按钮名称")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string buttonName { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单提交按钮名称", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String buttonName { get; set; }
         /// <summary>
-        ///     表单按钮颜色
+        /// 表单按钮颜色
         /// </summary>
         [Display(Name = "表单按钮颜色")]
-        [StringLength(30, ErrorMessage = "{0}不能超过{1}字")]
-        public string buttonColor { get; set; }
-
+        [SugarColumn(ColumnDescription = "表单按钮颜色", IsNullable = true)]
+        [StringLength(30, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String buttonColor { get; set; }
         /// <summary>
-        ///     是否需要登录
+        /// 是否需要登录
         /// </summary>
         [Display(Name = "是否需要登录")]
+        [SugarColumn(ColumnDescription = "是否需要登录")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool isLogin { get; set; }
-
+        public System.Boolean isLogin { get; set; }
         /// <summary>
-        ///     可提交次数
+        /// 可提交次数
         /// </summary>
         [Display(Name = "可提交次数")]
+        [SugarColumn(ColumnDescription = "可提交次数")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int times { get; set; }
-
+        public System.Int32 times { get; set; }
         /// <summary>
-        ///     二维码图片地址
+        /// 二维码图片地址
         /// </summary>
         [Display(Name = "二维码图片地址")]
-        [StringLength(200, ErrorMessage = "{0}不能超过{1}字")]
-        public string qrcode { get; set; }
-
+        [SugarColumn(ColumnDescription = "二维码图片地址", IsNullable = true)]
+        [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String qrcode { get; set; }
         /// <summary>
-        ///     提交后提示语
+        /// 提交后提示语
         /// </summary>
         [Display(Name = "提交后提示语")]
-        [StringLength(200, ErrorMessage = "{0}不能超过{1}字")]
-        public string returnMsg { get; set; }
-
+        [SugarColumn(ColumnDescription = "提交后提示语", IsNullable = true)]
+        [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String returnMsg { get; set; }
         /// <summary>
-        ///     结束时间
+        /// 结束时间
         /// </summary>
         [Display(Name = "结束时间")]
+        [SugarColumn(ColumnDescription = "结束时间")]
         [Required(ErrorMessage = "请输入{0}")]
-        public DateTime endDateTime { get; set; }
-
+        public System.DateTime endDateTime { get; set; }
         /// <summary>
-        ///     创建时间
+        /// 创建时间
         /// </summary>
         [Display(Name = "创建时间")]
+        [SugarColumn(ColumnDescription = "创建时间")]
         [Required(ErrorMessage = "请输入{0}")]
-        public DateTime createTime { get; set; }
-
+        public System.DateTime createTime { get; set; }
         /// <summary>
-        ///     更新时间
+        /// 更新时间
         /// </summary>
         [Display(Name = "更新时间")]
-        public DateTime? updateTime { get; set; }
+        [SugarColumn(ColumnDescription = "更新时间", IsNullable = true)]
+        public System.DateTime? updateTime { get; set; }
     }
 }

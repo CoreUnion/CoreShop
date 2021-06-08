@@ -3,161 +3,129 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:59
  *        Description: 暂无
- ***********************************************************************/
-
-using System;
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     Nlog记录表
+    /// Nlog记录表
     /// </summary>
-    public class SysNLogRecords
+    [SugarTable("SysNLogRecords",TableDescription = "Nlog记录表")]
+    public partial class SysNLogRecords
     {
         /// <summary>
-        ///     序列
+        /// Nlog记录表
+        /// </summary>
+        public SysNLogRecords()
+        {
+        }
+
+        /// <summary>
+        /// 序列
         /// </summary>
         [Display(Name = "序列")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-
-
-        public int id { get; set; }
-
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     时间
+        /// 时间
         /// </summary>
         [Display(Name = "时间")]
-        public DateTime? LogDate { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "时间", IsNullable = true)]
+        public System.DateTime? LogDate { get; set; }
         /// <summary>
-        ///     级别
+        /// 级别
         /// </summary>
         [Display(Name = "级别")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string LogLevel { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "级别", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String LogLevel { get; set; }
         /// <summary>
-        ///     事件日志上下文
+        /// 事件日志上下文
         /// </summary>
         [Display(Name = "事件日志上下文")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string LogType { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "事件日志上下文", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String LogType { get; set; }
         /// <summary>
-        ///     事件标题
+        /// 事件标题
         /// </summary>
         [Display(Name = "事件标题")]
-        [StringLength(255, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string LogTitle { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "事件标题", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String LogTitle { get; set; }
         /// <summary>
-        ///     记录器名字
+        /// 记录器名字
         /// </summary>
         [Display(Name = "记录器名字")]
-        [StringLength(255, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string Logger { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "记录器名字", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String Logger { get; set; }
         /// <summary>
-        ///     消息
+        /// 消息
         /// </summary>
         [Display(Name = "消息")]
-        public string Message { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "消息", IsNullable = true)]
+        public System.String Message { get; set; }
         /// <summary>
-        ///     异常信息
+        /// 异常信息
         /// </summary>
         [Display(Name = "异常信息")]
-        public string Exception { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "异常信息", IsNullable = true)]
+        public System.String Exception { get; set; }
         /// <summary>
-        ///     机器名称
+        /// 机器名称
         /// </summary>
         [Display(Name = "机器名称")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string MachineName { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "机器名称", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String MachineName { get; set; }
         /// <summary>
-        ///     ip
+        /// ip
         /// </summary>
         [Display(Name = "ip")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string MachineIp { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "ip", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String MachineIp { get; set; }
         /// <summary>
-        ///     请求方式
+        /// 请求方式
         /// </summary>
         [Display(Name = "请求方式")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string NetRequestMethod { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "请求方式", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String NetRequestMethod { get; set; }
         /// <summary>
-        ///     请求地址
+        /// 请求地址
         /// </summary>
         [Display(Name = "请求地址")]
-        [StringLength(500, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string NetRequestUrl { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "请求地址", IsNullable = true)]
+        [StringLength(500, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String NetRequestUrl { get; set; }
         /// <summary>
-        ///     是否授权
+        /// 是否授权
         /// </summary>
         [Display(Name = "是否授权")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string NetUserIsauthenticated { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "是否授权", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String NetUserIsauthenticated { get; set; }
         /// <summary>
-        ///     授权类型
+        /// 授权类型
         /// </summary>
         [Display(Name = "授权类型")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string NetUserAuthtype { get; set; }
-
-
+        [SugarColumn(ColumnDescription = "授权类型", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String NetUserAuthtype { get; set; }
         /// <summary>
-        ///     身份认证
+        /// 身份认证
         /// </summary>
         [Display(Name = "身份认证")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-
-
-        public string NetUserIdentity { get; set; }
+        [SugarColumn(ColumnDescription = "身份认证", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String NetUserIdentity { get; set; }
     }
 }

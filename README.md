@@ -23,7 +23,7 @@
 
 ------------------------------------------------------------------------
 
-[![](https://img.shields.io/badge/官方网站-www.coreshop.com.cn-brightgreen)](https://www.corecms.net/)  [![](https://img.shields.io/badge/QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
+[![](https://img.shields.io/badge/官方网站-coreshop.com.cn-brightgreen)](https://www.corecms.net/)  [![](https://img.shields.io/badge/QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
 
 ------------------------------------------------------------------------
 
@@ -135,22 +135,22 @@ https://api.coreshop.corecms.net/job
 #### 🏢后端框架结构说明  
 
 
-| 技术 | 名称 | 版本 | 描述 |
-| --- | --- | --- | --- |
-| Asp.net Core MVC  | 应用框架 | [![nuget](https://img.shields.io/nuget/v/Microsoft.AspNetCore.Mvc.Core?cacheSeconds=10800)](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)  [![nuget](https://img.shields.io/nuget/dt/Microsoft.AspNetCore.Mvc.Core)](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/) |  |
-| Asp.net Core WebApi  | Api框架 |  [![nuget](https://img.shields.io/nuget/v/Microsoft.AspNet.WebApi.Core?cacheSeconds=10800)](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Core/)  [![nuget](https://img.shields.io/nuget/dt/Microsoft.AspNet.WebApi.Core)](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Core/) |  |
-| Swagger2 | Api文档 | [![nuget](https://img.shields.io/nuget/v/Swashbuckle.AspNetCore?cacheSeconds=10800)](https://www.nuget.org/packages/Swashbuckle.AspNetCore/)  [![nuget](https://img.shields.io/nuget/dt/Swashbuckle.AspNetCore)](https://www.nuget.org/packages/Swashbuckle.AspNetCore/) |  |
-| AutoFac | IOC框架 |  [![nuget](https://img.shields.io/nuget/v/Autofac.Extensions.DependencyInjection?cacheSeconds=10800)](https://www.nuget.org/packages/Autofac.Extensions.DependencyInjection/)  [![nuget](https://img.shields.io/nuget/dt/Autofac.Extensions.DependencyInjection)](https://www.nuget.org/packages/Autofac.Extensions.DependencyInjection/) |  |
-| SqlSugar | ORM框架 |  [![nuget](https://img.shields.io/nuget/v/SqlSugar?cacheSeconds=10800)](https://www.nuget.org/packages/SqlSugar/)  [![nuget](https://img.shields.io/nuget/dt/SqlSugar)](https://www.nuget.org/packages/SqlSugar/) |  |
-| AutoMapper | 实体映射 |  [![nuget](https://img.shields.io/nuget/v/AutoMapper?cacheSeconds=10800)](https://www.nuget.org/packages/AutoMapper/)  [![nuget](https://img.shields.io/nuget/dt/AutoMapper)](https://www.nuget.org/packages/AutoMapper/) |  |
-| DotLiquid | 模板引擎 |  [![nuget](https://img.shields.io/nuget/v/DotLiquid?cacheSeconds=10800)](https://www.nuget.org/packages/DotLiquid/)  [![nuget](https://img.shields.io/nuget/dt/DotLiquid)](https://www.nuget.org/packages/DotLiquid/) |  |
-| Nlog | 日志组件 |  [![nuget](https://img.shields.io/nuget/v/NLog.Web.AspNetCore?cacheSeconds=10800)](https://www.nuget.org/packages/NLog.Web.AspNetCore/)  [![nuget](https://img.shields.io/nuget/dt/NLog.Web.AspNetCore)](https://www.nuget.org/packages/NLog.Web.AspNetCore/) |  |
-| Redis | 数据缓存 |   [![nuget](https://img.shields.io/nuget/v/StackExchange.Redis?cacheSeconds=10800)](https://www.nuget.org/packages/StackExchange.Redis/)  [![nuget](https://img.shields.io/nuget/dt/StackExchange.Redis)](https://www.nuget.org/packages/StackExchange.Redis/) |  |
-| Jwt | 授权认证 |  [![nuget](https://img.shields.io/nuget/v/IdentityModel?cacheSeconds=10800)](https://www.nuget.org/packages/IdentityModel/)  [![nuget](https://img.shields.io/nuget/dt/IdentityModel)](https://www.nuget.org/packages/IdentityModel/) |  |
-| HangFire | 定时任务 |  [![nuget](https://img.shields.io/nuget/v/HangFire?cacheSeconds=10800)](https://www.nuget.org/packages/HangFire/)  [![nuget](https://img.shields.io/nuget/dt/HangFire)](https://www.nuget.org/packages/HangFire/) |  |
-| Payment  | 在线支付 |   [![nuget](https://img.shields.io/nuget/v/Essensoft.AspNetCore.Payment.WeChatPay?cacheSeconds=10800)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/)  [![nuget](https://img.shields.io/nuget/dt/Essensoft.AspNetCore.Payment.WeChatPay)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/) |  |
-| Senparc.Weixin | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/Senparc.Weixin?cacheSeconds=10800)](https://www.nuget.org/packages/Senparc.Weixin/)  [![nuget](https://img.shields.io/nuget/dt/Senparc.Weixin)](https://www.nuget.org/packages/Senparc.Weixin/) |  |
-| LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/sentsin/layui.svg?style=social)](https://www.layui.com/) |  |
+| 技术 | 名称 | 版本 | 
+| --- | --- | --- | 
+| Asp.net Core MVC  | 应用框架 | [![nuget](https://img.shields.io/nuget/v/Microsoft.AspNetCore.Mvc.Core?cacheSeconds=10800)](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)  [![nuget](https://img.shields.io/nuget/dt/Microsoft.AspNetCore.Mvc.Core)](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/) |  
+| Asp.net Core WebApi  | Api框架 |  [![nuget](https://img.shields.io/nuget/v/Microsoft.AspNet.WebApi.Core?cacheSeconds=10800)](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Core/)  [![nuget](https://img.shields.io/nuget/dt/Microsoft.AspNet.WebApi.Core)](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Core/) |  
+| Swagger2 | Api文档 | [![nuget](https://img.shields.io/nuget/v/Swashbuckle.AspNetCore?cacheSeconds=10800)](https://www.nuget.org/packages/Swashbuckle.AspNetCore/)  [![nuget](https://img.shields.io/nuget/dt/Swashbuckle.AspNetCore)](https://www.nuget.org/packages/Swashbuckle.AspNetCore/) |  
+| AutoFac | IOC框架 |  [![nuget](https://img.shields.io/nuget/v/Autofac.Extensions.DependencyInjection?cacheSeconds=10800)](https://www.nuget.org/packages/Autofac.Extensions.DependencyInjection/)  [![nuget](https://img.shields.io/nuget/dt/Autofac.Extensions.DependencyInjection)](https://www.nuget.org/packages/Autofac.Extensions.DependencyInjection/) |  
+| SqlSugar | ORM框架 |  [![nuget](https://img.shields.io/nuget/v/SqlSugar?cacheSeconds=10800)](https://www.nuget.org/packages/SqlSugar/)  [![nuget](https://img.shields.io/nuget/dt/SqlSugar)](https://www.nuget.org/packages/SqlSugar/) |  
+| AutoMapper | 实体映射 |  [![nuget](https://img.shields.io/nuget/v/AutoMapper?cacheSeconds=10800)](https://www.nuget.org/packages/AutoMapper/)  [![nuget](https://img.shields.io/nuget/dt/AutoMapper)](https://www.nuget.org/packages/AutoMapper/) |  
+| DotLiquid | 模板引擎 |  [![nuget](https://img.shields.io/nuget/v/DotLiquid?cacheSeconds=10800)](https://www.nuget.org/packages/DotLiquid/)  [![nuget](https://img.shields.io/nuget/dt/DotLiquid)](https://www.nuget.org/packages/DotLiquid/) |  
+| Nlog | 日志组件 |  [![nuget](https://img.shields.io/nuget/v/NLog.Web.AspNetCore?cacheSeconds=10800)](https://www.nuget.org/packages/NLog.Web.AspNetCore/)  [![nuget](https://img.shields.io/nuget/dt/NLog.Web.AspNetCore)](https://www.nuget.org/packages/NLog.Web.AspNetCore/) |  
+| Redis | 数据缓存 |   [![nuget](https://img.shields.io/nuget/v/StackExchange.Redis?cacheSeconds=10800)](https://www.nuget.org/packages/StackExchange.Redis/)  [![nuget](https://img.shields.io/nuget/dt/StackExchange.Redis)](https://www.nuget.org/packages/StackExchange.Redis/) |  
+| Jwt | 授权认证 |  [![nuget](https://img.shields.io/nuget/v/IdentityModel?cacheSeconds=10800)](https://www.nuget.org/packages/IdentityModel/)  [![nuget](https://img.shields.io/nuget/dt/IdentityModel)](https://www.nuget.org/packages/IdentityModel/) |  
+| HangFire | 定时任务 |  [![nuget](https://img.shields.io/nuget/v/HangFire?cacheSeconds=10800)](https://www.nuget.org/packages/HangFire/)  [![nuget](https://img.shields.io/nuget/dt/HangFire)](https://www.nuget.org/packages/HangFire/) |  
+| Payment  | 在线支付 |   [![nuget](https://img.shields.io/nuget/v/Essensoft.AspNetCore.Payment.WeChatPay?cacheSeconds=10800)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/)  [![nuget](https://img.shields.io/nuget/dt/Essensoft.AspNetCore.Payment.WeChatPay)](https://www.nuget.org/packages/Essensoft.AspNetCore.Payment.WeChatPay/) |  
+| Senparc.Weixin | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/Senparc.Weixin?cacheSeconds=10800)](https://www.nuget.org/packages/Senparc.Weixin/)  [![nuget](https://img.shields.io/nuget/dt/Senparc.Weixin)](https://www.nuget.org/packages/Senparc.Weixin/) |  
+| LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/sentsin/layui.svg?style=social)](https://www.layui.com/) |  
 
 
 #### 🍭后端技术看点
@@ -206,7 +206,7 @@ https://api.coreshop.corecms.net/job
 
 ### ⚡进度及计划  
 - CoreShop项目虽然目前完成了通用商城该有的功能开发，但是因为业务逻辑层面的功能繁多，bug存在不少，不可否认很多非常明显的bug也存在不少。
-- 我们团队能力有限，但我们也会努力在短期内消灭掉明显的bug，大家看我们团队成员【[大灰灰](https://gitee.com/jianweie)】最近一年的贡献度，应该不会让大家失望。
+- 我们团队能力有限，但我们也会努力在短期内消灭掉明显的Bug。
 - 目前我们主要工作是修复Bug、完善测试、优化业务逻辑、编写文档及官网的建设。
 - 原定新功能的开发暂时会搁置（增加接龙功能，增加微信直播及历史回播功能，增加多商家入驻功能等）。
 
@@ -218,7 +218,7 @@ https://api.coreshop.corecms.net/job
 - 我们的团队水平有限，也是在探索中学习、改进。开源，是为了让认可我们的用户能自由的使用、学习软件的内部架构，让更多的人有机会阅读并发现Bug、对软件项目提出改进意见。
 
 
-### ☀️我们的组织  
+### ☀️组织  
 - CoreShop 项目已加入 [dotNET China](https://gitee.com/dotnetchina)  组织。
 
 - ![dotnetchina](https://images.gitee.com/uploads/images/2021/0324/120117_2da9922c_416720.png "132645_21007ea0_974299.png")

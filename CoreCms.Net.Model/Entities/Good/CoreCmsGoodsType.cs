@@ -3,41 +3,47 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:58
  *        Description: 暂无
- ***********************************************************************/
-
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     商品类型
+    /// 商品类型
     /// </summary>
+    [SugarTable("CoreCmsGoodsType",TableDescription = "商品类型")]
     public partial class CoreCmsGoodsType
     {
         /// <summary>
-        ///     序列
+        /// 商品类型
+        /// </summary>
+        public CoreCmsGoodsType()
+        {
+        }
+
+        /// <summary>
+        /// 序列
         /// </summary>
         [Display(Name = "序列")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     类型名称
+        /// 类型名称
         /// </summary>
         [Display(Name = "类型名称")]
-        [StringLength(20, ErrorMessage = "{0}不能超过{1}字")]
-        public string name { get; set; }
-
+        [SugarColumn(ColumnDescription = "类型名称", IsNullable = true)]
+        [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String name { get; set; }
         /// <summary>
-        ///     参数序列号存储 array(参数组名=>array('参数1','参数二'))
+        /// 参数序列号数组
         /// </summary>
-        [Display(Name = "参数序列号存储 array(参数组名=>array('参数1','参数二'))")]
-
-        public string parameters { get; set; }
+        [Display(Name = "参数序列号数组")]
+        [SugarColumn(ColumnDescription = "参数序列号数组", IsNullable = true)]
+        public System.String parameters { get; set; }
     }
 }

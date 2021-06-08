@@ -72,12 +72,29 @@ namespace CoreCms.Net.Repository
         {
             var dt = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd 00:00:00");
 
-            var sql = @"SELECT  count(1) AS nums,CONVERT(varchar(100),createTime, 23)  AS day
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  count(1) AS nums,CONVERT(varchar(100),createTime, 23)  AS day
                             FROM  CoreCmsBillPayments
                             WHERE createTime >= '" + dt + @"' AND status = " + (int)GlobalEnumVars.BillPaymentsStatus.Payed + @" AND type=" + (int)GlobalEnumVars.BillPaymentsType.Order + @" 
                             GROUP BY CONVERT(varchar(100),createTime, 23)";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"SELECT  count(1) AS nums,date(createTime) AS day
+                            FROM  CoreCmsBillPayments
+                            WHERE createTime >= '" + dt + @"' AND status = " + (int)GlobalEnumVars.BillPaymentsStatus.Payed + @" AND type=" + (int)GlobalEnumVars.BillPaymentsType.Order + @" 
+                            GROUP BY date(createTime)";
+            }
 
-            var list = await DbClient.SqlQueryable<StatisticsOut>(sql).ToListAsync();
+            if (string.IsNullOrEmpty(sqlStr))
+            {
+                return null;
+            }
+
+            var list = await DbClient.SqlQueryable<StatisticsOut>(sqlStr).ToListAsync();
             return list;
         }
 

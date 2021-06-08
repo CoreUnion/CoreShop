@@ -149,15 +149,30 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<List<StatisticsOut>> Statistics(int day)
         {
-
             var dt = DateTime.Now.AddDays(-day).ToString("yyyy-MM-dd");
 
-            var sql = @"SELECT  count(1) AS nums,CONVERT(varchar(100),createTime, 23)  AS day
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  count(1) AS nums,CONVERT(varchar(100),createTime, 23)  AS day
                             FROM  CoreCmsUser
                             WHERE createTime > '" + dt + @"'  
                             GROUP BY CONVERT(varchar(100),createTime, 23)";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"SELECT  count(1) AS nums,date(createTime)  AS day
+                            FROM  CoreCmsUser
+                            WHERE createTime > '" + dt + @"'  
+                            GROUP BY date(createTime)";
+            }
+            if (string.IsNullOrEmpty(sqlStr))
+            {
+                return null;
+            }
 
-            var list = await DbClient.SqlQueryable<StatisticsOut>(sql).ToListAsync();
+            var list = await DbClient.SqlQueryable<StatisticsOut>(sqlStr).ToListAsync();
             return list;
         }
 

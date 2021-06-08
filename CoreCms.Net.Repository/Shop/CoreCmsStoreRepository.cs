@@ -145,6 +145,7 @@ namespace CoreCms.Net.Repository
         {
             RefAsync<int> totalCount = 0;
 
+            //MySql与SqlServer查询语句相同
             var sql = string.Empty;
             if (latitude > 0 && longitude > 0)
             {

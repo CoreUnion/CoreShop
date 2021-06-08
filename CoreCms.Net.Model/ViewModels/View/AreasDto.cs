@@ -9,7 +9,7 @@
  ***********************************************************************/
 
 using System.Collections.Generic;
-using CoreCms.Net.Model.Entities.Entities;
+using CoreCms.Net.Model.Entities;
 
 namespace CoreCms.Net.Model.ViewModels.View
 {

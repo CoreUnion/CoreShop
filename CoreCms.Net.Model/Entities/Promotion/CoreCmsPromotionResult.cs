@@ -3,46 +3,53 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:58
  *        Description: 暂无
- ***********************************************************************/
-
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     促销结果表
+    /// 促销结果表
     /// </summary>
-    public class CoreCmsPromotionResult
+    [SugarTable("CoreCmsPromotionResult",TableDescription = "促销结果表")]
+    public partial class CoreCmsPromotionResult
     {
         /// <summary>
-        ///     序列
+        /// 促销结果表
+        /// </summary>
+        public CoreCmsPromotionResult()
+        {
+        }
+
+        /// <summary>
+        /// 序列
         /// </summary>
         [Display(Name = "序列")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     促销ID
+        /// 促销ID
         /// </summary>
         [Display(Name = "促销ID")]
-        public int? promotionId { get; set; }
-
+        [SugarColumn(ColumnDescription = "促销ID", IsNullable = true)]
+        public System.Int32? promotionId { get; set; }
         /// <summary>
-        ///     促销条件编码
+        /// 促销条件编码
         /// </summary>
         [Display(Name = "促销条件编码")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string code { get; set; }
-
+        [SugarColumn(ColumnDescription = "促销条件编码", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String code { get; set; }
         /// <summary>
-        ///     支付配置参数序列号存储
+        /// 支付配置参数序列号存储
         /// </summary>
         [Display(Name = "支付配置参数序列号存储")]
-        public string parameters { get; set; }
+        [SugarColumn(ColumnDescription = "支付配置参数序列号存储", IsNullable = true)]
+        public System.String parameters { get; set; }
     }
 }

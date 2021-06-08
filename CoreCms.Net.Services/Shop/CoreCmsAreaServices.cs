@@ -19,7 +19,7 @@ using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
-using CoreCms.Net.Model.Entities.Entities;
+using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;

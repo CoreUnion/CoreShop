@@ -16,7 +16,6 @@ using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
-using CoreCms.Net.Model.Entities.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.Echarts;
 using CoreCms.Net.Model.ViewModels.UI;
@@ -50,7 +49,12 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public List<GetOrdersReportsDbSelectOut> GetOrderMark(int num, string where, int section, DateTime sTime, string joinVal)
         {
-            var sql = @"SELECT  tmp_x.number ,
+
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  tmp_x.number ,
                                 ISNULL(SUM(o.orderAmount), 0) AS val ,
                                 COUNT(o.orderId) AS num
                         FROM    ( ( SELECT  number
@@ -65,6 +69,25 @@ namespace CoreCms.Net.Services
                                                   ) o ON tmp_x.number = DATEDIFF(" + (section == 3600 ? "HOUR" : "DAY") + ", '" + sTime.ToString("yyyy-MM-dd HH:mm:ss") + @"', o." + joinVal + @")
                                 )
                         GROUP BY tmp_x.number";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"select tmp_x.x,ifnull(sum(o.orderAmount),0) as val,count(o.orderId) as num
+            from
+              (SELECT @xi:=@xi+1 as x from
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
+                left join(
+                    select* from CoreCmsOrder
+                where 1 = 1
+                " + where + @"
+                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                group by tmp_x.x
+                ";
+            }
+
 
             var sp = new List<SugarParameter>();
             //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
@@ -72,7 +95,7 @@ namespace CoreCms.Net.Services
             //sp.Add(new SugarParameter("@where", where));
             //sp.Add(new SugarParameter("@num", num));
 
-            var list = _dal.SqlQuery(sql, sp);
+            var list = _dal.SqlQuery(sqlStr, sp);
 
             return list;
         }
@@ -89,7 +112,11 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public List<GetOrdersReportsDbSelectOut> GetPaymentsMark(int num, string where, int section, DateTime sTime, string joinVal)
         {
-            var sql = @"SELECT  tmp_x.number ,
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  tmp_x.number ,
                                 ISNULL(SUM(o.money), 0) AS val ,
                                 COUNT(o.paymentId) AS num
                         FROM    ( ( SELECT  number
@@ -104,6 +131,24 @@ namespace CoreCms.Net.Services
                                                   ) o ON tmp_x.number = DATEDIFF(" + (section == 3600 ? "HOUR" : "DAY") + ", '" + sTime.ToString("yyyy-MM-dd HH:mm:ss") + @"', o." + joinVal + @")
                                 )
                         GROUP BY tmp_x.number";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"select tmp_x.x,ifnull(sum(o.money),0) as val,count(o.paymentId) as num
+            from
+              (SELECT @xi:=@xi+1 as x from
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
+                left join(
+                    select* from CoreCmsBillPayments
+                where 1 = 1
+                " + where + @"
+                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                group by tmp_x.x
+                ";
+            }
 
             var sp = new List<SugarParameter>();
             //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
@@ -111,7 +156,7 @@ namespace CoreCms.Net.Services
             //sp.Add(new SugarParameter("@where", where));
             //sp.Add(new SugarParameter("@num", num));
 
-            var list = _dal.SqlQuery(sql, sp);
+            var list = _dal.SqlQuery(sqlStr, sp);
 
             return list;
         }
@@ -129,7 +174,12 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public List<GetOrdersReportsDbSelectOut> GetRefundMark(int num, string where, int section, DateTime sTime, string joinVal)
         {
-            var sql = @"SELECT  tmp_x.number ,
+
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  tmp_x.number ,
                                 ISNULL(SUM(o.money), 0) AS val ,
                                 COUNT(o.refundId) AS num
                         FROM    ( ( SELECT  number
@@ -144,14 +194,31 @@ namespace CoreCms.Net.Services
                                                   ) o ON tmp_x.number = DATEDIFF(" + (section == 3600 ? "HOUR" : "DAY") + ", '" + sTime.ToString("yyyy-MM-dd HH:mm:ss") + @"', o." + joinVal + @")
                                 )
                         GROUP BY tmp_x.number";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"select tmp_x.x,ifnull(sum(o.money),0) as val,count(o.refundId) as num
+            from
+              (SELECT @xi:=@xi+1 as x from
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
+                left join(
+                    select* from CoreCmsBillRefund
+                where 1 = 1
+                " + where + @"
+                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                group by tmp_x.x
+                ";
+            }
 
             var sp = new List<SugarParameter>();
             //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
             //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
             //sp.Add(new SugarParameter("@where", where));
             //sp.Add(new SugarParameter("@num", num));
-
-            var list = _dal.SqlQuery(sql, sp);
+            var list = _dal.SqlQuery(sqlStr, sp);
 
             return list;
         }
@@ -167,7 +234,12 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public List<GetOrdersReportsDbSelectOut> GetTocashMark(int num, string where, int section, DateTime sTime, string joinVal)
         {
-            var sql = @"SELECT  tmp_x.number ,
+
+            var sqlStr = string.Empty;
+            string dbTypeString = AppSettingsConstVars.DbDbType;
+            if (dbTypeString == DbType.SqlServer.ToString())
+            {
+                sqlStr = @"SELECT  tmp_x.number ,
                                 ISNULL(SUM(o.money), 0) AS val ,
                                 COUNT(o.id) AS num
                         FROM    ( ( SELECT  number
@@ -182,14 +254,32 @@ namespace CoreCms.Net.Services
                                                   ) o ON tmp_x.number = DATEDIFF(" + (section == 3600 ? "HOUR" : "DAY") + ", '" + sTime.ToString("yyyy-MM-dd HH:mm:ss") + @"', o." + joinVal + @")
                                 )
                         GROUP BY tmp_x.number";
+            }
+            else if (dbTypeString == DbType.MySql.ToString())
+            {
+                sqlStr = @"select tmp_x.x,ifnull(sum(o.money),0) as val,count(o.id) as num
+            from
+              (SELECT @xi:=@xi+1 as x from
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
+                (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
+                left join(
+                    select* from CoreCmsUserTocash
+                where 1 = 1
+                " + where + @"
+                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                group by tmp_x.x
+                ";
+            }
 
             var sp = new List<SugarParameter>();
             //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
             //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
             //sp.Add(new SugarParameter("@where", where));
-            //sp.Add(new SugarParameter("@num", num));
+            sp.Add(new SugarParameter("@xi", num));
 
-            var list = _dal.SqlQuery(sql, sp);
+            var list = _dal.SqlQuery(sqlStr, sp);
 
             return list;
         }

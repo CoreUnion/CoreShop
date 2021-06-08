@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoreCms.Net.Model.Entities.Entities;
+using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.UI;
 
 namespace CoreCms.Net.IRepository

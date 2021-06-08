@@ -18,7 +18,7 @@ using CoreCms.Net.Configuration;
 using CoreCms.Net.Filter;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
-using CoreCms.Net.Model.Entities.Entities;
+using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.UI;

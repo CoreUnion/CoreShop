@@ -3,133 +3,139 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:58
  *        Description: 暂无
- ***********************************************************************/
-
-using System;
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     促销表
+    /// 促销表
     /// </summary>
+    [SugarTable("CoreCmsPromotion",TableDescription = "促销表")]
     public partial class CoreCmsPromotion
     {
         /// <summary>
-        ///     序列
+        /// 促销表
+        /// </summary>
+        public CoreCmsPromotion()
+        {
+        }
+
+        /// <summary>
+        /// 序列
         /// </summary>
         [Display(Name = "序列")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     促销名称
+        /// 促销名称
         /// </summary>
         [Display(Name = "促销名称")]
+        [SugarColumn(ColumnDescription = "促销名称")]
         [Required(ErrorMessage = "请输入{0}")]
-        [StringLength(20, ErrorMessage = "{0}不能超过{1}字")]
-        public string name { get; set; }
-
+        [StringLength(40, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String name { get; set; }
         /// <summary>
-        ///     类型
+        /// 类型
         /// </summary>
         [Display(Name = "类型")]
+        [SugarColumn(ColumnDescription = "类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int type { get; set; }
-
+        public System.Int32 type { get; set; }
         /// <summary>
-        ///     排序
+        /// 排序
         /// </summary>
         [Display(Name = "排序")]
+        [SugarColumn(ColumnDescription = "排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int sort { get; set; }
-
+        public System.Int32 sort { get; set; }
         /// <summary>
-        ///     其它参数
+        /// 其它参数
         /// </summary>
         [Display(Name = "其它参数")]
-        public string parameters { get; set; }
-
+        [SugarColumn(ColumnDescription = "其它参数", IsNullable = true)]
+        public System.String parameters { get; set; }
         /// <summary>
-        ///     每人限购数量
+        /// 每人限购数量
         /// </summary>
         [Display(Name = "每人限购数量")]
+        [SugarColumn(ColumnDescription = "每人限购数量")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int maxNums { get; set; }
-
+        public System.Int32 maxNums { get; set; }
         /// <summary>
-        ///     每个商品活动数量
+        /// 每个商品活动数量
         /// </summary>
         [Display(Name = "每个商品活动数量")]
+        [SugarColumn(ColumnDescription = "每个商品活动数量")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int maxGoodsNums { get; set; }
-
+        public System.Int32 maxGoodsNums { get; set; }
         /// <summary>
-        ///     最大领取数量
+        /// 最大领取数量
         /// </summary>
         [Display(Name = "最大领取数量")]
+        [SugarColumn(ColumnDescription = "最大领取数量")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int maxRecevieNums { get; set; }
-
+        public System.Int32 maxRecevieNums { get; set; }
         /// <summary>
-        ///     开始时间
+        /// 开始时间
         /// </summary>
         [Display(Name = "开始时间")]
+        [SugarColumn(ColumnDescription = "开始时间")]
         [Required(ErrorMessage = "请输入{0}")]
-        public DateTime startTime { get; set; }
-
+        public System.DateTime startTime { get; set; }
         /// <summary>
-        ///     结束时间
+        /// 结束时间
         /// </summary>
         [Display(Name = "结束时间")]
+        [SugarColumn(ColumnDescription = "结束时间")]
         [Required(ErrorMessage = "请输入{0}")]
-        public DateTime endTime { get; set; }
-
+        public System.DateTime endTime { get; set; }
         /// <summary>
-        ///     是否排他
+        /// 是否排他
         /// </summary>
         [Display(Name = "是否排他")]
+        [SugarColumn(ColumnDescription = "是否排他")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool isExclusive { get; set; }
-
+        public System.Boolean isExclusive { get; set; }
         /// <summary>
-        ///     是否自动领取
+        /// 是否自动领取
         /// </summary>
         [Display(Name = "是否自动领取")]
+        [SugarColumn(ColumnDescription = "是否自动领取")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool isAutoReceive { get; set; }
-
+        public System.Boolean isAutoReceive { get; set; }
         /// <summary>
-        ///     是否开启
+        /// 是否开启
         /// </summary>
         [Display(Name = "是否开启")]
+        [SugarColumn(ColumnDescription = "是否开启")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool isEnable { get; set; }
-
+        public System.Boolean isEnable { get; set; }
         /// <summary>
-        ///     是否删除
+        /// 是否删除
         /// </summary>
         [Display(Name = "是否删除")]
+        [SugarColumn(ColumnDescription = "是否删除")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool isDel { get; set; }
-
+        public System.Boolean isDel { get; set; }
         /// <summary>
-        ///     有效天数
+        /// 有效天数
         /// </summary>
         [Display(Name = "有效天数")]
+        [SugarColumn(ColumnDescription = "有效天数")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int effectiveDays { get; set; }
-
+        public System.Int32 effectiveDays { get; set; }
         /// <summary>
-        ///     有效小时
+        /// 有效小时
         /// </summary>
         [Display(Name = "有效小时")]
+        [SugarColumn(ColumnDescription = "有效小时")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int effectiveHours { get; set; }
+        public System.Int32 effectiveHours { get; set; }
     }
 }

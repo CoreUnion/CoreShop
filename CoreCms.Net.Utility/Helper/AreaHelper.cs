@@ -11,7 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using CoreCms.Net.Model.Entities.Entities;
+using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.View;
 
 namespace CoreCms.Net.Utility.Helper

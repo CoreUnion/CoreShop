@@ -3,137 +3,143 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:59
  *        Description: 暂无
- ***********************************************************************/
-
-using System;
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     用户表
+    /// 用户表
     /// </summary>
-    public class CoreCmsUserWeChatInfo
+    [SugarTable("CoreCmsUserWeChatInfo",TableDescription = "用户表")]
+    public partial class CoreCmsUserWeChatInfo
     {
         /// <summary>
-        ///     用户ID
+        /// 用户表
+        /// </summary>
+        public CoreCmsUserWeChatInfo()
+        {
+        }
+
+        /// <summary>
+        /// 用户ID
         /// </summary>
         [Display(Name = "用户ID")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "用户ID", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     第三方登录类型
+        /// 第三方登录类型
         /// </summary>
         [Display(Name = "第三方登录类型")]
-        public int? type { get; set; }
-
+        [SugarColumn(ColumnDescription = "第三方登录类型", IsNullable = true)]
+        public System.Int32? type { get; set; }
         /// <summary>
-        ///     关联用户表
+        /// 关联用户表
         /// </summary>
         [Display(Name = "关联用户表")]
+        [SugarColumn(ColumnDescription = "关联用户表")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int userId { get; set; }
-
+        public System.Int32 userId { get; set; }
         /// <summary>
-        ///     openId
+        /// openId
         /// </summary>
         [Display(Name = "openId")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string openid { get; set; }
-
+        [SugarColumn(ColumnDescription = "openId", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String openid { get; set; }
         /// <summary>
-        ///     缓存key
+        /// 缓存key
         /// </summary>
         [Display(Name = "缓存key")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string sessionKey { get; set; }
-
+        [SugarColumn(ColumnDescription = "缓存key", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String sessionKey { get; set; }
         /// <summary>
-        ///     unionid
+        /// unionid
         /// </summary>
         [Display(Name = "unionid")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string unionId { get; set; }
-
+        [SugarColumn(ColumnDescription = "unionid", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String unionId { get; set; }
         /// <summary>
-        ///     头像
+        /// 头像
         /// </summary>
         [Display(Name = "头像")]
-        [StringLength(255, ErrorMessage = "{0}不能超过{1}字")]
-        public string avatar { get; set; }
-
+        [SugarColumn(ColumnDescription = "头像", IsNullable = true)]
+        [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String avatar { get; set; }
         /// <summary>
-        ///     昵称
+        /// 昵称
         /// </summary>
         [Display(Name = "昵称")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string nickName { get; set; }
-
+        [SugarColumn(ColumnDescription = "昵称", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String nickName { get; set; }
         /// <summary>
-        ///     性别
+        /// 性别
         /// </summary>
         [Display(Name = "性别")]
+        [SugarColumn(ColumnDescription = "性别")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int gender { get; set; }
-
+        public System.Int32 gender { get; set; }
         /// <summary>
-        ///     语言
+        /// 语言
         /// </summary>
         [Display(Name = "语言")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string language { get; set; }
-
+        [SugarColumn(ColumnDescription = "语言", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String language { get; set; }
         /// <summary>
-        ///     城市
+        /// 城市
         /// </summary>
         [Display(Name = "城市")]
-        [StringLength(80, ErrorMessage = "{0}不能超过{1}字")]
-        public string city { get; set; }
-
+        [SugarColumn(ColumnDescription = "城市", IsNullable = true)]
+        [StringLength(80, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String city { get; set; }
         /// <summary>
-        ///     省
+        /// 省
         /// </summary>
         [Display(Name = "省")]
-        [StringLength(80, ErrorMessage = "{0}不能超过{1}字")]
-        public string province { get; set; }
-
+        [SugarColumn(ColumnDescription = "省", IsNullable = true)]
+        [StringLength(80, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String province { get; set; }
         /// <summary>
-        ///     国家
+        /// 国家
         /// </summary>
         [Display(Name = "国家")]
-        [StringLength(80, ErrorMessage = "{0}不能超过{1}字")]
-        public string country { get; set; }
-
+        [SugarColumn(ColumnDescription = "国家", IsNullable = true)]
+        [StringLength(80, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String country { get; set; }
         /// <summary>
-        ///     手机号码国家编码
+        /// 手机号码国家编码
         /// </summary>
         [Display(Name = "手机号码国家编码")]
-        [StringLength(20, ErrorMessage = "{0}不能超过{1}字")]
-        public string countryCode { get; set; }
-
+        [SugarColumn(ColumnDescription = "手机号码国家编码", IsNullable = true)]
+        [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String countryCode { get; set; }
         /// <summary>
-        ///     手机号码
+        /// 手机号码
         /// </summary>
         [Display(Name = "手机号码")]
-        [StringLength(20, ErrorMessage = "{0}不能超过{1}字")]
-        public string mobile { get; set; }
-
+        [SugarColumn(ColumnDescription = "手机号码", IsNullable = true)]
+        [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String mobile { get; set; }
         /// <summary>
-        ///     创建时间
+        /// 创建时间
         /// </summary>
         [Display(Name = "创建时间")]
-        public DateTime? createTime { get; set; }
-
+        [SugarColumn(ColumnDescription = "创建时间", IsNullable = true)]
+        public System.DateTime? createTime { get; set; }
         /// <summary>
-        ///     更新时间
+        /// 更新时间
         /// </summary>
         [Display(Name = "更新时间")]
-        public DateTime? updateTime { get; set; }
+        [SugarColumn(ColumnDescription = "更新时间", IsNullable = true)]
+        public System.DateTime? updateTime { get; set; }
     }
 }

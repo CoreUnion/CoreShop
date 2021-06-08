@@ -3,96 +3,102 @@
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
- *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *              Email: jianweie@163.com
+ *         CreateTime: 2021-06-08 22:14:59
  *        Description: 暂无
- ***********************************************************************/
-
-using System;
-using System.ComponentModel.DataAnnotations;
+***********************************************************************/ 
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreCms.Net.Model.Entities
 {
     /// <summary>
-    ///     组织机构表
+    /// 组织机构表
     /// </summary>
-    public class SysOrganization
+    [SugarTable("SysOrganization",TableDescription = "组织机构表")]
+    public partial class SysOrganization
     {
         /// <summary>
-        ///     机构id
+        /// 组织机构表
+        /// </summary>
+        public SysOrganization()
+        {
+        }
+
+        /// <summary>
+        /// 机构id
         /// </summary>
         [Display(Name = "机构id")]
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(ColumnDescription = "机构id", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public int id { get; set; }
-
+        public System.Int32 id { get; set; }
         /// <summary>
-        ///     上级id,0是顶级
+        /// 上级id,0是顶级
         /// </summary>
         [Display(Name = "上级id,0是顶级")]
+        [SugarColumn(ColumnDescription = "上级id,0是顶级")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int parentId { get; set; }
-
+        public System.Int32 parentId { get; set; }
         /// <summary>
-        ///     机构名称
+        /// 机构名称
         /// </summary>
         [Display(Name = "机构名称")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string organizationName { get; set; }
-
+        [SugarColumn(ColumnDescription = "机构名称", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String organizationName { get; set; }
         /// <summary>
-        ///     机构名称
+        /// 机构名称
         /// </summary>
         [Display(Name = "机构名称")]
-        [StringLength(50, ErrorMessage = "{0}不能超过{1}字")]
-        public string organizationFullName { get; set; }
-
+        [SugarColumn(ColumnDescription = "机构名称", IsNullable = true)]
+        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String organizationFullName { get; set; }
         /// <summary>
-        ///     机构类型
+        /// 机构类型
         /// </summary>
         [Display(Name = "机构类型")]
+        [SugarColumn(ColumnDescription = "机构类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int organizationType { get; set; }
-
+        public System.Int32 organizationType { get; set; }
         /// <summary>
-        ///     负责人id
+        /// 负责人id
         /// </summary>
         [Display(Name = "负责人id")]
-        public int? leaderId { get; set; }
-
+        [SugarColumn(ColumnDescription = "负责人id", IsNullable = true)]
+        public System.Int32? leaderId { get; set; }
         /// <summary>
-        ///     排序号
+        /// 排序号
         /// </summary>
         [Display(Name = "排序号")]
+        [SugarColumn(ColumnDescription = "排序号")]
         [Required(ErrorMessage = "请输入{0}")]
-        public int sortNumber { get; set; }
-
+        public System.Int32 sortNumber { get; set; }
         /// <summary>
-        ///     备注
+        /// 备注
         /// </summary>
         [Display(Name = "备注")]
-        [StringLength(500, ErrorMessage = "{0}不能超过{1}字")]
-        public string comments { get; set; }
-
+        [SugarColumn(ColumnDescription = "备注", IsNullable = true)]
+        [StringLength(500, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        public System.String comments { get; set; }
         /// <summary>
-        ///     是否删除,0否,1是
+        /// 是否删除,0否,1是
         /// </summary>
         [Display(Name = "是否删除,0否,1是")]
+        [SugarColumn(ColumnDescription = "是否删除,0否,1是")]
         [Required(ErrorMessage = "请输入{0}")]
-        public bool deleted { get; set; }
-
+        public System.Boolean deleted { get; set; }
         /// <summary>
-        ///     创建时间
+        /// 创建时间
         /// </summary>
         [Display(Name = "创建时间")]
+        [SugarColumn(ColumnDescription = "创建时间")]
         [Required(ErrorMessage = "请输入{0}")]
-        public DateTime createTime { get; set; }
-
+        public System.DateTime createTime { get; set; }
         /// <summary>
-        ///     修改时间
+        /// 修改时间
         /// </summary>
         [Display(Name = "修改时间")]
-        public DateTime? updateTime { get; set; }
+        [SugarColumn(ColumnDescription = "修改时间", IsNullable = true)]
+        public System.DateTime? updateTime { get; set; }
     }
 }
