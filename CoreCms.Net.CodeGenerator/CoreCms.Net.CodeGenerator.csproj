@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.1.450" />
+    <PackageReference Include="DotLiquid" Version="2.1.457" />
     <PackageReference Include="sqlSugarCore" Version="5.0.3" />
   </ItemGroup>
 
