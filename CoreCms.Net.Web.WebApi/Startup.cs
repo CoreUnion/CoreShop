@@ -117,7 +117,7 @@ namespace CoreCms.Net.Web.WebApi
             services.AddYiLianYunSetup();
 
             //注册Hangfire定时任务
-            services.AddHangFireSetupSetup();
+            services.AddHangFireSetup();
 
             //授权支持注入
             services.AddAuthorizationSetupForClient();
