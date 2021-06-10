@@ -1,0 +1,4 @@
+2021-06-10
+修复通过core first生成mysql数据库的两个问题。
+1、varchar类型未设置长度。被默认设置为255长度
+2、nvarchar(max)长度未及时切换longtext的问题。
