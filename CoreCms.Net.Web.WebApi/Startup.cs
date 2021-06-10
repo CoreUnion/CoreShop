@@ -116,6 +116,8 @@ namespace CoreCms.Net.Web.WebApi
             //配置易联云打印机
             services.AddYiLianYunSetup();
 
+            //注册Hangfire定时任务
+            services.AddHangFireSetupSetup();
 
             //授权支持注入
             services.AddAuthorizationSetupForClient();
@@ -149,16 +151,8 @@ namespace CoreCms.Net.Web.WebApi
                     p.SerializerSettings.DateFormatString = "yyyy/MM/dd HH:mm:ss";
                 });
 
-            //注册Hangfire定时任务
-            var isEnabledRedis = AppSettingsConstVars.RedisConfigEnabled;
-            if (isEnabledRedis)
-            {
-                services.AddHangfire(x => x.UseRedisStorage(AppSettingsConstVars.RedisConfigConnectionString));
-            }
-            else
-            {
-                services.AddHangfire(x => x.UseSqlServerStorage(AppSettingsConstVars.DbSqlConnection));
-            }
+           
+
         }
 
         /// <summary>
