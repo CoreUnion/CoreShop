@@ -116,8 +116,6 @@ namespace CoreCms.Net.Web.WebApi
             //配置易联云打印机
             services.AddYiLianYunSetup();
 
-            //注册Hangfire定时任务
-            services.AddHangFireSetup();
 
             //授权支持注入
             services.AddAuthorizationSetupForClient();
