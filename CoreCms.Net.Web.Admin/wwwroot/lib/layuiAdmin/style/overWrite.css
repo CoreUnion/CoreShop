@@ -995,10 +995,6 @@ xm-select .xm-body .xm-option.hide-icon.selected {
   margin-top: -24px;
 }
 /*自定义全局包围*/
-.coreshop-admin .layui-logo {
-  height: 60px;
-  line-height: 60px;
-}
 .coreshop-admin .layui-logo span {
   font-size: 21px;
   font-weight: 550;
