@@ -7,8 +7,6 @@ using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Utility.Helper;
-using Essensoft.AspNetCore.Payment.WeChatPay.V2;
-using Essensoft.AspNetCore.Payment.WeChatPay.V2.Notify;
 using InitQ.Abstractions;
 using InitQ.Attributes;
 using Microsoft.Extensions.Logging;

@@ -25,7 +25,6 @@ using CoreCms.Net.Loging;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Utility.Helper;
 using CoreCms.Net.Utility.Extensions;
-using Essensoft.AspNetCore.Payment.Alipay.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
