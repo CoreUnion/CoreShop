@@ -13,8 +13,6 @@ using CoreCms.Net.Model.ViewModels.Sms;
 using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Swagger;
 using CoreCms.Net.Task;
-using Essensoft.AspNetCore.Payment.Alipay;
-using Essensoft.AspNetCore.Payment.WeChatPay;
 using Hangfire;
 using Hangfire.Dashboard.BasicAuthorization;
 using InitQ;
@@ -43,6 +41,8 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreCms.Net.RedisMQ.Subscribe;
 using CoreCms.Net.Utility.Extensions;
+using Essensoft.Paylink.Alipay;
+using Essensoft.Paylink.WeChatPay;
 
 namespace CoreCms.Net.Web.WebApi
 {
@@ -115,6 +115,9 @@ namespace CoreCms.Net.Web.WebApi
 
             //配置易联云打印机
             services.AddYiLianYunSetup();
+
+            //注册Hangfire定时任务
+            services.AddHangFireSetup();
 
 
             //授权支持注入

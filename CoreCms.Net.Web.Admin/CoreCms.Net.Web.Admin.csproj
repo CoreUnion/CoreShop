@@ -51,8 +51,8 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="Essensoft.AspNetCore.Payment.Alipay" Version="3.3.2" />
-    <PackageReference Include="Essensoft.AspNetCore.Payment.WeChatPay" Version="3.3.2" />
+    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.4" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />

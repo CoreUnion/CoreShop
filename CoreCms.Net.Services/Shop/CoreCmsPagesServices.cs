@@ -158,7 +158,14 @@ namespace CoreCms.Net.Services
                             {
                                 noticeIdsStr = string.Join(",", noticeIdsStr);
                                 //按照固定的序列id进行排序
-                                orderBy = " CHARINDEX(RTRIM(CAST(id as NCHAR)),'" + noticeIdsStr + "') ";
+                                if (AppSettingsConstVars.DbDbType == DbType.SqlServer.ToString())
+                                {
+                                    orderBy = " CHARINDEX(RTRIM(CAST(id as NCHAR)),'" + noticeIdsStr + "') ";
+                                }
+                                else if (AppSettingsConstVars.DbDbType == DbType.MySql.ToString())
+                                {
+                                    orderBy = " find_in_set(id,'" + noticeIdsStr + "') ";
+                                }
                             }
                         }
                         var notices = await _noticeServices.QueryListByClauseAsync(where, orderBy);
@@ -289,7 +296,15 @@ namespace CoreCms.Net.Services
                             if (goodids.Any())
                             {
                                 goodidsStr = string.Join(",", goodids);
-                                orderBy = " CHARINDEX(RTRIM(CAST(id as NCHAR)),'" + goodidsStr + "') ";
+                                //按照id序列打乱后的顺序排序
+                                if (AppSettingsConstVars.DbDbType == DbType.SqlServer.ToString())
+                                {
+                                    orderBy = " CHARINDEX(RTRIM(CAST(id as NCHAR)),'" + goodidsStr + "') ";
+                                }
+                                else if (AppSettingsConstVars.DbDbType == DbType.MySql.ToString())
+                                {
+                                    orderBy = " find_in_set(id,'" + goodidsStr + "') ";
+                                }
                             }
                         }
                         var goods = await _goodsServices.QueryListByClauseAsync(where, orderBy);
