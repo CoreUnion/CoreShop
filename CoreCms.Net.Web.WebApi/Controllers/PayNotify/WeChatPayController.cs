@@ -12,7 +12,6 @@ using CoreCms.Net.Configuration;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
-using Essensoft.AspNetCore.Payment.WeChatPay;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -20,8 +19,9 @@ using NLog;
 using System;
 using System.Threading.Tasks;
 using CoreCms.Net.Caching.AutoMate.RedisCache;
-using Essensoft.AspNetCore.Payment.WeChatPay.V2;
-using Essensoft.AspNetCore.Payment.WeChatPay.V2.Notify;
+using Essensoft.Paylink.WeChatPay;
+using Essensoft.Paylink.WeChatPay.V2;
+using Essensoft.Paylink.WeChatPay.V2.Notify;
 
 namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
 {

@@ -24,7 +24,6 @@ namespace CoreCms.Net.Configuration
         public static readonly string AppConfigAppInterFaceUrl = AppSettingsHelper.GetContent("AppConfig", "AppInterFaceUrl");
         #endregion
 
-
         #region 数据库================================================================================
         /// <summary>
         /// 获取数据库连接字符串
@@ -55,7 +54,6 @@ namespace CoreCms.Net.Configuration
 
         #endregion
 
-
         #region AOP================================================================================
         /// <summary>
         /// 事务切面开关
@@ -71,13 +69,11 @@ namespace CoreCms.Net.Configuration
         public static readonly string JwtConfigAudience = AppSettingsHelper.GetContent("JwtConfig", "Audience");
         #endregion
 
-
         #region Cors跨域设置================================================================================
         public static readonly string CorsPolicyName = AppSettingsHelper.GetContent("Cors", "PolicyName");
         public static readonly bool CorsEnableAllIPs = AppSettingsHelper.GetContent("Cors", "EnableAllIPs").ObjToBool();
         public static readonly string CorsIPs = AppSettingsHelper.GetContent("Cors", "IPs");
         #endregion
-
 
         #region Middleware中间件================================================================================
         /// <summary>
@@ -118,7 +114,6 @@ namespace CoreCms.Net.Configuration
         /// </summary>
         public static readonly string PayCallBackAlipayRefundUrl = AppSettingsHelper.GetContent("PayCallBack", "AlipayRefundUrl");
         #endregion
-
 
         #region 易联云打印机================================================================================
 

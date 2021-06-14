@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Essensoft.AspNetCore.Payment.WeChatPay" Version="3.3.2" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
     <PackageReference Include="InitQ" Version="1.0.0.6" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
   </ItemGroup>

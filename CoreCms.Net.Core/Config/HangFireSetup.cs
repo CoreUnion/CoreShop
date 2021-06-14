@@ -26,7 +26,7 @@ namespace CoreCms.Net.Core.Config
     /// </summary>
     public static class HangFireSetup
     {
-        public static void AddHangFireSetupSetup(this IServiceCollection services)
+        public static void AddHangFireSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
