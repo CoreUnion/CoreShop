@@ -162,7 +162,7 @@ namespace CoreCms.Net.Caching.Redis
                 throw new ArgumentNullException(nameof(keys));
             var dict = new Dictionary<string, object>();
 
-            keys.ToList().ForEach(item => dict.Add(item, RedisConnection.GetDatabase().KeyExists(item)));
+            keys.ToList().ForEach(item => dict.Add(item, RedisConnection.GetDatabase().StringGet(item)));
             return dict;
 
         }

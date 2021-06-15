@@ -11,7 +11,7 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/{{ModelClassName}}/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form search-form">
+    <div class="layui-form coreshop-search-form">
         <div class="layui-form-item">
 		    {% for field in ModelFields %}{% if field.DataType == 'bit' %}
 		    <div class="layui-inline">
