@@ -615,7 +615,7 @@
             支付宝异步通知
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.#ctor(Essensoft.AspNetCore.Payment.Alipay.IAlipayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.AspNetCore.Payment.Alipay.AlipayOptions})">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.AliPayController.#ctor(Essensoft.Paylink.Alipay.IAlipayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.Alipay.AlipayOptions})">
             <summary>
             构造函数
             </summary>
@@ -653,7 +653,7 @@
                 微信支付异步通知
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController.#ctor(Essensoft.AspNetCore.Payment.WeChatPay.V2.IWeChatPayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.AspNetCore.Payment.WeChatPay.WeChatPayOptions},CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillRefundServices,CoreCms.Net.Caching.AutoMate.RedisCache.IRedisOperationRepository)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PayNotify.WeChatPayController.#ctor(Essensoft.Paylink.WeChatPay.V2.IWeChatPayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.WeChatPay.WeChatPayOptions},CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillRefundServices,CoreCms.Net.Caching.AutoMate.RedisCache.IRedisOperationRepository)">
             <summary>
                 构造函数
             </summary>
