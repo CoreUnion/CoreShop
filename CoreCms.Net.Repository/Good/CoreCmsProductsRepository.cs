@@ -98,9 +98,9 @@ namespace CoreCms.Net.Repository
 
         #endregion
 
-        #region 获取库存分页
+        #region 获取关联商品的货品列表数据
         /// <summary>
-        ///     获取库存分页
+        ///     获取关联商品的货品列表数据
         /// </summary>
         /// <param name="predicate">判断集合</param>
         /// <param name="orderByType">排序方式</param>
@@ -109,7 +109,7 @@ namespace CoreCms.Net.Repository
         /// <param name="orderByExpression"></param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         /// <returns></returns>
-        public async Task<IPageList<CoreCmsProducts>> QueryStockPageAsync(Expression<Func<CoreCmsProducts, bool>> predicate,
+        public async Task<IPageList<CoreCmsProducts>> QueryDetailPageAsync(Expression<Func<CoreCmsProducts, bool>> predicate,
             Expression<Func<CoreCmsProducts, object>> orderByExpression, OrderByType orderByType, int pageIndex = 1,
             int pageSize = 20, bool blUseNoLock = false)
         {
