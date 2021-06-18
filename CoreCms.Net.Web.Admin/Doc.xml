@@ -1954,6 +1954,42 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
+        <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController">
+             <summary>
+             货品表
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsProductsServices)">
+             <summary>
+             构造函数
+            </summary>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetPageList">
+            <summary>
+            获取列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetIndex">
+            <summary>
+            首页数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+            预览数据
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.DoSetStock(CoreCms.Net.Model.FromBody.FMUpdateIntegerDataByIntId)">
+            <summary>
+            设置库存
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
         <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsFormController">
             <summary>
                 表单
@@ -3879,42 +3915,6 @@
         <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsStoreController.DoClerkBatchDelete(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
             <summary>
                 批量删除店员
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController">
-             <summary>
-             盘点货品表
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsProductsServices)">
-             <summary>
-             构造函数
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetPageList">
-            <summary>
-            获取列表
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetIndex">
-            <summary>
-            首页数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            预览数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsProductsController.DoSetStock(CoreCms.Net.Model.FromBody.FMUpdateIntegerDataByIntId)">
-            <summary>
-            设置库存
             </summary>
             <param name="entity"></param>
             <returns></returns>
