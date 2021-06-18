@@ -6,7 +6,7 @@
 
 <div align="center">
 
-<h3 align="center">核心商城（CoreShop）Beta</h3>
+<h3 align="center">核心商城（CoreShop）Beta 版</h3>
 
 <h4 align="center">支持可视化布局的.Net小程序商城</h4>
 
@@ -186,19 +186,19 @@ https://api.coreshop.corecms.net/job
 - .NET 5 SDK +
 - HBuilderX
 - 微信开发者工具
-- SQL Server Management Studio / Navicat for MySQL
-
+- SQL Server Management Studio
+- Navicat for MySQL / Sqlyog
+- Redis Desktop Manager
 
 
 ### 💝 运维环境
 
-- [x]  （必选）Windows IIS7.5或以上/Docker/k8s等支持环境
+- [x]  （必选）Windows IIS7.5+ / Docker / k8s等支持环境
 - [x]  （必选）sqlserver 2012R2+ / MySQL 5.7+
 - [x]  （必选）支持https协议的域名
 - [x]  （必选）阿里云OSS/腾讯云COS
-- [x]  （必选）Redis 5.7或以上版本
+- [x]  （必选）Redis 3.0+
 - [ ] （可选）易联云网络打印机
-
 
 ### ⛵ 安装及说明文档
 - 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码后从代码目录【文档】中获取。
@@ -207,7 +207,7 @@ https://api.coreshop.corecms.net/job
 ### ⚡ 进度及计划  
 - 目前虽然完成了通用商城该有的功能开发，但是因为业务逻辑层面的功能繁多，不可否认存在一些较明显的bug。
 - 近阶段我们主要工作重心放在修复Bug、完善测试、优化业务逻辑、编写文档及官网的建设。
-- 原定新功能的开发暂时会搁置，原定新功能计划如下。
+- 新功能的开发已经提上进度表，细节如下：
      - 增加接龙功能
      - 增加微信直播及历史回播功能
      - 增加客服系统
@@ -218,7 +218,7 @@ https://api.coreshop.corecms.net/job
 
 ### 🎏 版权须知
 - 允许个人学习研究使用，支持二次开发。
-- 允许商业用途，但仅限自运营，如果商用必须保留版权信息，望自觉遵守。
+- 允许商业用途，商用免费，但仅限自运营；如果商用必须保留版权信息，望自觉遵守。
 - 不允许对程序代码以任何形式、任何目的的再发行或出售，否则将追究侵权者法律责任。
 - 软件受国家计算机软件著作权保护（登记号：2020SR1224749）。
 - 我们的团队水平有限，也是在探索中学习、改进。开源，是为了让认可我们的用户能自由的使用、学习软件的内部架构，让更多的人有机会阅读并发现Bug、对软件项目提出改进意见。
@@ -226,7 +226,7 @@ https://api.coreshop.corecms.net/job
 
 ### 👏 贡献代码
 
-1. 欢迎提交 [pull request](https://gitee.com/CoreUnion/CoreShop/pulls)，注意对应提交对应 `develop` 分支
+1. 欢迎提交 [pull request](https://gitee.com/CoreUnion/CoreShop/pulls)，注意提交至 `develop` 分支
 2. 欢迎提交 [issue](https://gitee.com/CoreUnion/CoreShop/issues)，请写清楚遇到问题的原因、开发环境、复显步骤以及期望达到的效果。
 
 
