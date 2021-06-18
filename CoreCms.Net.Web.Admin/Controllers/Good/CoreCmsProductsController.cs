@@ -33,9 +33,9 @@ using SqlSugar;
 namespace CoreCms.Net.Web.Admin.Controllers
 {
     /// <summary>
-    /// 盘点货品表
+    /// 货品表
     ///</summary>
-    [Description("盘点货品表")]
+    [Description("货品表")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
@@ -133,7 +133,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             //获取数据
-            var list = await _coreCmsProductsServices.QueryStockPageAsync(where, orderEx, orderBy, pageCurrent, pageSize, true);
+            var list = await _coreCmsProductsServices.QueryDetailPageAsync(where, orderEx, orderBy, pageCurrent, pageSize, true);
             //返回数据
             jm.data = list;
             jm.code = 0;

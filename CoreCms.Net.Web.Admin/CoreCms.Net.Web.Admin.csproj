@@ -418,7 +418,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Good\" />
     <Folder Include="Controllers\Order\" />
   </ItemGroup>
 
