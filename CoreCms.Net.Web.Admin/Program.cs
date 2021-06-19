@@ -25,7 +25,7 @@ namespace CoreCms.Net.Web.Admin
             try
             {
                 //确保NLog.config中连接字符串与appsettings.json中同步
-                NLogUtil.EnsureNlogConfig("nLog.config");
+                NLogUtil.EnsureNlogConfig("NLog.config");
                 //throw new Exception("测试异常");//for test
                 //其他项目启动时需要做的事情
                 NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.Web, "网站启动", "网站启动成功");
