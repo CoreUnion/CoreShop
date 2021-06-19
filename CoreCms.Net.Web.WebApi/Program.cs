@@ -26,7 +26,7 @@ namespace CoreCms.Net.Web.WebApi
             try
             {
                 //确保NLog.config中连接字符串与appsettings.json中同步
-                NLogUtil.EnsureNlogConfig("nLog.config");
+                NLogUtil.EnsureNlogConfig("NLog.config");
                 //其他项目启动时需要做的事情
                 NLogUtil.WriteAll(LogLevel.Trace, LogType.Web, "接口启动", "接口启动成功");
 
