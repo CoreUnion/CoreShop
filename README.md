@@ -118,8 +118,10 @@ https://admin.coreshop.corecms.net
 https://admin.coreshop.corecms.net/doc  
 
 
-4、接口管理演示地址：  
+4、接口演示地址：  
+为方便前端开发者在不部署前后端的清下调试uni-app，此演示接口已取消跨域限制，uni-app中可以作为测试接口接入。  
 https://api.coreshop.corecms.net  
+
 
 5、接口文档地址：  
 https://api.coreshop.corecms.net/doc  
@@ -167,7 +169,7 @@ https://api.coreshop.corecms.net/job
 - 使用 Nlog日志框架，集成原生 ILogger 接口做日志记录；
 - 使用 HangFire 做定时任务处理；
 - 已支持 SqlServer、MySql数据库，理论上支持所有数据库，并支持读写分离和多库操作；
-- 使用 Payment 作为支付宝支付、微信支付SDK;
+- 使用 Paylink 作为支付宝支付、微信支付SDK;
 - 使用 Senparc.Weixin 作为微信公众号及小程序对接组件;
 
 
@@ -201,7 +203,7 @@ https://api.coreshop.corecms.net/job
 - [ ] （可选）易联云网络打印机
 
 ### ⛵ 安装及说明文档
-- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码后从代码目录【文档】中获取。
+- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码从其目录【文档】中获取。
 
 
 ### ⚡ 进度及计划  
