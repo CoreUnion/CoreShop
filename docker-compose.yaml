@@ -1,0 +1,48 @@
+version: '3'
+services:
+  frontservice:
+    container_name: front-backend
+    build:
+      context: ./front/publish
+      dockerfile: Dockerfile
+    ports:
+      - 8088:80
+    labels:
+        description: 'front backend web'
+    restart: always
+    
+  webapiservice:
+    container_name: web-api
+    build:
+      context: ./api/publish
+      dockerfile: Dockerfile
+    ports:
+      - 8089:80
+    labels:
+      description: 'web api'
+    restart: always
+  
+  redis:
+     image: redis:latest
+     restart: always
+     ports: 
+        - 6379:6379
+     expose: 
+        - 6379
+     command:
+       redis-server 
+
+  mysql:
+     image: mysql:5.7.19
+     restart: always
+     ports: 
+        - 3306:3306
+     expose: 
+        - 3306  
+     volumes: 
+        - /usr/local/mysql/data:/var/lib/mysql
+        - /usr/local/mysql/conf.d:/etc/mysql/conf.d
+     command: mysqld   --character-set-server=utf8mb4  --collation-server=utf8mb4_unicode_ci --lower_case_table_names=2
+     environment: 
+        - MYSQL_ROOT_PASSWORD=admin
+                
