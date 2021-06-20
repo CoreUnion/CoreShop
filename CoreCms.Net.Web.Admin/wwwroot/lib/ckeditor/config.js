@@ -8,6 +8,28 @@ CKEDITOR.editorConfig = function (config) {
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
+
+    config.toolbarGroups = [
+        '/',
+        '/',
+        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+        { name: 'forms', groups: ['forms'] },
+        { name: 'basicstyles', groups: ['cleanup', 'basicstyles'] },
+        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+        { name: 'links', groups: ['links'] },
+        { name: 'styles', groups: ['styles'] },
+        { name: 'insert', groups: ['insert'] },
+        { name: 'colors', groups: ['colors'] },
+        { name: 'tools', groups: ['tools'] },
+        { name: 'others', groups: ['others'] },
+        { name: 'about', groups: ['about'] }
+    ];
+
+    config.removeButtons = 'Iframe,PageBreak,SpecialChar,Smiley,Flash,Language,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Scayt,Replace,SelectAll,Find,Paste,Copy,Cut,NewPage,ExportPdf,Print,Templates,Preview,Subscript,Superscript,Strike,Underline,Italic,Indent,Outdent,Blockquote,CreateDiv,BidiLtr,BidiRtl,Anchor,HorizontalRule,ShowBlocks,Styles,Format,Font';
+
+
     /*去掉图片预览框的文字*/
     config.image_previewText = ' ';
     // 界面语言，默认为 'en'

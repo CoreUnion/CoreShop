@@ -93,9 +93,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\favicon.ico">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -418,7 +415,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Good\" />
     <Folder Include="Controllers\Order\" />
   </ItemGroup>
 
