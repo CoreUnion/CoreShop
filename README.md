@@ -203,7 +203,8 @@ https://api.coreshop.corecms.net/job
 - [ ] （可选）易联云网络打印机
 
 ### ⛵ 安装及说明文档
-- 由于文档内容较多，请加QQ群【70494974】后群内下载安装文档，或git源代码从其目录【文档】中获取。
+- 由于文档内容较多，请加QQ群 【[70494974](https://jq.qq.com/?_wv=1027&k=y83TiQC7)】 后群附内下载多种文档，或git源代码从其目录【文档】中获取。   
+- 已经支持linux下docker-compose部署，可实现一键部署coreshop应用、mysql、redis，请获取代码中【docker-compose.yaml】文件，
 
 
 ### ⚡ 进度及计划  
