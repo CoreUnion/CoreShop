@@ -87,12 +87,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\assets\bootstrap\css\bootstrap-theme.css.map" />
     <None Include="wwwroot\assets\bootstrap\css\bootstrap.css.map" />
     <None Include="wwwroot\assets\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -119,6 +113,9 @@
   <ItemGroup>
     <None Update="doc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
