@@ -93,7 +93,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="nlog.config">
+    <Content Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\favicon.ico">
@@ -425,6 +425,9 @@
   <ItemGroup>
     <None Update="doc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

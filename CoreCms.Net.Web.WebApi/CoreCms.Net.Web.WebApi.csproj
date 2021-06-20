@@ -87,7 +87,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="nlog.config">
+    <Content Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -119,6 +119,9 @@
   <ItemGroup>
     <None Update="doc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
