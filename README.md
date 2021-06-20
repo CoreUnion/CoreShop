@@ -233,6 +233,12 @@ https://api.coreshop.corecms.net/job
 2. 欢迎提交 [issue](https://gitee.com/CoreUnion/CoreShop/issues)，请写清楚遇到问题的原因、开发环境、复显步骤以及期望达到的效果。
 
 
+### 💘 支持开源
+- 希望CoreShop对您有用，您的支持也是CoreShop开源的动力，CoreShop有你更精彩！
+![感谢您的支持](https://files.cdn.corecms.net/coreshop/images/PayeeCode.jpg "PayeeCode.png")
+
+
+
 ### ☀️ 组织  
 - CoreShop 项目已加入 [dotNET China](https://gitee.com/dotnetchina)  组织。
 
