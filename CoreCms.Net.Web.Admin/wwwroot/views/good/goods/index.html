@@ -470,7 +470,7 @@
                                         form.on('submit(LAY-app-CoreCmsGoods-batchModifyPrice-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
-                                                field.ids = field.ids.split(',');
+                                                field.ids = e.data.entity.id;
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //return false;
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
@@ -507,7 +507,7 @@
                                         form.on('submit(LAY-app-CoreCmsGoods-batchModifyStock-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
-                                                field.ids = field.ids.split(',');
+                                                field.ids = e.data.entity.id;
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //return false;
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
