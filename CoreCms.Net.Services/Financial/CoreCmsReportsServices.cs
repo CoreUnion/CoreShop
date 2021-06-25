@@ -79,8 +79,8 @@ namespace CoreCms.Net.Services
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
                 (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
-                left join(
-                    select* from CoreCmsOrder
+                left join (
+                    select * from CoreCmsOrder
                 where 1 = 1
                 " + where + @"
                     ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
@@ -90,10 +90,6 @@ namespace CoreCms.Net.Services
 
 
             var sp = new List<SugarParameter>();
-            //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
-            //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
-            //sp.Add(new SugarParameter("@where", where));
-            //sp.Add(new SugarParameter("@num", num));
 
             var list = _dal.SqlQuery(sqlStr, sp);
 
@@ -140,10 +136,10 @@ namespace CoreCms.Net.Services
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
-                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
-                left join(
-                    select* from CoreCmsBillPayments
-                where 1 = 1
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x 
+            left join (
+                    select * from CoreCmsBillPayments 
+            where 1 = 1
                 " + where + @"
                     ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
                 group by tmp_x.x
@@ -151,10 +147,7 @@ namespace CoreCms.Net.Services
             }
 
             var sp = new List<SugarParameter>();
-            //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
-            //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
-            //sp.Add(new SugarParameter("@where", where));
-            //sp.Add(new SugarParameter("@num", num));
+
 
             var list = _dal.SqlQuery(sqlStr, sp);
 
@@ -214,10 +207,7 @@ namespace CoreCms.Net.Services
             }
 
             var sp = new List<SugarParameter>();
-            //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
-            //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
-            //sp.Add(new SugarParameter("@where", where));
-            //sp.Add(new SugarParameter("@num", num));
+
             var list = _dal.SqlQuery(sqlStr, sp);
 
             return list;
@@ -263,10 +253,10 @@ namespace CoreCms.Net.Services
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x1,
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x2,
                 (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x3,
-                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x
-                left join(
-                    select* from CoreCmsUserTocash
-                where 1 = 1
+                (SELECT @xi:=-1) x0 limit 0," + num + @") tmp_x 
+            left join (
+                    select * from CoreCmsUserTocash 
+            where 1 = 1
                 " + where + @"
                     ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
                 group by tmp_x.x
@@ -274,10 +264,6 @@ namespace CoreCms.Net.Services
             }
 
             var sp = new List<SugarParameter>();
-            //sp.Add(section == 3600 ? new SugarParameter("@dataType", "HOUR") : new SugarParameter("@dataType", "DAY"));
-            //sp.Add(new SugarParameter("@sTime", sTime.ToString("yyyy-MM-dd HH:mm:ss")));
-            //sp.Add(new SugarParameter("@where", where));
-            sp.Add(new SugarParameter("@xi", num));
 
             var list = _dal.SqlQuery(sqlStr, sp);
 
