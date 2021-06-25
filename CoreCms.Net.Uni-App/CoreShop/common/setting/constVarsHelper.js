@@ -2,8 +2,8 @@
  *  CoreShop全局配置文件
  *  @version 1.0.0
  */
-//接口请求地址
-export const apiBaseUrl = 'https://api.demo.coreshop.com.cn';
+//接口请求地址，如果需要不部署接口端的情况下测试uni-app，可以直接替换为官方测试接口：https://api.coreshop.corecms.net
+export const apiBaseUrl = 'https://api.coreshop.corecms.net';
 //项目静态资源请求地址，如果使用官方的静态文件地址可以直接替换为：https://files.coreshop.corecms.net
 export const apiFilesUrl = 'https://files.coreshop.corecms.net';
 
