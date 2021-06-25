@@ -45,7 +45,7 @@
                         <view>
                             <view class='logistics coreshop-btn' hover-class="btn-hover" @click="goOrderDetail(order.orderId)">查看详情</view>
                             <view class='coreshop-btn exchange' hover-class="btn-hover" v-if="order.status === 1 && order.payStatus === 1" @click="goToPay(order.orderId)">立即支付</view>
-                            <view class='coreshop-btn exchange' hover-class="btn-hover" v-if="order.status === 1 && order.payStatus >= 2 && order.shipStatus >= 3 && order.confirmStatus === 1" @click="tackDelivery(index,orderIndex)">确认收货</view>
+                            <view class='coreshop-btn exchange' hover-class="btn-hover" v-if="order.status === 1 && order.payStatus >= 2 && order.shipStatus >= 3 && order.confirmStatus === 1" @click="tackDelivery(current,orderIndex)">确认收货</view>
                             <view class='evaluate coreshop-btn' hover-class="btn-hover" v-if="order.status === 1 && order.payStatus >= 2 && order.shipStatus >= 3 && order.confirmStatus >= 2 && order.isComment === false" @click="toEvaluate(order.orderId)">立即评价</view>
                         </view>
                     </view>
@@ -169,16 +169,15 @@
                 let _this = this;
                 this.$common.modelShow('提示', '确认执行收货操作吗?', () => {
                     let data = {
-                        id: _this.orders[index][orderIndex].orderId
+                        id: _this.listData[orderIndex].orderId
                     }
                     _this.$u.api.confirmOrder(data).then(res => {
                         if (res.status) {
                             _this.$refs.uToast.show({
                                 title: '确认收货成功', type: 'success', callback: function () {
                                     if (this.tab !== 0) {
-                                        _this.orders[index].splice(orderIndex, 1)
+                                        _this.listData.splice(orderIndex, 1)
                                     } else {
-                                        //this.initData()
                                         _this.getOrders();
                                     }
                                 }
