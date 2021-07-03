@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsUserController : ControllerBase
+    public class CoreCmsUserController : Controller
     {
         private readonly ICoreCmsUserBalanceServices _coreCmsUserBalanceServices;
         private readonly ICoreCmsUserGradeServices _coreCmsUserGradeServices;
@@ -239,7 +239,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -269,7 +269,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userGrade,
                 userAccountTypes
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -291,7 +291,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var userGrade = await _coreCmsUserGradeServices.QueryAsync();
             jm.data = userGrade;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -313,14 +313,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.mobile))
             {
                 jm.msg = "请输入用户手机号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var isHava = await _coreCmsUserServices.ExistsAsync(p => p.mobile == entity.mobile);
             if (isHava)
             {
                 jm.msg = "已存在此手机号码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             entity.createTime = DateTime.Now;
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -355,7 +355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -371,7 +371,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userStatus
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -394,7 +394,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.mobile != oldModel.mobile)
@@ -403,7 +403,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (isHava)
                 {
                     jm.msg = "已存在此手机号码";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
 
@@ -423,7 +423,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -631,7 +631,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -972,7 +972,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -994,13 +994,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1018,7 +1018,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEditBalance([FromBody] FMUpdateDecimalDataByIntId entity)
         {
             var jm = await _coreCmsUserServices.UpdateBalance(entity.id, entity.data);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1041,13 +1041,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1065,7 +1065,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEditPoint([FromBody] FMUpdateUserPoint entity)
         {
             var jm = await _coreCmsUserServices.UpdatePiont(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1170,7 +1170,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1194,7 +1194,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 userBalanceSourceTypes
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1300,7 +1300,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1323,7 +1323,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 userPointSourceTypes
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1346,7 +1346,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDelete = entity.data;
@@ -1355,7 +1355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

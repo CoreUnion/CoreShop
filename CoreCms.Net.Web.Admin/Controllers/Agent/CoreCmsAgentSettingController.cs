@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsAgentSettingController : ControllerBase
+    public class CoreCmsAgentSettingController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsSettingServices _coreCmsSettingServices;
@@ -75,7 +75,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 filesStorageOptionsType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -91,7 +91,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoSave([FromBody] FMCoreCmsSettingDoSaveModel model)
         {
             var jm = await _coreCmsSettingServices.UpdateAsync(model);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

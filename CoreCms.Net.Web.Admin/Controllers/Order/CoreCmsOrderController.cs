@@ -43,7 +43,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsOrderController : ControllerBase
+    public class CoreCmsOrderController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsOrderServices _coreCmsOrderServices;
@@ -277,7 +277,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -356,7 +356,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 receiptType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!result.status)
             {
                 jm.msg = result.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = new
@@ -387,7 +387,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 storeList
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -408,7 +408,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //事物处理过程开始
             if (entity.editType == 1)
@@ -434,7 +434,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -459,7 +459,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!result.status)
             {
                 jm.msg = result.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (storeList.Any())
@@ -482,7 +482,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 logistics
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -508,7 +508,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = result.data;
             jm.otherData = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -530,7 +530,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (type == 0 || ids.Length == 0)
             {
                 jm.msg = "请提交合法的数据";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var result = _billPaymentsServices.FormatPaymentRel(ids, type, null);
@@ -538,7 +538,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.msg = result.msg;
                 jm.data = result.data;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //取支付方式
             var payments = await _paymentsServices.QueryListByClauseAsync(p => p.isEnable, p => p.sort, OrderByType.Asc);
@@ -552,7 +552,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 rel = result.data
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -576,7 +576,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = result.status ? 0 : 1;
             jm.msg = result.msg;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -597,13 +597,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //假删除
             var bl = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { isdel = true }, p => p.orderId == model.orderId);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -629,7 +629,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = "存在未处理的售后";
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -653,7 +653,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = result.data;
             jm.otherData = result.otherData;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -675,12 +675,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (result == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = result.status ? 0 : 1;
             jm.data = result.data;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -701,7 +701,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (result == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = result.status ? 0 : 1;
 
@@ -718,7 +718,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 shopMobile
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -850,7 +850,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1177,7 +1177,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1198,7 +1198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.taxType = entity.data;
 
@@ -1206,7 +1206,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1227,7 +1227,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isComment = (bool)entity.data;
 
@@ -1235,7 +1235,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1256,14 +1256,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.mark = entity.data.ToString();
             var bl = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { mark = oldModel.mark }, p => p.orderId == oldModel.orderId);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1283,14 +1283,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交要取消的订单号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var ids = entity.id.Split(",");
             var result = await _coreCmsOrderServices.CancelOrder(ids);
             jm.code = result.status ? 0 : 1;
             jm.msg = result.msg;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1311,14 +1311,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交要取消的订单号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var ids = entity.id.Split(",");
             var result = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { isdel = true }, p => ids.Contains(p.orderId));
             jm.code = result ? 0 : 1;
             jm.msg = result ? "删除成功" : "删除失败";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1340,12 +1340,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (result == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = result.status ? 0 : 1;
             jm.data = result.data;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

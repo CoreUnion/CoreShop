@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsBillRefundController : ControllerBase
+    public class CoreCmsBillRefundController : Controller
     {
         private readonly ICoreCmsBillRefundServices _coreCmsBillRefundServices;
         private readonly ICoreCmsUserServices _userServices;
@@ -203,7 +203,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -232,7 +232,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 paymentCode
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -255,7 +255,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var paymentsResourceTypes = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsType>(model.type);
@@ -273,7 +273,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 model
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -297,7 +297,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var paymentsResourceTypes =
@@ -315,7 +315,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userInfo
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -337,19 +337,19 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.refundId))
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (string.IsNullOrEmpty(entity.paymentCode))
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.status != 2 && entity.status != 4)
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var result =
@@ -360,7 +360,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = result.msg;
             jm.data = result.data;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -382,7 +382,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = GlobalErrorCodeVars.Code13215;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var oldModel = await _coreCmsBillRefundServices.QueryByClauseAsync(p =>
@@ -391,7 +391,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code13224;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var result = await _coreCmsBillRefundServices.PaymentRefund(entity.id);
@@ -401,7 +401,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = result.msg;
             jm.data = result.data;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -477,7 +477,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -598,7 +598,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

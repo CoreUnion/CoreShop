@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsUserGradeController : ControllerBase
+    public class CoreCmsUserGradeController : Controller
     {
         private readonly ICoreCmsUserGradeServices _coreCmsUserGradeServices;
         private readonly ICoreCmsUserServices _userServices;
@@ -117,7 +117,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -138,7 +138,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 code = 0
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -159,7 +159,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 code = 0
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -191,7 +191,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     predicate);
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -214,13 +214,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -243,7 +243,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var oldDf = oldModel.isDefault;
@@ -251,7 +251,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldDf && entity.isDefault == false)
             {
                 jm.msg = "请保留一个为默认等级";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //事物处理过程开始
@@ -271,7 +271,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     predicate);
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -294,27 +294,27 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var isHave = await _userServices.ExistsAsync(p => p.grade == model.id);
             if (isHave)
             {
                 jm.msg = "存在下级关联数据,禁止删除";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var isDefault = await _coreCmsUserGradeServices.ExistsAsync(p => p.isDefault && p.id != entity.id);
             if (isDefault == false)
             {
                 jm.msg = "请先设置其他选项为默认";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsUserGradeServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -338,13 +338,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -367,7 +367,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDefault = entity.data;
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (isHave == false)
                 {
                     jm.msg = "请保持一个默认设置";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
 
@@ -394,7 +394,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     predicate);
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

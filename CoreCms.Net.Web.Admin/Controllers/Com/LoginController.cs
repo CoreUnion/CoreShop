@@ -80,7 +80,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(model.userName) || string.IsNullOrEmpty(model.password))
             {
                 jm.msg = "用户名或密码不能为空";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             model.password = CommonHelper.Md5For32(model.password);
@@ -91,7 +91,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (user.state == 1)
                 {
                     jm.msg = "您的账户已经被冻结,请联系管理员解锁";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
                 var userRoles = await _sysUserServices.GetUserRoleNameStr(model.userName, model.password);
                 //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
@@ -145,7 +145,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 log.createTime = DateTime.Now;
                 await _sysLoginRecordRepository.InsertAsync(log);
 
-                return new JsonResult(jm);
+                return Json(jm);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 await _sysLoginRecordRepository.InsertAsync(log);
 
                 jm.msg = "账户密码错误";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
         }
@@ -180,7 +180,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.code = 1001;
                 jm.msg = "token无效，请重新登录！";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var tokenModel = JwtHelper.SerializeJwt(token);
             if (tokenModel != null && tokenModel.Uid > 0)
@@ -221,12 +221,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     log.createTime = DateTime.Now;
                     await _sysLoginRecordRepository.InsertAsync(log);
 
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             jm.code = 1001;
             jm.msg = "token无效，请重新登录！";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
     }

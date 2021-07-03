@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsAreaController : ControllerBase
+    public class CoreCmsAreaController : Controller
     {
         private readonly ICoreCmsAreaServices _coreCmsAreaServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -74,7 +74,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = list;
             jm.code = 0;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -158,7 +158,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var parentModel = await _coreCmsAreaServices.QueryByClauseAsync(p => p.id == entity.id);
             jm.data = parentModel;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsArea entity)
         {
             var jm = await _coreCmsAreaServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -239,14 +239,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -264,7 +264,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsArea entity)
         {
             var jm = await _coreCmsAreaServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -287,11 +287,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (bl)
             {
                 jm.msg = GlobalConstVars.DeleteIsHaveChildren;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _coreCmsAreaServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 

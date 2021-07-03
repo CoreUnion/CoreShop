@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsDistributionResultController : ControllerBase
+    public class CoreCmsDistributionResultController : Controller
     {
         private readonly ICoreCmsDistributionResultServices _coreCmsDistributionResultServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -122,7 +122,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -140,7 +140,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -158,7 +158,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsDistributionResult entity)
         {
             var jm = await _coreCmsDistributionResultServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -199,13 +199,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -223,7 +223,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsDistributionResult entity)
         {
             var jm = await _coreCmsDistributionResultServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -241,7 +241,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
         {
             var jm = await _coreCmsDistributionResultServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -259,7 +259,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchDelete([FromBody] FMArrayIntIds entity)
         {
             var jm = await _coreCmsDistributionResultServices.DeleteByIdsAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -282,13 +282,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -347,7 +347,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -420,7 +420,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

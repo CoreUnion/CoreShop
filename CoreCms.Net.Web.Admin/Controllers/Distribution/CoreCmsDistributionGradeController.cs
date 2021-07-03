@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsDistributionGradeController : ControllerBase
+    public class CoreCmsDistributionGradeController : Controller
     {
         private readonly ICoreCmsDistributionConditionServices _coreCmsDistributionConditionServices;
         private readonly ICoreCmsDistributionGradeServices _coreCmsDistributionGradeServices;
@@ -164,7 +164,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -181,7 +181,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -214,7 +214,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsDistributionGrade entity)
         {
             var jm = await _coreCmsDistributionGradeServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var distributionConditions = await _coreCmsDistributionConditionServices.QueryListByClauseAsync(p => p.gradeId == model.id);
@@ -250,7 +250,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 distributionResults
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -268,7 +268,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsDistributionGrade entity)
         {
             var jm = await _coreCmsDistributionGradeServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -290,13 +290,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isDefault = (bool)entity.data;
 
             jm = await _coreCmsDistributionGradeServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -317,13 +317,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isAutoUpGrade = (bool)entity.data;
 
             jm = await _coreCmsDistributionGradeServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -339,7 +339,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
         {
             var jm = await _coreCmsDistributionGradeServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -389,7 +389,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -413,7 +413,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 distributionConditionsCode,
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -431,7 +431,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionConditionCreate([FromBody] CoreCmsDistributionCondition entity)
         {
             var jm = await _coreCmsDistributionConditionServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -454,7 +454,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var distributionConditionsCode = EnumHelper.EnumToList<GlobalEnumVars.DistributionConditionsCode>();
@@ -466,7 +466,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 distributionConditionsCode,
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -484,7 +484,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionConditionEdit([FromBody] CoreCmsDistributionCondition entity)
         {
             var jm = await _coreCmsDistributionConditionServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -502,7 +502,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionConditionDelete([FromBody] FMIntId entity)
         {
             var jm = await _coreCmsDistributionConditionServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -543,7 +543,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -563,7 +563,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var jm = new AdminUiCallBack { code = 0 };
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -581,7 +581,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionResultCreate([FromBody] CoreCmsDistributionResult entity)
         {
             var jm = await _coreCmsDistributionResultServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -604,13 +604,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -628,7 +628,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionResultEdit([FromBody] CoreCmsDistributionResult entity)
         {
             var jm = await _coreCmsDistributionResultServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -646,7 +646,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDistributionResultDelete([FromBody] FMIntId entity)
         {
             var jm = await _coreCmsDistributionResultServices.DeleteByIdAsync(entity.id); ;
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

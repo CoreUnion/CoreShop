@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AdvertController : ControllerBase
+    public class AdvertController : Controller
     {
 
         private IHttpContextUser _user;
@@ -72,12 +72,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
-
-
 
         #region 获取广告位置信息=============================================================================
         /// <summary>
@@ -93,7 +91,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var position = await _advertPositionServices.QueryListByClauseAsync(p => p.isEnable && p.code == entity.codes);
             if (!position.Any())
             {
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var ids = position.Select(p => p.id).ToList();
             var isement = await _advertisementServices.QueryListByClauseAsync(p => ids.Contains(p.positionId));
@@ -104,7 +102,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion

@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsUserBalanceController : ControllerBase
+    public class CoreCmsUserBalanceController : Controller
     {
         private readonly ICoreCmsUserBalanceServices _coreCmsUserBalanceServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -165,7 +165,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取列表============================================================
@@ -189,7 +189,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 userBalanceSourceTypes
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 首页数据============================================================
@@ -212,13 +212,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 预览数据============================================================
@@ -285,7 +285,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 选择导出============================================================
@@ -377,7 +377,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 查询导出============================================================

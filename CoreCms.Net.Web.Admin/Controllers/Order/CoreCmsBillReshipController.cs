@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsBillReshipController : ControllerBase
+    public class CoreCmsBillReshipController : Controller
     {
         private readonly ICoreCmsBillReshipServices _coreCmsBillReshipServices;
         private readonly ICoreCmsBillReshipItemServices _billReshipItemServices;
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -224,7 +224,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 status
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -247,7 +247,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsBillReshipServices.UpdateAsync(
@@ -295,7 +295,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "确认成功" : "确认失败";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -318,7 +318,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var status = EnumHelper.EnumToList<GlobalEnumVars.BillReshipStatus>();
 
@@ -329,7 +329,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 model
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -401,7 +401,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -516,7 +516,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

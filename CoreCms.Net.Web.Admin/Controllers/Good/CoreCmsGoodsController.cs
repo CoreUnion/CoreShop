@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsGoodsController : ControllerBase
+    public class CoreCmsGoodsController : Controller
     {
         private readonly ICoreCmsBrandServices _brandServices;
         private readonly ICoreCmsGoodsCategoryExtendServices _categoryExtendServices;
@@ -313,7 +313,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 productsDistributionType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -418,7 +418,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 productsDistributionType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -436,7 +436,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] FMGoodsInsertModel entity)
         {
             var jm = await _coreCmsGoodsServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -459,7 +459,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.msg = "不存在此信息";
                 jm.data = id;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -552,7 +552,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -570,7 +570,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] FMGoodsInsertModel entity)
         {
             var jm = await _coreCmsGoodsServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -593,7 +593,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             model.isDel = true;
@@ -601,7 +601,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var bl = await _coreCmsGoodsServices.UpdateAsync(model);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -625,13 +625,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -654,7 +654,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isNomalVirtual = entity.data;
@@ -663,7 +663,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -686,7 +686,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isMarketable = entity.data;
@@ -695,7 +695,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -718,7 +718,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isRecommend = entity.data;
@@ -727,7 +727,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -750,7 +750,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isHot = entity.data;
@@ -759,7 +759,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -782,7 +782,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDel = entity.data;
@@ -791,7 +791,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -845,7 +845,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -868,7 +868,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!list.Any())
             {
                 jm.msg = "提交数据获取失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var newSpecs = list.Where(p => p.name.Contains("newSpec.")).ToList();
@@ -877,7 +877,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 t.value = t.value.Trim();
                 if (GoodsHelper.FilterChar(t.value) == false) continue;
                 jm.msg = "自定义规格不符合支持规则格式";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var oldProducts = list.Where(p => p.name.Contains("product[spesDesc][]")).Select(p => p.value).ToList();
@@ -995,7 +995,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1013,7 +1013,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchDelete([FromBody] FMArrayIntIds entity)
         {
             var jm = await _coreCmsGoodsServices.DeleteByIdsAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1031,7 +1031,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchMarketableUp([FromBody] FMArrayIntIds entity)
         {
             var jm = await _coreCmsGoodsServices.DoBatchMarketableUp(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1049,7 +1049,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchMarketableDown([FromBody] FMArrayIntIds entity)
         {
             var jm = await _coreCmsGoodsServices.DoBatchMarketableDown(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1088,7 +1088,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 priceType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
 
@@ -1103,7 +1103,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchModifyPrice([FromBody] FmBatchModifyPrice entity)
         {
             var jm = await _coreCmsGoodsServices.DoBatchModifyPrice(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1129,7 +1129,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 entity
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
 
@@ -1144,7 +1144,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchModifyStock([FromBody] FmBatchModifyStock entity)
         {
             var jm = await _coreCmsGoodsServices.DoBatchModifyStock(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1166,7 +1166,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -1176,7 +1176,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 ids = entity
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         // POST: Admins/CoreCmsGoods/DoSetLabel
@@ -1190,7 +1190,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoSetLabel([FromBody] FmSetLabel entity)
         {
             var jm = await _coreCmsGoodsServices.DoSetLabel(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1214,7 +1214,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var labelIds = model.Select(p => p.labelIds).ToList();
@@ -1235,7 +1235,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         // POST: Admins/CoreCmsGoods/DoDeleteLabel
@@ -1249,7 +1249,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDeleteLabel([FromBody] FmSetLabel entity)
         {
             var jm = await _coreCmsGoodsServices.DoDeleteLabel(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class CartController : Controller
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsCartServices _cartServices;
@@ -56,7 +56,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> AddCart([FromBody] FMCartAdd entity)
         {
             var jm = await _cartServices.Add(_user.ID, entity.ProductId, entity.Nums, entity.type, entity.cartType, entity.teamId, entity.groupId);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 添加单个货品到购物车
@@ -77,7 +77,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             //获取数据
             var jm = await _cartServices.GetCartInfos(_user.ID, ids, entity.type, entity.areaId, entity.point, entity.couponCode, freeFreight, entity.receiptType, entity.groupId);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取购物车列表======================================================================
@@ -97,11 +97,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id <= 0)
             {
                 jm.msg = "请提交要删除的货品";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _cartServices.DeleteByIdsAsync(entity.id, _user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 删除购物车信息
@@ -117,7 +117,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> SetCartNum([FromBody] FMSetCartNum entity)
         {
             var jm = await _cartServices.SetCartNum(entity.id, entity.nums, _user.ID, 2, 1);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 设置购物车商品数量
@@ -134,7 +134,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var ids = CommonHelper.StringToIntArray(entity.ids);
             var jm = await _cartServices.GetCartAvailableCoupon(_user.ID, ids);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 根据提交的数据判断哪些购物券可以使用==================================================

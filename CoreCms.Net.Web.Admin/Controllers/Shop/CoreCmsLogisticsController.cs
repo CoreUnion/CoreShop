@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsLogisticsController : ControllerBase
+    public class CoreCmsLogisticsController : Controller
     {
         private readonly ICoreCmsLogisticsServices _coreCmsLogisticsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -129,7 +129,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -147,7 +147,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -170,7 +170,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDelete = entity.data;
@@ -180,7 +180,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -196,7 +196,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoUpdateCompany()
         {
             var jm = await _coreCmsLogisticsServices.DoUpdateCompany();
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 

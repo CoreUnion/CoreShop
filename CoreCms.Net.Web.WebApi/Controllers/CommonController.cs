@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CommonController : ControllerBase
+    public class CommonController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsSettingServices _settingServices;
@@ -76,7 +76,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public JsonResult InterFaceTest()
         {
             var jm = new WebApiCallBack { status = true, msg = "接口访问正常", data = DateTime.Now };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 agentAgreement
             };
             jm.data = model;
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -217,7 +217,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = AreaHelper.GetList(areas);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -241,7 +241,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 service = caCheList.Where(p => p.type == (int)GlobalEnumVars.ShopServiceNoteType.Service && p.isShow == true).OrderBy(p => p.sortId).ToList(),
                 delivery = caCheList.Where(p => p.type == (int)GlobalEnumVars.ShopServiceNoteType.Delivery && p.isShow == true).OrderBy(p => p.sortId).ToList()
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -271,7 +271,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (file == null)
             {
                 jm.msg = "请选择文件";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             string fileName = file.FileName;
             string fileExt = Path.GetExtension(fileName).ToLowerInvariant();
@@ -280,7 +280,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (file.Length > maxSize)
             {
                 jm.msg = "上传文件大小超过限制，最大允许上传" + filesStorageOptions.MaxSize + "M";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //检查文件扩展名
@@ -288,7 +288,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             string dts = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo);
@@ -351,7 +351,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                         src = filesStorageOptions.BucketBindUrl + filePath,
                         imageId = dts
                     };
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
@@ -396,7 +396,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
     }

@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class StoreController : ControllerBase
+    public class StoreController : Controller
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsStoreServices _storeServices;
@@ -78,7 +78,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -135,7 +135,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = GlobalConstVars.DataHandleEx;
                 jm.data = e.ToString();
             }
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -155,7 +155,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取成功";
             jm.data = !string.IsNullOrEmpty(recommendKeysStr) ? recommendKeysStr.Split("|") : new string[] { };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -171,7 +171,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             var allConfigs = await _settingServices.GetConfigDictionaries();
             jm.data = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.StoreSwitch).ObjectToInt(2); ;
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -189,7 +189,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _storeServices.QueryByClauseAsync(p => p.id == entity.id)
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -205,7 +205,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> IsClerk()
         {
             var jm = await _clerkServices.IsClerk(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -224,7 +224,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _storeServices.GetStoreByUserId(_user.ID)
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -251,7 +251,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "你不是店员";
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -266,7 +266,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> StoreLadingList([FromBody] FMPageByIntId entity)
         {
             var jm = await _billLadingServices.GetStoreLadingList(_user.ID, entity.page, entity.limit);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -280,7 +280,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> LadingDelete([FromBody] FMStringId entity)
         {
             var jm = await _billLadingServices.LadingDelete(entity.id, _user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -298,11 +298,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _billLadingServices.GetInfo(entity.id, _user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -320,14 +320,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var array = entity.id.Split(",");
             var result = await _billLadingServices.LadingOperating(array, _user.ID);
             jm.status = result.code == 0;
             jm.msg = result.msg;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

@@ -36,7 +36,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsArticleController : ControllerBase
+    public class CoreCmsArticleController : Controller
     {
         private readonly ICoreCmsArticleServices _coreCmsArticleServices;
         private readonly ICoreCmsArticleTypeServices _coreCmsArticleTypeServices;
@@ -222,7 +222,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取列表============================================================
@@ -247,7 +247,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 categories
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 首页数据============================================================
@@ -272,7 +272,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 categories
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 创建数据============================================================
@@ -297,7 +297,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 创建提交============================================================
@@ -320,7 +320,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 model
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑数据============================================================
@@ -355,7 +355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //事物处理过程开始
@@ -377,7 +377,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑提交============================================================
@@ -400,13 +400,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsArticleServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 删除数据============================================================
@@ -429,7 +429,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isPub = entity.data;
@@ -438,7 +438,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 设置是否发布============================================================
@@ -461,7 +461,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDel = entity.data;
@@ -470,7 +470,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 设置是否删除============================================================

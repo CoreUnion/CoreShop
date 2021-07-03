@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PageController : ControllerBase
+    public class PageController : Controller
     {
         private IMapper _mapper;
         private readonly ICoreCmsSettingServices _settingServices;
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetPageConfig([FromBody] FMWxPost entity)
         {
             var jm = await _pagesServices.GetPageConfig(entity.code);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -148,7 +148,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     jm.data = listUsers[listI];
                 }
             }
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

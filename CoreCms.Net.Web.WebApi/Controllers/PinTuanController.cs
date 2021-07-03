@@ -31,7 +31,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PinTuanController : ControllerBase
+    public class PinTuanController : Controller
     {
 
         private readonly IHttpContextUser _user;
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 id = entity.id;
             }
             jm = await _pinTuanRuleServices.GetPinTuanList(id, userId);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -108,7 +108,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取详情成功";
             jm.data = await _pinTuanGoodsServices.GetGoodsInfo(entity.id, userId, pinTuanStatus);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -128,7 +128,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (products == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //把拼团的一些属性等加上
             var info = await _pinTuanRuleServices.QueryMuchFirstAsync<CoreCmsPinTuanRule, CoreCmsPinTuanGoods, CoreCmsPinTuanRule>(
@@ -138,12 +138,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (info == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             products.pinTuanRule = info;
             jm.status = true;
             jm.data = products;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -162,11 +162,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.orderId) && entity.teamId == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15606;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _pinTuanRecordServices.GetTeamList(entity.teamId, entity.orderId);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

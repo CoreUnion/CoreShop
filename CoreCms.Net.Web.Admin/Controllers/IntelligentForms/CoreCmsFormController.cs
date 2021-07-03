@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsFormController : ControllerBase
+    public class CoreCmsFormController : Controller
     {
         private readonly ICoreCmsFormServices _coreCmsFormServices;
         private readonly ICoreCmsFormItemServices _formItemServices;
@@ -257,7 +257,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -282,7 +282,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 formTypes
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -314,7 +314,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 formValidationTypes
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] FMForm entity)
         {
             var jm = await _coreCmsFormServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -355,7 +355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -375,7 +375,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 items
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -397,7 +397,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //事物处理过程结束
             jm = await _coreCmsFormServices.UpdateAsync(entity);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -416,7 +416,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = await _coreCmsFormServices.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -440,7 +440,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -459,7 +459,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 sumSubmit
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -482,7 +482,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isLogin = entity.data;
@@ -491,7 +491,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "设置成功" : "设置失败";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

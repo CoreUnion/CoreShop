@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsFormSubmitController : ControllerBase
+    public class CoreCmsFormSubmitController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsFormSubmitServices _coreCmsFormSubmitServices;
@@ -193,7 +193,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -216,7 +216,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 forms
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -237,12 +237,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -263,11 +263,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!model)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _coreCmsFormSubmitServices.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -288,7 +288,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
 
@@ -298,7 +298,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.msg = "表单信息获取失败";
                 jm.data = getResult;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (formModel.Items.Any())
@@ -340,7 +340,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 formModel.Items
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -493,7 +493,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -742,7 +742,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -763,7 +763,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.payStatus = (bool)entity.data;
 
@@ -773,7 +773,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -794,7 +794,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.status = (bool)entity.data;
 
@@ -803,7 +803,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -824,7 +824,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.feedback = entity.data.ToString();
 
@@ -833,7 +833,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsUserWeChatMsgTemplateController : ControllerBase
+    public class CoreCmsUserWeChatMsgTemplateController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsUserWeChatMsgTemplateServices _coreCmsUserWeChatMsgTemplateServices;
@@ -88,7 +88,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 refund
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -109,12 +109,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -134,7 +134,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (entity.list == null || entity.list.Count < 0)
             {
                 jm.msg = "未传输讯息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //事物处理过程开始
             var data = await _coreCmsUserWeChatMsgTemplateServices.QueryAsync();
@@ -157,7 +157,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
             jm.otherData = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

@@ -28,7 +28,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class FormController : ControllerBase
+    public class FormController : Controller
     {
         private readonly ICoreCmsFormServices _formServices;
 
@@ -52,7 +52,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetFormDetial([FromBody] FmGetForm entity)
         {
             var jm = await _formServices.GetFormInfo(entity.id, entity.token);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -70,7 +70,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             jm.otherData = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

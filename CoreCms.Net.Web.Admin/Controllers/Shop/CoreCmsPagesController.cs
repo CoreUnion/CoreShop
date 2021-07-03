@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsPagesController : ControllerBase
+    public class CoreCmsPagesController : Controller
     {
         private readonly ICoreCmsArticleTypeServices _articleTypeServices;
         private readonly ICoreCmsBrandServices _brandServices;
@@ -156,7 +156,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -174,7 +174,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -202,7 +202,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 pagesType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -225,7 +225,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (synonym)
             {
                 jm.msg = "存在相同【区域编码】请更正";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
 
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -258,7 +258,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
 
@@ -272,7 +272,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 pagesType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -295,14 +295,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (synonym)
             {
                 jm.msg = "存在相同【区域编码】请更正";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var oldModel = await _coreCmsPagesServices.QueryByIdAsync(entity.id, false);
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldCode = oldModel.code;
 
@@ -326,7 +326,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -349,13 +349,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (model.id == 1)
             {
                 jm.msg = "初始化数据禁止删除";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsPagesServices.DeleteByIdAsync(model.id);
@@ -365,7 +365,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -389,7 +389,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -411,7 +411,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 articleTypes
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -429,7 +429,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoDesign([FromBody] FmPagesUpdate entity)
         {
             var jm = await _coreCmsPagesServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -452,7 +452,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -471,7 +471,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 pageConfig
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -493,7 +493,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -504,7 +504,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 articleTypes
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

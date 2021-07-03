@@ -33,7 +33,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PaymentsController : ControllerBase
+    public class PaymentsController : Controller
     {
 
         private IHttpContextUser _user;
@@ -71,7 +71,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var list = await _paymentsServices.QueryListByClauseAsync(p => p.isEnable == true, p => p.sort, OrderByType.Asc);
             jm.status = true;
             jm.data = list;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -92,13 +92,13 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.ids))
             {
                 jm.msg = GlobalErrorCodeVars.Code13100;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var ids = CommonHelper.StringToStringArray(entity.ids);
             jm = _billPaymentsServices.FormatPaymentRel(ids, entity.paymentType, entity.@params);
             jm.otherData = entity;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -117,11 +117,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = GlobalErrorCodeVars.Code13100;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var userId = entity.data.ObjectToInt(0);
             jm = await _billPaymentsServices.GetInfo(entity.id, userId);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
