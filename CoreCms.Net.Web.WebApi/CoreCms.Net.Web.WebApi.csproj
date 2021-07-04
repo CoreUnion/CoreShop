@@ -87,25 +87,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\assets\bootstrap\css\bootstrap-theme.css.map" />
-    <None Include="wwwroot\assets\bootstrap\css\bootstrap.css.map" />
-    <None Include="wwwroot\assets\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <None Include="wwwroot\assets\bootstrap\js\bootstrap.js" />
-    <None Include="wwwroot\assets\bootstrap\js\bootstrap.min.js" />
-    <None Include="wwwroot\assets\css\animate.less" />
-    <None Include="wwwroot\assets\css\form-elements.less" />
-    <None Include="wwwroot\assets\css\media-queries.less" />
-    <None Include="wwwroot\assets\css\style.less" />
-    <None Include="wwwroot\assets\js\jquery-1.10.2.js" />
-    <None Include="wwwroot\assets\js\jquery-1.10.2.min.js" />
-    <None Include="wwwroot\assets\js\jquery.backstretch.js" />
-    <None Include="wwwroot\assets\js\jquery.backstretch.min.js" />
-    <None Include="wwwroot\assets\js\jquery.countdown.js" />
-    <None Include="wwwroot\assets\js\jquery.countdown.min.js" />
-    <None Include="wwwroot\assets\js\placeholder.js" />
-    <None Include="wwwroot\assets\js\scripts.js" />
-    <None Include="wwwroot\assets\js\wow.js" />
-    <None Include="wwwroot\assets\js\wow.min.js" />
     <None Include="wwwroot\static\poster\此处会存放临时带背景海报.txt" />
     <None Include="wwwroot\static\qrCode\weChat\此处会存放用户唯一二维码用于生成带背景海报.txt" />
   </ItemGroup>
