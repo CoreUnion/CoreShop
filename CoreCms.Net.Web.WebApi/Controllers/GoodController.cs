@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class GoodController : ControllerBase
+    public class GoodController : Controller
     {
         private IMapper _mapper;
         private readonly IHttpContextUser _user;
@@ -135,7 +135,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = wxGoodCategoryDto;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -267,7 +267,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             };
             jm.msg = "数据调用成功!";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -292,7 +292,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (model == null)
             {
                 jm.msg = "商品获取失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.status = true;
@@ -300,7 +300,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.data = model;
             jm.methodDescription = JsonConvert.SerializeObject(_user);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -327,14 +327,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (getProductInfo == null)
             {
                 jm.msg = "获取单个货品失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.status = true;
             jm.msg = "获取单个货品成功";
             jm.data = getProductInfo;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -370,7 +370,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 totalPages = list.TotalPages
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -390,7 +390,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (goods == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var list = new List<WxNameValueDto>();
             var goodsParams = await _goodsParamsServices.QueryAsync();
@@ -422,7 +422,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取商品参数成功";
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -448,7 +448,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _goodsServices.GetGoodsRecommendList(entity.id, bl)
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -477,7 +477,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (model == null)
             {
                 jm.msg = "商品获取失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             await _goodsServices.UpdateAsync(p => new CoreCmsGoods() { viewCount = p.viewCount + 1 },
@@ -489,7 +489,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.data = model;
             jm.methodDescription = JsonConvert.SerializeObject(_user);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

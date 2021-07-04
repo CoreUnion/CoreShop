@@ -80,7 +80,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 monthOrderMoney
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
     }

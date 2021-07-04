@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsGoodsTypeController : ControllerBase
+    public class CoreCmsGoodsTypeController : Controller
     {
         private readonly ICoreCmsGoodsTypeParamsServices _coreCmsGoodsTypeParamsServices;
         private readonly ICoreCmsGoodsTypeServices _coreCmsGoodsTypeServices;
@@ -167,7 +167,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取列表============================================================
@@ -185,7 +185,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 首页数据============================================================
@@ -203,7 +203,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 创建数据============================================================
@@ -221,7 +221,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] FmGoodsTypeInsert entity)
         {
             var jm = await _coreCmsGoodsTypeServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 创建提交============================================================
@@ -244,13 +244,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑数据============================================================
@@ -273,7 +273,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //事物处理过程开始
@@ -284,7 +284,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑提交============================================================
@@ -307,17 +307,17 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (await _goodsServices.ExistsAsync(p => p.goodsTypeId == model.id))
             {
                 jm.msg = "类型关联商品信息,禁止删除!";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _coreCmsGoodsTypeServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 删除数据============================================================
@@ -438,7 +438,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取已有参数列表============================================================
@@ -461,7 +461,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 goodsParamTypes
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 选择参数面板============================================================
@@ -538,7 +538,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 获取已有属性列表============================================================
@@ -556,7 +556,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 选择属性面板============================================================
@@ -579,7 +579,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -596,7 +596,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     : new List<int>()
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑参数============================================================
@@ -614,7 +614,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEditParameters([FromBody] FMUpdateArrayIntDataByIntId entity)
         {
             var jm = await _coreCmsGoodsTypeServices.UpdateParametersAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑参数提交============================================================
@@ -637,7 +637,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
@@ -653,7 +653,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     : new List<int>()
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑属性============================================================
@@ -671,7 +671,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEditTypes([FromBody] FMUpdateArrayIntDataByIntId entity)
         {
             var jm = await _coreCmsGoodsTypeServices.UpdateTypesAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion 编辑属性提交============================================================

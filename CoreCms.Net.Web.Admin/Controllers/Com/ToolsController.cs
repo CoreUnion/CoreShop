@@ -51,7 +51,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
-    public class ToolsController : ControllerBase
+    public class ToolsController : Controller
     {
         private readonly ICoreCmsAreaServices _areaServices;
         private readonly ICodeGeneratorServices _codeGeneratorServices;
@@ -165,7 +165,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userModel.nickName,
                 userModel.createTime
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -201,7 +201,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.msg = "数据获取正常";
             jm.data = userModel;
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -220,7 +220,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.msg = "数据获取正常";
             jm.data = roles.Select(p => new { title = p.roleName, value = p.id });
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -239,31 +239,31 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.oldPassword))
             {
                 jm.msg = "请键入旧密码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (string.IsNullOrEmpty(entity.password))
             {
                 jm.msg = "请键入新密码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (string.IsNullOrEmpty(entity.repassword))
             {
                 jm.msg = "请键入新密码确认密码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.password != entity.repassword)
             {
                 jm.msg = "新密码与确认密码不相符";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (CommonHelper.Md5For32(entity.oldPassword) == CommonHelper.Md5For32(entity.password))
             {
                 jm.msg = "新密码与旧密码相同,无需修改";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
@@ -271,7 +271,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (userModel.passWord != CommonHelper.Md5For32(entity.oldPassword))
             {
                 jm.msg = "旧密码输入错误";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             userModel.passWord = CommonHelper.Md5For32(entity.password);
@@ -279,7 +279,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "修改成功" : "修改失败";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -313,7 +313,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "修改成功" : "修改失败";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = data.OrderBy(u => u.name).ToList();
             jm.code = 0;
             jm.msg = "获取成功";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -359,7 +359,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file == null)
             {
                 jm.msg = "请选择文件";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var fileName = file.FileName;
@@ -369,7 +369,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file.Length > maxSize)
             {
                 jm.msg = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //检查文件扩展名
@@ -377,7 +377,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
@@ -474,7 +474,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 };
 
             }
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -497,7 +497,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.base64))
             {
                 jm.msg = "请上传合法内容";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             entity.base64 = entity.base64.Replace("data:image/png;base64,", "").Replace("data:image/jgp;base64,", "").Replace("data:image/jpg;base64,", "").Replace("data:image/jpeg;base64,", "");//将base64头部信息替换
@@ -602,7 +602,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -627,7 +627,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file == null)
             {
                 jm.error.message = "请选择文件";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var fileName = file.FileName;
@@ -637,7 +637,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file.Length > maxSize)
             {
                 jm.error.message = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //检查文件扩展名
@@ -645,7 +645,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
                 jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
@@ -733,7 +733,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -755,7 +755,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -781,7 +781,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (formModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var path = "pages/form/details/details?id=" + entity.id;
@@ -890,7 +890,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 jm.otherData = result;
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -940,7 +940,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -963,7 +963,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.data = list;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -997,7 +997,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1030,7 +1030,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1054,7 +1054,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = list;
             jm.code = 0;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1086,7 +1086,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1122,7 +1122,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1159,7 +1159,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1197,7 +1197,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1238,7 +1238,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1266,7 +1266,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = areaTrees;
             jm.msg = ids.Count.ToString();
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1287,18 +1287,18 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.code = 1;
                 jm.msg = GlobalErrorCodeVars.Code13225;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.code == "benditongcheng")
             {
                 jm.code = 1;
                 jm.msg = "本地同城配送不支持轨迹查询";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _logisticsServices.ExpressPoll(entity.code, entity.no, entity.mobile);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1341,7 +1341,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = "数据获取正常";
             jm.code = 0;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         /// <summary>
@@ -1431,7 +1431,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 res.Add(model4);
             }
 
-            return new JsonResult(res);
+            return Json(res);
         }
 
         /// <summary>
@@ -1442,7 +1442,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> GetAreaChildren([FromBody] FMIntId entity)
         {
             var list = await _areaServices.QueryListByClauseAsync(p => p.parentId == entity.id);
-            return new JsonResult(list);
+            return Json(list);
         }
 
         #endregion
@@ -1469,7 +1469,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1493,7 +1493,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1553,7 +1553,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             //返回数据
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1611,7 +1611,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             //返回数据
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1662,7 +1662,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

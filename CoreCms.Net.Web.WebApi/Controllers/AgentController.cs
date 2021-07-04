@@ -34,7 +34,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AgentController : ControllerBase
+    public class AgentController : Controller
     {
         private IHttpContextUser _user;
         private readonly ICoreCmsAgentServices _agentServices;
@@ -80,16 +80,16 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id == 0)
             {
                 jm.msg = "店铺信息丢失";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var store = UserHelper.GetUserIdByShareCode(entity.id);
             if (store <= 0)
             {
                 jm.msg = "店铺信息丢失";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _agentServices.GetStore(store);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -192,7 +192,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             };
             jm.msg = "数据调用成功!";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -210,7 +210,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> Info()
         {
             var jm = await _agentServices.GetInfo(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -229,7 +229,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.agreement != "on")
             {
                 jm.msg = "请勾选代理商协议";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var iData = new CoreCmsAgent();
             iData.mobile = entity.mobile;
@@ -238,7 +238,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             iData.qq = entity.qq;
             jm = await _agentServices.AddData(iData, _user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -285,7 +285,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthSecond
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -342,7 +342,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthOrderMoney
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -357,7 +357,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> MyOrder([FromBody] FMPageByIntId entity)
         {
             var jm = await _agentServices.GetMyOrderList(_user.ID, entity.page, entity.limit, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -375,17 +375,17 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.storeName))
             {
                 jm.msg = "请填写店铺名称";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.storeLogo))
             {
                 jm.msg = "请上传店铺logo";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.storeBanner))
             {
                 jm.msg = "请上传店铺banner";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var info = await _agentServices.QueryByClauseAsync(p => p.userId == _user.ID);
@@ -400,7 +400,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.msg = "保存成功";
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -431,7 +431,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

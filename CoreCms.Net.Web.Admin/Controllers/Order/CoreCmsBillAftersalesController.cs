@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsBillAftersalesController : ControllerBase
+    public class CoreCmsBillAftersalesController : Controller
     {
         private readonly ICoreCmsBillAftersalesServices _coreCmsBillAftersalesServices;
         private readonly ICoreCmsBillAftersalesImagesServices _imagesServices;
@@ -200,7 +200,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -218,7 +218,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -241,13 +241,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!model.status)
             {
                 jm.msg = model.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model.data;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -269,7 +269,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (entity.status == 0)
             {
                 jm.msg = "请选择审核状态";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var res = await _coreCmsBillAftersalesServices.Audit(entity.aftersalesId, entity.status, entity.type,
@@ -279,7 +279,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = res.data;
             jm.otherData = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -302,7 +302,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var userModel = await _userServices.QueryByClauseAsync(p => p.id == model.userId);
@@ -316,7 +316,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = model;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -388,7 +388,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -500,7 +500,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

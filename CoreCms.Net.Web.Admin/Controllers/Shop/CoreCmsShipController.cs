@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsShipController : ControllerBase
+    public class CoreCmsShipController : Controller
     {
         private readonly ICoreCmsShipServices _coreCmsShipServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -213,7 +213,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -231,7 +231,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -257,7 +257,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 shipUnit,
                 logistics,
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -275,7 +275,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsShip entity)
         {
             var jm = await _coreCmsShipServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -298,7 +298,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
 
@@ -315,7 +315,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 logistics,
                 model
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -333,7 +333,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsShip entity)
         {
             var jm = await _coreCmsShipServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -356,11 +356,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!model)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _coreCmsShipServices.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -384,13 +384,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isCashOnDelivery = (bool)entity.data;
 
             jm = await _coreCmsShipServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -413,13 +413,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isdefaultAreaFee = (bool)entity.data;
 
             jm = await _coreCmsShipServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -442,13 +442,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isDefault = (bool)entity.data;
 
             jm = await _coreCmsShipServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -471,13 +471,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isfreePostage = (bool)entity.data;
 
             jm = await _coreCmsShipServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

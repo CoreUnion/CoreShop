@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsAgentGradeController : ControllerBase
+    public class CoreCmsAgentGradeController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsAgentGradeServices _coreCmsAgentGradeServices;
@@ -159,7 +159,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -183,7 +183,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -204,7 +204,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 agentDefaultSalesPriceType
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -220,7 +220,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsAgentGrade entity)
         {
             var jm = await _coreCmsAgentGradeServices.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -241,7 +241,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             var agentDefaultSalesPriceType = EnumHelper.EnumToList<GlobalEnumVars.AgentDefaultSalesPriceType>();
@@ -251,7 +251,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 agentDefaultSalesPriceType
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -267,7 +267,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsAgentGrade entity)
         {
             var jm = await _coreCmsAgentGradeServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -288,11 +288,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!model)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _coreCmsAgentGradeServices.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -313,13 +313,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isDefault = (bool)entity.data;
 
             jm = await _coreCmsAgentGradeServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -340,13 +340,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isAutoUpGrade = (bool)entity.data;
 
             jm = await _coreCmsAgentGradeServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

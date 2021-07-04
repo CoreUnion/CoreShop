@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : Controller
     {
 
         private readonly IHttpContextUser _user;
@@ -60,7 +60,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = await _coreCmsPromotionServices.GetGroupList(entity.type, _user.ID, entity.status, entity.page, entity.limit);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetGoodsDetial([FromBody] FMGetGoodsDetial entity)
         {
             var jm = await _coreCmsPromotionServices.GetGroupDetail(entity.id, 0, "group", entity.groupId);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

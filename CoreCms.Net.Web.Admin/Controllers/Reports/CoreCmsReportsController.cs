@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsReportsController : ControllerBase
+    public class CoreCmsReportsController : Controller
     {
         private readonly ICoreCmsReportsServices _reportsServices;
 
@@ -66,7 +66,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!dataRes.status)
             {
                 jm.msg = dataRes.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var echartsOption = new EchartsOption();
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!xData.status)
             {
                 jm.msg = dataRes.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             echartsOption.xAxis.data = xData.data as List<string>;
 
@@ -161,7 +161,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 table = tableData
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -182,7 +182,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!dataRes.status)
             {
                 jm.msg = dataRes.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var echartsOption = new EchartsOption();
@@ -197,7 +197,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!xData.status)
             {
                 jm.msg = dataRes.msg;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             echartsOption.xAxis.data = xData.data as List<string>;
 
@@ -308,7 +308,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 table = tableData
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -358,7 +358,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 else
                 {
                     jm.msg = "时间段格式不正确";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             else
@@ -373,7 +373,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             jm.data = list;
             jm.count = list.TotalCount;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -415,7 +415,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 else
                 {
                     jm.msg = "时间段格式不正确";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             else
@@ -430,7 +430,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             jm.data = list;
             jm.count = list.TotalCount;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -452,7 +452,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (entity.id <= 0)
             {
                 jm.msg = "请选择合法的时间段";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             DateTime dt = DateTime.Now;  //当前时间  
@@ -529,7 +529,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 start,
                 end
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion

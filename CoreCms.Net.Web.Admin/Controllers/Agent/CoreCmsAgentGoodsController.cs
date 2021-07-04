@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsAgentGoodsController : ControllerBase
+    public class CoreCmsAgentGoodsController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsAgentGoodsServices _agentGoodsServices;
@@ -174,7 +174,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -190,7 +190,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -215,7 +215,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 agentGrade
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -234,7 +234,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm = await _agentGoodsServices.InsertAsync(entity.good, entity.products);
             jm.data = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -255,7 +255,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
 
@@ -285,7 +285,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 allNew
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -301,7 +301,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] FMCreateAgentGood entity)
         {
             var jm = await _agentGoodsServices.UpdateAsync(entity.good, entity.products);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -318,7 +318,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = await _agentGoodsServices.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -339,7 +339,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
 
@@ -357,7 +357,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 products
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.isEnable = (bool)entity.data;
 
@@ -386,7 +386,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

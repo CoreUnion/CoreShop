@@ -36,7 +36,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsPinTuanRecordController : ControllerBase
+    public class CoreCmsPinTuanRecordController : Controller
     {
         private readonly ICoreCmsPinTuanRecordServices _coreCmsPinTuanRecordServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 status
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsBillPaymentsController : ControllerBase
+    public class CoreCmsBillPaymentsController : Controller
     {
         private readonly ICoreCmsBillPaymentsRelServices _billPaymentsRelServices;
         private readonly ICoreCmsBillPaymentsServices _coreCmsBillPaymentsServices;
@@ -206,7 +206,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -238,7 +238,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 paymentCode
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -261,7 +261,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var paymentsStatus =
@@ -283,7 +283,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -359,7 +359,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -480,7 +480,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

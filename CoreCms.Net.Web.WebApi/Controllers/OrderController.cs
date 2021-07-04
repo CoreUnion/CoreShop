@@ -33,7 +33,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : Controller
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsOrderServices _orderServices;
@@ -87,7 +87,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetTaxCode([FromBody] GetTaxCodePost entity)
         {
             var jm = await _orderServices.GetTaxCode(entity.name);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -149,7 +149,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 entity.taxCode, entity.teamId, entity.groupId);
             jm.otherData = entity;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -172,7 +172,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 {
                     jm.status = false;
                     jm.msg = "你不是店员";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 }
             }
             jm = await _orderServices.GetOrderInfoByOrderId(entity.id, userId);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -201,7 +201,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             var ids = CommonHelper.StringToIntArray(entity.ids);
             jm = await _orderServices.GetOrderStatusNum(_user.ID, ids, entity.isAfterSale);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -217,7 +217,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetOrderList([FromBody] GetOrderListPost entity)
         {
             var jm = await _orderServices.GetOrderList(entity.status, _user.ID, entity.page, entity.limit);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -237,11 +237,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交要取消的订单号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var ids = entity.id.Split(",");
             jm = await _orderServices.CancelOrder(ids, _user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -261,12 +261,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交要取消的订单号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var ids = entity.id.Split(",");
             jm.status = await _orderServices.DeleteAsync(p => ids.Contains(p.orderId) && p.userId == _user.ID);
             jm.msg = jm.status ? "删除成功" : "删除失败";
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -285,10 +285,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交要确认签收的订单号";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _orderServices.ConfirmOrder(entity.id, Convert.ToInt32(entity.data));
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -310,17 +310,17 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.msg = GlobalErrorCodeVars.Code13100;
                 jm.code = 13100;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (entity.type == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code10051;
                 jm.code = 10051;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _aftersalesServices.ToAdd(_user.ID, entity.orderId, entity.type, entity.items, entity.images,
                 entity.reason, entity.refund);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -357,7 +357,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 hasNextPage = data.HasNextPage
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -405,7 +405,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 info,
                 reship
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -426,17 +426,17 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.reshipId))
             {
                 jm.data = jm.msg = GlobalErrorCodeVars.Code13212;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             else if (string.IsNullOrEmpty(entity.logiCode))
             {
                 jm.data = jm.msg = GlobalErrorCodeVars.Code13213;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             else if (string.IsNullOrEmpty(entity.logiNo))
             {
                 jm.data = jm.msg = GlobalErrorCodeVars.Code13214;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
 
@@ -444,7 +444,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (model == null)
             {
                 jm.data = jm.msg = GlobalErrorCodeVars.Code13211;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var up = await _reshipServices.UpdateAsync(
@@ -458,7 +458,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.msg = "数据保存成功";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -484,7 +484,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.data = ship;
                 jm.msg = "获取成功";
             }
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -505,17 +505,17 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.code) || string.IsNullOrEmpty(entity.no))
             {
                 jm.msg = GlobalErrorCodeVars.Code13225;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.code == "benditongcheng")
             {
                 jm.msg = "本地同城配送不支持轨迹查询";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _logisticsServices.ExpressPoll(entity.code, entity.no, entity.mobile);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

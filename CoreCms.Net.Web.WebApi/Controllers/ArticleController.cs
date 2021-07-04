@@ -30,7 +30,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ArticleController : ControllerBase
+    public class ArticleController : Controller
     {
 
         private IHttpContextUser _user;
@@ -67,7 +67,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -102,7 +102,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 count = list.TotalCount
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

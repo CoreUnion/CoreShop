@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class WeChatAppletsMessageController : ControllerBase
+    public class WeChatAppletsMessageController : Controller
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsUserWeChatMsgTemplateServices _userWeChatMsgTemplateServices;
@@ -57,7 +57,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> IsTip()
         {
             var jm = await _userWeChatMsgSubscriptionSwitchServices.IsTip(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -71,7 +71,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> CloseTip()
         {
             var jm = await _userWeChatMsgSubscriptionSwitchServices.CloseTip(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -87,7 +87,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = await _userWeChatMsgSubscriptionServices.tmpl(_user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -102,7 +102,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> SetTip([FromBody] SetWeChatAppletsMessageTip entity)
         {
             var jm = await _userWeChatMsgSubscriptionServices.SetTip(_user.ID, entity.templateId, entity.status);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

@@ -27,7 +27,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CouponController : ControllerBase
+    public class CouponController : Controller
     {
 
         private readonly IHttpContextUser _user;
@@ -78,7 +78,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     list.TotalPages
                 };
             }
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -99,7 +99,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.status = false;
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var promotionModel = await _promotionServices.QueryByClauseAsync(p => p.id == entity.id);
@@ -109,7 +109,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.data = promotionModel;
                 jm.msg = "获取成功";
             }
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -124,7 +124,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> UserCoupon([FromBody] FMCouponForUserCouponPost entity)
         {
             var jm = await _couponServices.GetMyCoupon(_user.ID, 0, entity.display, entity.page, entity.limit);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -142,20 +142,20 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //判断优惠券是否可以领取?
             var promotionModel = await _promotionServices.ReceiveCoupon(entity.id);
             if (promotionModel.status == false)
             {
-                return new JsonResult(promotionModel);
+                return Json(promotionModel);
             }
 
             var promotion = (CoreCmsPromotion)promotionModel.data;
             if (promotion == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code15019;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (promotion.maxNums > 0)
@@ -165,12 +165,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (couponResult.status && couponResult.code >= promotion.maxNums)
                 {
                     jm.msg = GlobalErrorCodeVars.Code15018;
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             jm = await _couponServices.AddData(_user.ID, entity.id, promotion);
             jm.otherData = promotionModel;
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -188,21 +188,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.key))
             {
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var coupon = await _couponServices.QueryByClauseAsync(p => p.couponCode == entity.key);
             if (coupon == null || coupon.promotionId <= 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15009;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //判断优惠券是否可以领取?
             var promotionModel = await _promotionServices.ReceiveCoupon(coupon.promotionId);
             if (promotionModel.status == false)
             {
-                return new JsonResult(promotionModel);
+                return Json(promotionModel);
             }
             //判断用户是否已领取?
             if (promotionModel.data is CoreCmsPromotion { maxNums: > 0 } info)
@@ -212,13 +212,13 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (couponResult.status && couponResult.code > info.maxNums)
                 {
                     jm.msg = GlobalErrorCodeVars.Code15018;
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             //
             jm = await _couponServices.ReceiveCoupon(_user.ID, entity.key);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 

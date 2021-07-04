@@ -48,7 +48,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         //public static readonly string Token = Config.SenparcWeixinSetting.WxOpenToken;//与微信小程序后台的Token设置保持一致，区分大小写。
         //public static readonly string EncodingAesKey = Config.SenparcWeixinSetting.WxOpenEncodingAESKey;//与微信小程序后台的EncodingAESKey设置保持一致，区分大小写。
@@ -213,7 +213,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                             log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
                             await _userLogServices.InsertAsync(log);
 
-                            return new JsonResult(jm);
+                            return Json(jm);
                         }
                     }
 
@@ -232,7 +232,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -327,7 +327,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                             await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { mobile = user.mobile }, p => p.id == userInfo.id);
                         }
 
-                        return new JsonResult(jm);
+                        return Json(jm);
                     }
                 }
             }
@@ -336,7 +336,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 token,
                 sessionAuthId = userWxId
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -353,7 +353,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (!CommonHelper.IsMobile(entity.mobile))
             {
                 jm.msg = "请输入合法的手机号码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (entity.code == "login")
             {
@@ -361,11 +361,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (shave)
                 {
                     jm.msg = "手机号码已被绑定,请更换";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             jm = await _smsServices.DoSendSms(entity.code, entity.mobile);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -379,7 +379,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> SmsLogin([FromBody] FMWxAccountCreate entity)
         {
             var jm = await _userServices.SmsLogin(entity, 2, entity.platform);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -408,7 +408,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.status = false;
                 jm.code = 500;
                 NLogUtil.WriteAll(LogLevel.Error, LogType.Web, "小程序接口", "微信小程序授权拉取手机号码", ex);
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var data = new FMWxAccountCreate
@@ -420,7 +420,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             jm = await _userServices.SmsLogin(data, (int)GlobalEnumVars.LoginType.WeChatPhoneNumber, 1);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -441,14 +441,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (!CommonHelper.IsMobile(entity.mobile))
             {
                 jm.msg = "请输入合法的手机号码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var user = await _userServices.QueryByClauseAsync(p => p.mobile == entity.mobile);
             if (user != null)
             {
                 jm.msg = "此号码已经绑定,请更换";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var wxUserInfo = new CoreCmsUserWeChatInfo();
             //1就是h5登陆（h5端和微信公众号端），2就是微信小程序登陆，3是支付宝小程序，4是app，5是pc
@@ -458,7 +458,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (sessionBag == null)
                 {
                     jm.msg = "用户未正确登陆";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
                 wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == sessionBag.OpenId);
             }
@@ -466,19 +466,19 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (sms == null)
             {
                 jm.msg = "验证码核验失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (sms.isUsed)
             {
                 jm.msg = "验证码已被使用";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var dt = DateTime.Now;
             var endDt = sms.createTime.AddMinutes(10);
             if (dt > endDt)
             {
                 jm.msg = "验证码已过期，请重新获取";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             user = new CoreCmsUser();
             user.mobile = entity.mobile;
@@ -535,7 +535,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "注册失败";
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -551,7 +551,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = await _areaServices.GetAreaId(entity.provinceName, entity.cityName, entity.countyName, entity.postalCode);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -572,7 +572,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 }
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -589,7 +589,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var allConfigs = await _settingServices.GetConfigDictionaries();
             jm.data = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.PointSwitch).ObjectToInt(2); ;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -640,7 +640,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm = await _shareServices.PosterShare(entity.client, entity.page, userShareCode, entity.url, entity.@params);
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -662,7 +662,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             jm = _shareServices.de_url(entity.code);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -719,7 +719,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             jm.status = true;
             jm.data = user;
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -740,7 +740,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.status = false;
                 jm.msg = "用户信息获取失败";
                 jm.code = 14007;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             //获取用户等级
             var userGrade = await _userGradeServices.QueryByClauseAsync(p => p.id == user.grade);
@@ -777,7 +777,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 footPrintCount,
                 collectionCount
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -797,7 +797,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = jm.status ? GlobalConstVars.GetDataSuccess : GlobalConstVars.GetDataFailure;
             jm.data = count;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -819,7 +819,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (goods == null)
                 {
                     jm.msg = GlobalErrorCodeVars.Code17001;
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
 
                 collection = new CoreCmsGoodsCollection()
@@ -839,7 +839,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             jm.status = true;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
 
@@ -870,7 +870,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -899,7 +899,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "该地址不存在";
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -919,7 +919,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -949,7 +949,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1007,7 +1007,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "地址保存成功";
             }
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1036,7 +1036,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1063,7 +1063,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     await _userShipServices.UpdateAsync(p => new CoreCmsUserShip() { isDefault = true }, p => p.userId == _user.ID);
                 }
             }
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1098,7 +1098,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm = await _billPaymentsServices.Pay(entity.ids, entity.payment_code, _user.ID, entity.payment_type,
                 entity.@params);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1127,7 +1127,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             jm = await _goodsCommentServices.AddComment(entity.orderId, entity.items, _user.ID);
             jm.otherData = entity;
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1142,7 +1142,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetMyBankcardsList()
         {
             var jm = await _userBankCardServices.GetMyBankcardsList(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1160,7 +1160,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             entity.userId = _user.ID;
             jm = await _userBankCardServices.AddBankCards(entity);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1180,11 +1180,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code10051;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _userBankCardServices.SetDefault(_user.ID, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1204,11 +1204,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code10051;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm = await _userBankCardServices.GetBankcardInfo(_user.ID, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1224,7 +1224,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> GetDefaultBankCard()
         {
             var jm = await _userBankCardServices.GetDefaultBankCard(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1240,7 +1240,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> Removebankcard([FromBody] FMIntId entity)
         {
             var jm = await _userBankCardServices.Removebankcard(entity.id, _user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1255,7 +1255,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public JsonResult GetBankCardsOrganization([FromBody] FMStringId entity)
         {
             var jm = _userBankCardServices.BankCardsOrganization(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1273,7 +1273,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             var money = entity.data.ObjectToDecimal(0);
             jm = await _userTocashServices.Tocash(_user.ID, money, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1290,7 +1290,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var jm = new WebApiCallBack();
 
             jm = await _userTocashServices.UserToCashList(_user.ID, entity.page, entity.limit, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1356,7 +1356,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 data.TotalPages,
                 sunMoney
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1403,7 +1403,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 data.TotalCount,
                 data.TotalPages
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1438,7 +1438,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 data.TotalCount,
                 data.TotalPages
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1464,7 +1464,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 count = data.TotalCount,
 
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1482,7 +1482,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var jm = new WebApiCallBack();
 
             jm = await _goodsCollectionServices.ToAdd(_user.ID, entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1508,7 +1508,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 count = data.TotalCount,
 
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1531,7 +1531,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (goods == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var goodsBrowsing = new CoreCmsGoodsBrowsing
             {
@@ -1544,7 +1544,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = await _goodsBrowsingServices.InsertAsync(goodsBrowsing) > 0;
             jm.msg = jm.status ? GlobalConstVars.InsertSuccess : GlobalConstVars.InsertFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
 
@@ -1564,7 +1564,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = await _goodsBrowsingServices.DeleteAsync(p => p.userId == _user.ID && p.goodsId == entity.id);
             jm.msg = jm.status ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1582,7 +1582,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.data = GlobalErrorCodeVars.Code11003;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var up = await _userServices.UpdateAsync(p => new CoreCmsUser() { avatarImage = entity.id },
@@ -1592,7 +1592,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = jm.status ? "设置头像成功" : "设置头像失败";
             jm.data = entity.id;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1610,19 +1610,19 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.birthday == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code11027;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (string.IsNullOrEmpty(entity.nickname))
             {
                 jm.msg = GlobalErrorCodeVars.Code11028;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.sex <= 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code11029;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var up = await _userServices.UpdateAsync(p => new CoreCmsUser() { birthday = entity.birthday, nickName = entity.nickname, sex = entity.sex },
@@ -1631,7 +1631,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = up;
             jm.msg = jm.status ? "资料保存成功" : "资料保存失败";
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
 
@@ -1651,21 +1651,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.repwd))
             {
                 jm.msg = GlobalErrorCodeVars.Code11014;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.newpwd))
             {
                 jm.msg = GlobalErrorCodeVars.Code11013;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (entity.repwd != entity.newpwd)
             {
                 jm.msg = GlobalErrorCodeVars.Code11025;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _userServices.ChangePassword(_user.ID, entity.newpwd, entity.pwd);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1699,7 +1699,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 money,
                 isSuperior
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1718,12 +1718,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (entity.id == 0)
             {
                 jm.msg = "请输入推荐人邀请码！";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var code = UserHelper.GetUserIdByShareCode(entity.id);
             jm = await _userServices.SetMyInvite(code, _user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1743,7 +1743,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var first = await _userServices.QueryChildCountAsync(_user.ID, 1);
             var second = await _userServices.QueryChildCountAsync(_user.ID, 2);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1779,7 +1779,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthSecond
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -1817,7 +1817,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 data.TotalPages
             };
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -1836,7 +1836,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = UserHelper.GetShareCodeByUserId(_user.ID);
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -1851,7 +1851,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> IsSign()
         {
             var jm = await _userPointLogServices.IsSign(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1865,7 +1865,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> Sign()
         {
             var jm = await _userPointLogServices.Sign(_user.ID);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1882,31 +1882,31 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (string.IsNullOrEmpty(entity.mobile))
             {
                 jm.msg = GlobalErrorCodeVars.Code10051;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.code))
             {
                 jm.msg = GlobalErrorCodeVars.Code10013;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.newpwd))
             {
                 jm.msg = GlobalErrorCodeVars.Code11013;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(entity.repwd))
             {
                 jm.msg = GlobalErrorCodeVars.Code11014;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (entity.newpwd != entity.repwd)
             {
                 jm.msg = GlobalErrorCodeVars.Code11025;
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm = await _userServices.ForgetPassword(entity.mobile, entity.code, entity.newpwd);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -1945,7 +1945,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 list = orders,
                 count = orders.TotalCount,
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -1967,7 +1967,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (order == null)
             {
                 jm.msg = "订单信息获取失败";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             var model = await _servicesServices.QueryByClauseAsync(p => p.id == order.servicesId);
             if (model != null)
@@ -2015,7 +2015,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 list = orders,
                 count = orders.TotalCount,
             };
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 

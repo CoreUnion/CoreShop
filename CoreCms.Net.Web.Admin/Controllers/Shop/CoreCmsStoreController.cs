@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class CoreCmsStoreController : ControllerBase
+    public class CoreCmsStoreController : Controller
     {
         private readonly ICoreCmsClerkServices _coreCmsClerkServices;
         private readonly ICoreCmsStoreServices _coreCmsStoreServices;
@@ -203,7 +203,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -261,7 +261,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             entity.createTime = DateTime.Now;
             jm = await _coreCmsStoreServices.InsertAsync(entity);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -284,13 +284,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -312,7 +312,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             entity.updateTime = DateTime.Now;
             jm = await _coreCmsStoreServices.UpdateAsync(entity);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -335,7 +335,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsStoreServices.DeleteByIdAsync(entity.id);
@@ -346,7 +346,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -370,7 +370,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             oldModel.isDefault = entity.data;
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm = await _coreCmsStoreServices.UpdateAsync(oldModel);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -498,7 +498,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -516,7 +516,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -534,7 +534,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -556,20 +556,20 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.phone))
             {
                 jm.msg = "请输入合法的手机号码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.storeId == 0)
             {
                 jm.msg = "请选择要添加的门店";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var haveStore = await _coreCmsStoreServices.ExistsAsync(p => p.id == entity.storeId);
             if (!haveStore)
             {
                 jm.msg = "门店信息不存在";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //判断是否存在当前的门店内
@@ -577,7 +577,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (user == null)
             {
                 jm.msg = "不存在此手机注册用户";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var haveClerk =
@@ -585,7 +585,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (haveClerk)
             {
                 jm.msg = "用户已经是当前门店店员";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var model = new CoreCmsClerk
@@ -601,7 +601,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -624,13 +624,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -653,26 +653,26 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (string.IsNullOrEmpty(entity.phone))
             {
                 jm.msg = "请输入合法的手机号码";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (entity.storeId == 0)
             {
                 jm.msg = "请选择要编辑的门店";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var haveStore = await _coreCmsStoreServices.ExistsAsync(p => p.id == entity.storeId);
             if (!haveStore)
             {
                 jm.msg = "门店信息不存在";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //判断是否存在当前的门店内
@@ -680,7 +680,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (user == null)
             {
                 jm.msg = "不存在此手机注册用户";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var haveClerk =
@@ -688,7 +688,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (haveClerk)
             {
                 jm.msg = "用户已经是当前门店店员";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //事物处理过程开始
@@ -700,7 +700,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -723,13 +723,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             var bl = await _coreCmsClerkServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 
@@ -754,7 +754,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

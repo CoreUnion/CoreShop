@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class SysMenuController : ControllerBase
+    public class SysMenuController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ISysMenuServices _sysMenuServices;
@@ -99,7 +99,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.Count;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -115,7 +115,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -132,7 +132,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -152,7 +152,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             entity.createTime = DateTime.Now; ;
             jm = await _sysMenuServices.InsertAsync(entity);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -173,12 +173,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -194,7 +194,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody] SysMenu entity)
         {
             var jm = await _sysMenuServices.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var jm = new AdminUiCallBack();
 
             jm = await _sysMenuServices.DeleteByIdAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion
@@ -233,7 +233,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (entity.data.Count <= 0)
             {
                 jm.msg = "请选择要导入的按钮";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             //清空旗下按钮
@@ -265,7 +265,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 await _sysMenuServices.UpdateCaChe();
             }
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
         #endregion

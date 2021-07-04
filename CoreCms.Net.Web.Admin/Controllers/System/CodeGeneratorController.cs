@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize]
-    public class CodeGeneratorController : ControllerBase
+    public class CodeGeneratorController : Controller
     {
         private readonly ICodeGeneratorServices _codeGeneratorServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 data = _mapper
                     .Map<List<SqlSugar.DbTableInfo>, List<CoreCms.Net.Model.ViewModels.Basics.DbTableInfoTree>>(tables)
             };
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         /// <summary>
@@ -90,12 +90,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(tableName))
             {
                 jm.msg = "请选择数据库";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             if (string.IsNullOrEmpty(fileType))
             {
                 jm.msg = "请选择要导出的文件类型";
-                return new JsonResult(jm);
+                return Json(jm);
             }
 
             if (tableName == "AllTable")
@@ -108,7 +108,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else
                 {
                     jm.msg = tableName + "获取数据库字段失败";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
             else
@@ -121,7 +121,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else
                 {
                     jm.msg = tableName + "获取数据库字段失败";
-                    return new JsonResult(jm);
+                    return Json(jm);
                 }
             }
 
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 jm.msg = GlobalConstVars.ExcelExportSuccess;
                 jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion

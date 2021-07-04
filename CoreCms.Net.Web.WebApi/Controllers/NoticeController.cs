@@ -30,7 +30,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class NoticeController : ControllerBase
+    public class NoticeController : Controller
     {
         private IHttpContextUser _user;
         private ICoreCmsNoticeServices _noticeServices;
@@ -62,7 +62,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return new JsonResult(jm);
+            return Json(jm);
 
         }
 

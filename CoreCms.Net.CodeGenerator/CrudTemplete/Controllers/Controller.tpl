@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize]
-    public class {{ModelClassName}}Controller : ControllerBase
+    public class {{ModelClassName}}Controller : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly I{{ModelClassName}}Services _{{ModelClassName}}Services;
@@ -143,7 +143,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -159,7 +159,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -175,7 +175,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -191,7 +191,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody]{{ModelClassName}} entity)
         {
             var jm = await _{{ModelClassName}}Services.InsertAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -212,12 +212,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -233,7 +233,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoEdit([FromBody]{{ModelClassName}} entity)
         {
             var jm = await _{{ModelClassName}}Services.UpdateAsync(entity);
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -254,11 +254,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!model)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-				return new JsonResult(jm);
+				return Json(jm);
             }
             jm = await _{{ModelClassName}}Services.DeleteByIdAsync(entity.id);
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -274,7 +274,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoBatchDelete([FromBody]FMArrayIntIds entity)
         {
             var jm = await _{{ModelClassName}}Services.DeleteByIdsAsync(entity.id);
-            return new JsonResult(jm);
+            return Json(jm);
         }
 
         #endregion
@@ -296,12 +296,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             jm.code = 0;
             jm.data = model;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -364,7 +364,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -468,7 +468,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return new JsonResult(jm);
+            return Json(jm);
         }
         #endregion
 
@@ -490,7 +490,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return new JsonResult(jm);
+                return Json(jm);
             }
             oldModel.{{field.DbColumnName}} = (bool)entity.data;
 
@@ -498,7 +498,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return new JsonResult(jm);
+            return Json(jm);
 		}
         #endregion
         {% endif %}{% endfor %}
