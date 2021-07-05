@@ -28,8 +28,10 @@ namespace CoreCms.Net.Repository
     /// </summary>
     public class {{ModelClassName}}Repository : BaseRepository<{{ModelClassName}}>, I{{ModelClassName}}Repository
     {
+        private readonly IUnitOfWork _unitOfWork;
         public {{ModelClassName}}Repository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+            _unitOfWork = unitOfWork;
         }
 
        #region 实现重写增删改查操作==========================================================
