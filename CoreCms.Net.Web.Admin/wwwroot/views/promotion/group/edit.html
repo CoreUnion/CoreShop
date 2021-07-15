@@ -356,13 +356,15 @@
                                     form.on('submit(LAY-app-CoreCmsGoods-getData)',
                                         function (data) {
                                             console.log(ids);
-                                            if (!!!ids) {
+                                            if (!!!ids.id) {
                                                 layer.msg("请先选择商品");
                                                 return;
                                             }
-                                            $("#goods_list").empty();
-                                            $("#goods_list").append('<li><span id="' + ids.id + '"  lay-active="goodsDelete">×</span>' + ids.name + '</li>');
-                                            $("#goods").val(ids.id);
+                                            if (ids.id) {
+                                                $("#goods_list").empty();
+                                                $("#goods_list").append('<li><span id="' + ids.id + '"  lay-active="goodsDelete">×</span>' + ids.name + '</li>');
+                                                $("#goods").val(ids.id);
+                                            }
                                             layer.close(index);
                                         });
                                 });

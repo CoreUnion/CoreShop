@@ -19,7 +19,7 @@
     }
     .goods-info-view-box { position: relative; padding: 27.27rpx 18.18rpx;
         .cu-avatar { position: absolute; height: 163.63rpx; width: 163.63rpx; left: 18.18rpx; }
-        .goods-info-view { position: relative; padding-left: 181.81rpx; height: 163.63rpx; line-height: 1.4;
+        .goods-info-view { position: relative; padding-left: 181.81rpx; min-height: 163.63rpx; line-height: 1.4;
             .coreshop-tag-view { position: relative; }
             .goods-price-view { position: relative; line-height: 1.7; top: 9.09rpx;
                 .goods-num { width: 50rpx; position: absolute; right: 5rpx; top: 5rpx; }

@@ -21,7 +21,7 @@
         <div class="layui-input-block">
         {% if field.Length >0 %}<input name="{{field.DbColumnName}}"   lay-verType="tips" lay-verify="required|verify{{field.DbColumnName}}" class="layui-input"  lay-reqText="请输入{{field.ColumnDescription}}" placeholder="请输入{{field.ColumnDescription}}"/>{% else %}<input name="{{field.DbColumnName}}"   lay-verType="tips" lay-verify="required" class="layui-input"  lay-reqText="请输入{{field.ColumnDescription}}" placeholder="请输入{{field.ColumnDescription}}" />{% endif %}
         </div>
-    </div>{% elsif  field.DataType == 'int' %}
+    </div>{% elsif  field.DataType == 'int' or field.DataType == 'bigint' %}
 	<div class="layui-form-item">
         <label for="{{field.DbColumnName}}" class="layui-form-label  layui-form-required">{{field.ColumnDescription}}</label>
         <div class="layui-input-block">

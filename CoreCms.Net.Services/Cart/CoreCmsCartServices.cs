@@ -559,7 +559,7 @@ namespace CoreCms.Net.Services
                     //算订单总价格
                     cartDto.amount = Math.Round(cartDto.amount + item.products.amount, 2);
                     //计算总重量
-                    cartDto.weight = Math.Round(cartDto.weight + Math.Round(item.weight + item.nums, 2), 2);
+                    cartDto.weight = Math.Round(cartDto.weight + Math.Round(item.weight * item.nums, 2), 2);
                 }
             }
 

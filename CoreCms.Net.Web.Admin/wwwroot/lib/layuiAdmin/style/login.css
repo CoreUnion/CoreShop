@@ -1010,9 +1010,6 @@ form > .row > .col-sm-12.mb-2 > .form-group { position: relative }
 div#agreement > h3, div#privacy > h3 { font-size: 20px }
 div#agreement > p, div#privacy > p { font-size: 14px }
 a.social-login-link { cursor: pointer }
-.fa-baidu { overflow: hidden; position: relative; height: 32px; width: 32px; margin-top: 9px }
-.fa-baidu-del { background: url(/static/images/common/baidu.png) no-repeat; height: 100%; width: 100%; display: inline-block; filter: drop-shadow(32px 0 #009688); position: relative; left: -32px }
-.fa-baidu:hover > .fa-baidu-del { background: url(/static/images/common/baidu.png) no-repeat; height: 100%; width: 100%; display: inline-block; opacity: .8; filter: alpha(opacity=80); color: #fff; position: relative; left: -32px }
 
 
 .layui-form-checked[lay-skin=primary] i { border-color: #009688 !important; background-color: #009688; color: #fff; }

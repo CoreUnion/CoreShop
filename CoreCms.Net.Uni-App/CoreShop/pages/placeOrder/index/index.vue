@@ -98,7 +98,7 @@
                             <view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ item.products.images+'?x-oss-process=image/resize,m_lfit,h_200,w_200' +')'}]" />
                             <view class="goods-info-view">
                                 <view class="text-black u-line-2">{{ item.products.name || ''}}</view>
-                                <view class="text-sm text-gray" v-if="item.products.spes_desc !== null">{{ item.products.spes_desc || ''}}</view>
+                                <view class="text-sm text-gray" v-if="item.products.spesDesc !== null">{{ item.products.spesDesc || ''}}</view>
                                 <view class="coreshop-tag-view" v-if="item.products.promotionList">
                                     <text class="cu-tag line-blue sm radius" v-for="(v, k) in item.products.promotionList" :key="k"> {{ v.name || ''}}</text>
                                 </view>
@@ -338,6 +338,9 @@
             this.getUserCounpons()
             //获取默认门店信息
             this.getDefaultStore();
+
+            console.log("当前scene值:" + this.$store.state.scene);
+
         },
         onShow() {
             // #ifdef MP-ALIPAY || MP-TOUTIAO
@@ -599,7 +602,8 @@
                     receiptType: this.receiptType,
                     teamId: this.teamId,
                     groupId: this.groupId,
-                    orderType: this.params.orderType //订单类型
+                    orderType: this.params.orderType, //订单类型
+                    scene: this.$store.state.scene //场景值（用于确定小程序是否来源直播和视频号）
                 }
 
                 let delivery = {}
@@ -639,8 +643,6 @@
                         ladingMobile: this.storePick.mobile
                     }
                 }
-
-
 
                 // 发票信息
                 data['taxType'] = this.invoice.type

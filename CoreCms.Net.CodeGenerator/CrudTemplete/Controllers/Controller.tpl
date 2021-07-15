@@ -19,7 +19,7 @@ using CoreCms.Net.Configuration;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
-using CoreCms.Net.Model.ViewModels.UI;
+using CoreCms.Net.Model.ViewModel.UI;
 using CoreCms.Net.Filter;
 using CoreCms.Net.Loging;
 using CoreCms.Net.IServices;
@@ -95,7 +95,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!string.IsNullOrEmpty({{field.DbColumnName}}))
             {
                 where = where.And(p => p.{{field.DbColumnName}}.Contains({{field.DbColumnName}}));
-            }{% elsif  field.DataType == 'int' %}
+            }{% elsif  field.DataType == 'int'  or field.DataType == 'bigint'  %}
 			//{{field.ColumnDescription}} {{field.DataType}}
 			var {{field.DbColumnName}} = Request.Form["{{field.DbColumnName}}"].FirstOrDefault().ObjectToInt(0);
             if ({{field.DbColumnName}} > 0)
@@ -388,7 +388,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (!string.IsNullOrEmpty({{field.DbColumnName}}))
             {
                 where = where.And(p => p.{{field.DbColumnName}}.Contains({{field.DbColumnName}}));
-            }{% elsif  field.DataType == 'int' %}
+            }{% elsif  field.DataType == 'int' or field.DataType == 'bigint'  %}
 			//{{field.ColumnDescription}} {{field.DataType}}
 			var {{field.DbColumnName}} = Request.Form["{{field.DbColumnName}}"].FirstOrDefault().ObjectToInt(0);
             if ({{field.DbColumnName}} > 0)

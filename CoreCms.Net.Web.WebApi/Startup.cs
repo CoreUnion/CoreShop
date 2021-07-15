@@ -152,7 +152,7 @@ namespace CoreCms.Net.Web.WebApi
                     p.SerializerSettings.DateFormatString = "yyyy/MM/dd HH:mm:ss";
                 });
 
-           
+
 
         }
 
@@ -291,7 +291,8 @@ namespace CoreCms.Net.Web.WebApi
 
                     #endregion
                 });
-
+            // 必须要注册，不然盛派的组件有bug，在不注册微信公众号只注册微信小程序的时候，进行小程序消息操作，默认还是走的是微信公众号的相关方法。导致提示MP appid未注册的bug
+            Senparc.Weixin.MP.Containers.AccessTokenContainer.RegisterAsync(senparcWeixinSetting.Value.WxOpenAppId, senparcWeixinSetting.Value.WxOpenAppSecret, "小程序");
             #endregion
 
 
