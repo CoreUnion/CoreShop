@@ -46,6 +46,10 @@ namespace CoreCms.Net.Model.Entities
         public System.Int32 {{field.DbColumnName}}  { get; set; }
         {% elsif  field.DataType == 'int' and field.IsNullable == true %}
         public System.Int32? {{field.DbColumnName}}  { get; set; }
+        {% elsif  field.DataType == 'bigint' and field.IsNullable == false  %}
+        public System.Int64 {{field.DbColumnName}}  { get; set; }
+        {% elsif  field.DataType == 'bigint' and field.IsNullable == true %}
+        public System.Int64? {{field.DbColumnName}}  { get; set; }
         {% elsif  field.DataType == 'float' and field.IsNullable == false  %}
         public float {{field.DbColumnName}}  { get; set; }
         {% elsif  field.DataType == 'float' and field.IsNullable == true %}

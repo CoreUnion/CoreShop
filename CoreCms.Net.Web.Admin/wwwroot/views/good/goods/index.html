@@ -31,10 +31,10 @@
                             <option value="del">删除</option>
                         </select>
                     </div>
-                </div>
+                </div>     
             </div>
             <div class="layui-inline" style="float: right;">
-                <div class="layui-inline">
+                <div class="layui-inline">  
                     <div class="layui-input-inline">
                         <input type="text" name="name" id="name" placeholder="请输入商品名称" class="layui-input">
                     </div>
@@ -470,7 +470,6 @@
                                         form.on('submit(LAY-app-CoreCmsGoods-batchModifyPrice-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
-                                                field.ids = e.data.entity.id;
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //return false;
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
@@ -507,7 +506,7 @@
                                         form.on('submit(LAY-app-CoreCmsGoods-batchModifyStock-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
-                                                field.ids = e.data.entity.id;
+                                                field.ids = field.ids.split(',');
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //return false;
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
