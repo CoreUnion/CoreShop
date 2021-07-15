@@ -212,7 +212,8 @@ namespace CoreCms.Net.Services.Mediator
             {
                 return await _userWeChatMsgTemplateServices.QueryByClauseAsync(p => p.templateId == info.templateId);
             }
-            return null;
+            return await _userWeChatMsgTemplateServices.QueryByClauseAsync(p => p.templateTitle == info.templateId);
+            //return null;
         }
 
         #endregion
