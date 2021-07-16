@@ -243,7 +243,7 @@
                 });
 
                 var headers = {};
-                headers[setter.request.tokenName] = layui.data(setter.tableName)[setter.request.tokenName];
+                headers[layui.setter.request.tokenName] = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
                 //选择地区
                 $(".layui-table").on('click', '.selectArea', function (e) {
                     var tdObj = $(this);
