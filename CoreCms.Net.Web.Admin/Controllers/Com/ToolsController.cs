@@ -295,6 +295,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
+            if (entity.trueName.Length > 4)
+            {
+                jm.msg = "用户真实姓名不能大于4个字符。";
+                return Json(jm);
+            }
+
+
+
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
 
             if (!string.IsNullOrEmpty(entity.nickName)) userModel.nickName = entity.nickName;
@@ -1250,7 +1258,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetArea()
+        public async Task<JsonResult> GetArea()
         {
             var jm = new WebApiCallBack();
 
@@ -1260,7 +1268,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             var ids = new List<PostAreasTreeNode>();
             if (!string.IsNullOrEmpty(idsStr)) ids = JsonConvert.DeserializeObject<List<PostAreasTreeNode>>(idsStr);
-            var areaTrees = _areaServices.GetTreeArea(ids, nodeId, ischecked);
+            var areaTrees =await _areaServices.GetTreeArea(ids, nodeId, ischecked);
 
             jm.status = true;
             jm.data = areaTrees;
