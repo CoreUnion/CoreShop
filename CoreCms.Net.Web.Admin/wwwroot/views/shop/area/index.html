@@ -20,7 +20,7 @@
     td .leader-flag { background: #52c41a; color: #fff; font-size: 12px; line-height: 18px; position: absolute; padding: 0 15px; right: -15px; top: 2px; -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-transform-origin: center; transform-origin: center; }
 </style>
 <!-- 正文开始 -->
-<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsArea/GetIndex" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsArea/GetIndex" lay-done="layui.data.done(d);">
 
     <div class="layui-fluid" style="padding-bottom: 0;">
         <div class="layui-row layui-col-space15">

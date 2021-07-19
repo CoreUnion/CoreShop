@@ -13,7 +13,7 @@
     #dictTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click { background-color: #fff3e0; }
         #dictTable + .layui-table-view .layui-table-body tbody > tr.layui-table-click td:last-child > div:before { position: absolute; right: 6px; content: "\e602"; font-size: 12px; font-style: normal; font-family: layui-icon !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 </style>
-<script type="text/html" template lay-type="Post" lay-url="Api/SysDictionary/GetIndex" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/SysDictionary/GetIndex" lay-done="layui.data.done(d);">
     <div class="layui-fluid" style="padding-bottom: 0;">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md3">
