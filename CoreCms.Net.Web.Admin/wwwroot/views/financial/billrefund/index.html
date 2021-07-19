@@ -125,7 +125,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsBillRefund-tableBox',
-                    url: 'Api/CoreCmsBillRefund/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsBillRefund/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillRefund-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

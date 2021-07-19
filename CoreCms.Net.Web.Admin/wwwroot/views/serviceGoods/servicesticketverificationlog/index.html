@@ -125,7 +125,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserServicesTicketVerificationLog-tableBox',
-                    url: 'Api/CoreCmsUserServicesTicketVerificationLog/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserServicesTicketVerificationLog/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-CoreCmsUserServicesTicketVerificationLog-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

@@ -99,7 +99,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsStockLog-tableBox',
-                    url: 'Api/CoreCmsStockLog/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsStockLog/GetPageList',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-189',//面包屑142px,搜索框4行172,3行137,2行102,1行67

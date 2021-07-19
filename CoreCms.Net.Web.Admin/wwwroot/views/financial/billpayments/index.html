@@ -108,7 +108,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsBillPayments-tableBox',
-                    url: 'Api/CoreCmsBillPayments/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsBillPayments/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillPayments-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

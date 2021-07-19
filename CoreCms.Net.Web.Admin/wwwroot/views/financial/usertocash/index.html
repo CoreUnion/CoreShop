@@ -94,7 +94,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserTocash-tableBox',
-                    url: 'Api/CoreCmsUserTocash/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserTocash/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUserTocash-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

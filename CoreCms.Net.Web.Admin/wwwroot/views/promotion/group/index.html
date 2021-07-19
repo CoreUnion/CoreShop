@@ -91,7 +91,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPromotion-tableBox',
-                    url: 'Api/CoreCmsPromotion/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsPromotion/GetPageList',
                     method: 'POST',
                     where: { types: 3 },
                     toolbar: '#LAY-app-CoreCmsPromotion-toolbar',

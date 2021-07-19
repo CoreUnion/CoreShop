@@ -116,7 +116,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsBillAftersales-tableBox',
-                    url: 'Api/CoreCmsBillAftersales/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsBillAftersales/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillAftersales-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

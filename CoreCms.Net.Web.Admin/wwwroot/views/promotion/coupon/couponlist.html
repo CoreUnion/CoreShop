@@ -99,7 +99,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsCoupon-tableBox',
-                    url: 'Api/CoreCmsPromotion/GetCouponPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsPromotion/GetCouponPageList',
                     method: 'POST',
                     where: { promotionId: d.params.id },
                     toolbar: '#LAY-app-CoreCmsCoupon-toolbar',

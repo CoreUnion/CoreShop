@@ -103,7 +103,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-SysRole-tableBox',
-                    url: 'Api/SysRole/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/SysRole/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-SysRole-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

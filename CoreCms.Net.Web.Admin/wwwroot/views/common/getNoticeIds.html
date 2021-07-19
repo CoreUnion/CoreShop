@@ -52,7 +52,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsNotice-tableBox',
-                    url: 'Api/Tools/GetNotices',
+                    url: layui.setter.apiUrl + 'Api/Tools/GetNotices',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '380px',//无面包屑127,搜索框189,1行62

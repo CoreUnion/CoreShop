@@ -52,7 +52,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsForm-FormTable-TableBox',
-                    url: 'Api/Tools/GetForms',
+                    url: layui.setter.apiUrl + 'Api/Tools/GetForms',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '380px',//无面包屑127,搜索框189,1行62

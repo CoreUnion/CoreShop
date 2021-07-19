@@ -54,7 +54,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPromotion-tableBox',
-                    url: 'Api/Tools/TagPromotions',
+                    url: layui.setter.apiUrl + 'Api/Tools/TagPromotions',
                     method: 'POST',
                     where: { types: 3 },
                     height: 'full-260',//无面包屑127,搜索框189,1行62

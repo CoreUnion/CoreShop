@@ -91,7 +91,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPinTuanRule-tableBox',
-                    url: 'Api/CoreCmsPinTuanRule/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsPinTuanRule/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsPinTuanRule-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

@@ -164,7 +164,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-SysOrganization-tableBox',
-                    url: 'Api/SysOrganization/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/SysOrganization/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-SysOrganization-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

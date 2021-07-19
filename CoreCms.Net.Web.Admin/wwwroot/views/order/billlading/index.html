@@ -109,7 +109,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsBillLading-tableBox',
-                    url: 'Api/CoreCmsBillLading/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsBillLading/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillLading-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

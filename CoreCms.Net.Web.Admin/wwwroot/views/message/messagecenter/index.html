@@ -50,7 +50,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsMessageCenter-tableBox',
-                    url: 'Api/CoreCmsMessageCenter/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsMessageCenter/GetPageList',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-189',//无面包屑127,搜索框189,1行62

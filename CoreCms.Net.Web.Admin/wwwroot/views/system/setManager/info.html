@@ -189,7 +189,7 @@
                 //普通图片上传
                 var uploadInst = upload.render({
                     elem: '#upBtn'
-                    , url: 'api/Tools/UploadFiles'
+                    , url: layui.setter.apiUrl + 'Api/Tools/UploadFiles'
                     , before: function (obj) {
                         obj.preview(function (index, file, result) {
                             $('#viewImgBox').attr('src', result);

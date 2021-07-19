@@ -97,7 +97,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-SysUser-tableBox',
-                    url: 'Api/SysUser/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/SysUser/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-SysUser-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

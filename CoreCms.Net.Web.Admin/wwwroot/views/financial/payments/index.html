@@ -54,7 +54,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPayments-tableBox',
-                    url: 'Api/CoreCmsPayments/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsPayments/GetPageList',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-127',//无面包屑127,搜索框189,1行62

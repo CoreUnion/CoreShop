@@ -89,7 +89,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-SysLoginRecord-tableBox',
-                    url: 'Api/SysLoginRecord/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/SysLoginRecord/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-SysLoginRecord-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

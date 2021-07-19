@@ -70,7 +70,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserGrade-tableBox',
-                    url: 'Api/CoreCmsUserGrade/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserGrade/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUserGrade-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

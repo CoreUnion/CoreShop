@@ -131,7 +131,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsAgentOrder-tableBox',
-                    url: 'Api/CoreCmsAgentOrder/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsAgentOrder/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsAgentOrder-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

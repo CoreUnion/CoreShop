@@ -241,7 +241,7 @@
                 table.render({
                     //id: 'orderTable',
                     elem: '#LAY-app-CoreCmsOrder-tableBox',
-                    url: 'Api/CoreCmsOrder/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsOrder/GetPageList',
                     method: 'POST',
                     height: 'full-130', //无面包屑127,搜索框189,1行62
                     page: true,
