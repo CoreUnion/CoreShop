@@ -115,7 +115,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-SysTaskLog-tableBox',
-                    url: 'Api/SysTaskLog/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/SysTaskLog/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-SysTaskLog-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

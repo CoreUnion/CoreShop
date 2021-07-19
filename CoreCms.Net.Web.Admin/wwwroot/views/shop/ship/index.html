@@ -60,7 +60,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsShip-tableBox',
-                    url: 'Api/CoreCmsShip/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsShip/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsShip-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

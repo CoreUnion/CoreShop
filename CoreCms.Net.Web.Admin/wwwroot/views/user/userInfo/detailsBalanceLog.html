@@ -80,7 +80,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserBalance-tableBox',
-                    url: 'Api/CoreCmsUser/GetUserBalancePageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUser/GetUserBalancePageList',
                     method: 'POST',
                     //height: 'full-289',//无面包屑127,搜索框189,1行62
                     where: { userId: d.params.id },

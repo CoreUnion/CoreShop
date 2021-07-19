@@ -113,7 +113,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-{{ModelClassName}}-tableBox',
-                    url: 'Api/{{ModelClassName}}/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/{{ModelClassName}}/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-{{ModelClassName}}-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

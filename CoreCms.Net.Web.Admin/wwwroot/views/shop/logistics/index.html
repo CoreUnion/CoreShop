@@ -82,7 +82,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsLogistics-tableBox',
-                    url: 'Api/CoreCmsLogistics/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsLogistics/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsLogistics-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

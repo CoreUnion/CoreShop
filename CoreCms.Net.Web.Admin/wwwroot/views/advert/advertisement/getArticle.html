@@ -67,7 +67,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsArticle-tableBox',
-                    url: 'Api/CoreCmsAdvertisement/GetArticle',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsAdvertisement/GetArticle',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-189',//无面包屑127,搜索框189,1行62

@@ -60,7 +60,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsService-tableBox',
-                    url: 'Api/Tools/tagServices',
+                    url: layui.setter.apiUrl + 'Api/Tools/tagServices',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '380px',//无面包屑127,搜索框189,1行62

@@ -309,7 +309,7 @@
                                 obj: obj,
                                 initLevel: 1,
                                 request: { "ids": value, "nodeId": 0, "ischecked": 0 },
-                                url: 'Api/Tools/GetArea',
+                                url: layui.setter.apiUrl + 'Api/Tools/GetArea',
                                 headers: headers,
                                 dataType: 'json',
                                 async: false,  // 只需将该参数设置为false，即可同步加载

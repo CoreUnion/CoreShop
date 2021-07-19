@@ -109,7 +109,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsArticle-tableBox',
-                    url: 'Api/CoreCmsArticle/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsArticle/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsArticle-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

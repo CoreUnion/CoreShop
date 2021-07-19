@@ -73,7 +73,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsDistributionGrade-tableBox',
-                    url: 'Api/CoreCmsDistributionGrade/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsDistributionGrade/GetPageList',
                     toolbar: '#LAY-app-CoreCmsDistributionGrade-toolbar',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],

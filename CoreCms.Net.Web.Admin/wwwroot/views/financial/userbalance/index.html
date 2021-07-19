@@ -90,7 +90,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserBalance-tableBox',
-                    url: 'Api/CoreCmsUserBalance/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserBalance/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUserBalance-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

@@ -118,7 +118,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsInvoice-tableBox',
-                    url: 'Api/CoreCmsInvoice/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsInvoice/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsInvoice-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

@@ -143,7 +143,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsFormSubmit-tableBox',
-                    url: 'Api/CoreCmsFormSubmit/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsFormSubmit/GetPageList',
                     method: 'POST',
                     //toolbar: '#LAY-app-CoreCmsFormSubmit-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

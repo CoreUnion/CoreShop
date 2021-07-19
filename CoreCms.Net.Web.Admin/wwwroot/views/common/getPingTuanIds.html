@@ -59,7 +59,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPinTuanRule-tableBox',
-                    url: 'Api/Tools/tagPinTuan',
+                    url: layui.setter.apiUrl + 'Api/Tools/tagPinTuan',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-260',//无面包屑127,搜索框189,1行62

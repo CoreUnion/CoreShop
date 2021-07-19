@@ -82,7 +82,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsAdvertisement-tableBox',
-                    url: 'Api/CoreCmsAdvertisement/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsAdvertisement/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsAdvertisement-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],

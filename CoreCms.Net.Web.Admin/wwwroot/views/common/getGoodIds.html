@@ -56,7 +56,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsGoods-tableBox',
-                    url: 'Api/Tools/GetGoods',
+                    url: layui.setter.apiUrl + 'Api/Tools/GetGoods',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-260',//无面包屑127,搜索框189,1行62

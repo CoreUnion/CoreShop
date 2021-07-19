@@ -186,7 +186,7 @@
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUserServicesTicket-tableBox',
-                    url: 'Api/CoreCmsUserServicesTicket/GetPageList',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserServicesTicket/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-CoreCmsUserServicesTicket-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
