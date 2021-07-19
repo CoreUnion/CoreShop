@@ -12,7 +12,7 @@
     .layui-card-body { background-color: #fff; padding: 0px; margin: 10px; border: 0px solid #e6e6e6; }
     .layui-tab-content { padding: 0px 10px 10px 10px; }
 </style>
-<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsGoods/GetIndex" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsGoods/GetIndex" lay-done="layui.data.done(d);">
     <div class="layui-form coreshop-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">

@@ -24,7 +24,7 @@
         .user-bd-list-item .user-bd-list-img { width: 48px; height: 48px; line-height: 48px; position: absolute; top: 50%; left: 10px; margin-top: -24px; }
             .user-bd-list-item .user-bd-list-img + .user-bd-list-content { margin-left: 68px; }
 </style>
-<script type="text/html" template lay-type="Post" lay-url="Api/Tools/GetEditUserInfo" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/Tools/GetEditUserInfo" lay-done="layui.data.done(d);">
     <div class="layui-fluid">
         <div class="layui-row layui-col-space15">
             <!-- 左 -->

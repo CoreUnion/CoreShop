@@ -11,7 +11,7 @@
     .coreshop-search-form { border: 0px solid #e6e6e6; padding: 10px; margin: 10px 10px 0 10px; }
     .layui-tab-card { border-width: 1px; border-style: solid; border-radius: 0px; box-shadow: none; }
 </style>
-<script type="text/html" template lay-type="Post" lay-url="Api/CoreCmsOrder/GetIndex" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsOrder/GetIndex" lay-done="layui.data.done(d);">
     <div class="layui-form coreshop-search-form order-form core-hidden" id="searchDiv">
         <div class="layui-form-item">
             <div class="layui-inline">
