@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        config: {}, // 店铺配置信息
+        config: {
+            shopLogo:"/static/images/common/tab-ic-me-selected.png"
+        }, // 店铺配置信息 //添加一个前端项目中的图片地址
         orderTab: 0, // 选中的订单tab页
         redirectPage: '',
         uuid: '',//当前客户端
