@@ -49,12 +49,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsGoodsServices _coreCmsGoodsServices;
         private readonly ICoreCmsGoodsGradeServices _goodsGradeServices;
         private readonly ICoreCmsGoodsParamsServices _goodsParamsServices;
-        private readonly ICoreCmsGoodsTypeServices _goodTypeServices;
+        private readonly ICoreCmsGoodsTypeSpecServices _goodsTypeSpecServices;
         private readonly ICoreCmsLabelServices _labelServices;
         private readonly ICoreCmsProductsServices _productsServices;
         private readonly ICoreCmsSettingServices _settingServices;
-        private readonly ICoreCmsGoodsTypeParamsServices _typeParamsServices;
-        private readonly ICoreCmsGoodsTypeSpecRelServices _typeSpecRelServices;
         private readonly ICoreCmsGoodsTypeSpecServices _typeSpecServices;
         private readonly ICoreCmsGoodsTypeSpecValueServices _typeSpecValueServices;
         private readonly ICoreCmsUserGradeServices _userGradeServices;
@@ -69,30 +67,24 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ICoreCmsGoodsServices coreCmsGoodsServices
             , ICoreCmsSettingServices settingServices
             , ICoreCmsBrandServices brandServices
-            , ICoreCmsGoodsTypeServices goodTypeServices
             , ICoreCmsGoodsCategoryServices coreCmsGoodsCategoryServices
             , ICoreCmsUserGradeServices userGradeServices
-            , ICoreCmsGoodsTypeParamsServices typeParamsServices
             , ICoreCmsGoodsParamsServices goodsParamsServices
-            , ICoreCmsGoodsTypeSpecRelServices typeSpecRelServices
             , ICoreCmsGoodsTypeSpecServices typeSpecServices
             , ICoreCmsGoodsTypeSpecValueServices typeSpecValueServices
             , ICoreCmsGoodsGradeServices goodsGradeServices
             , ICoreCmsProductsServices productsServices
             , ICoreCmsGoodsCategoryExtendServices categoryExtendServices
             , ICoreCmsLabelServices labelServices
-            , ICoreCmsProductsDistributionServices productsDistributionServices)
+            , ICoreCmsProductsDistributionServices productsDistributionServices, ICoreCmsGoodsTypeSpecServices goodsTypeSpecServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsGoodsServices = coreCmsGoodsServices;
             _settingServices = settingServices;
             _brandServices = brandServices;
-            _goodTypeServices = goodTypeServices;
             _coreCmsGoodsCategoryServices = coreCmsGoodsCategoryServices;
             _userGradeServices = userGradeServices;
-            _typeParamsServices = typeParamsServices;
             _goodsParamsServices = goodsParamsServices;
-            _typeSpecRelServices = typeSpecRelServices;
             _typeSpecServices = typeSpecServices;
             _typeSpecValueServices = typeSpecValueServices;
             _goodsGradeServices = goodsGradeServices;
@@ -100,6 +92,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _categoryExtendServices = categoryExtendServices;
             _labelServices = labelServices;
             _productsDistributionServices = productsDistributionServices;
+            _goodsTypeSpecServices = goodsTypeSpecServices;
         }
 
         #region 获取列表============================================================
@@ -357,8 +350,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //获取商品分类
             var categories = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.isShow, p => p.sort,
                 OrderByType.Asc);
-            //获取商品类别
-            var types = await _goodTypeServices.QueryAsync();
             //获取品牌
             var brands = await _brandServices.QueryAsync();
 
@@ -373,7 +364,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 totalWarn,
                 categories = GoodsHelper.GetTree(categories),
                 categoriesAll = categories,
-                types,
                 brands,
                 productsDistributionType
             };
@@ -398,24 +388,31 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var jm = new AdminUiCallBack { code = 0 };
 
             //获取商品分类
-            var categories =
-                await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.isShow, p => p.sort, OrderByType.Asc);
-            //获取商品类别
-            var types = await _goodTypeServices.QueryAsync();
+            var categories = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.isShow, p => p.sort, OrderByType.Asc);
+
+            //获取参数列表
+            var paramsList = await _goodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+            //获取SKU列表
+            var skuList = await _goodsTypeSpecServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+
+
             //获取品牌
-            var brands = await _brandServices.QueryAsync();
+            var brands = await _brandServices.QueryListByClauseAsync(p => p.id > 0 && p.isShow == true, p => p.id, OrderByType.Desc, true);
             //获取用户等级
             var userGrade = await _userGradeServices.QueryAsync();
+
+
             //获取商品分销enum
             var productsDistributionType = EnumHelper.EnumToList<GlobalEnumVars.ProductsDistributionType>();
 
             jm.data = new
             {
                 categories = GoodsHelper.GetTree(categories, false),
-                types,
                 brands,
                 userGrade,
-                productsDistributionType
+                productsDistributionType,
+                paramsList,
+                skuList
             };
 
             return Json(jm);
@@ -467,10 +464,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //获取商品分类
             var categories = await _coreCmsGoodsCategoryServices.GetCaChe();
             categories = categories.Where(p => p.isShow == true).ToList();
-            //获取商品类别
-            var types = await _goodTypeServices.QueryAsync();
-            //获取品牌
-            var brands = await _brandServices.QueryAsync();
+
             //获取用户等级
             var userGrade = await _userGradeServices.QueryAsync();
             //用户价格体系
@@ -482,6 +476,16 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var categoryExtend = await _categoryExtendServices.QueryListByClauseAsync(p => p.goodsId == model.id);
             //获取商品分销enum
             var productsDistributionType = EnumHelper.EnumToList<GlobalEnumVars.ProductsDistributionType>();
+
+
+            //获取参数列表
+            var paramsList = await _goodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+            //获取SKU列表
+            var skuList = await _goodsTypeSpecServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+
+            //获取品牌
+            var brands = await _brandServices.QueryListByClauseAsync(p => p.id > 0 && p.isShow == true, p => p.id, OrderByType.Desc, true);
+
 
             if (products != null && products.Any())
             {
@@ -508,39 +512,30 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var goodsTypeSpec = new List<CoreCmsGoodsTypeSpec>();
             var goodsParams = new List<CoreCmsGoodsParams>();
 
-            if (model.goodsTypeId > 0)
+            //获取参数
+            if (!string.IsNullOrEmpty(model.goodsParamsIds))
             {
-                var typeParams =
-                    await _typeParamsServices.QueryListByClauseAsync(p => p.typeId == model.goodsTypeId);
-                if (typeParams != null)
-                {
-                    //获取参数
-                    var paramsIds = typeParams.Select(p => p.paramsId).ToList();
-                    goodsParams = await _goodsParamsServices.QueryListByClauseAsync(p => paramsIds.Contains(p.id));
-                    //获取属性
-                    var coreCmsGoodsTypeSpecRel =
-                        await _typeSpecRelServices.QueryListByClauseAsync(p => p.typeId == model.goodsTypeId);
+                var paramsIds = Utility.Helper.CommonHelper.StringToIntArray(model.goodsParamsIds);
+                goodsParams = await _goodsParamsServices.QueryListByClauseAsync(p => paramsIds.Contains(p.id));
+            }
 
-                    if (coreCmsGoodsTypeSpecRel.Any())
-                    {
-                        var specIds = coreCmsGoodsTypeSpecRel.Select(p => p.specId).ToList();
-                        var typeSpecs = await _typeSpecServices.QueryListByClauseAsync(p => specIds.Contains(p.id));
-                        var typeSpecValues =
-                            await _typeSpecValueServices.QueryListByClauseAsync(p => specIds.Contains(p.specId));
-                        typeSpecs.ForEach(p =>
-                        {
-                            p.specValues = typeSpecValues.Where(o => o.specId == p.id).ToList();
-                        });
-                        goodsTypeSpec = typeSpecs;
-                    }
-                }
+            //获取属性
+            if (!string.IsNullOrEmpty(model.goodsSkuIds))
+            {
+                var specIds = Utility.Helper.CommonHelper.StringToIntArray(model.goodsSkuIds);
+                var typeSpecs = await _typeSpecServices.QueryListByClauseAsync(p => specIds.Contains(p.id));
+                var typeSpecValues = await _typeSpecValueServices.QueryListByClauseAsync(p => specIds.Contains(p.specId));
+                typeSpecs.ForEach(p =>
+                {
+                    p.specValues = typeSpecValues.Where(o => o.specId == p.id).ToList();
+                });
+                goodsTypeSpec = typeSpecs;
             }
 
             jm.data = new
             {
                 model,
                 categories = GoodsHelper.GetTree(categories, false),
-                types,
                 brands,
                 userGrade,
                 goodsGrades,
@@ -548,7 +543,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 categoryExtend,
                 goodsTypeSpec,
                 goodsParams,
-                productsDistributionType
+                productsDistributionType,
+                paramsList,
+                skuList
             };
 
 
@@ -599,6 +596,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             model.isDel = true;
             //假删除
             var bl = await _coreCmsGoodsServices.UpdateAsync(model);
+            if (bl)
+            {
+                await _productsServices.UpdateAsync(p => new CoreCmsProducts() { isDel = true },
+                    p => p.goodsId == model.id);
+            }
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             return Json(jm);
@@ -796,50 +798,31 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
         #endregion
 
-        #region 获取商品参数============================================================
+        #region 获取商品SKU明细============================================================
 
-        // POST: Api/CoreCmsGoods/GetTypeSpec/10
+        // POST: Api/CoreCmsGoods/GetSkuDetail/10
         /// <summary>
-        ///     获取商品参数
+        ///     获取商品SKU明细
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Description("获取商品参数")]
-        public async Task<JsonResult> GetTypeSpec([FromBody] FMIntId entity)
+        [Description("获取商品SKU明细")]
+        public async Task<JsonResult> GetSkuDetail([FromBody] FMArrayIntIds entity)
         {
             var jm = new AdminUiCallBack();
 
-            //获取参数
-            var typeParams = await _typeParamsServices.QueryListByClauseAsync(p => p.typeId == entity.id);
-            var goodsParams = new List<CoreCmsGoodsParams>();
-            if (typeParams.Any())
+            if (entity.id.Length <= 0)
             {
-                var paramsIds = typeParams.Select(p => p.paramsId).ToList();
-                goodsParams = await _goodsParamsServices.QueryListByClauseAsync(p => paramsIds.Contains(p.id));
+                jm.msg = "请提交SKU模型";
+                return Json(jm);
             }
 
-            //获取属性
-            var coreCmsGoodsTypeSpecRel =
-                await _typeSpecRelServices.QueryListByClauseAsync(p => p.typeId == entity.id);
-            var goodsTypeSpec = new List<CoreCmsGoodsTypeSpec>();
+            var typeSpecs = await _typeSpecServices.QueryListByClauseAsync(p => entity.id.Contains(p.id));
+            var typeSpecValues = await _typeSpecValueServices.QueryListByClauseAsync(p => entity.id.Contains(p.specId));
+            typeSpecs.ForEach(p => { p.specValues = typeSpecValues.Where(o => o.specId == p.id).ToList(); });
 
-            if (coreCmsGoodsTypeSpecRel.Any())
-            {
-                var specIds = coreCmsGoodsTypeSpecRel.Select(p => p.specId).ToList();
-                var typeSpecs = await _typeSpecServices.QueryListByClauseAsync(p => specIds.Contains(p.id));
-                var typeSpecValues =
-                    await _typeSpecValueServices.QueryListByClauseAsync(p => specIds.Contains(p.specId));
-                typeSpecs.ForEach(p => { p.specValues = typeSpecValues.Where(o => o.specId == p.id).ToList(); });
-
-                goodsTypeSpec = typeSpecs;
-            }
-
-            jm.data = new
-            {
-                goodsParams,
-                goodsTypeSpec
-            };
+            jm.data = new { goodsTypeSpec = typeSpecs };
 
             var bl = true;
             jm.code = bl ? 0 : 1;

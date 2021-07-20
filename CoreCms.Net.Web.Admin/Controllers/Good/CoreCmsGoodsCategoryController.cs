@@ -44,7 +44,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsGoodsCategoryServices _coreCmsGoodsCategoryServices;
-        private readonly ICoreCmsGoodsTypeServices _coreCmsGoodsTypeServices;
         private readonly ICoreCmsGoodsServices _goodsServices;
         private IMapper _mapper;
 
@@ -53,12 +52,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         public CoreCmsGoodsCategoryController(IWebHostEnvironment webHostEnvironment
             , ICoreCmsGoodsCategoryServices coreCmsGoodsCategoryServices
-            , ICoreCmsGoodsTypeServices coreCmsGoodsTypeServices
             , IMapper mapper, ICoreCmsGoodsServices goodsServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsGoodsCategoryServices = coreCmsGoodsCategoryServices;
-            _coreCmsGoodsTypeServices = coreCmsGoodsTypeServices;
             _mapper = mapper;
             _goodsServices = goodsServices;
         }
@@ -77,19 +74,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //获取数据
             var list = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.id > 0, p => p.sort,
                 OrderByType.Desc);
-            var types = await _coreCmsGoodsTypeServices.QueryAsync();
-            list.ForEach(o =>
-            {
-                if (o.typeId == 0)
-                {
-                    o.typeName = "通用类型";
-                }
-                else
-                {
-                    var typeModel = types.Find(p => p.id == o.typeId);
-                    o.typeName = typeModel != null ? typeModel.name : "";
-                }
-            });
             //返回数据
             jm.data = list;
             jm.code = 0;
@@ -126,13 +110,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            var types = await _coreCmsGoodsTypeServices.QueryAsync();
             var categories = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort,
                 OrderByType.Asc);
             jm.data = new
             {
                 categories = GoodsHelper.GetTree(categories),
-                types
             };
             return Json(jm);
         }
@@ -190,14 +172,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
             jm.code = 0;
 
-            var types = await _coreCmsGoodsTypeServices.QueryAsync();
             var categories = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort,
                 OrderByType.Asc); ;
             jm.data = new
             {
                 model,
                 categories = GoodsHelper.GetTree(categories),
-                types
             };
 
             return Json(jm);

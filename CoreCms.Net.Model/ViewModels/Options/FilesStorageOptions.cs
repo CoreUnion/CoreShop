@@ -22,6 +22,11 @@ namespace CoreCms.Net.Model.ViewModels.Options
         public string StorageType { get; set; } = "LocalStorage";
 
         /// <summary>
+        ///     存储目录
+        /// </summary>
+        public string Path { get; set; } = "Upload";
+
+        /// <summary>
         ///     账户标识（腾讯云）
         /// </summary>
         public string AccountId { get; set; }

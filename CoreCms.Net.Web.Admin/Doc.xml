@@ -1408,7 +1408,7 @@
              商品分类
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsCategoryController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeServices,AutoMapper.IMapper,CoreCms.Net.IServices.ICoreCmsGoodsServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsCategoryController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,AutoMapper.IMapper,CoreCms.Net.IServices.ICoreCmsGoodsServices)">
              <summary>
              构造函数
             </summary>
@@ -1528,7 +1528,7 @@
                 商品表
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsBrandServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecRelServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecValueServices,CoreCms.Net.IServices.ICoreCmsGoodsGradeServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryExtendServices,CoreCms.Net.IServices.ICoreCmsLabelServices,CoreCms.Net.IServices.ICoreCmsProductsDistributionServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsBrandServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecValueServices,CoreCms.Net.IServices.ICoreCmsGoodsGradeServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryExtendServices,CoreCms.Net.IServices.ICoreCmsLabelServices,CoreCms.Net.IServices.ICoreCmsProductsDistributionServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices)">
             <summary>
                 构造函数
             </summary>
@@ -1620,9 +1620,9 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsController.GetTypeSpec(CoreCms.Net.Model.FromBody.FMIntId)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsController.GetSkuDetail(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
             <summary>
-                获取商品参数
+                获取商品SKU明细
             </summary>
             <param name="entity"></param>
             <returns></returns>
@@ -1716,7 +1716,7 @@
                 商品参数表
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsParamsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeParamsServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsParamsController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices)">
             <summary>
                 构造函数
             </summary>
@@ -1790,120 +1790,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController">
-            <summary>
-                商品类型
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsTypeServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecRelServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecValueServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsServices)">
-            <summary>
-                构造函数
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetPageList">
-            <summary>
-                获取列表
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetIndex">
-            <summary>
-                首页数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetCreate">
-            <summary>
-                创建数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.DoCreate(CoreCms.Net.Model.FromBody.FmGoodsTypeInsert)">
-            <summary>
-                创建提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetEdit(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-                编辑数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.DoEdit(CoreCms.Net.Model.Entities.CoreCmsGoodsType)">
-            <summary>
-                编辑提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-                单选删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetGoodsParamsPageList">
-            <summary>
-                获取已有参数列表
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetGoodsParams">
-            <summary>
-                选择参数面板
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetTypeSpecSpecPageList">
-            <summary>
-                获取已有属性列表
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetTypeSpecIndex">
-            <summary>
-                选择属性面板
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetEditParameters(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-                编辑参数
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.DoEditParameters(CoreCms.Net.Model.FromBody.FMUpdateArrayIntDataByIntId)">
-            <summary>
-                编辑参数提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.GetEditTypes(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-                编辑属性
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeController.DoEditTypes(CoreCms.Net.Model.FromBody.FMUpdateArrayIntDataByIntId)">
-            <summary>
-                编辑属性提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
         <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeSpecController">
             <summary>
                 商品类型属性表
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeSpecController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecRelServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecValueServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsTypeSpecController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecServices,CoreCms.Net.IServices.ICoreCmsGoodsTypeSpecValueServices)">
             <summary>
                 构造函数
             </summary>

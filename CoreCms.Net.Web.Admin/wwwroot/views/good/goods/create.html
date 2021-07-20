@@ -17,7 +17,8 @@
                     <ul class="layui-tab-title">
                         <li class="layui-this">基础信息</li>
                         <li>图集/视频</li>
-                        <li>货品信息</li>
+                        <li>SKU/货品设置</li>
+                        <li>参数设置</li>
                         <li>会员折扣</li>
                         <li>商品详情</li>
                     </ul>
@@ -166,13 +167,13 @@
                         </div>
 
                         <div class="layui-tab-item">
-                            <blockquote class="layui-elem-quote">
-                                1、选择对应的【商品类型】，将进入多规格货品模式。同时如果类别有参数，也将进行显示设置。<br/>
-                                2、设置多规格后，商品本身的价格只做对外展示用，实际以进入商品详情选择不同货品为准。<br/>
-                                3、货品规格组合属性值只支持：中文、英文、数字、大写符号，小写符号三个（-、/、.））<br/>
-                                4、货号必须为SN字母开头<br/>
+                            <!--<blockquote class="layui-elem-quote">
+                                1、选择对应的【商品类型】，将进入多SKU货品模式。同时如果类别有参数，也将进行显示设置。<br />
+                                2、设置多SKU后，商品本身的价格只做对外展示用，实际以进入商品详情选择不同货品为准。<br />
+                                3、货品SKU组合属性值只支持：中文、英文、数字、大写符号，小写符号三个（-、/、.））<br />
+                                4、货号必须为SN字母开头<br />
                                 5、如果不设置单货品重量，将默认使用商品重量为1个单位的重量。
-                            </blockquote>
+                            </blockquote>-->
 
                             <div class="layui-form-item">
                                 <label for="brandId" class="layui-form-label">佣金设置</label>
@@ -183,23 +184,21 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">开启规格：</label>
+                                <label class="layui-form-label">开启SKU</label>
                                 <div class="layui-input-inline">
-                                    <button type="button" class="layui-btn layui-btn-sm" id="openSpecBtn" lay-active="openSpecBtn" data-id="typeInfo.id" style="margin-top:5px;margin-left: 10px;">开启</button>
+                                    <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="openSpecBtn" lay-active="openSpecBtn" data-id="typeInfo.id" style="margin-top:5px;margin-left: 10px;">启用SKU</button>
                                 </div>
                             </div>
                             <div class="layui-form-item" id="goodsTypeIdViewBox" style="display: none;">
-                                <label for="goodsTypeId" class="layui-form-label">商品类别</label>
-                                <div class="layui-input-inline layui-inline-6" id="goodsTypeIdView">
-                                    <select name="goods[goodsTypeId]" id="goodsTypeId" required lay-verify="required" lay-filter="goodsTypeId" lay-reqText="请选择商品类别">
-                                        <option value="0">请选择</option>
-                                        {{# layui.each(d.data.types, function(index, item){ }}
-                                        <option value="{{ item.id }}">{{ item.name }}</option>
-                                        {{# }); }}
-                                    </select>
+                                <label for="goodsTypeId" class="layui-form-label">选择SKU模型</label>
+                                <div class="layui-input-inline layui-inline-10">
+                                    <div id="goodsSku_SelectCreateTree" class="xm-select-demo"></div>
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">
-                                    <button href="javascript:void(0);" class="add-type layui-btn layui-btn-normal layui-btn-xs">添加类型</button>
+                                    <button href="javascript:void(0);" class="add-Sku layui-btn layui-btn-normal layui-btn-xs">添加SKU模型</button>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">
+                                    <button href="javascript:void(0);" class="layui-btn layui-btn-normal layui-btn-xs" lay-active="doSetGoodsSku">生成SKU明细列表</button>
                                 </div>
                             </div>
                             <div id="product-info">
@@ -209,8 +208,28 @@
                                     <div id="more_spec"></div>
                                 </form>
                             </div>
+                        </div>
 
-                            <div id="product-parameters"></div>
+                        <div class="layui-tab-item">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">参数模型选择</label>
+                                <div class="layui-input-inline layui-inline-10">
+                                    <div id="goodsParams_SelectCreateTree" class="xm-select-demo"></div>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">
+                                    <button href="javascript:void(0);" class="add-goodsParams layui-btn layui-btn-normal layui-btn-xs">添加参数模型</button>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">
+                                    <button href="javascript:void(0);" class="layui-btn layui-btn-normal layui-btn-xs" lay-active="doSetGoodsParams">生成明细</button>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">
+                                    <button href="javascript:void(0);" class="layui-btn layui-btn-normal layui-btn-xs" lay-active="doClearGoodsParams">取消选择</button>
+                                </div>
+                            </div>
+
+                            <div id="parametersBox">
+
+                            </div>
                         </div>
 
                         <div class="layui-tab-item">
@@ -275,7 +294,7 @@
                 <th>默认货品</th>
                 <th>图片</th>
                 <th>货号</th>
-                <th>规格</th>
+                <th>SKU</th>
                 <th>重量(克)</th>
                 <th>库存</th>
                 <th><i class="required-color">*</i>销售价</th>
@@ -305,13 +324,13 @@
                         </div>
                         <input type="hidden" id="productImagesInput" name="product[images][]" value="{{item.images}}">
                     </div>
-                    <a class="layui-btn layui-btn-xs upSpecImage" href="javascript:;">选择图片</a>
+                    <a class="layui-btn layui-btn-xs upSpecImage" href="javascript:;">上传图片</a>
                 </td>
                 <td>
                     <input type="text" name="product[sn][]" value="{{item.sn}}" placeholder="货号" class="layui-input layui-inline-3">
                 </td>
                 <td>
-                    <input type="hidden" name="product[spesDesc][]" value="{{item.spesDesc}}" placeholder="规格" class="layui-input">
+                    <input type="hidden" name="product[spesDesc][]" value="{{item.spesDesc}}" placeholder="SKU" class="layui-input">
                     {{item.spesDesc}}
                 </td>
                 <td>
@@ -347,11 +366,11 @@
     </table>
 </script>
 
+
 <script id="params_tpl" type="text/html">
-    <div id="parametersBox" style="display: none">
-        {{# if(d.goodsParams){ }}
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"><legend>商品参数</legend></fieldset>
-        {{# layui.each(d.goodsParams, function(index, item){ }}
+    {{# if(d){ }}
+    <blockquote class="layui-elem-quote">
+        {{# layui.each(d, function(index, item){ }}
         <div class="layui-form-item" pane>
             <label class="layui-form-label layui-form-required">{{item.name}}</label>
             <div class="layui-input-block">
@@ -375,34 +394,42 @@
             </div>
         </div>
         {{# }); }}
-        {{# } }}
-    </div>
+    </blockquote>
+    {{# } }}
+</script>
+
+<script id="sku_tpl" type="text/html">
     <form id="spec_form">
         <div id="spec_select" style="display: none">
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"><legend>规格参数</legend></fieldset>
-            {{# if(d.goodsTypeSpec){ }}
-            {{# layui.each(d.goodsTypeSpec, function(index, item){ }}
-            <div class="layui-form-item" pane>
-                <label class="layui-form-label">{{item.name}}</label>
-                <div class="layui-input-block">
-                    {{# layui.each(item.specValues, function(indexValue, itemValue){ }}
-                    <div class="spec-item">
-                        <div class="checkboxBox">
-                            <input type="checkbox" name="selectSpec.{{itemValue.id}}.{{item.name}}" value="{{itemValue.value}}" lay-skin="switch" lay-filter="spec_select" class="spec-select" lay-text="开启|关闭">
-                        </div>
-                        <div class="layui-input-inline">
-                            <input type="text" value="{{itemValue.value}}" name="newSpec.{{itemValue.id}}" class="layui-input new-spec ">
+            <blockquote class="layui-elem-quote">
+                {{# if(d.goodsTypeSpec){ }}
+                {{# layui.each(d.goodsTypeSpec, function(index, item){ }}
+
+                <div class="layui-card">
+                    <div class="layui-card-header">{{item.name}}</div>
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 0px;">
+                                {{# layui.each(item.specValues, function(indexValue, itemValue){ }}
+                                <div class="spec-item">
+                                    <div class="checkboxBox">
+                                        <input type="checkbox" name="selectSpec.{{itemValue.id}}.{{item.name}}" value="{{itemValue.value}}" lay-skin="switch" lay-filter="spec_select" class="spec-select" lay-text="启用|关闭">
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <input type="text" value="{{itemValue.value}}" name="newSpec.{{itemValue.id}}" class="layui-input">
+                                    </div>
+                                </div>
+                                {{# }); }}
+                            </div>
                         </div>
                     </div>
-                    {{# }); }}
                 </div>
-            </div>
-            {{# }); }}
-            {{# } }}
+                {{# }); }}
+                {{# } }}
+            </blockquote>
             <div class="layui-form-item">
                 <div class="layui-input-inline">
-                    <!--<input type="hidden" value="typeInfo.id" name="type_id">-->
-                    <button type="button" class="layui-btn layui-btn-sm generate-spec" lay-active="getGenerateSpecBtn">生成规格</button>
+                    <button type="button" class="layui-btn  layui-btn-warm layui-btn-sm" lay-active="getGenerateSpecBtn"><i class="layui-icon layui-icon-export"></i>生成SKU货品列表</button>
                 </div>
             </div>
         </div>
@@ -423,21 +450,15 @@
 
 <script id="brand_tpl" type="text/html">
     <select name="goods[brand_id]">
-        <option value="">请选择品牌</option>
+        <option value="0">请选择品牌</option>
         {{#  layui.each(d.list, function(index, item){ }}
         <option value="{{ item.id }}">{{ item.name }}</option>
         {{#  }); }}
     </select>
 </script>
 
-<script id="type_tpl" type="text/html">
-    <select name="goodsTypeId" id="goodsTypeId" required lay-verType="tips" lay-verify="required">
-        <option value="">请选择类型</option>
-        {{#  layui.each(d.list, function(index, item){ }}
-        <option value="{{ item.id }}">{{ item.name }}</option>
-        {{#  }); }}
-    </select>
-</script>
+
+
 
 <script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
 <script>
@@ -566,6 +587,65 @@
                     }
                 });
 
+                //渲染商品扩展分类
+                var insGoodsParams = xmSelect.render({
+                    el: '#goodsParams_SelectCreateTree',
+                    height: '250px',
+                    data: d.data.paramsList,
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsParamsIds',
+                    prop: {
+                        name: 'name',
+                        value: 'id'
+                    },
+                    tree: {
+                        //是否显示树状结构
+                        show: true,
+                        //是否展示三角图标
+                        showFolderIcon: true,
+                        //是否显示虚线
+                        showLine: true,
+                        //间距
+                        indent: 20,
+                        //默认展开节点的数组, 为 true 时, 展开所有节点
+                        expandedKeys: true,
+                        //是否严格遵守父子模式
+                        strict: false,
+                        //是否开启极简模式
+                        simple: false,
+                    }
+                });
+
+
+                //渲染商品扩展分类
+                var insgoodsSKU = xmSelect.render({
+                    el: '#goodsSku_SelectCreateTree',
+                    height: '250px',
+                    data: d.data.skuList,
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsSkuIds',
+                    prop: {
+                        name: 'name',
+                        value: 'id'
+                    },
+                    tree: {
+                        //是否显示树状结构
+                        show: true,
+                        //是否展示三角图标
+                        showFolderIcon: true,
+                        //是否显示虚线
+                        showLine: true,
+                        //间距
+                        indent: 20,
+                        //默认展开节点的数组, 为 true 时, 展开所有节点
+                        expandedKeys: true,
+                        //是否严格遵守父子模式
+                        strict: false,
+                        //是否开启极简模式
+                        simple: false,
+                    }
+                });
+
                 //封面图图片上传
                 $('#upBtn').click(function () {
                     cropperImg.cropImg({
@@ -586,6 +666,7 @@
                             });
                         }
                     });
+                    form.render();
                 });
 
                 //图集上传
@@ -611,9 +692,10 @@
                             });
                         }
                     });
+                    form.render();
                 });
 
-                //规格缩略图上传
+                //SKU缩略图上传
                 $('.upSpecImage').click(function () {
                     var _that = this;
                     cropperImg.cropImg({
@@ -626,7 +708,6 @@
                                     var item = $(_that);
                                     item.prev().find('#productImagesInput').val(res.data.fileUrl);
                                     item.prev().find('#productImagesSrc').attr("src", res.data.fileUrl);
-
                                     layer.msg(res.msg);
                                     layer.close(loadIndex);
                                 } else {
@@ -636,6 +717,7 @@
                             });
                         }
                     });
+                    form.render();
                 });
 
                 //表单验证规则
@@ -674,6 +756,7 @@
                                                         //重新渲染分类下拉
                                                         insXmSelGoodsCategoryId.update({ data: e.data.categories.data, autoRow: true, })
                                                         insXmSelGoodsCategoryIdExtend.update({ data: e.data.categories.data, autoRow: true, })
+                                                        form.render();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -689,77 +772,41 @@
                         }
                     });
                 });
-                //添加类型
-                $(document).on('click', '.add-type', function () {
-                    coreHelper.Post("Api/CoreCmsGoodsType/GetCreate", null, function (e) {
+                //添加sku
+                $(document).on('click', '.add-Sku', function () {
+                    coreHelper.Post("Api/CoreCmsGoodsTypeSpec/GetCreate", null, function (e) {
                         if (e.code === 0) {
                             admin.popup({
                                 shadeClose: false,
-                                title: '添加类型',
-                                area: ['700px', '540px'],
-                                id: 'LAY-popup-CoreCmsGoodsType-create',
+                                title: '创建数据',
+                                area: ['550px', '90%'],
+                                id: 'LAY-popup-CoreCmsGoodsTypeSpec-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('good/goodstype/create', { data: e.data }).done(function () {
+                                    view(this.id).render('good/goodstypespec/create', { data: e.data }).done(function () {
                                         //监听提交
-                                        form.on('submit(LAY-app-CoreCmsGoodsType-createForm-submit)',
+                                        form.on('submit(LAY-app-CoreCmsGoodsTypeSpec-createForm-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
                                                 var keys = Object.keys(field);
-                                                var paramsIds = 0;
-                                                var typeIds = 0;
+                                                field.value = [];
                                                 for (var i = 0; i < keys.length; i++) {
-                                                    if (keys[i].indexOf("params_id") != -1) { paramsIds++; };
-                                                    if (keys[i].indexOf("type_id") != -1) { typeIds++; };
+                                                    if (keys[i].indexOf("value") != -1) {
+                                                        var keyName = Object.keys(field)[i];
+                                                        field.value.push(field[keyName]);
+                                                    };
                                                 }
-                                                if (paramsIds > 0) {
-                                                    var arr = [];
-                                                    for (var i = 0; i < paramsIds; i++) {
-                                                        var id = 'params_id[' + i + ']';
-                                                        var name = 'params_name[' + i + ']';
-                                                        var type = 'params_type[' + i + ']';
-                                                        var value = 'params_value[' + i + ']';
-                                                        if (field[name]) {
-                                                            var paramsModel = {};
-                                                            paramsModel.paramsId = parseInt(field[id]);
-                                                            paramsModel.paramsName = field[name];
-                                                            paramsModel.paramsType = field[type];
-                                                            paramsModel.paramsValue = field[value];
-                                                            arr.push(paramsModel)
-                                                        }
-                                                    }
-                                                    field.parameters = arr;
-                                                };
-                                                if (typeIds > 0) {
-                                                    var arr = [];
-                                                    for (var i = 0; i < typeIds; i++) {
-                                                        var id = 'type_id[' + i + ']';
-                                                        var name = 'type_name[' + i + ']';
-                                                        var type = 'type_sort[' + i + ']';
-                                                        var value = 'type_value[' + i + ']';
-                                                        if (field[name]) {
-                                                            var typeModel = {};
-                                                            typeModel.typeId = parseInt(field[id]);
-                                                            typeModel.typeName = field[name];
-                                                            typeModel.typeType = field[type];
-                                                            typeModel.typeValue = field[value];
-                                                            arr.push(typeModel)
-                                                        }
-                                                    }
-                                                    field.types = arr;
-                                                }
-                                                if (debug) { console.log(field); console.log('paramsIds：' + paramsIds); console.log('typeIds：' + typeIds); } //开启调试返回数据
-                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
-                                                coreHelper.Post("Api/CoreCmsGoodsType/DoCreate", field, function (e) {
-                                                    if (e.code === 0) {
-                                                        //下拉重新赋值
-                                                        var getTpl = type_tpl.innerHTML, view = document.getElementById('goodsTypeIdView');
-                                                        var tmpData = {};
-                                                        tmpData.list = e.data.types;
-                                                        laytpl(getTpl).render(tmpData, function (html) {
-                                                            view.innerHTML = html;
-                                                        });
-                                                        form.render();
 
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsTypeSpec/DoCreate", field, function (e) {
+                                                    if (e.code === 0) {
+                                                        var ids = insgoodsSKU.getValue();
+                                                        var arrSku = [];
+                                                        if (ids.length > 0) {
+                                                            arrSku = ids;
+                                                        }
+                                                        insgoodsSKU.update({ data: e.data.skuList, initValue: arrSku, autoRow: true, })
+                                                        form.render();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -776,6 +823,49 @@
                     });
                     return false;
                 });
+                //添加参数模型
+                $(document).on('click', '.add-goodsParams', function () {
+                    coreHelper.Post("Api/CoreCmsGoodsParams/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({ shadeClose: false,
+                                title: '创建数据',
+                                area: ['550px', '400px'],
+                                id: 'LAY-popup-CoreCmsGoodsParams-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goodsparams/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsGoodsParams-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsGoodsParams/DoCreate", field, function (e) {
+                                                    if (e.code === 0) {
+                                                        var ids = insGoodsParams.getValue();
+                                                        var arrSku = [];
+                                                        if (ids.length > 0) {
+                                                            arrSku = ids;
+                                                        }
+                                                        insGoodsParams.update({ data: e.data.paramsList, initValue: arrSku, autoRow: true, })
+                                                        form.render();
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                    return false;
+                });
+
                 //添加品牌
                 $(document).on('click', '.add-brand', function () {
                     coreHelper.Post("Api/CoreCmsBrand/GetCreate", null, function (e) {
@@ -797,7 +887,7 @@
                                                 coreHelper.Post("Api/CoreCmsBrand/DoCreate", field, function (e) {
                                                     if (e.code === 0) {
                                                         //下拉重新赋值
-                                                        var getTpl = type_tpl.innerHTML, view = document.getElementById('brandIdView');
+                                                        var getTpl = brand_tpl.innerHTML, view = document.getElementById('brandIdView');
                                                         var tmpData = {};
                                                         tmpData.list = e.data.brands;
                                                         laytpl(getTpl).render(tmpData, function (html) {
@@ -821,35 +911,6 @@
                     return false;
                 });
 
-                //切换商品类型赋值参数
-                form.on('select(goodsTypeId)', function (data) {
-                    var typeId = data.value;
-                    if (typeId) {
-                        layer.confirm('更换类型后，货品需重新生成，确定要更换吗？', {
-                            btn: ['确定', '取消']
-                            , title: '提示',
-                        }, function (index) {
-                            coreHelper.Post("Api/CoreCmsGoods/GetTypeSpec", { id: typeId }, function (e) {
-                                if (debug) { console.log(e); } //开启调试返回数据
-                                if (e.data) {
-                                    //赋值商品参数数据
-                                    var getTpl = params_tpl.innerHTML, view = document.getElementById('product-info');
-                                    var tmpData = { goodsParams: e.data.goodsParams, goodsTypeSpec: e.data.goodsTypeSpec, model: d.data.model };
-                                    laytpl(getTpl).render(tmpData, function (html) {
-                                        view.innerHTML = html;
-                                    });
-                                    if (e.data.goodsTypeSpec.length > 0) {
-                                        openSpecBox('0');
-                                    }
-                                    form.render();
-                                }
-                            });
-                            layer.close(index);
-
-                        }, function () {
-                        });
-                    }
-                });
                 //默认货品选择
                 form.on('checkbox(isdefalut)', function (data) {
                     console.log("选择isdefalut");
@@ -880,10 +941,9 @@
                     if (is_open == '0') {
                         $("input[name=openSpec]").val("1");
                         $("#spec_select").show();
-                        $("#parametersBox").show();
                         $("#goodsTypeIdViewBox").show();
-                        $("#openSpecBtn").html("取消规格");
-                        console.log("取消规格");
+                        $("#openSpecBtn").html("取消SKU");
+                        console.log("取消SKU");
 
                         if (_that.tempMultitermData.length == 0) {
                             $('#more_spec').html('');
@@ -899,10 +959,9 @@
                     } else {
                         $("input[name=openSpec]").val("0");
                         $("#spec_select").hide();
-                        $("#parametersBox").hide();
                         $("#goodsTypeIdViewBox").hide();
-                        $("#openSpecBtn").html("开启");
-                        console.log("开启规则");
+                        $("#openSpecBtn").html("启用SKU");
+                        console.log("启用SKU");
                         console.log(_that.oldSingleData);
 
                         var arr = [];
@@ -919,6 +978,63 @@
 
                 //处理属性 为 lay-active 的所有元素事件
                 util.event('lay-active', {
+                    doSetGoodsSku: function () {
+                        var ids = insgoodsSKU.getValue();
+                        if (ids.length <= 0) {
+                            layer.msg("请先选择SKU模型");
+                            return false;
+                        }
+
+                        var delidsStr = [];
+                        layui.each(ids, function (index, item) {
+                            delidsStr.push(item.id);
+                        });
+
+                        layer.confirm('更换SKU模型后，货品需重新生成，确定要更换吗？', {
+                            btn: ['确定', '取消']
+                            , title: '提示',
+                        }, function (index) {
+                            coreHelper.Post("Api/CoreCmsGoods/GetSkuDetail", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.data) {
+                                    //赋值商品参数数据
+                                    var tmpData = { goodsTypeSpec: e.data.goodsTypeSpec };
+
+                                    var getTpl = sku_tpl.innerHTML, view = document.getElementById('product-info');
+                                    laytpl(getTpl).render(tmpData, function (html) {
+                                        view.innerHTML = html;
+                                    });
+                                    if (e.data.goodsTypeSpec.length > 0) {
+                                        openSpecBox('0');
+                                    }
+                                    form.render();
+                                }
+                            });
+                            layer.close(index);
+
+                        }, function () {
+                        });
+                        form.render();
+                    },
+                    doSetGoodsParams: function () {
+                        var ids = insGoodsParams.getValue();
+                        if (ids.length <= 0) {
+                            layer.msg("请先选择参数");
+                            return false;
+                        }
+                        var getTpl = params_tpl.innerHTML, viewBox = document.getElementById('parametersBox');
+                        laytpl(getTpl).render(ids, function (html) {
+                            viewBox.innerHTML = html;
+                        });
+                        form.render();
+                    },
+                    doClearGoodsParams: function () {
+
+                        $('#parametersBox').html("");
+                        layer.msg("已清空，请重新选择");
+                        form.render();
+
+                    },
                     delTr: function () {
                         $(this).parent().parent('tr').remove();
                         var productsCount = parseInt($('#productsCount').val());
@@ -994,7 +1110,7 @@
                                     $('#newSpec').val(e.data.newSpecStr);
                                     $('#productsCount').val(tmpData.length);
 
-                                    //规格缩略图上传
+                                    //SKU缩略图上传
                                     $('.upSpecImage').click(function () {
                                         var _that = this;
                                         cropperImg.cropImg({
@@ -1019,14 +1135,14 @@
                                         });
                                     });
                                     form.render();
-                                    layer.msg("规格拉取成功");
+                                    layer.msg("Sku列表获取成功");
                                 } else {
                                     layer.msg(e.msg, { icon: 5, anim: 6 });
                                 }
                             });
                             return false;
                         } else {
-                            layer.msg("请选择属性");
+                            layer.msg("请选择Sku具体明细");
                             return false;
                         }
                         return false;
@@ -1104,6 +1220,10 @@
                         goods.costprice = field['goods[costprice]'];
                         goods.goodsCategoryId = field['goods[goodsCategoryId]'];
                         goods.goodsTypeId = field['goods[goodsTypeId]'];
+
+                        goods.goodsSkuIds = field.goodsSkuIds;
+                        goods.goodsParamsIds = field.goodsParamsIds;
+
                         goods.images = field['goods[images]'];
                         goods.image = field['goods[image]'];
                         goods.video = field['goods[video]'];
