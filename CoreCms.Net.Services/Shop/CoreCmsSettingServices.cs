@@ -175,6 +175,7 @@ namespace CoreCms.Net.Services
             var settings = await GetDatas();
 
             filesStorageOptions.StorageType = GetValue(SystemSettingConstVars.FilesStorageType, configs, settings);
+            filesStorageOptions.Path = GetValue(SystemSettingConstVars.FilesStoragePath, configs, settings);
             filesStorageOptions.FileTypes = GetValue(SystemSettingConstVars.FilesStorageFileSuffix, configs, settings);
             filesStorageOptions.MaxSize = GetValue(SystemSettingConstVars.FilesStorageFileMaxSize, configs, settings).ObjectToInt(10);
 

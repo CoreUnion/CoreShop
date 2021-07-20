@@ -212,7 +212,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var jm = new AdminUiCallBack();
 
             jm = await _sysMenuServices.DeleteByIdAsync(entity.id);
+
+
+
+
             return Json(jm);
+
+
+
 
         }
         #endregion

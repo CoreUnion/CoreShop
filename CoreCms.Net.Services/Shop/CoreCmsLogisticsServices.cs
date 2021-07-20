@@ -150,13 +150,30 @@ namespace CoreCms.Net.Services
         {
             var jm = new WebApiCallBack();
 
+            if (string.IsNullOrEmpty(com))
+            {
+                jm.msg = "请提交来源";
+                return jm;
+            }
+            else if (string.IsNullOrEmpty(number))
+            {
+                jm.msg = "请提交编号";
+                return jm;
+            }
+            else if (string.IsNullOrEmpty(phone))
+            {
+                jm.msg = "请提交手机号码";
+                return jm;
+            }
+
+
             var allConfigs = await _settingServices.GetConfigDictionaries();
             var showApiAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiAppid);
             var showApiSecret = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiSecret);
 
             var showApiTimesTamp = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-            var signStr = "com" + com+ "nu" + number + "phone" + phone + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
+            var signStr = "com" + com + "nu" + number + "phone" + phone + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
             var md5Sign = CommonHelper.Md5For32(signStr).ToLower();
 
             var url = "https://route.showapi.com/64-19?com=" + com + "&nu=" + number + "&phone=" + phone + "&showapi_appid=" + showApiAppid +

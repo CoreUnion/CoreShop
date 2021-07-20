@@ -480,7 +480,7 @@
                                         </div>
                                     </div>
                                 </div>
-                         
+
                                 <div class="layui-tab-item">
                                     <div class="layui-form coreshop-form">
                                         <blockquote class="layui-elem-quote">
@@ -521,7 +521,7 @@
                                         </div>
                                     </div>
                                 </div>
-        
+
                                 <div class="layui-tab-item">
                                     <div class="layui-form coreshop-form">
                                         <div class="layui-form-item">
@@ -531,6 +531,14 @@
                                                 <input type="radio" name="filesStorageType" value="{{ item.title }}" lay-filter="filesStorageType" title="{{ item.description }}" {{d.data.configs['filesStorageType']['sValue']=== item.title ? 'checked':''}}>
                                                 {{# }); }}
                                             </div>
+                                        </div>
+
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['filesStoragePath']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-10">
+                                                <input type="text" name="filesStorageFileSuffix" value="{{d.data.configs['filesStoragePath']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">请使用路径，如"upload/doc/"</div>
                                         </div>
 
                                         <div class="layui-form-item">

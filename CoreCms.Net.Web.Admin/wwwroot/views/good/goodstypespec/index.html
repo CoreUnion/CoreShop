@@ -1,4 +1,4 @@
-<title>商品类型属性表</title>
+<title>商品类型SKU模型表</title>
 <!--当前位置开始-->
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
@@ -15,7 +15,7 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" name="name" id="name" placeholder="请输入属性名称" class="layui-input">
+                    <input type="text" name="name" id="name" placeholder="请输入SKU模型名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -84,9 +84,9 @@
                     cols: [
                         [
                             { field: 'id', title: '序列', sort: false, width: 60 },
-                            { field: 'name', title: '属性名称', sort: false, width: 205 },
+                            { field: 'name', title: 'SKU模型名称', sort: false, width: 205 },
                             {
-                                field: 'specValues', title: '属性值', templet: function (data) {
+                                field: 'specValues', title: 'SKU模型值', templet: function (data) {
                                     var html = "";
                                     if (data.specValues.length > 0) {
                                         $.each(data.specValues, function (i, j) {
@@ -95,11 +95,11 @@
                                         //html = html.substr(1);
                                         return html;
                                     } else {
-                                        return '无属性值';
+                                        return '无SKU模型值';
                                     }
                                 }
                             },
-                            { field: 'sort', title: '属性排序', sort: false, width: 105 },
+                            { field: 'sort', title: 'SKU模型排序', sort: false, width: 105 },
                             { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoodsTypeSpec-tableBox-bar' }
                         ]
                     ]

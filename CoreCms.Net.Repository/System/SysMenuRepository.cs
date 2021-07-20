@@ -168,7 +168,7 @@ namespace CoreCms.Net.Repository
                 ids.Add(item.id);
                 if (data.Exists(p => p.parentId == item.id))
                 {
-                    ids = GetIds(childs, item.id, ids);
+                    ids = GetIds(data, item.id, ids);
                 }
             }
             return ids;

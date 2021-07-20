@@ -43,7 +43,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
     public class CoreCmsGoodsParamsController : Controller
     {
         private readonly ICoreCmsGoodsParamsServices _coreCmsGoodsParamsServices;
-        private readonly ICoreCmsGoodsTypeParamsServices _coreCmsGoodsTypeParamsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
@@ -53,12 +52,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <param name="coreCmsGoodsParamsServices"></param>
         /// <param name="coreCmsGoodsTypeParamsServices"></param>
         public CoreCmsGoodsParamsController(IWebHostEnvironment webHostEnvironment,
-            ICoreCmsGoodsParamsServices coreCmsGoodsParamsServices
-            , ICoreCmsGoodsTypeParamsServices coreCmsGoodsTypeParamsServices)
+            ICoreCmsGoodsParamsServices coreCmsGoodsParamsServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsGoodsParamsServices = coreCmsGoodsParamsServices;
-            _coreCmsGoodsTypeParamsServices = coreCmsGoodsTypeParamsServices;
         }
 
         #region 获取列表============================================================
@@ -241,6 +238,16 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
+            if (bl)
+            {
+                //获取列表
+                var paramsList = await _coreCmsGoodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+                jm.data = new
+                {
+                    paramsList
+                };
+            }
+
             return Json(jm);
         }
 
@@ -339,7 +346,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             var bl = await _coreCmsGoodsParamsServices.DeleteByIdAsync(entity.id);
-            if (bl) await _coreCmsGoodsTypeParamsServices.DeleteAsync(p => p.paramsId == entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             return Json(jm);

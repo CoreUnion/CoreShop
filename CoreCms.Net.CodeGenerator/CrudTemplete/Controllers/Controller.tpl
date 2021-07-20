@@ -101,6 +101,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if ({{field.DbColumnName}} > 0)
             {
                 where = where.And(p => p.{{field.DbColumnName}} == {{field.DbColumnName}});
+            }{% elsif  field.DataType == 'decimal'  %}
+			//{{field.ColumnDescription}} {{field.DataType}}
+			var {{field.DbColumnName}} = Request.Form["{{field.DbColumnName}}"].FirstOrDefault().ObjectToDecimal(0);
+            if ({{field.DbColumnName}} > 0)
+            {
+                where = where.And(p => p.{{field.DbColumnName}} == {{field.DbColumnName}});
             }{% elsif  field.DataType == 'datetime' %}
 			//{{field.ColumnDescription}} {{field.DataType}}
 			var {{field.DbColumnName}} = Request.Form["{{field.DbColumnName}}"].FirstOrDefault();

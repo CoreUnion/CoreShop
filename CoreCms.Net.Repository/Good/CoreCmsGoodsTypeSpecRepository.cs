@@ -163,7 +163,6 @@ namespace CoreCms.Net.Repository
             if (bl)
             {
                 await DbClient.Deleteable<CoreCmsGoodsTypeSpecValue>(p => p.specId == (int)id).ExecuteCommandHasChangeAsync();
-                await DbClient.Deleteable<CoreCmsGoodsTypeSpecRel>(p => p.specId == (int)id).ExecuteCommandHasChangeAsync();
             }
 
             return jm;

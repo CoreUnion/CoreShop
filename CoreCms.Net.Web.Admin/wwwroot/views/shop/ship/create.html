@@ -290,8 +290,7 @@
                                         html = html + obj.context + ',';
                                         areaParentName = obj.context;
                                     }
-                                    //ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: obj.ischecked });
-                                    ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: 1 });
+                                    ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: obj.checked });
                                 });
                                 html = html.substring(0, html.length - 1) + ' <a href="javascript:void(0);" class="selectArea">请选择地区</a>';
                                 html = html + "<input type='hidden' name='areaId[" + id + "]' value='" + JSON.stringify(ids) + "'>";

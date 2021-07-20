@@ -1,3 +1,10 @@
+2021-07-20
+1、删除【CoreCmsGoodsType】表。
+2、删除【CoreCmsGoodsTypeSpecRel】表。
+3、删除【CoreCmsGoodsTypeParams】表。
+4、商品表增加【goodsSkuIds】字段。sku序列
+5、商品表增加【goodsParamsIds】字段。参数序列
+
 2021-06-19
 因linux下存在数据与文件名称大小写不对应，导致找不到数据库表的问题，特重新发布一份表名与实体名称一一对应脚本。
 

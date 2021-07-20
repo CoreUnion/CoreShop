@@ -308,7 +308,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 string filePath = dirPath + newFileName;
                 string fileUrl = saveUrl + newFileName;
 
-                string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+                string bucketBindDomain = AppSettingsConstVars.AppConfigAppInterFaceUrl;
 
                 using (FileStream fs = System.IO.File.Create(filePath))
                 {
@@ -319,7 +319,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "上传成功!";
                 jm.data = new
                 {
-                    fileUrl,
+                    fileUrl = bucketBindDomain + fileUrl,
                     src = bucketBindDomain + fileUrl,
                     imageId = dts
                 };
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 {
                     string md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
 
-                    string filePath = "Upload/" + today + "/" + newFileName;//云文件保存路径
+                    string filePath = filesStorageOptions.Path + today + "/" + newFileName;//云文件保存路径
                                                                             //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(filesStorageOptions.Endpoint, filesStorageOptions.AccessKeyId, filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
@@ -356,7 +356,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
             {
-                var filePath = "Upload/" + today + "/" + newFileName; //云文件保存路径
+                var filePath = filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
 
                 //上传到腾讯云OSS
                 //初始化 CosXmlConfig

@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             if (bl)
             {
-                var brands = await _coreCmsBrandServices.QueryAsync();
+                var brands = await _coreCmsBrandServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
                 jm.data = new
                 {
                     brands

@@ -598,6 +598,10 @@ namespace CoreCms.Net.Configuration
         /// </summary>
         public static readonly string FilesStorageType = "filesStorageType";
         /// <summary>
+        /// 存储路径
+        /// </summary>
+        public static readonly string FilesStoragePath = "filesStoragePath";
+        /// <summary>
         /// 文件后缀类型
         /// </summary>
         public static readonly string FilesStorageFileSuffix = "filesStorageFileSuffix";

@@ -46,16 +46,6 @@
                 </div>
                 <div class="layui-inline">
                     <div class="layui-input-inline">
-                        <select name="goodsTypeId" id="goodsTypeId">
-                            <option value="">请选择商品类别</option>
-                            {{# layui.each(d.data.types, function(index, item){ }}
-                            <option value="{{ item.id }}">{{ item.name }}</option>
-                            {{# }); }}
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <div class="layui-input-inline">
                         <select name="brandId" id="brandId">
                             <option value="">请选择所属品牌</option>
                             {{# layui.each(d.data.brands, function(index, item){ }}
@@ -216,7 +206,7 @@
                             { field: 'isRecommend', title: '推荐', width: 80, templet: '#switch_isRecommend', sort: false, unresize: true },
                             { field: 'isHot', title: '热门', width: 80, templet: '#switch_isHot', sort: false, unresize: true },
                             {
-                                field: 'images', title: '缩略图', width: 70, sort: false,
+                                field: 'images', title: '封面图', width: 60, sort: false,
                                 templet: function (d) {
                                     if (d.image) {
                                         return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.image + '")><image style="max-width:30px;max-height:30px;" src="' + d.image + '" /></a>';
@@ -226,8 +216,8 @@
                                 }
                             },
                             { field: 'name', title: '商品名称', sort: false },
-                            { field: 'stock', title: '库存', sort: false, width: 60 },
-                            { field: 'sort', title: '排序', sort: false, width: 60 },
+                            //{ field: 'stock', title: '库存', sort: false, width: 60 },
+                            { field: 'sort', title: '排序', sort: false, width: 40},
                             {
                                 field: 'productsDistributionType', title: '佣金方式', sort: false, width: 80, templet: function (data) {
                                     if (data.productsDistributionType === 1) {
@@ -244,11 +234,11 @@
                             //        return coreHelper.getLabel(data.labels);
                             //    }
                             //},
-                            { field: 'price', title: '销售价', sort: false, width: 80, templet: function (data) { return '￥' + data.price } },
-                            { field: 'costprice', title: '成本价', sort: false, width: 80, templet: function (data) { return '￥' + data.costprice } },
-                            { field: 'mktprice', title: '市场价', sort: false, width: 80, templet: function (data) { return '￥' + data.mktprice } },
+                            { field: 'price', title: '销售价', sort: false, width: 70, templet: function (data) { return '￥' + data.price } },
+                            { field: 'costprice', title: '成本价', sort: false, width: 70, templet: function (data) { return '￥' + data.costprice } },
+                            { field: 'mktprice', title: '市场价', sort: false, width: 70, templet: function (data) { return '￥' + data.mktprice } },
                             {
-                                field: 'goodsCategoryId', title: '分类', sort: false, width: 105, templet: function (data) {
+                                field: 'goodsCategoryId', title: '分类', sort: false, width: 80, templet: function (data) {
                                     for (var i = 0; i < d.data.categoriesAll.length; i++) {
                                         if (d.data.categoriesAll[i].id === data.goodsCategoryId) {
                                             return d.data.categoriesAll[i].name;
@@ -258,17 +248,7 @@
                                 }
                             },
                             {
-                                field: 'goodsTypeId', title: '类别', sort: false, width: 105, templet: function (data) {
-                                    for (var i = 0; i < d.data.types.length; i++) {
-                                        if (d.data.types[i].id === data.goodsTypeId) {
-                                            return d.data.types[i].name;
-                                        }
-                                    }
-                                    return "";
-                                }
-                            },
-                            {
-                                field: 'brandId', title: '品牌', sort: false, width: 105, templet: function (data) {
+                                field: 'brandId', title: '品牌', sort: false, width: 80, templet: function (data) {
                                     for (var i = 0; i < d.data.brands.length; i++) {
                                         if (d.data.brands[i].id === data.brandId) {
                                             return d.data.brands[i].name;
@@ -277,6 +257,8 @@
                                     return "";
                                 }
                             },
+                            { field: 'updateTime', title: '更新时间', sort: false, width: 130 },
+
                         ]
                     ]
                 });

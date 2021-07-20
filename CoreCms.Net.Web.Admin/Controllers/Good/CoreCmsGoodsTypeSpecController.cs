@@ -40,8 +40,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
     public class CoreCmsGoodsTypeSpecController : Controller
     {
         private readonly ICoreCmsGoodsTypeSpecServices _coreCmsGoodsTypeSpecServices;
-        private readonly ICoreCmsGoodsTypeServices _goodsTypeServices;
-        private readonly ICoreCmsGoodsTypeSpecRelServices _relServices;
         private readonly ICoreCmsGoodsTypeSpecValueServices _valueServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -50,15 +48,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         public CoreCmsGoodsTypeSpecController(IWebHostEnvironment webHostEnvironment
             , ICoreCmsGoodsTypeSpecServices coreCmsGoodsTypeSpecServices
-            , ICoreCmsGoodsTypeSpecRelServices coreCmsGoodsTypeSpecRelServices
-            , ICoreCmsGoodsTypeSpecValueServices coreCmsGoodsTypeSpecValueServices,
-            ICoreCmsGoodsTypeServices goodsTypeServices)
+            , ICoreCmsGoodsTypeSpecValueServices coreCmsGoodsTypeSpecValueServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsGoodsTypeSpecServices = coreCmsGoodsTypeSpecServices;
-            _relServices = coreCmsGoodsTypeSpecRelServices;
             _valueServices = coreCmsGoodsTypeSpecValueServices;
-            _goodsTypeServices = goodsTypeServices;
         }
 
         #region 获取列表============================================================
@@ -188,6 +182,17 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> DoCreate([FromBody] FmGoodsTypeSpecInsert entity)
         {
             var jm = await _coreCmsGoodsTypeSpecServices.InsertAsync(entity);
+
+            if (jm.code == 0)
+            {
+                //获取SKU列表
+                var skuList = await _coreCmsGoodsTypeSpecServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+                jm.data = new
+                {
+                    skuList
+                };
+
+            }
             return Json(jm);
         }
 
