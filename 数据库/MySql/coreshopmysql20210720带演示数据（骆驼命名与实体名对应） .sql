@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsAgentOrder` (
   `userId` int(11) NOT NULL COMMENT '用户代理商id',
   `buyUserId` int(11) NOT NULL COMMENT '下单用户id',
   `orderId` varchar(50) DEFAULT NULL COMMENT '订单编号',
-  `amount` decimal(10,0) NOT NULL COMMENT '结算金额',
+  `amount` decimal(10,2) NOT NULL COMMENT '结算金额',
   `isSettlement` int(11) NOT NULL COMMENT '是否结算',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
@@ -203,10 +203,10 @@ CREATE TABLE IF NOT EXISTS `CoreCmsAgentProducts` (
   `agentGoodsId` int(11) NOT NULL COMMENT '关联代理商品池',
   `goodId` int(11) NOT NULL COMMENT '商品序列',
   `productId` int(11) NOT NULL COMMENT '货品序列',
-  `productCostPrice` decimal(10,0) NOT NULL COMMENT '货品成本价格',
-  `productPrice` decimal(10,0) NOT NULL COMMENT '货品销售价格',
+  `productCostPrice` decimal(10,2) NOT NULL COMMENT '货品成本价格',
+  `productPrice` decimal(10,2) NOT NULL COMMENT '货品销售价格',
   `agentGradeId` int(11) NOT NULL COMMENT '代理商等级',
-  `agentGradePrice` decimal(10,0) NOT NULL COMMENT '代理价格',
+  `agentGradePrice` decimal(10,2) NOT NULL COMMENT '代理价格',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   `isDel` bit(1) NOT NULL COMMENT '是否删除'
@@ -3913,7 +3913,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsBillAftersales` (
   `orderId` varchar(20) NOT NULL COMMENT '订单ID',
   `userId` int(11) NOT NULL COMMENT '用户ID',
   `type` int(11) NOT NULL COMMENT '售后类型',
-  `refundAmount` decimal(10,0) NOT NULL COMMENT '退款金额',
+  `refundAmount` decimal(10,2) NOT NULL COMMENT '退款金额',
   `status` int(11) NOT NULL COMMENT '状态',
   `reason` varchar(255) NOT NULL COMMENT '退款原因',
   `mark` varchar(255) DEFAULT NULL COMMENT '卖家备注，如果审核失败了，会显示到前端',
@@ -3994,7 +3994,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsBillDeliveryItem` (
   `bn` varchar(30) NOT NULL COMMENT '商品编码',
   `name` varchar(200) NOT NULL COMMENT '商品名称',
   `nums` int(11) NOT NULL COMMENT '发货数量',
-  `weight` decimal(10,0) NOT NULL COMMENT '重量',
+  `weight` decimal(10,2) NOT NULL COMMENT '重量',
   `addon` longtext COMMENT '货品明细序列号存储'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='发货单详情表';
 
@@ -4038,7 +4038,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsBillLading` (
 
 CREATE TABLE IF NOT EXISTS `CoreCmsBillPayments` (
   `paymentId` varchar(20) NOT NULL COMMENT '支付单号',
-  `money` decimal(10,0) NOT NULL COMMENT '支付金额',
+  `money` decimal(10,2) NOT NULL COMMENT '支付金额',
   `userId` int(11) NOT NULL COMMENT '用户ID 关联user.id',
   `type` int(11) NOT NULL COMMENT '单据类型',
   `status` int(11) NOT NULL COMMENT '支付状态',
@@ -4060,7 +4060,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsBillPayments` (
 CREATE TABLE IF NOT EXISTS `CoreCmsBillPaymentsRel` (
   `paymentId` varchar(20) NOT NULL COMMENT '支付单编号',
   `sourceId` varchar(20) NOT NULL COMMENT '资源编号',
-  `money` decimal(10,0) NOT NULL COMMENT '金额'
+  `money` decimal(10,2) NOT NULL COMMENT '金额'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='支付单明细表';
 
 -- --------------------------------------------------------
@@ -4072,7 +4072,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsBillPaymentsRel` (
 CREATE TABLE IF NOT EXISTS `CoreCmsBillRefund` (
   `refundId` varchar(20) NOT NULL COMMENT '退款单ID',
   `aftersalesId` varchar(20) NOT NULL COMMENT '售后单id',
-  `money` decimal(10,0) NOT NULL COMMENT '退款金额',
+  `money` decimal(10,2) NOT NULL COMMENT '退款金额',
   `userId` int(11) NOT NULL COMMENT '用户ID 关联user.id',
   `sourceId` varchar(20) NOT NULL COMMENT '资源id，根据type不同而关联不同的表',
   `type` int(11) NOT NULL COMMENT '资源类型1=订单,2充值单',
@@ -4264,7 +4264,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsDistributionOrder` (
   `userId` int(11) NOT NULL COMMENT '用户分销商id',
   `buyUserId` int(11) NOT NULL COMMENT '下单用户id',
   `orderId` varchar(50) DEFAULT NULL COMMENT '订单编号',
-  `amount` decimal(10,0) NOT NULL COMMENT '结算金额',
+  `amount` decimal(10,2) NOT NULL COMMENT '结算金额',
   `isSettlement` int(11) NOT NULL COMMENT '是否结算',
   `level` int(11) NOT NULL COMMENT '层级',
   `createTime` datetime NOT NULL COMMENT '创建时间',
@@ -4342,7 +4342,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsFormSubmit` (
   `formId` int(11) NOT NULL COMMENT '表单id',
   `formName` varchar(255) DEFAULT NULL COMMENT '表单名称',
   `userId` int(11) NOT NULL COMMENT '会员id',
-  `money` decimal(10,0) NOT NULL COMMENT '总金额',
+  `money` decimal(10,2) NOT NULL COMMENT '总金额',
   `payStatus` bit(1) NOT NULL COMMENT '是否支付',
   `status` bit(1) NOT NULL COMMENT '是否处理',
   `feedback` varchar(255) DEFAULT NULL COMMENT '表单反馈',
@@ -4741,7 +4741,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsGoodsGrade` (
   `id` int(11) NOT NULL COMMENT '序列',
   `goodsId` int(11) NOT NULL COMMENT '商品id',
   `gradeId` int(11) NOT NULL COMMENT '会员等级id',
-  `gradePrice` decimal(10,0) NOT NULL COMMENT '会员价'
+  `gradePrice` decimal(10,2) NOT NULL COMMENT '会员价'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商品会员价表';
 
 -- --------------------------------------------------------
@@ -5265,7 +5265,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsInvoice` (
   `type` int(11) NOT NULL COMMENT '发票类型',
   `title` varchar(255) NOT NULL COMMENT '发票抬头',
   `taxNumber` varchar(32) NOT NULL COMMENT '发票税号',
-  `amount` decimal(10,0) NOT NULL COMMENT '发票金额',
+  `amount` decimal(10,2) NOT NULL COMMENT '发票金额',
   `status` int(11) NOT NULL COMMENT '开票状态',
   `remarks` varchar(2000) DEFAULT NULL COMMENT '开票备注',
   `createTime` datetime NOT NULL COMMENT '创建时间',
@@ -6571,9 +6571,9 @@ CREATE TABLE IF NOT EXISTS `CoreCmsNotice` (
 
 CREATE TABLE IF NOT EXISTS `CoreCmsOrder` (
   `orderId` varchar(20) NOT NULL COMMENT '订单号',
-  `goodsAmount` decimal(10,0) NOT NULL COMMENT '商品总价',
-  `payedAmount` decimal(10,0) NOT NULL COMMENT '已支付的金额',
-  `orderAmount` decimal(10,0) NOT NULL COMMENT '订单实际销售总额',
+  `goodsAmount` decimal(10,2) NOT NULL COMMENT '商品总价',
+  `payedAmount` decimal(10,2) NOT NULL COMMENT '已支付的金额',
+  `orderAmount` decimal(10,2) NOT NULL COMMENT '订单实际销售总额',
   `payStatus` int(11) NOT NULL COMMENT '支付状态',
   `shipStatus` int(11) NOT NULL COMMENT '发货状态',
   `status` int(11) NOT NULL COMMENT '订单状态',
@@ -6583,7 +6583,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsOrder` (
   `paymentTime` datetime DEFAULT NULL COMMENT '支付时间',
   `logisticsId` int(11) NOT NULL COMMENT '配送方式ID 关联ship.id',
   `logisticsName` varchar(50) DEFAULT NULL COMMENT '配送方式名称',
-  `costFreight` decimal(10,0) NOT NULL COMMENT '配送费用',
+  `costFreight` decimal(10,2) NOT NULL COMMENT '配送费用',
   `userId` int(11) NOT NULL COMMENT '用户ID 关联user.id',
   `sellerId` int(11) NOT NULL COMMENT '店铺ID 关联seller.id',
   `confirmStatus` int(11) NOT NULL COMMENT '售后状态',
@@ -6593,15 +6593,15 @@ CREATE TABLE IF NOT EXISTS `CoreCmsOrder` (
   `shipAddress` varchar(200) DEFAULT NULL COMMENT '收货详细地址',
   `shipName` varchar(50) DEFAULT NULL COMMENT '收货人姓名',
   `shipMobile` varchar(50) DEFAULT NULL COMMENT '收货电话',
-  `weight` decimal(10,0) NOT NULL COMMENT '商品总重量',
+  `weight` decimal(10,2) NOT NULL COMMENT '商品总重量',
   `taxType` int(11) NOT NULL COMMENT '开发票',
   `taxCode` varchar(50) DEFAULT NULL COMMENT '税号',
   `taxTitle` varchar(50) DEFAULT NULL COMMENT '发票抬头',
   `point` int(11) NOT NULL COMMENT '使用积分',
-  `pointMoney` decimal(10,0) NOT NULL COMMENT '积分抵扣金额',
-  `orderDiscountAmount` decimal(10,0) NOT NULL COMMENT '订单优惠金额',
-  `goodsDiscountAmount` decimal(10,0) NOT NULL COMMENT '商品优惠金额',
-  `couponDiscountAmount` decimal(10,0) NOT NULL COMMENT '优惠券优惠额度',
+  `pointMoney` decimal(10,2) NOT NULL COMMENT '积分抵扣金额',
+  `orderDiscountAmount` decimal(10,2) NOT NULL COMMENT '订单优惠金额',
+  `goodsDiscountAmount` decimal(10,2) NOT NULL COMMENT '商品优惠金额',
+  `couponDiscountAmount` decimal(10,2) NOT NULL COMMENT '优惠券优惠额度',
   `coupon` longtext COMMENT '优惠券信息',
   `promotionList` varchar(255) DEFAULT NULL COMMENT '优惠信息',
   `memo` varchar(255) DEFAULT NULL COMMENT '买家备注',
@@ -6628,15 +6628,15 @@ CREATE TABLE IF NOT EXISTS `CoreCmsOrderItem` (
   `sn` varchar(30) DEFAULT NULL COMMENT '货品编码',
   `bn` varchar(30) DEFAULT NULL COMMENT '商品编码',
   `name` varchar(200) NOT NULL COMMENT '商品名称',
-  `price` decimal(10,0) NOT NULL COMMENT '货品价格单价',
-  `costprice` decimal(10,0) NOT NULL COMMENT '货品成本价单价',
-  `mktprice` decimal(10,0) NOT NULL COMMENT '市场价',
+  `price` decimal(10,2) NOT NULL COMMENT '货品价格单价',
+  `costprice` decimal(10,2) NOT NULL COMMENT '货品成本价单价',
+  `mktprice` decimal(10,2) NOT NULL COMMENT '市场价',
   `imageUrl` varchar(100) NOT NULL COMMENT '图片',
   `nums` int(11) NOT NULL COMMENT '数量',
-  `amount` decimal(10,0) NOT NULL COMMENT '总价',
-  `promotionAmount` decimal(10,0) NOT NULL COMMENT '商品优惠总金额',
+  `amount` decimal(10,2) NOT NULL COMMENT '总价',
+  `promotionAmount` decimal(10,2) NOT NULL COMMENT '商品优惠总金额',
   `promotionList` varchar(255) DEFAULT NULL COMMENT '促销信息',
-  `weight` decimal(10,0) NOT NULL COMMENT '总重量',
+  `weight` decimal(10,2) NOT NULL COMMENT '总重量',
   `sendNums` int(11) NOT NULL COMMENT '发货数量',
   `addon` longtext COMMENT '货品明细序列号存储',
   `createTime` datetime NOT NULL COMMENT '创建时间',
@@ -6801,7 +6801,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsPinTuanRule` (
   `endTime` datetime NOT NULL COMMENT '结束时间',
   `peopleNumber` int(11) NOT NULL COMMENT '人数2-10人',
   `significantInterval` int(11) NOT NULL COMMENT '单位分钟',
-  `discountAmount` decimal(10,0) NOT NULL COMMENT '优惠金额',
+  `discountAmount` decimal(10,2) NOT NULL COMMENT '优惠金额',
   `maxNums` int(11) NOT NULL COMMENT '每人限购数量',
   `maxGoodsNums` int(11) NOT NULL COMMENT '每个商品活动数量',
   `sort` int(11) NOT NULL COMMENT '排序',
@@ -6821,11 +6821,11 @@ CREATE TABLE IF NOT EXISTS `CoreCmsProducts` (
   `goodsId` int(11) NOT NULL COMMENT '商品序列',
   `barcode` varchar(128) DEFAULT NULL COMMENT '商品条码',
   `sn` varchar(30) DEFAULT NULL COMMENT '货品编码',
-  `price` decimal(10,0) NOT NULL COMMENT '货品价格',
-  `costprice` decimal(10,0) NOT NULL COMMENT '货品成本价',
-  `mktprice` decimal(10,0) NOT NULL COMMENT '货品市场价',
+  `price` decimal(10,2) NOT NULL COMMENT '货品价格',
+  `costprice` decimal(10,2) NOT NULL COMMENT '货品成本价',
+  `mktprice` decimal(10,2) NOT NULL COMMENT '货品市场价',
   `marketable` bit(1) NOT NULL COMMENT '是否上架',
-  `weight` decimal(10,0) NOT NULL COMMENT '重量(千克)',
+  `weight` decimal(10,2) NOT NULL COMMENT '重量(千克)',
   `stock` int(11) NOT NULL COMMENT '库存',
   `freezeStock` int(11) NOT NULL COMMENT '冻结库存',
   `spesDesc` longtext COMMENT '规格值',
@@ -7391,9 +7391,9 @@ CREATE TABLE IF NOT EXISTS `CoreCmsProductsDistribution` (
   `id` int(11) NOT NULL COMMENT '序号',
   `productsId` int(11) NOT NULL COMMENT '货品序列',
   `productsSN` varchar(50) NOT NULL COMMENT '货品货号',
-  `levelOne` decimal(10,0) NOT NULL COMMENT '一级佣金',
-  `levelTwo` decimal(10,0) NOT NULL COMMENT '二级佣金',
-  `levelThree` decimal(10,0) NOT NULL COMMENT '三级佣金',
+  `levelOne` decimal(10,2) NOT NULL COMMENT '一级佣金',
+  `levelTwo` decimal(10,2) NOT NULL COMMENT '二级佣金',
+  `levelThree` decimal(10,2) NOT NULL COMMENT '三级佣金',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='货品三级佣金表';
@@ -7521,7 +7521,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsServices` (
   `ticketNumber` int(11) NOT NULL COMMENT '核销服务券数量',
   `createTime` datetime NOT NULL COMMENT '项目创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '项目更新时间',
-  `money` decimal(10,0) NOT NULL COMMENT '售价'
+  `money` decimal(10,2) NOT NULL COMMENT '售价'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='服务项目表';
 
 -- --------------------------------------------------------
@@ -7549,8 +7549,8 @@ CREATE TABLE IF NOT EXISTS `CoreCmsShip` (
   `continueUnit` int(11) NOT NULL COMMENT '续重',
   `isdefaultAreaFee` bit(1) NOT NULL COMMENT '是否按地区设置配送费用',
   `areaType` int(11) NOT NULL COMMENT '地区类型',
-  `firstunitPrice` decimal(10,0) NOT NULL COMMENT '首重费用',
-  `continueunitPrice` decimal(10,0) NOT NULL COMMENT '续重费用',
+  `firstunitPrice` decimal(10,2) NOT NULL COMMENT '首重费用',
+  `continueunitPrice` decimal(10,2) NOT NULL COMMENT '续重费用',
   `exp` longtext COMMENT '配送费用计算表达式',
   `logiName` varchar(50) DEFAULT NULL COMMENT '物流公司名称',
   `logiCode` varchar(50) DEFAULT NULL COMMENT '物流公司编码',
@@ -7559,7 +7559,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsShip` (
   `status` int(11) NOT NULL COMMENT '状态1正常2停用',
   `isfreePostage` bit(1) NOT NULL COMMENT '是否包邮',
   `areaFee` longtext COMMENT '地区配送费用',
-  `goodsMoney` decimal(10,0) NOT NULL COMMENT '商品总额满多少免运费'
+  `goodsMoney` decimal(10,2) NOT NULL COMMENT '商品总额满多少免运费'
 ) ENGINE=MyISAM AUTO_INCREMENT=1014 DEFAULT CHARSET=utf8 COMMENT='配送方式表';
 
 --
@@ -7639,7 +7639,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsStore` (
   `isDefault` bit(1) NOT NULL COMMENT '是否默认',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
-  `distance` decimal(10,0) NOT NULL COMMENT '距离'
+  `distance` decimal(10,2) NOT NULL COMMENT '距离'
 ) ENGINE=MyISAM AUTO_INCREMENT=1009 DEFAULT CHARSET=utf8 COMMENT='门店表';
 
 --
@@ -7665,7 +7665,7 @@ CREATE TABLE IF NOT EXISTS `CoreCmsUser` (
   `birthday` datetime DEFAULT NULL COMMENT '生日',
   `avatarImage` varchar(255) DEFAULT NULL COMMENT '头像',
   `nickName` varchar(50) DEFAULT NULL COMMENT '昵称',
-  `balance` decimal(10,0) NOT NULL COMMENT '余额',
+  `balance` decimal(10,2) NOT NULL COMMENT '余额',
   `point` int(11) NOT NULL COMMENT '积分',
   `grade` int(11) NOT NULL COMMENT '用户等级',
   `createTime` datetime NOT NULL COMMENT '创建时间',
@@ -7686,8 +7686,8 @@ CREATE TABLE IF NOT EXISTS `CoreCmsUserBalance` (
   `id` int(11) NOT NULL COMMENT '序列',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `type` int(11) NOT NULL COMMENT '类型',
-  `money` decimal(10,0) NOT NULL COMMENT '金额',
-  `balance` decimal(10,0) NOT NULL COMMENT '余额',
+  `money` decimal(10,2) NOT NULL COMMENT '金额',
+  `balance` decimal(10,2) NOT NULL COMMENT '余额',
   `sourceId` varchar(20) DEFAULT NULL COMMENT '资源id',
   `memo` varchar(200) DEFAULT NULL COMMENT '描述',
   `createTime` datetime NOT NULL COMMENT '创建时间'
@@ -7853,14 +7853,14 @@ CREATE TABLE IF NOT EXISTS `CoreCmsUserShip` (
 CREATE TABLE IF NOT EXISTS `CoreCmsUserTocash` (
   `id` int(11) NOT NULL COMMENT 'id',
   `userId` int(11) NOT NULL COMMENT '用户ID',
-  `money` decimal(10,0) NOT NULL COMMENT '提现金额',
+  `money` decimal(10,2) NOT NULL COMMENT '提现金额',
   `bankName` varchar(60) DEFAULT NULL COMMENT '银行名称',
   `bankCode` varchar(12) DEFAULT NULL COMMENT '银行缩写',
   `bankAreaId` int(11) DEFAULT NULL COMMENT '账号地区ID',
   `accountBank` varchar(255) DEFAULT NULL COMMENT '开户行',
   `accountName` varchar(60) DEFAULT NULL COMMENT '账户名',
   `cardNumber` varchar(30) DEFAULT NULL COMMENT '卡号',
-  `withdrawals` decimal(10,0) NOT NULL COMMENT '提现服务费',
+  `withdrawals` decimal(10,2) NOT NULL COMMENT '提现服务费',
   `status` int(11) NOT NULL COMMENT '提现状态',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间'
