@@ -1,3 +1,10 @@
+2021-07-20
+1、删除【CoreCmsGoodsType】表。
+2、删除【CoreCmsGoodsTypeSpecRel】表。
+3、删除【CoreCmsGoodsTypeParams】表。
+4、商品表增加【goodsSkuIds】字段。sku序列
+5、商品表增加【goodsParamsIds】字段。参数序列
+
 2021-06-08 
 修复【SysLoginRecord】表【os】字段，【browser】字段长度过低，导致mac操作系统访问数据过长无法存储的问题。
 2021-06-09
