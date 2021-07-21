@@ -530,11 +530,6 @@
             演示类
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.#ctor(CoreCms.Net.Caching.AutoMate.RedisCache.IRedisOperationRepository,CoreCms.Net.IServices.ICoreCmsAgentServices,CoreCms.Net.IServices.ICoreCmsDistributionOrderServices)">
-            <summary>
-            构造函数
-            </summary>
-        </member>
         <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.Index">
             <summary>
             默认首页
@@ -1720,9 +1715,6 @@
             <summary>
                 构造函数
             </summary>
-            <param name="webHostEnvironment"></param>
-            <param name="coreCmsGoodsParamsServices"></param>
-            <param name="coreCmsGoodsTypeParamsServices"></param>
         </member>
         <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsGoodsParamsController.GetPageList">
             <summary>

@@ -48,9 +48,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        /// <param name="webHostEnvironment"></param>
-        /// <param name="coreCmsGoodsParamsServices"></param>
-        /// <param name="coreCmsGoodsTypeParamsServices"></param>
         public CoreCmsGoodsParamsController(IWebHostEnvironment webHostEnvironment,
             ICoreCmsGoodsParamsServices coreCmsGoodsParamsServices)
         {
