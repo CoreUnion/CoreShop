@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NPOI" Version="2.5.3" />
+    <PackageReference Include="ToolGood.Words" Version="3.0.2.6" />
   </ItemGroup>
 
   <ItemGroup>

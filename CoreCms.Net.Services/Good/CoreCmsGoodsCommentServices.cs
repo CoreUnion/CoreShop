@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
+using ToolGood.Words;
 
 
 namespace CoreCms.Net.Services
@@ -38,15 +39,15 @@ namespace CoreCms.Net.Services
         private readonly ICoreCmsGoodsCommentRepository _dal;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IServiceProvider _serviceProvider;
-
+        private readonly IToolsServices _toolsServices;
         public CoreCmsGoodsCommentServices(IUnitOfWork unitOfWork, ICoreCmsGoodsCommentRepository dal,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider, IToolsServices toolsServices)
         {
             this._dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
-
+            _toolsServices = toolsServices;
         }
 
         /// <summary>
@@ -73,10 +74,12 @@ namespace CoreCms.Net.Services
                 //已经评价或者存在问题
                 return res;
             }
-
-
             var goodComments = new List<CoreCmsGoodsComment>();
             var gid = new List<int>();
+
+
+
+
             foreach (var item in items)
             {
                 //判断此条记录是否是此订单下面的
@@ -96,6 +99,9 @@ namespace CoreCms.Net.Services
                 {
                     images = string.Join(",", item.images);
                 }
+
+                //过滤违规字符串
+                item.textarea = await _toolsServices.IllegalWordsReplace(item.textarea);
 
                 var commentModel = new CoreCmsGoodsComment
                 {

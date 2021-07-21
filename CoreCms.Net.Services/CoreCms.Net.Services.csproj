@@ -21,6 +21,7 @@
     <PackageReference Include="Senparc.Weixin.MP" Version="16.12.400" />
     <PackageReference Include="Senparc.Weixin.WxOpen" Version="3.11.400" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="ToolGood.Words" Version="3.0.2.6" />
   </ItemGroup>
 
   <ItemGroup>
