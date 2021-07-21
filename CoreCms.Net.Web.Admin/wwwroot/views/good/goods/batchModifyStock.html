@@ -1,5 +1,6 @@
 <script type="text/html" template lay-done="layui.data.sendParams(d);">
     <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoods-batchModifyStock" id="LAY-app-CoreCmsGoods-batchModifyStock">
+        <input type="hidden" name="ids" value="{{d.params.data.entity.id}}">
         <div class="warning-msg">
             <div class="warning-msg-content">
                 <p>当前选中{{ d.params.data.entity.id.length }}条数据</p>
@@ -9,9 +10,9 @@
             <label class="layui-form-label">调整类型：</label>
             <div class="layui-input-inline">
                 <select name="modifyType">
-                    <option value="=">=</option>
                     <option value="+">+</option>
                     <option value="-">-</option>
+                    <option value="=">=</option>
                     <option value="*">x</option>
                 </select>
             </div>
@@ -23,7 +24,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoods-batchModifyStock-submit" id="LAY-app-CoreCmsGoods-batchModifyStock-submit" value="确认编辑">
         </div>
     </div>

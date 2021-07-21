@@ -16,37 +16,36 @@
             </div>
             <div id="layui-card">
                 <div class="layui-form" lay-filter="LAY-app-CoreCmsGoods-batchModifyPrice" id="LAY-app-CoreCmsGoods-batchModifyPrice">
-                    <div class="layui-form">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">价格类型：</label>
-                            <div class="layui-input-inline">
-                                <select name="priceType">
-                                    {{# layui.each(d.params.data.priceType, function(index, item){ }}
-                                    <option value="{{ item.title }}">{{ item.description }}</option>
-                                    {{# }); }}
-                                </select>
-                            </div>
+                    <input type="hidden" name="ids" value="{{d.params.data.entity.id}}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">价格类型：</label>
+                        <div class="layui-input-inline">
+                            <select name="priceType">
+                                {{# layui.each(d.params.data.priceType, function(index, item){ }}
+                                <option value="{{ item.title }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整类型：</label>
-                            <div class="layui-input-inline">
-                                <select name="modifyType">
-                                    <option value="=">=</option>
-                                    <option value="-">-</option>
-                                    <option value="+">+</option>
-                                    <option value="*">x</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">调整类型：</label>
+                        <div class="layui-input-inline">
+                            <select name="modifyType">
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                                <option value="=">=</option>
+                                <option value="*">x</option>
+                            </select>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整值：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" value="" name="priceValue" lay-verType="tips" lay-verify="required|money" placeholder="请输入金额调整值" autocomplete="off" class="layui-input">
-                            </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">调整值：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" value="" name="priceValue" lay-verType="tips" lay-verify="required|money" placeholder="请输入金额调整值" autocomplete="off" class="layui-input">
                         </div>
-                        <div class="layui-form-item">
-                            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoods-batchModifyPrice-submit" id="LAY-app-CoreCmsGoods-batchModifyPrice-submit" value="确认提交">
-                        </div>
+                    </div>
+                    <div class="layui-form-item core-hidden">
+                        <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsGoods-batchModifyPrice-submit" id="LAY-app-CoreCmsGoods-batchModifyPrice-submit" value="确认提交">
                     </div>
                 </div>
             </div>
