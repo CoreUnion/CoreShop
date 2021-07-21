@@ -48,6 +48,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="illegalWord\IllegalKeywords.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
@@ -73,6 +77,7 @@
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.19" />
+    <PackageReference Include="ToolGood.Words" Version="3.0.2.6" />
   </ItemGroup>
 
   <ItemGroup>

@@ -283,6 +283,20 @@
 
     }
 
+
+    /// <summary>
+    /// Tools工具常量
+    /// </summary>
+    public static class ToolsVars
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string IllegalWordsCahceName = "IllegalWordsCahce";
+
+    }
+
+
     /// <summary>
     /// 权限变量配置
     /// </summary>
