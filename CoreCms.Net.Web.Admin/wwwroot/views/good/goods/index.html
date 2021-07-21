@@ -31,10 +31,10 @@
                             <option value="del">删除</option>
                         </select>
                     </div>
-                </div>     
+                </div>
             </div>
             <div class="layui-inline" style="float: right;">
-                <div class="layui-inline">  
+                <div class="layui-inline">
                     <div class="layui-input-inline">
                         <input type="text" name="name" id="name" placeholder="请输入商品名称" class="layui-input">
                     </div>
@@ -217,7 +217,7 @@
                             },
                             { field: 'name', title: '商品名称', sort: false },
                             //{ field: 'stock', title: '库存', sort: false, width: 60 },
-                            { field: 'sort', title: '排序', sort: false, width: 40},
+                            { field: 'sort', title: '排序', sort: false, width: 40 },
                             {
                                 field: 'productsDistributionType', title: '佣金方式', sort: false, width: 80, templet: function (data) {
                                     if (data.productsDistributionType === 1) {
@@ -351,9 +351,10 @@
                 function setLabel(data) {
                     coreHelper.Post("Api/CoreCmsGoods/GetLabel", { id: data }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '设置标签',
-                                area: ['600px', '600px'],
+                                area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsLabel-create',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goods/getLabel', { data: e.data }).done(function () {
@@ -380,6 +381,11 @@
                                                 });
                                             });
                                     });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }, btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsLabel-createForm-submit").click();
                                 }
                             });
                         } else {
@@ -391,9 +397,10 @@
                 function dellabel(data) {
                     coreHelper.Post("Api/CoreCmsGoods/GetDeleteLabel", { id: data }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '取消标签',
-                                area: ['600px', '600px'],
+                                area: ['600px', '300px'],
                                 id: 'LAY-popup-CoreCmsLabel-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goods/delLabel', { data: e.data }).done(function () {
@@ -420,6 +427,11 @@
                                                 });
                                             });
                                     });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }, btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsLabel-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -442,9 +454,11 @@
                 function modifyPrice(data) {
                     coreHelper.Post("Api/CoreCmsGoods/GetBatchModifyPrice", { id: data }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            console.log(e.data);
+                            admin.popup({
+                                shadeClose: false,
                                 title: '批量修改价格',
-                                area: ['600px', '600px'],
+                                area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsGoods-batchModifyPrice',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goods/batchModifyPrice', { data: e.data }).done(function () {
@@ -453,6 +467,8 @@
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
                                                 if (debug) { console.log(field); } //开启调试返回数据
+                                                field.ids = field.ids.split(',');
+
                                                 //return false;
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
                                                 coreHelper.Post("Api/CoreCmsGoods/DoBatchModifyPrice", field, function (e) {
@@ -467,6 +483,11 @@
                                                 });
                                             });
                                     })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }, btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsGoods-batchModifyPrice-submit").click();
                                 }
                             });
                         } else {
@@ -478,9 +499,10 @@
                 function modifyStock(data) {
                     coreHelper.Post("Api/CoreCmsGoods/GetBatchModifyStock", { id: data }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '批量修改库存',
-                                area: ['600px', '400px'],
+                                area: ['400px', '300px'],
                                 id: 'LAY-popup-CoreCmsGoods-batchModifyStock',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goods/batchModifyStock', { data: e.data }).done(function () {
@@ -504,6 +526,12 @@
                                                 });
                                             });
                                     })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsGoods-batchModifyStock-submit").click();
                                 }
                             });
                         } else {
