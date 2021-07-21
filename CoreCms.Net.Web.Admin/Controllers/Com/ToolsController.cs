@@ -424,7 +424,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
 
                     var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
                     var objectMeta = new ObjectMetadata
@@ -522,7 +522,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                var saveUrl = "/Upload/" + today + "/";
+                var saveUrl = _filesStorageOptions.Path + today + "/";
                 var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
                 string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
 
@@ -554,7 +554,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var md5 = OssUtils.ComputeContentMd5(fileStream, memStream.Length);
 
                     var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
                     var objectMeta = new ObjectMetadata
@@ -608,6 +608,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     src = _filesStorageOptions.BucketBindUrl + filePath
                 };
             }
+            jm.otherData = _filesStorageOptions;
 
 
             return Json(jm);
@@ -688,7 +689,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
 
                     var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
                     var objectMeta = new ObjectMetadata

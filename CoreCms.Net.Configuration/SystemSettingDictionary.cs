@@ -175,7 +175,7 @@ namespace CoreCms.Net.Configuration
 
             //附件存储
             di.Add(SystemSettingConstVars.FilesStorageType, new DictionaryKeyValues() { sKey = "存储方式", sValue = "LocalStorage" });
-            di.Add(SystemSettingConstVars.FilesStoragePath, new DictionaryKeyValues() { sKey = "存储路径", sValue = "Upload" });
+            di.Add(SystemSettingConstVars.FilesStoragePath, new DictionaryKeyValues() { sKey = "存储路径", sValue = "/upload/" });
             di.Add(SystemSettingConstVars.FilesStorageFileSuffix, new DictionaryKeyValues() { sKey = "文件后缀类型", sValue = "gif,jpg,jpeg,png,bmp,xls,xlsx,doc,pdf,mp4,WebM,Ogv" });
             di.Add(SystemSettingConstVars.FilesStorageFileMaxSize, new DictionaryKeyValues() { sKey = "文件最大大小", sValue = "10" });
             di.Add(SystemSettingConstVars.FilesStorageBucketBindUrl, new DictionaryKeyValues() { sKey = "云存储绑定域名", sValue = "https://www.corecms.net/" });
