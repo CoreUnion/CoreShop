@@ -299,7 +299,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                string saveUrl = "/upload/" + today + "/";
+                string saveUrl = filesStorageOptions.Path + today + "/";
                 string dirPath = _webHostEnvironment.WebRootPath + saveUrl;
                 if (!Directory.Exists(dirPath))
                 {
@@ -333,7 +333,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     string md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
 
                     string filePath = filesStorageOptions.Path + today + "/" + newFileName;//云文件保存路径
-                                                                            //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                                                                                           //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(filesStorageOptions.Endpoint, filesStorageOptions.AccessKeyId, filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
                     var objectMeta = new ObjectMetadata
