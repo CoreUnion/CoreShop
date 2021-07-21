@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsLabel-createForm-submit" id="LAY-app-CoreCmsLabel-createForm-submit" value="确认设置">
         </div>
     </div>
@@ -77,8 +77,14 @@
                 });
                 $("#add_label").click(function () {
                     var label_text = $("#label_name").val();
-                    var label_style = $("#style").val();
-                    appendLabel(label_text, label_style);
+                    if (label_text) {
+                        var label_style = $("#style").val();
+                        appendLabel(label_text, label_style);
+                    } else {
+                        layer.msg('标签名称不能为空');
+                        return false;
+                    }
+
                 });
                 //删除标签
                 $(".layui-layer-content").on('click', '.layui-unselect', function () {
