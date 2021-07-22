@@ -15,9 +15,11 @@ using CoreCms.Net.Caching.AutoMate.RedisCache;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Utility.Helper;
+using Essensoft.Paylink.WeChatPay;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using ToolGood.Words;
 
 namespace CoreCms.Net.Web.Admin.Controllers
@@ -28,11 +30,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
     //[DisableCors]
     public class DemoController : Controller
     {
-        private readonly IToolsServices _toolsServices;
+        private readonly IOptions<WeChatPayOptions> _optionsAccessor;
 
-        public DemoController(IToolsServices toolsServices)
+        public DemoController(IOptions<WeChatPayOptions> optionsAccessor)
         {
-            _toolsServices = toolsServices;
+            _optionsAccessor = optionsAccessor;
         }
 
 
@@ -40,12 +42,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// 默认首页
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var t = await _toolsServices.IllegalWordsReplace("测试");
+            var outData = _optionsAccessor.Value;
 
             //return Content(t);
-            return Content(t.ToString());
+            return Json(outData);
         }
     }
 }

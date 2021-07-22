@@ -65,8 +65,10 @@ namespace CoreCms.Net.Loging
         /// <param name="exception">异常</param>
         public static void WriteAll(LogLevel logLevel, LogType logType, string logTitle, string message, Exception exception = null)
         {
-            WriteDbLog(logLevel, logType, logTitle, message, exception);
+            //先存文件
             WriteFileLog(logLevel, logType, logTitle, message, exception);
+            //后存数据库
+            WriteDbLog(logLevel, logType, logTitle, message, exception);
         }
 
         /// <summary>
