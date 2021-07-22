@@ -46,7 +46,7 @@ namespace CoreCms.Net.Filter
             {
                 status = false,
                 code = (int)status,
-                msg = "发生了全局异常，请联系管理员",
+                msg = "系统返回异常，请联系管理员进行处理！",
                 data = context.Exception
             };
             context.ExceptionHandled = true;

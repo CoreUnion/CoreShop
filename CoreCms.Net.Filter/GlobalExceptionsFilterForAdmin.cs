@@ -43,7 +43,7 @@ namespace CoreCms.Net.Filter
             //处理各种异常
             var jm = new AdminUiCallBack();
             jm.code = (int)status;
-            jm.msg = "发生了全局异常请联系管理员";
+            jm.msg = "系统异常，请查看错误描述并进行解决。";
             jm.data = context.Exception;
             context.ExceptionHandled = true;
             context.Result = new ObjectResult(jm);
