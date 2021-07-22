@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
         private readonly ICoreCmsBillRefundServices _billRefundServices;
         private readonly IWeChatPayNotifyClient _client;
         private readonly IOptions<WeChatPayOptions> _optionsAccessor;
-        private IRedisOperationRepository _redisOperationRepository;
+        private readonly IRedisOperationRepository _redisOperationRepository;
         /// <summary>
         ///     构造函数
         /// </summary>
