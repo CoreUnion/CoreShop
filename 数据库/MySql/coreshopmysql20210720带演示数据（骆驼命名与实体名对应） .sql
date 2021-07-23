@@ -8308,21 +8308,6 @@ INSERT INTO `SysMenu` (`id`, `parentId`, `identificationCode`, `menuName`, `menu
 (190, 54, 'DoEdit', '编辑提交', NULL, NULL, '/Api/CoreCmsBrand/DoEdit', 1, 5, 'CoreCmsBrand:DoEdit', NULL, NULL, b'0', b'0', '2021-04-11 04:15:17', NULL),
 (191, 54, 'DoDelete', '单选删除', NULL, NULL, '/Api/CoreCmsBrand/DoDelete', 1, 6, 'CoreCmsBrand:DoDelete', NULL, NULL, b'0', b'0', '2021-04-11 04:15:17', NULL),
 (192, 54, 'DoSetisShow', '设置是否显示', NULL, NULL, '/Api/CoreCmsBrand/DoSetisShow', 1, 7, 'CoreCmsBrand:DoSetisShow', NULL, NULL, b'0', b'0', '2021-04-11 04:15:17', NULL),
-(193, 55, 'GetPageList', '获取列表', NULL, NULL, '/Api/CoreCmsGoodsType/GetPageList', 1, 0, 'CoreCmsGoodsType:GetPageList', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(194, 55, 'GetIndex', '首页数据', NULL, NULL, '/Api/CoreCmsGoodsType/GetIndex', 1, 1, 'CoreCmsGoodsType:GetIndex', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(195, 55, 'GetCreate', '创建数据', NULL, NULL, '/Api/CoreCmsGoodsType/GetCreate', 1, 2, 'CoreCmsGoodsType:GetCreate', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(196, 55, 'DoCreate', '创建提交', NULL, NULL, '/Api/CoreCmsGoodsType/DoCreate', 1, 3, 'CoreCmsGoodsType:DoCreate', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(197, 55, 'GetEdit', '编辑数据', NULL, NULL, '/Api/CoreCmsGoodsType/GetEdit', 1, 4, 'CoreCmsGoodsType:GetEdit', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(198, 55, 'DoEdit', '编辑提交', NULL, NULL, '/Api/CoreCmsGoodsType/DoEdit', 1, 5, 'CoreCmsGoodsType:DoEdit', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(199, 55, 'DoDelete', '单选删除', NULL, NULL, '/Api/CoreCmsGoodsType/DoDelete', 1, 6, 'CoreCmsGoodsType:DoDelete', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(200, 55, 'GetGoodsParamsPageList', '获取已有参数列表', NULL, NULL, '/Api/CoreCmsGoodsType/GetGoodsParamsPageList', 1, 7, 'CoreCmsGoodsType:GetGoodsParamsPageList', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(201, 55, 'GetGoodsParams', '选择参数面板', NULL, NULL, '/Api/CoreCmsGoodsType/GetGoodsParams', 1, 8, 'CoreCmsGoodsType:GetGoodsParams', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(202, 55, 'GetTypeSpecSpecPageList', '获取已有属性列表', NULL, NULL, '/Api/CoreCmsGoodsType/GetTypeSpecSpecPageList', 1, 9, 'CoreCmsGoodsType:GetTypeSpecSpecPageList', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(203, 55, 'GetTypeSpecIndex', '选择属性面板', NULL, NULL, '/Api/CoreCmsGoodsType/GetTypeSpecIndex', 1, 10, 'CoreCmsGoodsType:GetTypeSpecIndex', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(204, 55, 'GetEditParameters', '编辑参数', NULL, NULL, '/Api/CoreCmsGoodsType/GetEditParameters', 1, 11, 'CoreCmsGoodsType:GetEditParameters', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(205, 55, 'DoEditParameters', '编辑参数提交', NULL, NULL, '/Api/CoreCmsGoodsType/DoEditParameters', 1, 12, 'CoreCmsGoodsType:DoEditParameters', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(206, 55, 'GetEditTypes', '编辑属性', NULL, NULL, '/Api/CoreCmsGoodsType/GetEditTypes', 1, 13, 'CoreCmsGoodsType:GetEditTypes', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
-(207, 55, 'DoEditTypes', '编辑属性提交', NULL, NULL, '/Api/CoreCmsGoodsType/DoEditTypes', 1, 14, 'CoreCmsGoodsType:DoEditTypes', NULL, NULL, b'0', b'0', '2021-04-11 04:15:23', NULL),
 (208, 58, 'GetPageList', '获取列表', NULL, NULL, '/Api/CoreCmsGoodsTypeSpec/GetPageList', 1, 0, 'CoreCmsGoodsTypeSpec:GetPageList', NULL, NULL, b'0', b'0', '2021-04-11 04:15:30', NULL),
 (209, 58, 'GetIndex', '首页数据', NULL, NULL, '/Api/CoreCmsGoodsTypeSpec/GetIndex', 1, 1, 'CoreCmsGoodsTypeSpec:GetIndex', NULL, NULL, b'0', b'0', '2021-04-11 04:15:30', NULL),
 (210, 58, 'GetCreate', '创建数据', NULL, NULL, '/Api/CoreCmsGoodsTypeSpec/GetCreate', 1, 2, 'CoreCmsGoodsTypeSpec:GetCreate', NULL, NULL, b'0', b'0', '2021-04-11 04:15:30', NULL),
@@ -9917,11 +9902,6 @@ ALTER TABLE `CoreCmsGoodsGrade`
 ALTER TABLE `CoreCmsGoodsParams`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `CoreCmsGoodsType`
---
-ALTER TABLE `CoreCmsGoodsType`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `CoreCmsGoodsTypeSpec`
@@ -10503,11 +10483,6 @@ ALTER TABLE `CoreCmsGoodsGrade`
 --
 ALTER TABLE `CoreCmsGoodsParams`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',AUTO_INCREMENT=25;
---
--- AUTO_INCREMENT for table `CoreCmsGoodsType`
---
-ALTER TABLE `CoreCmsGoodsType`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',AUTO_INCREMENT=1137;
 --
 -- AUTO_INCREMENT for table `CoreCmsGoodsTypeSpec`
 --
