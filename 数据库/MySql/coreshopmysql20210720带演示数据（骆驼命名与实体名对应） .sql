@@ -8190,7 +8190,6 @@ INSERT INTO `SysMenu` (`id`, `parentId`, `identificationCode`, `menuName`, `menu
 (52, 51, 'goods', '商品列表', '', 'good/goods/index', 'good/goods/list', 0, 1, 'good:goods:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:18:55'),
 (53, 51, 'goodscategory', '商品分类', '', 'good/goodscategory/index', 'good/goodscategory/list', 0, 10, 'good:goodscategory:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:18:58'),
 (54, 51, 'goodsbrand', '品牌列表', '', 'good/goodsbrand/index', 'good/goodsbrand/list', 0, 20, 'good:goodsbrand:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:19:02'),
-(55, 51, 'goodstype', '商品类型', '', 'good/goodstype/index', 'good/goodstype/list', 0, 30, 'good:goodstype:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:19:05'),
 (56, 51, 'goodscomment', '商品评价', '', 'good/goodscomment/index', 'good/goodscomment/list', 0, 40, 'good:goodscomment:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:19:16'),
 (57, 51, 'goodsparams', '参数列表', '', 'good/goodsparams/index', 'good/goodsparams/list', 0, 35, 'good:goodsparams:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:19:12'),
 (58, 51, 'goodsTypeSpec', '商品属性', '', 'good/goodsTypeSpec/index', 'good/goodsTypeSpec/list', 0, 32, 'good:goodsTypeSpec:index', NULL, NULL, b'0', b'0', '2020-07-17 01:08:11', '2020-07-17 16:19:09'),

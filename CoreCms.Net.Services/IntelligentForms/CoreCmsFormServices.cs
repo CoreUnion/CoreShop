@@ -385,7 +385,7 @@ namespace CoreCms.Net.Services
                 formSubmitModel.payStatus = false;
                 formSubmitModel.status = false;
                 formSubmitModel.createTime = DateTime.Now;
-                formSubmitModel.ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                formSubmitModel.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
 
                 var formSubmitId = await _formSubmitServices.InsertReturnIdentityAsync(formSubmitModel);
 
