@@ -95,7 +95,10 @@ namespace CoreCms.Net.Middlewares
             var ip = context.Request.Headers["X-Forwarded-For"].ObjectToString();
             if (string.IsNullOrEmpty(ip))
             {
-                ip = context.Connection.RemoteIpAddress.ObjectToString();
+                if (context.Connection.RemoteIpAddress != null)
+                {
+                    ip = context.Connection.RemoteIpAddress.MapToIPv4().ObjectToString();
+                }
             }
             return ip;
         }

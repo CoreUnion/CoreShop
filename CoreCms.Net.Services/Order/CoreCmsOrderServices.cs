@@ -532,7 +532,7 @@ namespace CoreCms.Net.Services
                 order.orderDiscountAmount = cartDto.orderPromotionMoney > 0 ? cartDto.orderPromotionMoney : 0;
                 order.goodsDiscountAmount = cartDto.goodsPromotionMoney > 0 ? cartDto.goodsPromotionMoney : 0;
                 order.couponDiscountAmount = cartDto.couponPromotionMoney;
-                order.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                order.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                 //以上保存了订单主体表信息，以下生成订单明细表
                 var items = FormatOrderItems(cartDto.list, order.orderId);
                 if (!items.Any())
