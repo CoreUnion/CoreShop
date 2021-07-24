@@ -630,7 +630,8 @@ namespace CoreCms.Net.Services
                 var log = new CoreCmsUserLog();
                 log.userId = userInfo.id;
                 log.state = isReg ? (int)GlobalEnumVars.UserLogTypes.注册 : (int)GlobalEnumVars.UserLogTypes.登录;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
+                    _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                 log.createTime = DateTime.Now;
                 log.parameters = isReg ? GlobalEnumVars.UserLogTypes.注册.ToString() : GlobalEnumVars.UserLogTypes.登录.ToString();
                 await _userLogServices.InsertAsync(log);

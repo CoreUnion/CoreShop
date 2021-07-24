@@ -87,7 +87,7 @@ namespace CoreCms.Net.Services
                 oldLog.code = type;
                 oldLog.createTime = DateTime.Now;
                 oldLog.mobile = mobile;
-                oldLog.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                oldLog.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                 oldLog.isUsed = false;
                 var obj = new
                 {
@@ -238,7 +238,8 @@ namespace CoreCms.Net.Services
             oldLog.parameters = JsonConvert.SerializeObject(parameters);
             oldLog.contentBody = str;
             oldLog.createTime = DateTime.Now;
-            oldLog.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+            oldLog.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
+                _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
             oldLog.isUsed = isUsed;
 
             await _dal.InsertAsync(oldLog);

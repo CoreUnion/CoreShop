@@ -137,7 +137,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 //插入登录日志
                 var log = new SysLoginRecord();
                 log.username = model.userName;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
+                    _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
+
                 log.os = RuntimeInformation.OSDescription;
                 if (_httpContextAccessor.HttpContext != null)
                     log.browser = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.UserAgent];
@@ -152,7 +154,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 //插入登录日志
                 var log = new SysLoginRecord();
                 log.username = model.userName;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
+                    _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
+
                 log.os = RuntimeInformation.OSDescription;
                 if (_httpContextAccessor.HttpContext != null)
                     log.browser = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.UserAgent];
@@ -212,7 +216,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     if (_httpContextAccessor.HttpContext != null)
                     {
                         if (_httpContextAccessor.HttpContext.Connection.RemoteIpAddress != null)
+                        {
                             log.ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                        }
                         log.os = RuntimeInformation.OSDescription;
                         log.browser = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.UserAgent];
                     }
