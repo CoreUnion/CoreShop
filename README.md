@@ -1,7 +1,7 @@
 
 
 <p align="center">
-    <img alt="CoreShoplogo" src="https://files.cdn.corecms.net/coreshop/images/Logo/logo.png" width="602" height="175" style="margin-bottom: 10px;">
+    <img alt="CoreShoplogo" src="https://gitee.com/jianweie/images/raw/master/coreshop/images/Logo/logo.png" width="602" height="175" style="margin-bottom: 10px;">
 </p>
 
 <div align="center">
@@ -81,29 +81,29 @@
 
 | 真机截图 |
 |---------------------|
-| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/01.jpg)  |
-| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/02.jpg)  |
-| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/03.jpg)  |
-| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/04.jpg)  |
-| ![小程序截图](https://files.cdn.corecms.net/coreshop/images/WeChat/05.jpg)  |
+| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/01.jpg)  |
+| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/02.jpg)  |
+| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/03.jpg)  |
+| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/04.jpg)  |
+| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/05.jpg)  |
 
 #### 🎏 后端截图  
 
 | 后端 | 截图 |
 |---------------------|---------------------|
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/01.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/02.png)  |
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/03.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/04.png)  |
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/05.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/06.png)  |
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/07.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/08.png)  |
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/09.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/10.png)  |
-| ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/11.png)  | ![截图](https://files.cdn.corecms.net/coreshop/images/Admin/12.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/01.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/02.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/03.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/04.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/05.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/06.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/07.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/08.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/09.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/10.png)  |
+| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/11.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/12.png)  |
 
 
 #### 🎨 系统演示  
 
 | 微信小程序演示 | H5演示 |
 |---------------------|---------------------|
-| ![微信小程序演示](https://files.cdn.corecms.net/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://files.cdn.corecms.net/coreshop/images/QRCode/h5qCode.jpg)  |
+| ![微信小程序演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/h5qCode.jpg)  |
 
 
 1、H5网页演示地址：  
@@ -229,7 +229,7 @@ https://api.coreshop.corecms.net/job
 
 ### 💘 支持开源
 - 希望CoreShop对您有用，您的支持也是CoreShop开源的动力，CoreShop有你更精彩！
-![感谢您的支持](https://files.cdn.corecms.net/coreshop/images/PayeeCode.jpg "PayeeCode.png")
+![感谢您的支持](https://gitee.com/jianweie/images/raw/master/coreshop/images/PayeeCode.jpg "PayeeCode.png")
 
 
 
