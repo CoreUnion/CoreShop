@@ -107,27 +107,27 @@
 
 
 1、H5网页演示地址：  
-https://h5.coreshop.corecms.net  
+https://h5.demo.coreshop.cn  
 
 2、后端管理演示地址：  
-https://admin.coreshop.corecms.net  
+https://admin.demo.coreshop.cn  
 账号：coreshop  
 密码：coreshop  
 
 3、后端接口文档地址：  
-https://admin.coreshop.corecms.net/doc  
+https://admin.demo.coreshop.cn/doc  
 
 
 4、接口演示地址：  
 为方便前端开发者在不部署前后端的清下调试uni-app，此演示接口已取消跨域限制，uni-app中可以作为测试接口接入。  
-https://api.coreshop.corecms.net  
+https://api.demo.coreshop.cn  
 
 
 5、接口文档地址：  
-https://api.coreshop.corecms.net/doc  
+https://api.demo.coreshop.cn/doc  
 
 6、定时任务面板演示地址：  
-https://api.coreshop.corecms.net/job  
+https://api.demo.coreshop.cn/job  
 账号：coreshop  
 密码：coreshop 
 
