@@ -31,9 +31,13 @@ namespace CoreCms.Net.Filter
 
             var types = Assembly.Load("CoreCms.Net.Web.Admin").GetTypes();
 
-            foreach (var type in types)
+
+            var noController = new[] { "ToolsController", "LoginController", "DemoController" };
+
+            var controllers = types.Where(p => p.Name.Contains("Controller") && !noController.Contains(p.Name));
+            foreach (var type in controllers)
             {
-                if (type.Name.Length > 10 && type.BaseType.Name == "ControllerBase" && type.Name.EndsWith("Controller")) //如果是Controller
+                if (type.Name.Length > 10 && type.BaseType.Name == "Controller" && type.Name.EndsWith("Controller")) //如果是Controller
                 {
                     var members = type.GetMethods();
                     var cp = new ControllerPermission
@@ -50,30 +54,37 @@ namespace CoreCms.Net.Filter
                         cp.name += "【" + cp.description + "】";
                     }
 
-                    foreach (var member in members)
+
+                    var newMembers = members.Where(p =>
+                        p.ReturnType.Name == "ActionResult" || p.ReturnType.Name == "FileResult" ||
+                        p.ReturnType.Name == "JsonResult" || (p.ReturnType.GenericTypeArguments.Length > 0 && p.ReturnType.GenericTypeArguments[0].Name == "JsonResult")).ToList();
+
+                    foreach (var member in newMembers)
                     {
-                        if (member.Name == "ValidationProblem") continue;
+                        if (member.Name == "ValidationProblem" || member.Name =="Json") continue;
 
-                        if (member.ReturnType.Name == "ActionResult" || member.ReturnType.Name == "FileResult" || member.ReturnType.Name == "JsonResult" || (member.ReturnType.GenericTypeArguments.Length > 0 && member.ReturnType.GenericTypeArguments[0].Name == "JsonResult")) //如果是Action
+                        //if (member.ReturnType.Name == "ActionResult" || member.ReturnType.Name == "FileResult" || member.ReturnType.Name == "JsonResult" || (member.ReturnType.GenericTypeArguments.Length > 0 && member.ReturnType.GenericTypeArguments[0].Name == "JsonResult")) //如果是Action
+                        //{
+                        //}
+
+
+                        var ap = new ActionPermission
                         {
-                            var ap = new ActionPermission
-                            {
-                                name = member.Name,
-                                actionName = member.Name,
-                                controllerName = member.DeclaringType.Name.Substring(0, member.DeclaringType.Name.Length - 10)
-                            };
-                            // 去掉“Controller”后缀
+                            name = member.Name,
+                            actionName = member.Name,
+                            controllerName = member.DeclaringType.Name.Substring(0, member.DeclaringType.Name.Length - 10)
+                        };
+                        // 去掉“Controller”后缀
 
-                            var attrs = member.GetCustomAttributes(typeof(DescriptionAttribute), true);
-                            if (attrs.Length > 0) ap.description = (attrs[0] as DescriptionAttribute).Description;
+                        var attrs = member.GetCustomAttributes(typeof(DescriptionAttribute), true);
+                        if (attrs.Length > 0) ap.description = (attrs[0] as DescriptionAttribute).Description;
 
-                            if (!string.IsNullOrEmpty(ap.description))
-                            {
-                                ap.name += "【" + ap.description + "】";
-                            }
-                            cp.action.Add(ap);
-
+                        if (!string.IsNullOrEmpty(ap.description))
+                        {
+                            ap.name += "【" + ap.description + "】";
                         }
+                        cp.action.Add(ap);
+
                     }
                     cp.action = cp.action.Distinct(new ModelComparer()).ToList();
                     result.Add(cp);
