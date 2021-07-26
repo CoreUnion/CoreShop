@@ -103,7 +103,7 @@ namespace CoreCms.Net.Configuration
             LocalStorage = 0,
             [Description("阿里云OSS")]
             AliYunOSS = 1,
-            [Description("腾讯云OSS")]
+            [Description("腾讯云COS")]
             QCloudOSS = 2,
         }
 
