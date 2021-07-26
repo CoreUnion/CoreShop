@@ -182,7 +182,8 @@ namespace CoreCms.Net.Configuration
             di.Add(SystemSettingConstVars.FilesStorageAccessKeyId, new DictionaryKeyValues() { sKey = "云存储授权账户", sValue = "" });
             di.Add(SystemSettingConstVars.FilesStorageAccessKeySecret, new DictionaryKeyValues() { sKey = "云存储授权密钥", sValue = "" });
             di.Add(SystemSettingConstVars.FilesStorageTencentAccountId, new DictionaryKeyValues() { sKey = "腾讯云账户标识", sValue = "" });
-            di.Add(SystemSettingConstVars.FilesStorageTencentCosRegion, new DictionaryKeyValues() { sKey = "腾讯云存储桶地域", sValue = "" });
+            di.Add(SystemSettingConstVars.FilesStorageTencentCosRegion, new DictionaryKeyValues() { sKey = "腾讯云桶地域", sValue = "" });
+            di.Add(SystemSettingConstVars.FilesStorageTencentBucketName, new DictionaryKeyValues() { sKey = "腾讯云桶名称", sValue = "" });
             di.Add(SystemSettingConstVars.FilesStorageAliYunEndpoint, new DictionaryKeyValues() { sKey = "阿里云节点", sValue = "https://oss-cn-shenzhen.aliyuncs.com" });
             di.Add(SystemSettingConstVars.FilesStorageAliYunBucketName, new DictionaryKeyValues() { sKey = "阿里云桶名称", sValue = "CoreShop" });
 

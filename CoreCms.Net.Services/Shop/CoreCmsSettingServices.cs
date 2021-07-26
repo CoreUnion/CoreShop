@@ -186,6 +186,7 @@ namespace CoreCms.Net.Services
             //腾讯云
             filesStorageOptions.AccountId = GetValue(SystemSettingConstVars.FilesStorageTencentAccountId, configs, settings);
             filesStorageOptions.CosRegion = GetValue(SystemSettingConstVars.FilesStorageTencentCosRegion, configs, settings);
+            filesStorageOptions.TencentBucketName = GetValue(SystemSettingConstVars.FilesStorageTencentBucketName, configs, settings);
             //阿里云
             filesStorageOptions.BucketName = GetValue(SystemSettingConstVars.FilesStorageAliYunBucketName, configs, settings);
             filesStorageOptions.Endpoint = GetValue(SystemSettingConstVars.FilesStorageAliYunEndpoint, configs, settings);

@@ -37,6 +37,12 @@ namespace CoreCms.Net.Model.ViewModels.Options
         public string CosRegion { get; set; }
 
         /// <summary>
+        ///     存储桶名称（腾讯云）
+        /// </summary>
+        public string TencentBucketName { get; set; }
+
+
+        /// <summary>
         ///     授权账户
         /// </summary>
         public string AccessKeyId { get; set; }
