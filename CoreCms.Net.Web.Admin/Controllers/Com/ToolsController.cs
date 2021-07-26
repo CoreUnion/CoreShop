@@ -452,7 +452,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
                 string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
                 CosXmlConfig config = new CosXmlConfig.Builder()
-                    .SetAppid(appid)
+                    //.SetAppid(appid)
                     .IsHttps(true)  //设置默认 HTTPS 请求
                     .SetRegion(region)  //设置一个默认的存储桶地域
                     .SetDebugLog(true)  //显示日志
@@ -470,7 +470,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 }
 
                 var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.BucketName, filePath, bytes);
+                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
                 cosXml.PutObject(putObjectRequest);
 
                 jm.code = 0;
@@ -582,7 +582,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
                 string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
                 CosXmlConfig config = new CosXmlConfig.Builder()
-                    .SetAppid(appid)
+                    //.SetAppid(appid)
                     .IsHttps(true)  //设置默认 HTTPS 请求
                     .SetRegion(region)  //设置一个默认的存储桶地域
                     .SetDebugLog(true)  //显示日志
@@ -596,7 +596,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
 
                 var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.BucketName, filePath, bytes);
+                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
 
                 cosXml.PutObject(putObjectRequest);
 
@@ -715,7 +715,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
                 string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
                 CosXmlConfig config = new CosXmlConfig.Builder()
-                    .SetAppid(appid)
+                    //.SetAppid(appid)
                     .IsHttps(true)  //设置默认 HTTPS 请求
                     .SetRegion(region)  //设置一个默认的存储桶地域
                     .SetDebugLog(true)  //显示日志
@@ -733,7 +733,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 }
 
                 var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.BucketName, filePath, bytes);
+                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
                 cosXml.PutObject(putObjectRequest);
 
                 jm.uploaded = 1;
@@ -867,7 +867,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
                     string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
                     CosXmlConfig config = new CosXmlConfig.Builder()
-                        .SetAppid(appid)
+                        //.SetAppid(appid)
                         .IsHttps(true)  //设置默认 HTTPS 请求
                         .SetRegion(region)  //设置一个默认的存储桶地域
                         .SetDebugLog(true)  //显示日志
@@ -883,7 +883,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     byte[] bytes = memStream.ToArray();
 
                     var filePath = "Upload/QrCode/" + today + "/" + newFileName; //云文件保存路径
-                    COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.BucketName, filePath, bytes);
+                    COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
 
                     cosXml.PutObject(putObjectRequest);
 

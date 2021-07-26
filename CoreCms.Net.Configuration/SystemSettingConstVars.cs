@@ -631,6 +631,10 @@ namespace CoreCms.Net.Configuration
         /// 腾讯云存储桶地域
         /// </summary>
         public static readonly string FilesStorageTencentCosRegion = "filesStorageTencentCosRegion";
+        /// <summary>
+        /// 腾讯云存储桶名称
+        /// </summary>
+        public static readonly string FilesStorageTencentBucketName = "filesStorageTencentBucketName";
 
         /// <summary>
         /// 阿里云节点
