@@ -8,11 +8,6 @@
 <script src="/lib/custom/js/vuedraggable.min.js"></script>
 <script src="/lib/custom/element/index.js"></script>
 
-<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
-
-<!--<script src="/lib/ueditor/ueditor.config.js"></script>
-<script src="/lib/ueditor/ueditor.all.js"></script>
-<script src="/lib/ueditor/lang/zh-cn/zh-cn.js"></script>-->
 
 <script>
     var linkType = {};//跳转类型
@@ -947,7 +942,13 @@
                 <!-- 文本域 -->
                 <template v-if="selectWg.type=='textarea'">
                     <div>
-                        <textarea id="container"></textarea>
+                        <div class="document-editor">
+                            <div class="toolbar-container" id="toolbar-container"></div>
+                            <div class="content-container">
+                                <div id="container" class="core-editor"></div>
+                            </div>
+                        </div>
+                        <!--<textarea id="container"></textarea>-->
                     </div>
                 </template>
             </el-form>
