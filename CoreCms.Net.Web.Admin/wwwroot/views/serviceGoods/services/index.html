@@ -76,10 +76,7 @@
     </div>
 </script>
 
-<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
-
 <script>
-    var editor;
     var indexData;
     var debug = layui.setter.debug;
     layui.data.done = function (d) {
@@ -261,9 +258,10 @@
                 function doCreate() {
                     coreHelper.Post("Api/CoreCmsServices/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
-                                area: ['1000px', '90%'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-CoreCmsServices-create',
                                 success: function (layero, index) {
                                     view(this.id).render('serviceGoods/services/create', { data: e.data }).done(function () {
@@ -272,7 +270,7 @@
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
 
-                                                field.contentBody = editor.getData();
+                                                field.contentBody = window.editor.getData();
                                                 if (!!!field.contentBody) {
                                                     layer.msg('文章详情内容不能为空', { icon: 5 });
                                                     return false;
@@ -302,6 +300,10 @@
                                     // 禁止弹窗出现滚动条
                                     //$(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsServices-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -312,9 +314,10 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsServices/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
-                                area: ['1000px', '90%'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-CoreCmsServices-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('serviceGoods/services/edit', { data: e.data }).done(function () {
@@ -323,7 +326,7 @@
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
 
-                                                field.contentBody = editor.getData();
+                                                field.contentBody = window.editor.getData();
                                                 if (!!!field.contentBody) {
                                                     layer.msg('文章详情内容不能为空', { icon: 5 });
                                                     return false;
@@ -353,6 +356,10 @@
                                     // 禁止弹窗出现滚动条
                                     //$(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsServices-editForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -363,9 +370,10 @@
                 function doDetails(obj) {
                     coreHelper.Post("Api/CoreCmsServices/GetDetails", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '查看详情',
-                                area: ['1000px', '90%'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-CoreCmsServices-details',
                                 success: function (layero, index) {
                                     view(this.id).render('serviceGoods/services/details', { data: e.data }).done(function () {

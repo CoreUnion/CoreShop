@@ -120,11 +120,17 @@
 
         <div class="layui-form-item layui-form-text">
             <label for="contentBody" class="layui-form-label  layui-form-required">详细说明</label>
-            <div class="layui-input-block" id="contentBody">
+            <div class="layui-input-block">
+                <div class="document-editor">
+                    <div class="toolbar-container" id="toolbar-container"></div>
+                    <div class="content-container">
+                        <div id="editor"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="layui-form-item text-right">
+        <div class="layui-form-item text-right core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsServices-editForm-submit" id="LAY-app-CoreCmsServices-editForm-submit" value="确认编辑">
         </div>
     </div>
@@ -187,13 +193,66 @@
                 })
 
                 //加载编辑器
+                //加载编辑器
                 var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
-                editor = CKEDITOR.replace('contentBody', {
-                    fileTools_requestHeaders: {
-                        'Authorization': Authorization
+                //重点代码 适配器
+                class UploadAdapter {
+                    constructor(loader) {
+                        this.loader = loader;
                     }
-                });
-                editor.setData(d.params.data.model.contentBody);
+                    upload() {
+                        return new Promise((resolve, reject) => {
+                            const data = new FormData();
+                            let file = [];
+                            this.loader.file.then(res => {
+                                file = res; //文件流
+                                data.append('upload', file);
+                                $.ajax({
+                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: 'json',
+                                    headers: {
+                                        'Authorization': Authorization
+                                    },
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data) {
+                                            console.log(data)
+                                            resolve({
+                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                            });
+                                        } else {
+                                            reject(data.msg);
+                                        }
+
+                                    }
+                                });
+                            })
+                        });
+                    }
+                    abort() {
+                    }
+                }
+                DecoupledEditor
+                    .create(document.querySelector('#editor'),
+                        {
+                            language: 'zh-cn',
+                        })
+                    .then(editor => {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                            return new UploadAdapter(loader);
+                        };
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                        editor.setData(d.params.data.model.contentBody);
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
 
                 //项目缩略图图片上传
                 $('#upBtnthumbnail').click(function () {
