@@ -51,7 +51,7 @@
                                                 <input type="radio" lay-filter="isShowAgentPortal" name="isShowAgentPortal" value="2" title="不开启" {{d.data.configs['isShowAgentPortal']['sValue']==="2" ? 'checked':''}}>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">{{d.data.configs['isAllowProcurementService']['sKey']}}：</label>
                                             <div class="layui-input-inline layui-inline-4">
@@ -76,13 +76,23 @@
                                                 <fieldset class="layui-elem-field layui-field-title site-title">
                                                     <legend><a>{{d.data.configs['agentNotes']['sKey']}}</a></legend>
                                                 </fieldset>
-                                                <div id="agentNotes"></div>
+                                                <div class="document-editor">
+                                                    <div class="toolbar-container" id="agentNotes-toolbar-container"></div>
+                                                    <div class="content-container">
+                                                        <div id="agentNotes" class="core-editor"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="layui-col-md6">
                                                 <fieldset class="layui-elem-field layui-field-title site-title">
                                                     <legend><a>{{d.data.configs['agentAgreement']['sKey']}}</a></legend>
                                                 </fieldset>
-                                                <div id="agentAgreement"></div>
+                                                <div class="document-editor">
+                                                    <div class="toolbar-container" id="agentAgreement-toolbar-container"></div>
+                                                    <div class="content-container">
+                                                        <div id="agentAgreement" class="core-editor"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -103,7 +113,6 @@
     </div>
 </script>
 
-<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
 
 
 <script>
@@ -132,50 +141,82 @@
 
 
             //加载编辑器
-            var toolbar = [
-                {
-                    "name": "basicstyles",
-                    "groups": ["basicstyles"]
-                },
-                {
-                    "name": "paragraph",
-                    "groups": ["list", "blocks"]
-                },
-                {
-                    "name": "document",
-                    "groups": ["mode"]
-                },
-                {
-                    "name": "insert",
-                    "groups": ["insert"]
-                },
-                {
-                    "name": "styles",
-                    "groups": ["styles"]
-                }
-            ];
-            var removeButtons = 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,Iframe,PageBreak,SpecialChar,Smiley,Print,Preview,ExportPdf,NewPage,Save,CreateDiv';
             var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
-            var editor = CKEDITOR.replace('agentNotes', {
-                fileTools_requestHeaders: {
-                    'Authorization': Authorization
-                },
-                toolbarGroups: toolbar,
-                removeButtons: removeButtons
-            });
-            editor.setData(d.data.configs['agentNotes']['sValue']);
+            //重点代码 适配器
+            class UploadAdapter {
+                constructor(loader) {
+                    this.loader = loader;
+                }
+                upload() {
+                    return new Promise((resolve, reject) => {
+                        const data = new FormData();
+                        let file = [];
+                        this.loader.file.then(res => {
+                            file = res; //文件流
+                            data.append('upload', file);
+                            $.ajax({
+                                url: "/Api/Tools/CkEditorUploadFiles",
+                                type: 'POST',
+                                data: data,
+                                dataType: 'json',
+                                headers: {
+                                    'Authorization': Authorization
+                                },
+                                processData: false,
+                                contentType: false,
+                                success: function (data) {
+                                    if (data) {
+                                        console.log(data)
+                                        resolve({
+                                            default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                        });
+                                    } else {
+                                        reject(data.msg);
+                                    }
 
-            var editor2 = CKEDITOR.replace('agentAgreement', {
-                fileTools_requestHeaders: {
-                    'Authorization': Authorization
-                },
-                toolbarGroups: toolbar,
-                removeButtons: removeButtons
-            });
-            editor2.setData(d.data.configs['agentAgreement']['sValue']);
+                                }
+                            });
+                        })
+                    });
+                }
+                abort() {
+                }
+            }
+            DecoupledEditor
+                .create(document.querySelector('#agentNotes'),
+                    {
+                        language: 'zh-cn',
+                    })
+                .then(editor => {
+                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                        return new UploadAdapter(loader);
+                    };
+                    const toolbarContainer = document.querySelector('#agentNotes-toolbar-container');
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                    editor.setData(d.data.configs['agentNotes']['sValue']);
+                    window.editor = editor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
 
-
-
+            DecoupledEditor
+                .create(document.querySelector('#agentAgreement'),
+                    {
+                        language: 'zh-cn',
+                    })
+                .then(editor => {
+                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                        return new UploadAdapter(loader);
+                    };
+                    const toolbarContainer = document.querySelector('#agentAgreement-toolbar-container');
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                    editor.setData(d.data.configs['agentAgreement']['sValue']);
+                    window.editor2 = editor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
 
             form.verify({
                 money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入合法整数或小数'],
@@ -218,7 +259,7 @@
                 var postData = [];
 
 
-                var agentNotes = editor.getData();
+                var agentNotes = window.editor.getData();
                 if (!!!agentNotes) {
                     layer.msg(d.data.configs['agentNotes']['sKey'] + '不能为空', { icon: 5 });
                     return false;
@@ -229,7 +270,7 @@
                     postData.push(entity);
                 }
 
-                var agentAgreement = editor2.getData();
+                var agentAgreement = window.editor2.getData();
                 if (!!!agentAgreement) {
                     layer.msg(d.data.configs['agentAgreement']['sKey'] + '不能为空', { icon: 5 });
                     return false;

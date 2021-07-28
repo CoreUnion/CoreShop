@@ -30,5 +30,9 @@
   {
     "outputFile": "wwwroot/lib/layuiAdmin/index.es5.js",
     "inputFile": "wwwroot/lib/layuiAdmin/index.js"
+  },
+  {
+    "outputFile": "wwwroot/lib/ckeditor5/documentEditor.css",
+    "inputFile": "wwwroot/lib/ckeditor5/documentEditor.less"
   }
 ]

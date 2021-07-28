@@ -247,7 +247,13 @@
 
                         <div class="layui-tab-item">
                             <div class="layui-form-item layui-form-text">
-                                <div class="layui-input-block" id="intro">
+                                <div class="layui-input-block">
+                                    <div class="document-editor">
+                                        <div class="toolbar-container" id="toolbar-container"></div>
+                                        <div class="content-container">
+                                            <div id="editor"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -464,7 +470,6 @@
 </script>
 
 
-<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
 
 <script>
     var $;
@@ -501,12 +506,63 @@
 
                 //加载编辑器
                 var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
-                var editor = CKEDITOR.replace('intro', {
-                    fileTools_requestHeaders: {
-                        'Authorization': Authorization
+                //重点代码 适配器
+                class UploadAdapter {
+                    constructor(loader) {
+                        this.loader = loader;
                     }
-                });
-                editor.setData(d.data.model.intro);
+                    upload() {
+                        return new Promise((resolve, reject) => {
+                            const data = new FormData();
+                            let file = [];
+                            this.loader.file.then(res => {
+                                file = res; //文件流
+                                data.append('upload', file);
+                                $.ajax({
+                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: 'json',
+                                    headers: {
+                                        'Authorization': Authorization
+                                    },
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data) {
+                                            console.log(data)
+                                            resolve({
+                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                            });
+                                        } else {
+                                            reject(data.msg);
+                                        }
+
+                                    }
+                                });
+                            })
+                        });
+                    }
+                    abort() {
+                    }
+                }
+                DecoupledEditor
+                    .create(document.querySelector('#editor'),
+                        {
+                            language: 'zh-cn',
+                        })
+                    .then(editor => {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                            return new UploadAdapter(loader);
+                        };
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                        editor.setData(d.data.model.intro);
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
 
                 //初始化图片
                 var defaultImg = 'no';
@@ -1315,7 +1371,7 @@
                         goods.image = field['goods[image]'];
                         goods.video = field['goods[video]'];
 
-                        goods.intro = editor.getData();
+                        goods.intro = window.editor.getData();
                         if (!!!goods.intro) {
                             layer.msg('商品详情不能为空', { icon: 5 });
                             return false;

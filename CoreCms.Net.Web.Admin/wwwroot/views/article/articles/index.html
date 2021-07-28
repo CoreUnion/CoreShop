@@ -63,9 +63,9 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
+
+
 <script>
-    var editor;
     var indexData;
     var debug = layui.setter.debug;
     layui.data.done = function (d) {
@@ -186,9 +186,10 @@
 
                     coreHelper.Post("Api/CoreCmsArticle/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
-                                area: ['1000px', '95%'],
+                                area: ['1200px', '95%'],
                                 id: 'LAY-popup-CoreCmsArticle-create',
                                 success: function (layero, index) {
                                     view(this.id).render('article/articles/create', { data: e.data }).done(function () {
@@ -199,7 +200,7 @@
 
                                                 field.isPub = field.isPub == 'on';
                                                 field.isDel = field.isDel == 'on';
-                                                field.contentBody = editor.getData();
+                                                field.contentBody = window.editor.getData();
                                                 if (!!!field.contentBody) {
                                                     layer.msg('文章详情内容不能为空', { icon: 5 });
                                                     return false;
@@ -220,6 +221,10 @@
                                             });
                                     });
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsArticle-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -230,9 +235,10 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsArticle/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
-                                area: ['1000px', '95%'],
+                                area: ['1200px', '95%'],
                                 id: 'LAY-popup-CoreCmsArticle-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('article/articles/edit', { data: e.data }).done(function () {
@@ -249,7 +255,7 @@
                                                     return false;
                                                 }
 
-                                                field.contentBody = editor.getData();
+                                                field.contentBody = window.editor.getData();
                                                 if (!!!field.contentBody) {
                                                     layer.msg('文章详情内容不能为空', { icon: 5 });
                                                     return false;
@@ -269,6 +275,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsArticle-editForm-submit").click();
                                 }
                             });
                         } else {

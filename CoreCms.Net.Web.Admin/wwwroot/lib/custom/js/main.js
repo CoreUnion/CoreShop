@@ -627,18 +627,71 @@ Vue.component('layout-config', {
                             console.log("selectWg");
                             if (!that.editor) {
                                 var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
-                                that.editor = CKEDITOR.replace('container', {
-                                    fileTools_requestHeaders: {
-                                        'Authorization': Authorization
+                                //重点代码 适配器
+                                class UploadAdapter {
+                                    constructor(loader) {
+                                        this.loader = loader;
                                     }
-                                });
-                                that.editor.setData(that.selectWg.value);
+                                    upload() {
+                                        return new Promise((resolve, reject) => {
+                                            const data = new FormData();
+                                            let file = [];
+                                            this.loader.file.then(res => {
+                                                file = res; //文件流
+                                                data.append('upload', file);
+                                                $.ajax({
+                                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                                    type: 'POST',
+                                                    data: data,
+                                                    dataType: 'json',
+                                                    headers: {
+                                                        'Authorization': Authorization
+                                                    },
+                                                    processData: false,
+                                                    contentType: false,
+                                                    success: function (data) {
+                                                        if (data) {
+                                                            console.log(data)
+                                                            resolve({
+                                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                                            });
+                                                        } else {
+                                                            reject(data.msg);
+                                                        }
+
+                                                    }
+                                                });
+                                            })
+                                        });
+                                    }
+                                    abort() {
+                                    }
+                                }
+                                DecoupledEditor
+                                    .create(document.querySelector('#container'),
+                                        {
+                                            language: 'zh-cn',
+                                        })
+                                    .then(editor => {
+                                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                                            return new UploadAdapter(loader);
+                                        };
+                                        const toolbarContainer = document.querySelector('#toolbar-container');
+                                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                                        editor.setData(that.selectWg.value);
+
+                                        that.editor = editor;
+
+                                        editor.model.document.on('change:data', () => {
+                                            var data = that.editor.getData();
+                                            that.selectWg.value = data;
+                                            console.log('The data has changed!');
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error(error);
+                                    });
                             }
-                            that.editor.on('change', function (ev) {
-                                var data = that.editor.getData();
-                                that.selectWg.value = data;
-                                console.log(data);
-                            });
                         });
 
 
