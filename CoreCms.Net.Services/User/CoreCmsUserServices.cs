@@ -19,7 +19,6 @@ using CoreCms.Net.Configuration;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
-using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Basics;
@@ -29,8 +28,6 @@ using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Senparc.Weixin.WxOpen.Containers;
 using SqlSugar;
 
 
@@ -505,23 +502,19 @@ namespace CoreCms.Net.Services
                 //没有此用户，创建此用户
                 if (!string.IsNullOrEmpty(entity.sessionAuthId))
                 {
-                    var sessionBag = await SessionContainer.GetSessionAsync(entity.sessionAuthId);
-                    if (sessionBag != null)
+                    var wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == entity.sessionAuthId);
+                    if (wxUserInfo != null)
                     {
-                        var wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == sessionBag.OpenId);
-                        if (wxUserInfo != null)
+                        if (string.IsNullOrEmpty(entity.avatar))
                         {
-                            if (string.IsNullOrEmpty(entity.avatar))
-                            {
-                                entity.avatar = wxUserInfo.avatar;
-                            }
-                            if (string.IsNullOrEmpty(entity.nickname))
-                            {
-                                entity.nickname = wxUserInfo.nickName;
-                            }
-                            userInfo.sex = wxUserInfo?.gender ?? 3;
-                            userInfo.userWx = wxUserInfo?.id ?? 0;
+                            entity.avatar = wxUserInfo.avatar;
                         }
+                        if (string.IsNullOrEmpty(entity.nickname))
+                        {
+                            entity.nickname = wxUserInfo.nickName;
+                        }
+                        userInfo.sex = wxUserInfo?.gender ?? 3;
+                        userInfo.userWx = wxUserInfo?.id ?? 0;
                     }
                 }
                 //如果没有头像和昵称，那么就取系统头像和昵称吧
@@ -592,25 +585,21 @@ namespace CoreCms.Net.Services
             //判断是否是小程序里的微信登陆，如果是，就给他绑定微信账号
             if (!string.IsNullOrEmpty(entity.sessionAuthId))
             {
-                var sessionBag = await SessionContainer.GetSessionAsync(entity.sessionAuthId);
-                if (sessionBag != null)
+                var updateAsync = await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { userId = userInfo.id }, p => p.openid == entity.sessionAuthId);
+                if (updateAsync)
                 {
-                    var updateAsync = await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { userId = userInfo.id }, p => p.openid == sessionBag.OpenId);
-                    if (updateAsync)
-                    {
-                        //多个微信可能同时授权一个号码登录。
-                        //如果已经存在微信用户(A)数据绑定了手机号码。
-                        //使用新微信(B)登录，同时又授权此手机号码绑定。
-                        //小程序内微信支付时候，因为登录的微信（B）与拉取手机号码绑定后获取到数据是（A）。
-                        //会导致微信数据报错（）
-                        await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { userId = 0 }, p => p.openid != sessionBag.OpenId && p.userId == userInfo.id);
-                    }
-                    //如果是别的未绑定微信用户进来，则反向直接关联。
-                    var wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == sessionBag.OpenId);
-                    if (wxUserInfo != null)
-                    {
-                        await _dal.UpdateAsync(p => new CoreCmsUser() { userWx = wxUserInfo.id }, p => p.id == userInfo.id);
-                    }
+                    //多个微信可能同时授权一个号码登录。
+                    //如果已经存在微信用户(A)数据绑定了手机号码。
+                    //使用新微信(B)登录，同时又授权此手机号码绑定。
+                    //小程序内微信支付时候，因为登录的微信（B）与拉取手机号码绑定后获取到数据是（A）。
+                    //会导致微信数据报错（）
+                    await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { userId = 0 }, p => p.openid != entity.sessionAuthId && p.userId == userInfo.id);
+                }
+                //如果是别的未绑定微信用户进来，则反向直接关联。
+                var wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == entity.sessionAuthId);
+                if (wxUserInfo != null)
+                {
+                    await _dal.UpdateAsync(p => new CoreCmsUser() { userWx = wxUserInfo.id }, p => p.id == userInfo.id);
                 }
             }
 

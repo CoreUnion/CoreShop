@@ -27,8 +27,6 @@ using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Senparc.Weixin;
-using Senparc.Weixin.WxOpen.AdvancedAPIs.WxApp;
 using SqlSugar;
 
 namespace CoreCms.Net.Web.Admin.Controllers

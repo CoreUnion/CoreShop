@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Aliyun.OSS;
 using Aliyun.OSS.Util;
 using CoreCms.Net.Auth.HttpContextUser;
+using CoreCms.Net.Caching.AccressToken;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.Filter;
 using CoreCms.Net.IServices;
@@ -31,6 +32,7 @@ using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
+using CoreCms.Net.WeChat.Service.HttpClients;
 using COSXML;
 using COSXML.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -38,8 +40,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Senparc.Weixin;
-using Senparc.Weixin.WxOpen.AdvancedAPIs.WxApp;
+using SKIT.FlurlHttpClient.Wechat.Api;
+using SKIT.FlurlHttpClient.Wechat.Api.Models;
 using SqlSugar;
 
 namespace CoreCms.Net.Web.Admin.Controllers
@@ -88,9 +90,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsProductsServices _productsServices;
         private readonly ICoreCmsServicesServices _servicesServices;
 
+        private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
 
-        private static readonly string WxOpenAppId = Config.SenparcWeixinSetting.WxOpenAppId;//与微信小程序后台的AppId设置保持一致，区分大小写。
-        private static readonly string WxOpenAppSecret = Config.SenparcWeixinSetting.WxOpenAppSecret;//与微信小程序账号后台的AppId设置保持一致，区分大小写。
+
 
         /// <summary>
         ///     构造函数
@@ -112,7 +114,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ISysMenuServices sysMenuServices
             , ISysUserRoleServices sysUserRoleServices
             , ISysOrganizationServices sysOrganizationServices, ICodeGeneratorServices codeGeneratorServices,
-            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices)
+            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory)
         {
             _user = user;
             _webHostEnvironment = webHostEnvironment;
@@ -144,6 +146,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _productsServices = productsServices;
             _servicesServices = servicesServices;
             _sysRoleMenuServices = sysRoleMenuServices;
+            _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
         }
 
         #region 获取登录用户用户信息(用于面板展示)====================================================
@@ -786,7 +789,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var _filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
 
 
-            var formModel = _coreCmsFormServices.QueryById(entity.id);
+            var formModel = await _coreCmsFormServices.QueryByIdAsync(entity.id);
             if (formModel == null)
             {
                 jm.msg = "不存在此信息";
@@ -795,11 +798,16 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             var path = "pages/form/details/details?id=" + entity.id;
 
-            using (var memStream = new MemoryStream())
-            {
-                var result = await WxAppApi.CreateWxQrCodeAsync(WxOpenAppId, memStream, path);
+            var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
+            var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
+            var request = new CgibinWxaappCreateWxaQrcodeRequest();
+            request.AccessToken = accessToken;
+            request.Path = path;
 
-                memStream.Seek(0, SeekOrigin.Begin);
+            var response = await client.ExecuteCgibinWxaappCreateWxaQrcodeAsync(request);
+            if (response.IsSuccessful())
+            {
+                var memStream = new MemoryStream(response.RawBytes);
 
                 var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + ".jpg";
                 var today = DateTime.Now.ToString("yyyyMMdd");
@@ -842,7 +850,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var md5 = OssUtils.ComputeContentMd5(fileStream, memStream.Length);
 
                     var filePath = "Upload/QrCode/" + today + "/" + newFileName; //云文件保存路径
-                    //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                                                                                 //初始化阿里云配置--外网Endpoint、访问ID、访问password
                     var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
                     //将文件md5值赋值给meat头信息，服务器验证文件MD5
                     var objectMeta = new ObjectMetadata
@@ -895,9 +903,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
                         src = _filesStorageOptions.BucketBindUrl + filePath
                     };
                 }
-
-                jm.otherData = result;
             }
+            else
+            {
+                jm.code = 1;
+                jm.msg = response.ErrorMessage;
+            }
+            jm.otherData = response;
+
 
             return Json(jm);
         }

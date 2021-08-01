@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreCms.Net.Auth.HttpContextUser;
 using CoreCms.Net.Auth.Policys;
+using CoreCms.Net.Caching.AccressToken;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
@@ -27,18 +28,20 @@ using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
+using CoreCms.Net.WeChat.Service.Enums;
+using CoreCms.Net.WeChat.Service.HttpClients;
+using CoreCms.Net.WeChat.Service.Models;
+using CoreCms.Net.WeChat.Service.Options;
+using CoreCms.Net.WeChat.Service.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 using Nito.AsyncEx;
 using NLog;
-using Senparc.Weixin;
-using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
-using Senparc.Weixin.WxOpen.Containers;
-using Senparc.Weixin.WxOpen.Entities;
-using Senparc.Weixin.WxOpen.Helpers;
+using SKIT.FlurlHttpClient.Wechat.Api;
+using SKIT.FlurlHttpClient.Wechat.Api.Models;
 using SqlSugar;
 
 namespace CoreCms.Net.Web.WebApi.Controllers
@@ -50,10 +53,6 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        //public static readonly string Token = Config.SenparcWeixinSetting.WxOpenToken;//与微信小程序后台的Token设置保持一致，区分大小写。
-        //public static readonly string EncodingAesKey = Config.SenparcWeixinSetting.WxOpenEncodingAESKey;//与微信小程序后台的EncodingAESKey设置保持一致，区分大小写。
-        private static readonly string WxOpenAppId = Config.SenparcWeixinSetting.WxOpenAppId;//与微信小程序后台的AppId设置保持一致，区分大小写。
-        private static readonly string WxOpenAppSecret = Config.SenparcWeixinSetting.WxOpenAppSecret;//与微信小程序账号后台的AppId设置保持一致，区分大小写。
 
         private readonly ICoreCmsUserWeChatInfoServices _userWeChatInfoServices;
         private readonly ICoreCmsUserServices _userServices;
@@ -85,7 +84,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         private readonly ICoreCmsCouponServices _couponServices;
         private readonly ICoreCmsOrderServices _orderServices;
 
-
+        private readonly IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
+        private readonly WeChatOptions _weChatOptions;
 
         private readonly AsyncLock _mutex = new AsyncLock();
 
@@ -118,7 +118,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             , ICoreCmsShareServices shareServices
             , ICoreCmsSettingServices settingServices
             , ICoreCmsServicesServices servicesServices
-            , ICoreCmsUserServicesOrderServices userServicesOrderServices, ICoreCmsUserServicesTicketServices userServicesTicketServices, ICoreCmsStoreServices storeServices, ICoreCmsCouponServices couponServices, ICoreCmsOrderServices orderServices)
+            , IOptions<WeChatOptions> weChatOptions
+            , ICoreCmsUserServicesOrderServices userServicesOrderServices, ICoreCmsUserServicesTicketServices userServicesTicketServices, ICoreCmsStoreServices storeServices, ICoreCmsCouponServices couponServices, ICoreCmsOrderServices orderServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory)
         {
             _user = user;
             _userWeChatInfoServices = userWeChatInfoServices;
@@ -149,6 +150,9 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             _storeServices = storeServices;
             _couponServices = couponServices;
             _orderServices = orderServices;
+            _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
+            _weChatOptions = weChatOptions.Value;
+
         }
 
         #region wx.login登陆成功之后发送的请求=========================================================
@@ -163,74 +167,85 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = new WebApiCallBack();
 
-            using (await _mutex.LockAsync())
+            var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
+            var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
+            var request = new SnsJsCode2SessionRequest();
+            request.JsCode = entity.code;
+            request.AccessToken = accessToken;
+
+            var response = await client.ExecuteSnsJsCode2SessionAsync(request, HttpContext.RequestAborted);
+            if (response.ErrorCode == (int)WeChatReturnCode.ReturnCode.请求成功)
             {
-                var jsonResult = await SnsApi.JsCode2JsonAsync(WxOpenAppId, WxOpenAppSecret, entity.code);
-                if (jsonResult.errcode == ReturnCode.请求成功)
+                var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == response.OpenId);
+                if (userInfo == null)
                 {
-                    var sessionBag = await SessionContainer.UpdateSessionAsync(null, jsonResult.openid, jsonResult.session_key, jsonResult.unionid);
-                    var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == jsonResult.openid);
-                    if (userInfo == null)
-                    {
-                        userInfo = new CoreCmsUserWeChatInfo();
-                        userInfo.openid = jsonResult.openid;
-                        userInfo.type = (int)GlobalEnumVars.UserAccountTypes.微信小程序;
-                        userInfo.sessionKey = sessionBag.SessionKey;
-                        userInfo.gender = 1;
-                        userInfo.createTime = DateTime.Now;
+                    userInfo = new CoreCmsUserWeChatInfo();
+                    userInfo.openid = response.OpenId;
+                    userInfo.type = (int)GlobalEnumVars.UserAccountTypes.微信小程序;
+                    userInfo.sessionKey = response.SessionKey;
+                    userInfo.gender = 1;
+                    userInfo.createTime = DateTime.Now;
 
-                        var id = await _userWeChatInfoServices.InsertAsync(userInfo);
+                    var id = await _userWeChatInfoServices.InsertAsync(userInfo);
+                }
+                else
+                {
+                    if (userInfo.sessionKey != response.SessionKey)
+                    {
+                        await _userWeChatInfoServices.UpdateAsync(
+                            p => new CoreCmsUserWeChatInfo() { sessionKey = response.SessionKey, updateTime = DateTime.Now },
+                            p => p.openid == userInfo.openid);
                     }
+                }
 
-                    if (userInfo is { userId: > 0 })
+                if (userInfo is { userId: > 0 })
+                {
+                    var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
+                    if (user != null)
                     {
-                        var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
-                        if (user != null)
-                        {
-                            var claims = new List<Claim> {
+
+
+                        var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Name, user.nickName),
                                 new Claim(JwtRegisteredClaimNames.Jti, user.id.ToString()),
                                 new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
 
-                            //用户标识
-                            var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
-                            identity.AddClaims(claims);
-                            jm.status = true;
-                            jm.data = new
-                            {
-                                auth = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement),
-                                user
-                            };
-                            jm.otherData = sessionBag.Key;
-                            //jm.methodDescription = JsonConvert.SerializeObject(sessionBag);
+                        //用户标识
+                        var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
+                        identity.AddClaims(claims);
+                        jm.status = true;
+                        jm.data = new
+                        {
+                            auth = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement),
+                            user
+                        };
+                        jm.otherData = response.OpenId;
 
-                            //录入登录日志
-                            var log = new CoreCmsUserLog();
-                            log.userId = user.id;
-                            log.state = (int)GlobalEnumVars.UserLogTypes.登录;
-                            log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
-                            log.createTime = DateTime.Now;
-                            log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
-                            await _userLogServices.InsertAsync(log);
+                        //录入登录日志
+                        var log = new CoreCmsUserLog();
+                        log.userId = user.id;
+                        log.state = (int)GlobalEnumVars.UserLogTypes.登录;
+                        log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                        log.createTime = DateTime.Now;
+                        log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
+                        await _userLogServices.InsertAsync(log);
 
-                            return Json(jm);
-                        }
+                        return Json(jm);
                     }
+                }
 
-                    //注意：生产环境下SessionKey属于敏感信息，不能进行传输！
-                    //return Json(new { success = true, msg = "OK", sessionAuthId = sessionBag.Key, sessionKey = sessionBag.SessionKey, data = jsonResult, sessionBag = sessionBag });
-                    jm.status = true;
-                    jm.data = sessionBag.Key;
-                    jm.otherData = sessionBag.Key;
-                    //jm.methodDescription = JsonConvert.SerializeObject(sessionBag);
-                    jm.msg = "OK";
-                }
-                else
-                {
-                    jm.msg = jsonResult.errmsg;
-                }
+                //注意：生产环境下SessionKey属于敏感信息，不能进行传输！
+                //return Json(new { success = true, msg = "OK", sessionAuthId = sessionBag.Key, sessionKey = sessionBag.SessionKey, data = jsonResult, sessionBag = sessionBag });
+                jm.status = true;
+                jm.data = response.OpenId;
+                jm.otherData = response.OpenId;
+                //jm.methodDescription = JsonConvert.SerializeObject(sessionBag);
+                jm.msg = "OK";
             }
-
+            else
+            {
+                jm.msg = response.ErrorMessage;
+            }
 
             return Json(jm);
         }
@@ -246,88 +261,71 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         public async Task<JsonResult> DecodeEncryptedData([FromBody] FMWxLoginDecodeEncryptedData entity)
         {
             var jm = new WebApiCallBack();
-            DecodeEntityBase decodedEntity = EncryptHelper.DecodeUserInfoBySessionId(entity.sessionAuthId, entity.encryptedData, entity.iv);
+
+            var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == entity.sessionAuthId);
+            if (userInfo == null)
+            {
+                jm.status = false;
+                jm.msg = "用户信息获取失败";
+            }
+
+            var decodedEntity = EncryptHelper.DecodeUserInfoBySessionId(userInfo.sessionKey, entity.encryptedData, entity.iv);
             var token = string.Empty;
             var userWxId = entity.sessionAuthId;
             //检验水印
             if (decodedEntity != null)
             {
-                var checkWatermark = decodedEntity.CheckWatermark(WxOpenAppId);
+                var checkWatermark = decodedEntity.CheckWatermark(_weChatOptions.WxOpenAppId);
                 jm.status = checkWatermark;
 
                 //保存用户信息（可选）
-                if (checkWatermark && decodedEntity is DecodedUserInfo decodedUserInfo)
+                if (checkWatermark && decodedEntity is { } decodedUserInfo)
                 {
-                    var sessionBag = await SessionContainer.GetSessionAsync(entity.sessionAuthId);
-                    if (sessionBag != null)
-                    {
-                        await SessionContainer.AddDecodedUserInfoAsync(sessionBag, decodedUserInfo);
-                    }
                     //更新数据库讯息
-                    CoreCmsUserWeChatInfo userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == decodedUserInfo.openId);
-                    if (userInfo == null)
+                    userInfo.gender = decodedUserInfo.gender;
+                    userInfo.city = decodedUserInfo.city;
+                    userInfo.avatar = decodedUserInfo.avatarUrl;
+                    userInfo.country = decodedUserInfo.country;
+                    userInfo.nickName = decodedUserInfo.nickName;
+                    userInfo.province = decodedUserInfo.province;
+                    userInfo.unionId = decodedUserInfo.unionId;
+                    userInfo.updateTime = DateTime.Now;
+
+                    await _userWeChatInfoServices.UpdateAsync(userInfo);
+
+                    if (userInfo.userId > 0)
                     {
-                        userInfo = new CoreCmsUserWeChatInfo();
-                        userInfo.type = (int)GlobalEnumVars.UserAccountTypes.微信小程序;
-                        userInfo.openid = decodedUserInfo.openId;
-                        if (sessionBag != null) userInfo.sessionKey = sessionBag.SessionKey;
-                        userInfo.unionId = decodedUserInfo.unionId;
-                        userInfo.avatar = decodedUserInfo.avatarUrl;
-                        userInfo.nickName = decodedUserInfo.nickName;
-                        userInfo.gender = decodedUserInfo.gender;
-                        userInfo.language = "";
-                        userInfo.city = decodedUserInfo.city;
-                        userInfo.province = decodedUserInfo.province;
-                        userInfo.country = decodedUserInfo.country;
-                        userInfo.mobile = "";
-                        userInfo.createTime = DateTime.Now;
-                        userInfo.userId = 0;
-
-                        var id = await _userWeChatInfoServices.InsertAsync(userInfo);
-                    }
-                    else
-                    {
-                        userInfo.gender = decodedUserInfo.gender;
-                        userInfo.city = decodedUserInfo.city;
-                        userInfo.avatar = decodedUserInfo.avatarUrl;
-                        userInfo.country = decodedUserInfo.country;
-                        userInfo.nickName = decodedUserInfo.nickName;
-                        userInfo.province = decodedUserInfo.province;
-                        userInfo.unionId = decodedUserInfo.unionId;
-                        userInfo.updateTime = DateTime.Now;
-
-                        await _userWeChatInfoServices.UpdateAsync(userInfo);
-                    }
-                    var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
-                    if (user != null)
-                    {
-                        var claims = new List<Claim> {
-                            new Claim(ClaimTypes.Name, user.nickName),
-                            new Claim(JwtRegisteredClaimNames.Jti, user.id.ToString()),
-                            new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
-
-                        //用户标识
-                        var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
-                        identity.AddClaims(claims);
-                        jm.status = true;
-                        jm.data = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement);
-
-                        //录入登录日志
-                        var log = new CoreCmsUserLog();
-                        log.userId = user.id;
-                        log.state = (int)GlobalEnumVars.UserLogTypes.登录;
-                        log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
-                        log.createTime = DateTime.Now;
-                        log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
-                        await _userLogServices.InsertAsync(log);
-
-                        //更新手机号码标识
-                        if (!string.IsNullOrEmpty(userInfo.mobile))
+                        var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
+                        if (user != null)
                         {
-                            await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { mobile = user.mobile }, p => p.id == userInfo.id);
-                        }
+                            var claims = new List<Claim> {
+                                new Claim(ClaimTypes.Name, user.nickName),
+                                new Claim(JwtRegisteredClaimNames.Jti, user.id.ToString()),
+                                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
 
-                        return Json(jm);
+                            //用户标识
+                            var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
+                            identity.AddClaims(claims);
+                            jm.status = true;
+                            jm.data = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement);
+
+                            //录入登录日志
+                            var log = new CoreCmsUserLog();
+                            log.userId = user.id;
+                            log.state = (int)GlobalEnumVars.UserLogTypes.登录;
+                            log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                            log.createTime = DateTime.Now;
+                            log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
+                            await _userLogServices.InsertAsync(log);
+
+                            //更新手机号码标识
+                            if (!string.IsNullOrEmpty(userInfo.mobile))
+                            {
+                                await _userWeChatInfoServices.UpdateAsync(p => new CoreCmsUserWeChatInfo() { mobile = user.mobile }, p => p.id == userInfo.id);
+                            }
+
+                            return Json(jm);
+                        }
                     }
                 }
             }
@@ -396,12 +394,16 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = new WebApiCallBack();
 
-            //var sessionBag = SessionContainer.GetSession(entity.sessionAuthId);
-            //var phoneNumber = string.Empty;
-            Senparc.Weixin.WxOpen.Entities.DecodedPhoneNumber phoneNumber;
+            var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == entity.sessionAuthId);
+            if (userInfo == null)
+            {
+                jm.status = false;
+                jm.msg = "用户信息获取失败";
+            }
+            DecodedPhoneNumber phoneNumber;
             try
             {
-                phoneNumber = Senparc.Weixin.WxOpen.Helpers.EncryptHelper.DecryptPhoneNumber(entity.sessionAuthId, entity.encryptedData, entity.iv);
+                phoneNumber = EncryptHelper.DecryptPhoneNumber(userInfo.sessionKey, entity.encryptedData, entity.iv);
             }
             catch (Exception ex)
             {
@@ -421,7 +423,6 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm = await _userServices.SmsLogin(data, (int)GlobalEnumVars.LoginType.WeChatPhoneNumber, 1);
 
             return Json(jm);
-
         }
 
 
@@ -454,13 +455,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             //1就是h5登陆（h5端和微信公众号端），2就是微信小程序登陆，3是支付宝小程序，4是app，5是pc
             if (entity.platform == 2)
             {
-                var sessionBag = await SessionContainer.GetSessionAsync(entity.sessionAuthId);
-                if (sessionBag == null)
+                if (string.IsNullOrEmpty(entity.sessionAuthId))
                 {
                     jm.msg = "用户未正确登陆";
                     return Json(jm);
                 }
-                wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == sessionBag.OpenId);
+                wxUserInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == entity.sessionAuthId);
             }
             var sms = await _smsServices.QueryByClauseAsync(p => p.parameters == entity.code && p.mobile == entity.mobile);
             if (sms == null)
@@ -522,9 +522,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 var log = new CoreCmsUserLog();
                 log.userId = id;
                 log.state = (int)GlobalEnumVars.UserLogTypes.注册;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
-                    _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
-
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
                 log.createTime = DateTime.Now;
                 log.parameters = GlobalEnumVars.UserLogTypes.注册.ToString();
                 await _userLogServices.InsertAsync(log);

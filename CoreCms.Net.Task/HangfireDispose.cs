@@ -61,6 +61,11 @@ namespace CoreCms.Net.Task
 
             //每天凌晨5点定期清理7天前操作日志
             RecurringJob.AddOrUpdate<RemoveOperationLogJob>(s => s.Execute(), "0 0 5 * * ? ", TimeZoneInfo.Local); // 每天5点固定时间清理一次
+
+
+            //定时刷新获取微信AccessToken
+            RecurringJob.AddOrUpdate<RefreshWeChatAccessTokenJob>(s => s.Execute(), "0 0/2 * * * ? ", TimeZoneInfo.Local); // 每2分钟刷新获取微信AccessToken
+
         }
 
         #endregion

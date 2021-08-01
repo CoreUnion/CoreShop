@@ -5,21 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Mediator\Job\**" />
-    <EmbeddedResource Remove="Mediator\Job\**" />
-    <None Remove="Mediator\Job\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
     <PackageReference Include="Flurl.Http" Version="3.2.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
-    <PackageReference Include="Senparc.CO2NET" Version="1.4.400" />
-    <PackageReference Include="Senparc.Weixin.MP" Version="16.12.400" />
-    <PackageReference Include="Senparc.Weixin.WxOpen" Version="3.11.400" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     <PackageReference Include="ToolGood.Words" Version="3.0.2.6" />
   </ItemGroup>

@@ -62,30 +62,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
                 var notify = await _client.ExecuteAsync<WeChatPayUnifiedOrderNotify>(Request, _optionsAccessor.Value);
                 if (notify.ReturnCode == WeChatPayCode.Success)
                 {
-                    if (AppSettingsConstVars.RedisConfigUseRedisMessageQueue)
-                    {
-                        await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.WeChatPayNoticeQueue,
-                            JsonConvert.SerializeObject(notify));
-                    }
-                    else
-                    {
-                        if (notify.ResultCode == WeChatPayCode.Success)
-                        {
-                            var money = Math.Round((decimal)notify.TotalFee / 100, 2);
-                            await _billPaymentsServices.ToUpdate(notify.OutTradeNo,
-                                (int)GlobalEnumVars.BillPaymentsStatus.Payed,
-                                GlobalEnumVars.PaymentsTypes.wechatpay.ToString(), money, notify.ResultCode,
-                                notify.TransactionId);
-                        }
-                        else
-                        {
-                            var money = Math.Round((decimal)notify.TotalFee / 100, 2);
-                            var msg = notify.ErrCode + ":" + notify.ErrCodeDes;
-                            await _billPaymentsServices.ToUpdate(notify.OutTradeNo,
-                                (int)GlobalEnumVars.BillPaymentsStatus.Other,
-                                GlobalEnumVars.PaymentsTypes.wechatpay.ToString(), money, msg);
-                        }
-                    }
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.WeChatPayNotice, JsonConvert.SerializeObject(notify));
                     return WeChatPayNotifyResult.Success;
                 }
                 return NoContent();

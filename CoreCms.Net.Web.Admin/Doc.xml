@@ -530,6 +530,12 @@
             演示类
             </summary>
         </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.#ctor(Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.WeChatPay.WeChatPayOptions})">
+            <summary>
+            用于测试及演示用
+            </summary>
+            <param name="optionsAccessor"></param>
+        </member>
         <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.Index">
             <summary>
             默认首页
@@ -565,7 +571,7 @@
                 后端常用方法
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory)">
             <summary>
                 构造函数
             </summary>
@@ -5145,14 +5151,12 @@
             </summary>
             <param name="builder"></param>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Options.IOptions{Senparc.CO2NET.SenparcSetting},Microsoft.Extensions.Options.IOptions{Senparc.Weixin.Entities.SenparcWeixinSetting})">
+        <member name="M:CoreCms.Net.Web.Admin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
                 This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             </summary>
             <param name="app"></param>
             <param name="env"></param>
-            <param name="senparcSetting"></param>
-            <param name="senparcWeixinSetting"></param>
         </member>
     </members>
 </doc>

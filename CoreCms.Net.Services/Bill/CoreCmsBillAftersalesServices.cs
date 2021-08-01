@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using CoreCms.Net.Caching.AutoMate.RedisCache;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
@@ -24,10 +25,8 @@ using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.QueryMuch;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
-using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
@@ -46,20 +45,17 @@ namespace CoreCms.Net.Services
         private readonly IServiceProvider _serviceProvider;
         private readonly ICoreCmsMessageCenterServices _messageCenterServices;
         private readonly ICoreCmsUserPointLogServices _userPointLogServices;
-
-
-        private readonly IMediator _mediator;
-
-
-        public CoreCmsBillAftersalesServices(IUnitOfWork unitOfWork, ICoreCmsBillAftersalesRepository dal, IServiceProvider serviceProvider, IMediator mediator, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsUserPointLogServices userPointLogServices)
+        private readonly IRedisOperationRepository _redisOperationRepository;
+        
+        public CoreCmsBillAftersalesServices(IUnitOfWork unitOfWork, ICoreCmsBillAftersalesRepository dal, IServiceProvider serviceProvider, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsUserPointLogServices userPointLogServices, IRedisOperationRepository redisOperationRepository)
         {
             this._dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
-            _mediator = mediator;
             _messageCenterServices = messageCenterServices;
             _userPointLogServices = userPointLogServices;
+            _redisOperationRepository = redisOperationRepository;
         }
 
         #region 根据订单号查询已经售后的内容======================
@@ -712,7 +708,8 @@ namespace CoreCms.Net.Services
                 //售后单审核过后的事件处理
                 if (status == (int)GlobalEnumVars.BillAftersalesStatus.Success)
                 {
-                    await _mediator.Send(new AfterSalesReviewCommand() { AfterSalesId = aftersalesId });
+                    //售后审核通过后处理
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.AfterSalesReview, aftersalesId);
                 }
 
             }

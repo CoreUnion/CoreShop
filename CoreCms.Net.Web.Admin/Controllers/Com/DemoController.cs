@@ -32,6 +32,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
     {
         private readonly IOptions<WeChatPayOptions> _optionsAccessor;
 
+        /// <summary>
+        /// 用于测试及演示用
+        /// </summary>
+        /// <param name="optionsAccessor"></param>
         public DemoController(IOptions<WeChatPayOptions> optionsAccessor)
         {
             _optionsAccessor = optionsAccessor;

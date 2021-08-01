@@ -46,6 +46,8 @@ namespace CoreCms.Net.Loging
         RefundResultNotification,
         [Description("Redis消息队列")]
         RedisMessageQueue,
+        [Description("微信推送消息")]
+        WxPost,
     }
     public static class NLogUtil
     {

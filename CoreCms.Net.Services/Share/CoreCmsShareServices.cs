@@ -17,20 +17,22 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using CoreCms.Net.Caching.AccressToken;
 using CoreCms.Net.Configuration;
-using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
-using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
+using CoreCms.Net.WeChat.Service.Enums;
+using CoreCms.Net.WeChat.Service.HttpClients;
+using CoreCms.Net.WeChat.Service.Options;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
-using Senparc.CO2NET.Utilities;
-using Senparc.Weixin;
-using Senparc.Weixin.WxOpen.AdvancedAPIs.WxApp;
+using SKIT.FlurlHttpClient.Wechat.Api;
+using SKIT.FlurlHttpClient.Wechat.Api.Models;
 
 
 namespace CoreCms.Net.Services
@@ -43,20 +45,26 @@ namespace CoreCms.Net.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public static readonly string Token = Config.SenparcWeixinSetting.WxOpenToken;//与微信小程序后台的Token设置保持一致，区分大小写。
-        public static readonly string EncodingAesKey = Config.SenparcWeixinSetting.WxOpenEncodingAESKey;//与微信小程序后台的EncodingAESKey设置保持一致，区分大小写。
-        public static readonly string WxOpenAppId = Config.SenparcWeixinSetting.WxOpenAppId;//与微信小程序后台的AppId设置保持一致，区分大小写。
-        public static readonly string WxOpenAppSecret = Config.SenparcWeixinSetting.WxOpenAppSecret;//与微信小程序账号后台的AppId设置保持一致，区分大小写。
         public static readonly string AppInterFaceUrl = AppSettingsConstVars.AppConfigAppInterFaceUrl;
 
-        public readonly ICoreCmsGoodsServices _GoodsServices;
+        public readonly ICoreCmsGoodsServices GoodsServices;
+        private readonly WeChatOptions _weChatOptions;
+        private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
 
-        public CoreCmsShareServices(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ICoreCmsGoodsServices goodsServices)
+
+
+        public CoreCmsShareServices(IUnitOfWork unitOfWork
+            , IWebHostEnvironment webHostEnvironment
+            , ICoreCmsGoodsServices goodsServices
+            , IOptions<WeChatOptions> weChatOptions, IWeChatApiHttpClientFactory weChatApiHttpClientFactory)
 
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
-            _GoodsServices = goodsServices;
+            GoodsServices = goodsServices;
+            _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
+            _weChatOptions = weChatOptions.Value;
+
         }
 
         #region 二维码分享
@@ -167,7 +175,7 @@ namespace CoreCms.Net.Services
             var jm = new WebApiCallBack() { status = false, msg = "获取失败" };
 
             var styles = style != null && style.Any() ? string.Join("-", style.ToArray()) : "";
-            var nameStr = CommonHelper.Md5For32(page + invite + type + id + groupId + teamId + WxOpenAppId + styles);
+            var nameStr = CommonHelper.Md5For32(page + invite + type + id + groupId + teamId + _weChatOptions.WxOpenAppId + styles);
 
             //QrCode 根目录
             var dir = "/static/qrCode/weChat/";
@@ -267,28 +275,38 @@ namespace CoreCms.Net.Services
 
                 //没有去官方请求生成
                 var ms = new MemoryStream();
-                var lineColor = new LineColor(221, 51, 238);
-                var result = await Senparc.Weixin.WxOpen.AdvancedAPIs.WxApp.WxAppApi.GetWxaCodeUnlimitAsync(WxOpenAppId, ms, scene, page, lineColor: lineColor);
-                ms.Position = 0;
 
-                if (result != null && result.errcode == ReturnCode.page不正确)
+                var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
+                var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
+                var request = new WxaGetWxaCodeUnlimitRequest();
+                request.AccessToken = accessToken;
+                request.Scene = scene;
+                request.PagePath = page;
+                request.LineColor = new WxaGetWxaCodeUnlimitRequest.Types.Color() { Red = 221, Blue = 51, Green = 238 };
+
+                var response = await client.ExecuteWxaGetWxaCodeUnlimitAsync(request);
+                if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.page不正确)
                 {
                     jm.msg = "后台小程序配置的APPID和APPSECRET对应的小程序未发布上线,或者page没有发布，无法生成海报";
                     return jm;
                 }
-                else if (result != null && result.errcode == ReturnCode.获取access_token时AppSecret错误或者access_token无效)
+                else if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.获取access_token时AppSecret错误或者access_token无效)
                 {
                     jm.msg = "微信小程序access_token已过期，无法为你生成海报";
                     return jm;
                 }
-                else if (result != null && result.ErrorCodeValue > 0)
+                else if (response.IsSuccessful() && response.ErrorCode > 0)
                 {
-                    var enumType = EnumHelper.GetEnumberEntity<ReturnCode>(result.ErrorCodeValue);
+                    var enumType = EnumHelper.GetEnumberEntity<WeChatReturnCode.ReturnCode>(response.ErrorCode);
                     if (enumType != null)
                     {
-                        jm.msg = result.ErrorCodeValue + enumType.title;
+                        jm.msg = response.ErrorCode + enumType.title;
                     }
                     return jm;
+                }
+                else
+                {
+                    ms = new MemoryStream(response.RawBytes);
                 }
 
                 //QrCode 根目录
@@ -304,7 +322,7 @@ namespace CoreCms.Net.Services
                 jm.status = true;
                 jm.msg = "二维码生成成功";
                 jm.data = AppSettingsConstVars.AppConfigAppInterFaceUrl + fileName;
-                jm.otherData = result;
+                jm.otherData = response;
             }
             return jm;
         }
@@ -345,28 +363,38 @@ namespace CoreCms.Net.Services
             {
                 //没有去官方请求生成
                 var ms = new MemoryStream();
-                //var lineColor = new LineColor(221, 51, 238);
-                var result = await Senparc.Weixin.WxOpen.AdvancedAPIs.WxApp.WxAppApi.GetWxaCodeUnlimitAsync(WxOpenAppId, ms, scene, page);
-                ms.Position = 0;
 
-                if (result != null && result.errcode == ReturnCode.page不正确)
+                var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
+                var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
+                var request = new WxaGetWxaCodeUnlimitRequest();
+                request.AccessToken = accessToken;
+                request.Scene = scene;
+                request.PagePath = page;
+                request.LineColor = new WxaGetWxaCodeUnlimitRequest.Types.Color() { Red = 221, Blue = 51, Green = 238 };
+
+                var response = await client.ExecuteWxaGetWxaCodeUnlimitAsync(request);
+                if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.page不正确)
                 {
                     jm.msg = "后台小程序配置的APPID和APPSECRET对应的小程序未发布上线,或者page没有发布，无法生成海报";
                     return jm;
                 }
-                else if (result != null && result.errcode == ReturnCode.获取access_token时AppSecret错误或者access_token无效)
+                else if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.获取access_token时AppSecret错误或者access_token无效)
                 {
                     jm.msg = "微信小程序access_token已过期，无法为你生成海报";
                     return jm;
                 }
-                else if (result != null && result.ErrorCodeValue > 0)
+                else if (response.IsSuccessful() && response.ErrorCode > 0)
                 {
-                    var enumType = EnumHelper.GetEnumberEntity<ReturnCode>(result.ErrorCodeValue);
+                    var enumType = EnumHelper.GetEnumberEntity<WeChatReturnCode.ReturnCode>(response.ErrorCode);
                     if (enumType != null)
                     {
-                        jm.msg = result.ErrorCodeValue + enumType.title;
+                        jm.msg = response.ErrorCode + enumType.title;
                     }
                     return jm;
+                }
+                else
+                {
+                    ms = new MemoryStream(response.RawBytes);
                 }
 
                 //QrCode 根目录
@@ -843,7 +871,7 @@ namespace CoreCms.Net.Services
                         return false;
                     }
                     var goodId = paramsObj["goodsId"].ObjectToInt();
-                    var goodModel = await _GoodsServices.GetGoodsDetial(goodId);
+                    var goodModel = await GoodsServices.GetGoodsDetial(goodId);
                     if (goodModel != null)
                     {
                         var images = goodModel.images.Split(",");

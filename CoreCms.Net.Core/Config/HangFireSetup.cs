@@ -31,7 +31,7 @@ namespace CoreCms.Net.Core.Config
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             //注册Hangfire定时任务
-            var isEnabledRedis = AppSettingsConstVars.RedisConfigEnabled;
+            var isEnabledRedis = AppSettingsConstVars.RedisUseTimedTask;
             if (isEnabledRedis)
             {
                 services.AddHangfire(x => x.UseRedisStorage(AppSettingsConstVars.RedisConfigConnectionString));
