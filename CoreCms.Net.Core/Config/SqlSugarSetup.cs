@@ -34,7 +34,7 @@ namespace CoreCms.Net.Core.Config
             //获取数据类型
             var dbType = dbTypeString == DbType.MySql.ToString() ? DbType.MySql : DbType.SqlServer;
             //判断是否开启redis设置二级缓存方式
-            ICacheService myCache = AppSettingsConstVars.RedisConfigEnabled
+            ICacheService myCache = AppSettingsConstVars.RedisUseCache
                 ? (ICacheService)new SqlSugarRedisCache()
                 : new SqlSugarMemoryCache();
 

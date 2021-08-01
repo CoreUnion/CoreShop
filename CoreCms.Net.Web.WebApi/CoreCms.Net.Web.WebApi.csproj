@@ -57,7 +57,6 @@
     <PackageReference Include="Hangfire.Core" Version="1.7.23" />
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
     <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.8.4" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
@@ -66,10 +65,6 @@
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
-    <PackageReference Include="Senparc.CO2NET" Version="1.4.400" />
-    <PackageReference Include="Senparc.CO2NET.AspNet" Version="0.4.400" />
-    <PackageReference Include="Senparc.Weixin" Version="6.9.400" />
-    <PackageReference Include="Senparc.Weixin.MP" Version="16.12.400" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.19" />
@@ -92,7 +87,7 @@
     <ProjectReference Include="..\CoreCms.Net.Repository\CoreCms.Net.Repository.csproj" />
     <ProjectReference Include="..\CoreCms.Net.Services\CoreCms.Net.Services.csproj" />
     <ProjectReference Include="..\CoreCms.Net.Task\CoreCms.Net.Task.csproj" />
-    <ProjectReference Include="..\CoreCms.Net.WeChatService\CoreCms.Net.WeChatService.csproj" />
+    <ProjectReference Include="..\CoreCms.Net.WeChat.Service\CoreCms.Net.WeChat.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

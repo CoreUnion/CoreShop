@@ -59,6 +59,7 @@
 - 门店管理：门店列表。门店核销、店员管理、提货单管理。
 - 消息配合：消息提醒配置、微信小程序订阅消息设置
 - 小票打印：对接易联云网络打印机
+- 直播带货：微信视频号直播带货，微信视频号橱窗带货，微信直播发货。
 
 #### 🥦 自定义表单说明  
 
@@ -101,7 +102,7 @@
 
 #### 🎨 系统演示  
 
-| 微信小程序演示 | H5演示 |
+| 微信小程序演示 | H5演示（搁置开发） |
 |---------------------|---------------------|
 | ![微信小程序演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/h5qCode.jpg)  |
 
@@ -151,7 +152,7 @@ https://api.demo.coreshop.cn/job
 | Jwt | 授权认证 |  [![nuget](https://img.shields.io/nuget/v/IdentityModel?cacheSeconds=10800)](https://www.nuget.org/packages/IdentityModel/)  [![nuget](https://img.shields.io/nuget/dt/IdentityModel)](https://www.nuget.org/packages/IdentityModel/) |  
 | HangFire | 定时任务 |  [![nuget](https://img.shields.io/nuget/v/HangFire?cacheSeconds=10800)](https://www.nuget.org/packages/HangFire/)  [![nuget](https://img.shields.io/nuget/dt/HangFire)](https://www.nuget.org/packages/HangFire/) |  
 | Paylink  | 在线支付 |   [![nuget](https://img.shields.io/nuget/v/Essensoft.Paylink.WeChatPay?cacheSeconds=10800)](https://www.nuget.org/packages/Essensoft.Paylink.WeChatPay/)  [![nuget](https://img.shields.io/nuget/dt/Essensoft.Paylink.WeChatPay)](https://www.nuget.org/packages/Essensoft.Paylink.WeChatPay/) |  
-| Senparc.Weixin | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/Senparc.Weixin?cacheSeconds=10800)](https://www.nuget.org/packages/Senparc.Weixin/)  [![nuget](https://img.shields.io/nuget/dt/Senparc.Weixin)](https://www.nuget.org/packages/Senparc.Weixin/) |  
+| SKIT.FlurlHttpClient.Wechat | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/SKIT.FlurlHttpClient.Wechat?cacheSeconds=10800)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat/)  [![nuget](https://img.shields.io/nuget/dt/SKIT.FlurlHttpClient.Wechat)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat/) |  
 | LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/sentsin/layui.svg?style=social)](https://www.layui.com/) |  
 
 
@@ -170,7 +171,7 @@ https://api.demo.coreshop.cn/job
 - 使用 HangFire 做定时任务处理；
 - 已支持 SqlServer、MySql数据库，理论上支持所有数据库，并支持读写分离和多库操作；
 - 使用 Paylink 作为支付宝支付、微信支付SDK;
-- 使用 Senparc.Weixin 作为微信公众号及小程序对接组件;
+- 使用 SKIT.FlurlHttpClient.Wechat 作为微信公众号及小程序对接组件;
 
 
 #### 👒 前端框架  
@@ -197,9 +198,9 @@ https://api.demo.coreshop.cn/job
 
 - [x]  （必选）Windows IIS7.5+ / Docker / k8s等支持环境
 - [x]  （必选）sqlserver 2012R2+ / MySQL 5.7+
-- [x]  （必选）支持https协议的域名
-- [x]  （必选）阿里云OSS/腾讯云COS
 - [x]  （必选）Redis 3.0+
+- [x]  （必选）支持https协议的域名
+- [x]  （可选）阿里云OSS/腾讯云COS
 - [ ] （可选）易联云网络打印机
 
 ### ⛵ 安装及说明文档

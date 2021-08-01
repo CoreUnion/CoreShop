@@ -850,7 +850,7 @@
             用户操作事件
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.Auth.Policys.PermissionRequirement,CoreCms.Net.IServices.ICoreCmsSmsServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices,CoreCms.Net.IServices.ICoreCmsUserLogServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsGoodsBrowsingServices,CoreCms.Net.IServices.ICoreCmsCartServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserShipServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsUserBankCardServices,CoreCms.Net.IServices.ICoreCmsUserTocashServices,CoreCms.Net.IServices.ICoreCmsUserBalanceServices,CoreCms.Net.IServices.ICoreCmsInvoiceServices,CoreCms.Net.IServices.ICoreCmsUserPointLogServices,CoreCms.Net.IServices.ICoreCmsShareServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsServicesServices,CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices,CoreCms.Net.IServices.ICoreCmsStoreServices,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsOrderServices)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.Auth.Policys.PermissionRequirement,CoreCms.Net.IServices.ICoreCmsSmsServices,CoreCms.Net.IServices.ICoreCmsUserGradeServices,CoreCms.Net.IServices.ICoreCmsUserLogServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsGoodsBrowsingServices,CoreCms.Net.IServices.ICoreCmsCartServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserShipServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsUserBankCardServices,CoreCms.Net.IServices.ICoreCmsUserTocashServices,CoreCms.Net.IServices.ICoreCmsUserBalanceServices,CoreCms.Net.IServices.ICoreCmsInvoiceServices,CoreCms.Net.IServices.ICoreCmsUserPointLogServices,CoreCms.Net.IServices.ICoreCmsShareServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.WeChat.Service.Options.WeChatOptions},CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices,CoreCms.Net.IServices.ICoreCmsStoreServices,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory)">
             <summary>
             构造函数
             </summary>
@@ -1247,170 +1247,63 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController">
+        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController">
             <summary>
-            微信公众号消息推送接口
+            微信小程序Controller
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController.Get(Senparc.Weixin.MP.Entities.Request.PostModel,System.String)">
+        <member name="P:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.EcryptRequestDocument">
             <summary>
-            微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url填写如：http://sdk.weixin.senparc.com/weixin
+            原始的加密请求（如果不加密则为null）
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialMessageController.Post(Senparc.Weixin.MP.Entities.Request.PostModel)">
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.UsingEncryptMessage">
             <summary>
-            【异步方法】用户发送消息后，微信平台自动Post一个请求到这里，并等待响应XML。
-            PS：此方法为简化方法，效果与OldPost一致。
-            v0.8之后的版本可以结合Senparc.Weixin.MP.MvcExtension扩展包，使用WeixinResult，见MiniPost方法。
+            是否使用加密
             </summary>
         </member>
-        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller">
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.CancelExecute">
             <summary>
-            微信公众号拉取授权
+            是否取消执行
             </summary>
         </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.appId">
+        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.UsingCompatibilityModelEncryptMessage">
             <summary>
-            appid与微信公众账号后台的AppId设置保持一致，区分大小写。
+            是否使用兼容模式
             </summary>
         </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.appSecret">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.#ctor(CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory,Microsoft.Extensions.Options.IOptions{CoreCms.Net.WeChat.Service.Options.WeChatOptions},MediatR.IMediator)">
             <summary>
-            与微信公众账号后台的AppId设置保持一致，区分大小写。
+            微信小程序服务器交互
             </summary>
+            <param name="weChatApiHttpClientFactory"></param>
+            <param name="weChatOptions"></param>
+            <param name="mediator"></param>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.#ctor(CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="userWeChatInfoServices"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.UserInfoCallback(System.String,System.String,System.String)">
-            <summary>
-            OAuthScope.snsapi_userinfo方式回调
-            </summary>
-            <param name="code"></param>
-            <param name="state"></param>
-            <param name="returnUrl">用户最初尝试进入的页面</param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOfficialOAuth2Controller.BaseCallback(System.String,System.String,System.String)">
-            <summary>
-            OAuthScope.snsapi_base方式回调
-            </summary>
-            <param name="code"></param>
-            <param name="state"></param>
-            <param name="returnUrl">用户最初尝试进入的页面</param>
-            <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController">
-            <summary>
-            微信小程序请求对接Controller
-            </summary>
-        </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Token">
-            <summary>
-            //与微信小程序后台的Token设置保持一致，区分大小写。
-            </summary>
-        </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.EncodingAesKey">
-            <summary>
-            //与微信小程序后台的EncodingAESKey设置保持一致，区分大小写。
-            </summary>
-        </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.WxOpenAppId">
-            <summary>
-            //与微信小程序后台的AppId设置保持一致，区分大小写。
-            </summary>
-        </member>
-        <member name="F:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.WxOpenAppSecret">
-            <summary>
-            //与微信小程序账号后台的AppId设置保持一致，区分大小写。
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.#ctor(CoreCms.Net.IServices.ICoreCmsUserWeChatInfoServices)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="userWeChatInfoServices"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Get(Senparc.Weixin.WxOpen.Entities.Request.PostModel,System.String)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.Get(CoreCms.Net.WeChat.Service.Models.PostModel,System.String)">
             <summary>
             GET请求用于处理微信小程序后台的URL验证
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.Post(Senparc.Weixin.WxOpen.Entities.Request.PostModel)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.Post(CoreCms.Net.WeChat.Service.Models.PostModel)">
             <summary>
-            用户发送消息后，微信平台自动Post一个请求到这里，并等待响应XML。
+            接收服务器推送 文档：https://developers.weixin.qq.com/miniprogram/dev/framework/server-ability/message-push.html
             </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.RequestData(System.String)">
-            <summary>
-            返回数据回调测试
-            </summary>
-            <param name="nickName"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.OnLogin(System.String)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.ExecuteProcess(System.Xml.Linq.XDocument,System.String)">
             <summary>
-            wx.login登陆成功之后发送的请求
+            对解密后的xml数据进行筛选并分发处理结果
             </summary>
-            <param name="code"></param>
-            <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.CheckWxOpenSignature(System.String,System.String,System.String)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenController.Init(System.Xml.Linq.XDocument,CoreCms.Net.WeChat.Service.Models.PostModel,System.String@)">
             <summary>
-            校验签名
+            初始化获取xml文本数据
             </summary>
-            <param name="sessionId"></param>
-            <param name="rawData"></param>
-            <param name="signature"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecodeEncryptedData(System.String,System.String,System.String,System.String)">
-            <summary>
-            解码数据
-            </summary>
-            <param name="type"></param>
-            <param name="sessionId"></param>
-            <param name="encryptedData"></param>
-            <param name="iv"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecryptPhoneNumber(System.String,System.String,System.String)">
-            <summary>
-            解密电话号码
-            </summary>
-            <param name="sessionId"></param>
-            <param name="encryptedData"></param>
-            <param name="iv"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.DecryptRunData(System.String,System.String,System.String)">
-            <summary>
-            解密运动步数
-            </summary>
-            <param name="sessionId"></param>
-            <param name="encryptedData"></param>
-            <param name="iv"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.GetQrCode(System.String,System.String,System.String)">
-            <summary>
-            获取二维码
-            </summary>
-            <param name="sessionId"></param>
-            <param name="useBase64"></param>
-            <param name="codeType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth.WxOpenMessageController.SubscribeMessage(System.String,System.String)">
-            <summary>
-            订阅消息
-            </summary>
-            <param name="sessionId"></param>
-            <param name="templateId"></param>
+            <param name="postDataDocument"></param>
+            <param name="postModel"></param>
+            <param name="msgXml"></param>
             <returns></returns>
         </member>
         <member name="T:CoreCms.Net.Web.WebApi.Program">
@@ -1462,14 +1355,12 @@
             </summary>
             <param name="builder"></param>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Options.IOptions{Senparc.CO2NET.SenparcSetting},Microsoft.Extensions.Options.IOptions{Senparc.Weixin.Entities.SenparcWeixinSetting})">
+        <member name="M:CoreCms.Net.Web.WebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
              This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             </summary>
             <param name="app"></param>
             <param name="env"></param>
-            <param name="senparcSetting"></param>
-            <param name="senparcWeixinSetting"></param>
         </member>
     </members>
 </doc>

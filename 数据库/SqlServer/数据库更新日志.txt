@@ -1,3 +1,7 @@
+2021-08-01
+1、增加【WeChatAccessToken】表。用于存储微信公众号或者小程序存放交互accessToken用
+
+
 2021-07-20
 1、删除【CoreCmsGoodsType】表。
 2、删除【CoreCmsGoodsTypeSpecRel】表。

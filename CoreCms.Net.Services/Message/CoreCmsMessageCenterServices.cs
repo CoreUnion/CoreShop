@@ -10,6 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
+using CoreCms.Net.Caching.AutoMate.RedisCache;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
@@ -17,10 +18,8 @@ using CoreCms.Net.IServices;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -37,14 +36,14 @@ namespace CoreCms.Net.Services
         private readonly ICoreCmsMessageCenterRepository _dal;
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly IMediator _mediator;
+        private readonly IRedisOperationRepository _redisOperationRepository;
 
         private readonly IUnitOfWork _unitOfWork;
-        public CoreCmsMessageCenterServices(IUnitOfWork unitOfWork, ICoreCmsMessageCenterRepository dal, IServiceProvider serviceProvider, IMediator mediator, ISysTaskLogServices taskLogServices)
+        public CoreCmsMessageCenterServices(IUnitOfWork unitOfWork, ICoreCmsMessageCenterRepository dal, IServiceProvider serviceProvider, ISysTaskLogServices taskLogServices, IRedisOperationRepository redisOperationRepository)
         {
             this._dal = dal;
             _serviceProvider = serviceProvider;
-            _mediator = mediator;
+            _redisOperationRepository = redisOperationRepository;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
@@ -115,7 +114,15 @@ namespace CoreCms.Net.Services
                     var @params = new JObject();
                     @params.Add("parameters", parameters);
 
-                    await _mediator.Send(new SendWxMessageCommand() { userId = userId, code = code, parameters = @params });
+                    var data = new
+                    {
+                        userId,
+                        code,
+                        parameters = @params
+                    };
+
+                    //队列推送消息
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.SendWxTemplateMessage, JsonConvert.SerializeObject(data));
                 }
                 jm.status = true;
                 return jm;

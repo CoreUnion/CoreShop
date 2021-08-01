@@ -10,11 +10,9 @@ using CoreCms.Net.Filter;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Mapping;
 using CoreCms.Net.Middlewares;
-using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Swagger;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -28,13 +26,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Senparc.CO2NET;
-using Senparc.CO2NET.AspNet;
-using Senparc.Weixin;
-using Senparc.Weixin.Entities;
-using Senparc.Weixin.RegisterServices;
-using Senparc.Weixin.WxOpen;
-using SqlSugar;
 
 namespace CoreCms.Net.Web.Admin
 {
@@ -88,9 +79,6 @@ namespace CoreCms.Net.Web.Admin
             // AutoMapper支持
             services.AddAutoMapper(typeof(AutoMapperConfiguration));
 
-            //MediatR（只需要注册一个,同项目或类库下就不需要注册多个）
-            services.AddMediatR(typeof(OrderPayedCommand).Assembly);
-
             //使用 SignalR
             services.AddSignalR();
 
@@ -101,6 +89,15 @@ namespace CoreCms.Net.Web.Admin
             // 在 appsettings.json 中 配置选项
             services.Configure<WeChatPayOptions>(Configuration.GetSection("WeChatPay"));
             services.Configure<AlipayOptions>(Configuration.GetSection("Alipay"));
+
+
+            //注册自定义微信接口配置文件
+            services.Configure<WeChat.Service.Options.WeChatOptions>(Configuration.GetSection(nameof(WeChat.Service.Options.WeChatOptions)));
+
+            // 注入工厂 HTTP 客户端
+            services.AddHttpClient();
+            services.AddSingleton<WeChat.Service.HttpClients.IWeChatApiHttpClientFactory, WeChat.Service.HttpClients.WeChatApiHttpClientFactory>();
+
 
             //Swagger接口文档注入
             services.AddAdminSwaggerSetup();
@@ -115,9 +112,6 @@ namespace CoreCms.Net.Web.Admin
 
             //服务配置中加入AutoFac控制器替换规则。
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
-
-            //微信注册
-            services.AddSenparcWeixinServices(Configuration);
 
             //注册mvc，注册razor引擎视图
             services.AddMvc(options =>
@@ -165,10 +159,7 @@ namespace CoreCms.Net.Web.Admin
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        /// <param name="senparcSetting"></param>
-        /// <param name="senparcWeixinSetting"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<SenparcSetting> senparcSetting,
-            IOptions<SenparcWeixinSetting> senparcWeixinSetting)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // 记录请求与返回数据 (注意开启权限，不然本地无法写入)
             app.UseReuestResponseLog();
@@ -190,44 +181,6 @@ namespace CoreCms.Net.Web.Admin
                     });
                 c.RoutePrefix = "doc";
             });
-
-
-            #region 盛派微信注册
-            // 启动 CO2NET 全局注册，必须！
-            var registerService = app.UseSenparcGlobal(env, senparcSetting.Value, globalRegister =>
-                {
-                    #region CO2NET 全局配置
-                    #endregion
-                }, true)
-                //使用 Senparc.Weixin SDK
-                .UseSenparcWeixin(senparcWeixinSetting.Value, weixinRegister =>
-                {
-                    #region 微信相关配置
-
-                    /* 微信配置开始
-                    * 
-                    * 建议按照以下顺序进行注册，尤其须将缓存放在第一位！
-                    */
-                    #region 注册公众号或小程序（按需）
-
-                    weixinRegister
-                        //注册公众号
-                        //.RegisterMpAccount(senparcWeixinSetting.Value, "公众号")
-
-                        //注册多个公众号或小程序
-                        .RegisterWxOpenAccount(senparcWeixinSetting.Value, "小程序")
-
-                        //AccessTokenContainer.Register(appId, appSecret, name);//命名空间：Senparc.Weixin.MP.Containers
-                    #endregion
-                        ;
-                    /* 微信配置结束 */
-
-                    #endregion
-                });
-
-            #endregion
-
-
 
             //使用 Session
             app.UseSession();

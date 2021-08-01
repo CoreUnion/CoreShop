@@ -8,18 +8,13 @@ using CoreCms.Net.Filter;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Mapping;
 using CoreCms.Net.Middlewares;
-using CoreCms.Net.Model.ViewModels.Options;
-using CoreCms.Net.Model.ViewModels.Sms;
-using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Swagger;
 using CoreCms.Net.Task;
 using Hangfire;
 using Hangfire.Dashboard.BasicAuthorization;
 using InitQ;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
@@ -30,12 +25,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Qc.YilianyunSdk;
-using Senparc.CO2NET;
-using Senparc.CO2NET.AspNet;
-using Senparc.Weixin;
-using Senparc.Weixin.Entities;
-using Senparc.Weixin.RegisterServices;
-using Senparc.Weixin.WxOpen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,9 +82,6 @@ namespace CoreCms.Net.Web.WebApi
             // AutoMapper支持
             services.AddAutoMapper(typeof(AutoMapperConfiguration));
 
-            //MediatR
-            services.AddMediatR(typeof(OrderPayedCommand).Assembly);
-
             //使用 SignalR
             services.AddSignalR();
 
@@ -109,6 +95,15 @@ namespace CoreCms.Net.Web.WebApi
             // 在 appsettings.json 中 配置选项
             services.Configure<WeChatPayOptions>(Configuration.GetSection("WeChatPay"));
             services.Configure<AlipayOptions>(Configuration.GetSection("Alipay"));
+
+
+            //注册自定义微信接口配置文件
+            services.Configure<WeChat.Service.Options.WeChatOptions>(Configuration.GetSection(nameof(WeChat.Service.Options.WeChatOptions)));
+
+            // 注入工厂 HTTP 客户端
+            services.AddHttpClient();
+            services.AddSingleton<WeChat.Service.HttpClients.IWeChatApiHttpClientFactory, WeChat.Service.HttpClients.WeChatApiHttpClientFactory>();
+
 
             //Swagger接口文档注入
             services.AddClientSwaggerSetup();
@@ -124,8 +119,6 @@ namespace CoreCms.Net.Web.WebApi
             services.AddAuthorizationSetupForClient();
             //上下文注入
             services.AddHttpContextSetup();
-            //微信注册
-            services.AddSenparcWeixinServices(Configuration);
 
             //服务配置中加入AutoFac控制器替换规则。
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -178,10 +171,7 @@ namespace CoreCms.Net.Web.WebApi
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        /// <param name="senparcSetting"></param>
-        /// <param name="senparcWeixinSetting"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<SenparcSetting> senparcSetting,
-            IOptions<SenparcWeixinSetting> senparcWeixinSetting)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // 记录请求与返回数据 (注意开启权限，不然本地无法写入)
             app.UseReuestResponseLog();
@@ -259,41 +249,6 @@ namespace CoreCms.Net.Web.WebApi
             #endregion
 
 
-            #region 盛派微信注册
-            // 启动 CO2NET 全局注册，必须！
-            var registerService = app.UseSenparcGlobal(env, senparcSetting.Value, globalRegister =>
-                {
-                    #region CO2NET 全局配置
-                    #endregion
-                }, true)
-                //使用 Senparc.Weixin SDK
-                .UseSenparcWeixin(senparcWeixinSetting.Value, weixinRegister =>
-                {
-                    #region 微信相关配置
-
-                    /* 微信配置开始
-                    * 
-                    * 建议按照以下顺序进行注册，尤其须将缓存放在第一位！
-                    */
-                    #region 注册公众号或小程序（按需）
-
-                    weixinRegister
-                        //注册公众号
-                        //.RegisterMpAccount(senparcWeixinSetting.Value, "公众号")
-
-                        //注册多个公众号或小程序
-                        .RegisterWxOpenAccount(senparcWeixinSetting.Value, "小程序")
-
-                        //AccessTokenContainer.Register(appId, appSecret, name);//命名空间：Senparc.Weixin.MP.Containers
-                    #endregion
-                        ;
-                    /* 微信配置结束 */
-
-                    #endregion
-                });
-            // 必须要注册，不然盛派的组件有bug，在不注册微信公众号只注册微信小程序的时候，进行小程序消息操作，默认还是走的是微信公众号的相关方法。导致提示MP appid未注册的bug
-            Senparc.Weixin.MP.Containers.AccessTokenContainer.RegisterAsync(senparcWeixinSetting.Value.WxOpenAppId, senparcWeixinSetting.Value.WxOpenAppSecret, "小程序");
-            #endregion
 
 
             //使用 Session

@@ -341,15 +341,34 @@
         /// <summary>
         /// 微信支付成功后推送到接口进行数据处理
         /// </summary>
-        public const string WeChatPayNoticeQueue = "WeChatPayNoticeQueue";
+        public const string WeChatPayNotice = "WeChatPayNoticeQueue";
+        /// <summary>
+        /// 微信模板消息
+        /// </summary>
+        public const string SendWxTemplateMessage = "SendWxTemplateMessage";
+
+
+
         /// <summary>
         /// 订单完结后走代理或分销商提成处理
         /// </summary>
-        public const string OrderAgentOrDistributionSubscribe = "OrderAgentOrDistributionSubscribe";
+        public const string OrderAgentOrDistribution = "OrderAgentOrDistributionQueue";
+        /// <summary>
+        /// 订单完成时，结算该订单
+        /// </summary>
+        public const string OrderFinishCommand = "OrderFinishCommandQueue";
         /// <summary>
         /// 订单完结后走打印模块
         /// </summary>
-        public const string OrderPrintQueue = "OrderPrintQueue";
+        public const string OrderPrint = "OrderPrintQueue";
+        /// <summary>
+        /// 售后审核通过后处理
+        /// </summary>
+        public const string AfterSalesReview = "AfterSalesReview";
+
+
+
+
         /// <summary>
         /// 日志队列
         /// </summary>
@@ -358,6 +377,18 @@
         /// 短信发送队列
         /// </summary>
         public const string SmsQueue = "SmsQueue";
+
+
+
+
+
+        //用户相关
+
+        //订单支付成功后，用户升级处理
+        public const string UserUpGrade = "UserUpGradeQueue";
+
+
+
     }
 
 

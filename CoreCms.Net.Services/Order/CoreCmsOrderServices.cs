@@ -27,10 +27,8 @@ using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
-using CoreCms.Net.Services.Mediator;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Validations;
@@ -77,7 +75,6 @@ namespace CoreCms.Net.Services
         private readonly ICoreCmsGoodsCommentServices _goodsCommentServices;
         private readonly ISysTaskLogServices _taskLogServices;
         private readonly ICoreCmsPromotionRecordServices _promotionRecordServices;
-        private readonly IMediator _mediator;
         private readonly IRedisOperationRepository _redisOperationRepository;
 
         public CoreCmsOrderServices(ICoreCmsOrderRepository dal
@@ -105,7 +102,7 @@ namespace CoreCms.Net.Services
             , ICoreCmsBillPaymentsRelServices billPaymentsRelServices
             , ICoreCmsBillRefundServices billRefundServices
             , ICoreCmsBillLadingServices billLadingServices
-            , ICoreCmsBillReshipServices billReshipServices, IMediator mediator, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsGoodsCommentServices goodsCommentServices, ISysTaskLogServices taskLogServices, ICoreCmsPromotionRecordServices promotionRecordServices, IRedisOperationRepository redisOperationRepository)
+            , ICoreCmsBillReshipServices billReshipServices, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsGoodsCommentServices goodsCommentServices, ISysTaskLogServices taskLogServices, ICoreCmsPromotionRecordServices promotionRecordServices, IRedisOperationRepository redisOperationRepository)
         {
             this._dal = dal;
             base.BaseDal = dal;
@@ -135,7 +132,6 @@ namespace CoreCms.Net.Services
             _billRefundServices = billRefundServices;
             _billLadingServices = billLadingServices;
             _billReshipServices = billReshipServices;
-            _mediator = mediator;
             _messageCenterServices = messageCenterServices;
             _goodsCommentServices = goodsCommentServices;
             _taskLogServices = taskLogServices;
@@ -1303,27 +1299,17 @@ namespace CoreCms.Net.Services
                         await _invoiceServices.InsertAsync(taxInfo);
                     }
 
-                    if (AppSettingsConstVars.RedisConfigUseRedisMessageQueue)
-                    {
-                        //结佣处理
-                        await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderAgentOrDistributionSubscribe, JsonConvert.SerializeObject(order));
-                        //易联云打印机打印
-                        await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderPrintQueue, JsonConvert.SerializeObject(order));
-                    }
-                    else
-                    {
-                        //结佣处理
-                        await _mediator.Send(new OrderPayedCommand() { order = order });
-                        //易联云打印机打印
-                        await _mediator.Send(new YiLianYunPrintCommand() { order = order });
-                    }
+                    //结佣处理
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderAgentOrDistribution, JsonConvert.SerializeObject(order));
+                    //易联云打印机打印
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderPrint, JsonConvert.SerializeObject(order));
 
                     //发送支付成功信息,增加发送内容
                     await _messageCenterServices.SendMessage(order.userId, GlobalEnumVars.PlatformMessageTypes.OrderPayed.ToString(), JObject.FromObject(order));
                     await _messageCenterServices.SendMessage(order.userId, GlobalEnumVars.PlatformMessageTypes.SellerOrderNotice.ToString(), JObject.FromObject(order));
 
                     //用户升级处理
-                    await _mediator.Send(new UserUpGradeCommand() { Order = order });
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.UserUpGrade, JsonConvert.SerializeObject(order));
 
                 }
             }
@@ -1768,8 +1754,8 @@ namespace CoreCms.Net.Services
                 };
                 await _orderLogServices.InsertAsync(orderLog);
 
-                //订单完成钩子
-                await _mediator.Send(new OrderFinishCommand() { OrderId = orderInfo.orderId });
+                //订单完成结算订单
+                await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderFinishCommand, orderInfo.orderId);
 
                 jm.status = true;
                 jm.msg = "订单完成";

@@ -43,14 +43,13 @@ namespace CoreCms.Net.Configuration
         public static readonly string RedisConfigConnectionString = AppSettingsHelper.GetContent("RedisConfig", "ConnectionString");
 
         /// <summary>
-        /// 获取redis是否开启
+        /// 启用redis作为缓存选择
         /// </summary>
-        public static readonly bool RedisConfigEnabled = AppSettingsHelper.GetContent("RedisConfig", "Enabled").ObjToBool();
-
+        public static readonly bool RedisUseCache = AppSettingsHelper.GetContent("RedisConfig", "UseCache").ObjToBool();
         /// <summary>
-        /// 获取是否开启使用redis队列
+        /// 启用redis作为定时任务
         /// </summary>
-        public static readonly bool RedisConfigUseRedisMessageQueue = AppSettingsHelper.GetContent("RedisConfig", "UseRedisMessageQueue").ObjToBool();
+        public static readonly bool RedisUseTimedTask = AppSettingsHelper.GetContent("RedisConfig", "UseTimedTask").ObjToBool();
 
         #endregion
 
