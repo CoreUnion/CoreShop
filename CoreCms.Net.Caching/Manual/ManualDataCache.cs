@@ -34,7 +34,7 @@ namespace CoreCms.Net.Caching.Manual
             {
                 if (_instance == null)
                 {
-                    if (AppSettingsConstVars.RedisConfigEnabled)
+                    if (AppSettingsConstVars.RedisUseCache)
                     {
                         _instance = new RedisCacheManager();
                     }

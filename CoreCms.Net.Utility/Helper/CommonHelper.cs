@@ -553,6 +553,49 @@ namespace CoreCms.Net.Utility.Helper
 
         #endregion
 
+        #region UrlEncode (URL编码)
+        /// <summary>
+        /// UrlEncode (URL编码)
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string UrlEncode(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            byte[] byStr = System.Text.Encoding.UTF8.GetBytes(str); //默认是System.Text.Encoding.Default.GetBytes(str)
+            for (int i = 0; i < byStr.Length; i++)
+            {
+                sb.Append(@"%" + Convert.ToString(byStr[i], 16));
+            }
+
+            return (sb.ToString());
+        }
+
+        #endregion
+
+        #region 获取10位时间戳
+        /// <summary>
+        /// 获取10位时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static long GetTimeStampByTotalSeconds()
+        {
+            TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalSeconds);
+        }
+        #endregion
+
+        #region 获取13位时间戳
+        /// <summary>
+        /// 获取13位时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static long GetTimeStampByTotalMilliseconds()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalMilliseconds);
+        }
+        #endregion
 
 
     }

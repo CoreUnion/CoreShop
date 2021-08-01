@@ -43,7 +43,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        [Subscribe(RedisMessageQueueKey.OrderPrintQueue)]
+        [Subscribe(RedisMessageQueueKey.OrderPrint)]
         private async Task PrintQueue(string msg)
         {
             try

@@ -25,13 +25,13 @@ using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
+using CoreCms.Net.WeChat.Service.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Senparc.CO2NET.Extensions;
-using Senparc.Weixin.MP.AdvancedAPIs;
 using SqlSugar;
 
 
@@ -58,6 +58,10 @@ namespace CoreCms.Net.Services
         private ICoreCmsServicesServices _servicesServices;
         private ICoreCmsUserServicesOrderServices _userServicesOrderServices;
 
+        private readonly WeChatOptions _weChatOptions;
+
+
+
 
         public CoreCmsBillPaymentsServices(IUnitOfWork unitOfWork
             , ICoreCmsBillPaymentsRepository dal
@@ -69,7 +73,10 @@ namespace CoreCms.Net.Services
             , ICoreCmsPaymentsServices paymentsServices
             , ICoreCmsBillPaymentsRelServices billPaymentsRelServices
             , ICoreCmsOrderItemServices orderItemServices
-            , IServiceProvider serviceProvider, ICoreCmsServicesServices servicesServices, ICoreCmsUserServicesOrderServices userServicesOrderServices)
+            , IServiceProvider serviceProvider, ICoreCmsServicesServices servicesServices
+            , ICoreCmsUserServicesOrderServices userServicesOrderServices
+            , IOptions<WeChatOptions> weChatOptions
+            )
         {
             this._dal = dal;
             base.BaseDal = dal;
@@ -87,6 +94,8 @@ namespace CoreCms.Net.Services
             _serviceProvider = serviceProvider;
             _servicesServices = servicesServices;
             _userServicesOrderServices = userServicesOrderServices;
+            _weChatOptions = weChatOptions.Value;
+
         }
 
         #region 生成支付单的时候，格式化支付单明细
@@ -360,11 +369,12 @@ namespace CoreCms.Net.Services
                 }
                 var allConfigs = await _settingServices.GetConfigDictionaries();
                 var wxOfficialAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.WxOfficialAppid);
-                var url = jobj["url"].ObjectToString().UrlEncode();
+                var redirectUrl = CommonHelper.UrlEncode(jobj["url"].ObjectToString());
 
                 jm.status = false;
                 jm.data = 10006;
-                jm.msg = OAuthApi.GetAuthorizeUrl(wxOfficialAppid, url, "corecms", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+
+                jm.msg = $"https://open.weixin.qq.com/connect/oauth2/authorize?appid={_weChatOptions.WeiXinAppId}&redirect_uri={redirectUrl}&response_type={"code"}&scope={3}&state={"corecms"}{"&connect_redirect=1"}#wechat_redirect";
             }
             return jm;
         }

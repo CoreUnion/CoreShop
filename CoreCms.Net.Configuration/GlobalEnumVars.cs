@@ -2587,7 +2587,6 @@ namespace CoreCms.Net.Configuration
 
         #endregion
 
-
         #region 代理设置
         /// <summary>
         /// 代理商申请审核状态
@@ -2651,6 +2650,27 @@ namespace CoreCms.Net.Configuration
             CommissionTypeFixed = 2,
         }
 
+        #endregion
+
+        #region redis缓存类型
+        public enum AccessTokenEnum
+        {
+
+            /// <summary>
+            /// 微信小程序
+            /// </summary>
+            WxOpenAccessToken = 1,
+
+            /// <summary>
+            /// 微信公众号
+            /// </summary>
+            WeiXinAccessToken = 2,
+
+            /// <summary>
+            /// 易联云打印机
+            /// </summary>
+            YiLianYunAccessToken = 3,
+        }
         #endregion
 
     }
