@@ -11,8 +11,8 @@
 <h4 align="center">支持可视化布局的.Net小程序商城</h4>
 
 [![star](https://gitee.com/CoreUnion/CoreShop/badge/star.svg)](https://gitee.com/CoreUnion/CoreShop.git) [![fork](https://gitee.com/CoreUnion/CoreShop/badge/fork.svg)](https://gitee.com/CoreUnion/CoreShop.git)
-[![GitHub stars](https://img.shields.io/github/stars/CoreUnion/CoreShop?logo=github)](https://gihub.com/CoreUnion/CoreShop.git) 
-[![GitHub forks](https://img.shields.io/github/forks/CoreUnion/CoreShop?logo=github)](https://gihub.com/CoreUnion/CoreShop.git)
+[![GitHub stars](https://img.shields.io/github/stars/CoreUnion/CoreShop?logo=github)](https://github.com/CoreUnion/CoreShop) 
+[![GitHub forks](https://img.shields.io/github/forks/CoreUnion/CoreShop?logo=github)](https://github.com/CoreUnion/CoreShop)
 <a target="_blank" href="https://gitee.com/CoreUnion/CoreShop/blob/master/LICENSE"><img src="https://img.shields.io/github/license/CoreUnion/CoreShop.svg?logo=git&logoColor=red" ></img></a>
 
 
