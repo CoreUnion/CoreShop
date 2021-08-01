@@ -165,18 +165,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth
 
                 switch (requestType)
                 {
+
                     case RequestMsgType.Text:
-                        var callbackModel = client.DeserializeEventFromXml<SKIT.FlurlHttpClient.Wechat.Api.Events.TextMessageEvent>(msgXml);
-                        callBack = await _mediator.Send(new TextMessageEventCommand() { EventObj = callbackModel });
+                        var textMessageEvent = client.DeserializeEventFromXml<SKIT.FlurlHttpClient.Wechat.Api.Events.TextMessageEvent>(msgXml);
+                        callBack = await _mediator.Send(new TextMessageEventCommand() { EventObj = textMessageEvent });
                         break;
                     case RequestMsgType.Location:
 
                         break;
                     case RequestMsgType.Image:
-
+                        var imageMessageEvent = client.DeserializeEventFromXml<SKIT.FlurlHttpClient.Wechat.Api.Events.ImageMessageEvent>(msgXml);
+                        callBack = await _mediator.Send(new ImageMessageEventCommand() { EventObj = imageMessageEvent });
                         break;
                     case RequestMsgType.Voice:
-
+                        var voiceMessageEvent = client.DeserializeEventFromXml<SKIT.FlurlHttpClient.Wechat.Api.Events.VoiceMessageEvent>(msgXml);
+                        callBack = await _mediator.Send(new VoiceMessageEventCommand() { EventObj = voiceMessageEvent });
                         break;
                     case RequestMsgType.Video:
 
