@@ -66,7 +66,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                         var message = notify.ErrCode + ":" + notify.ErrCodeDes;
                         await _billPaymentsServices.ToUpdate(notify.OutTradeNo,
                             (int)GlobalEnumVars.BillPaymentsStatus.Other,
-                            GlobalEnumVars.PaymentsTypes.wechatpay.ToString(), money, msg);
+                            GlobalEnumVars.PaymentsTypes.wechatpay.ToString(), money, notify.ReturnMsg, notify.TransactionId);
                     }
                 }
                 NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "微信支付成功后推送到接口进行数据处理", msg);
