@@ -138,15 +138,7 @@ namespace CoreCms.Net.Utility.Helper
         /// <returns></returns>
         public static bool FilterChar(string inputValue)
         {
-            return Regex.IsMatch(inputValue, "[`~!@#$^&*()=|\"{}':;',\\[\\]<>?~！@#￥……&*&;|{}。*-+]+");
-            //if (Regex.IsMatch(inputValue, "[A-Za-z0-9\u4e00-\u9fa5-]+"))
-            //{
-            //    return Regex.Match(inputValue, "[A-Za-z0-9\u4e00-\u9fa5-]+").Value;
-            //}
-            //return "";
-            //return Regex.IsMatch(inputValue, "[~!@#$%^&*()_+|<>,.?:;'\\[\\]{}\"]+");
-
-            //return Regex.IsMatch(inputValue, "[A-Za-z0-9\u4e00-\u9fa5-/]+");
+            return Regex.IsMatch(inputValue, "[`.~!@#$^&*()=|\"{}':;',\\[\\]<>?~！@#￥……&*&;|{}。*-+]+");
         }
 
         #endregion
