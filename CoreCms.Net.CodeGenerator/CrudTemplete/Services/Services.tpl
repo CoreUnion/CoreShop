@@ -17,8 +17,8 @@ using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
-using CoreCms.Net.Model.ViewModel.Basics;
-using CoreCms.Net.Model.ViewModel.UI;
+using CoreCms.Net.Model.ViewModels.Basics;
+using CoreCms.Net.Model.ViewModels.UI;
 using SqlSugar;
 
 
