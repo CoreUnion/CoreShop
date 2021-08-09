@@ -28,7 +28,7 @@ namespace CoreCms.Net.Model.Entities
         /// <summary>
         /// 
         /// </summary>
-        [Display(Name = "")]
+        [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
         public System.Int32 id { get; set; }
