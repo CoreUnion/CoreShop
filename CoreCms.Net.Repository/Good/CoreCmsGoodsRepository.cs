@@ -411,6 +411,11 @@ namespace CoreCms.Net.Repository
                 oldModel.spesDesc = model.spesDesc;
                 oldModel.parameters = model.parameters;
                 oldModel.goodsTypeId = model.goodsTypeId;
+
+                oldModel.goodsSkuIds = model.goodsSkuIds;
+                oldModel.goodsParamsIds = model.goodsParamsIds;
+                oldModel.parameters = model.parameters;
+
             }
             else
             {
@@ -418,6 +423,10 @@ namespace CoreCms.Net.Repository
                 oldModel.spesDesc = "";
                 oldModel.parameters = "";
                 oldModel.goodsTypeId = 0;
+
+                oldModel.goodsSkuIds = "";
+                oldModel.goodsParamsIds = "";
+
             }
 
 
