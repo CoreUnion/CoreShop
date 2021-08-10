@@ -233,7 +233,7 @@ namespace CoreCms.Net.Services
 
                         // 提现金额 加 服务费返还
                         var newMoney = toCashInfo.money + toCashInfo.withdrawals;
-                        var up = await _userServices.UpdateAsync(p => new CoreCmsUser() { balance = newMoney }, p => p.id == toCashInfo.userId);
+                        var up = await _userServices.UpdateAsync(p => new CoreCmsUser() { balance = p.balance + newMoney }, p => p.id == toCashInfo.userId);
                         if (up)
                         {
                             //添加记录
