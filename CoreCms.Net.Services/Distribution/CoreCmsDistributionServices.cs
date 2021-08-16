@@ -92,6 +92,7 @@ namespace CoreCms.Net.Services
                 var dt = DateTime.Now;
                 //本月第一天时间
                 DateTime dtFirst = dt.AddDays(1 - (dt.Day));
+                dtFirst = new DateTime(dtFirst.Year, dtFirst.Month, dtFirst.Day, 0, 0, 0);
                 //获得某年某月的天数
                 int year = dt.Year;
                 int month = dt.Month;

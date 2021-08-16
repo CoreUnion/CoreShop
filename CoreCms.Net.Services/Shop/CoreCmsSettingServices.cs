@@ -191,6 +191,9 @@ namespace CoreCms.Net.Services
             filesStorageOptions.BucketName = GetValue(SystemSettingConstVars.FilesStorageAliYunBucketName, configs, settings);
             filesStorageOptions.Endpoint = GetValue(SystemSettingConstVars.FilesStorageAliYunEndpoint, configs, settings);
 
+            //格式化存储文件夹路径
+            filesStorageOptions.Path = UpLoadHelper.PathFormat(filesStorageOptions.StorageType, filesStorageOptions.Path);
+
             return filesStorageOptions;
         }
 
