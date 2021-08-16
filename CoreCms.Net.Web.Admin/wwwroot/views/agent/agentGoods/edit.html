@@ -25,7 +25,7 @@
 
         <div id="productBox" class="productBox"></div>
 
-        <div class="layui-form-item text-right">
+        <div class="layui-form-item text-right core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAgentGoods-editForm-submit" id="LAY-app-CoreCmsAgentGoods-editForm-submit" value="确认编辑">
         </div>
     </div>
@@ -34,48 +34,47 @@
 <script id="productBoxTmp" type="text/html">
     <table class="layui-table" lay-size="sm">
         <thead>
-            <tr>
-                <th>货品规格</th>
-                <th style="width: 60px">成本价格</th>
-                <th style="width: 60px">销售价格</th>
-                {{#  layui.each(d.agentGrade, function(index, item){ }}
-                <th style="width: 70px">{{ item.name }}</th>
-                {{#  }); }}
-            </tr>
+        <tr>
+            <th>货品规格</th>
+            <th style="width: 60px">成本价格</th>
+            <th style="width: 60px">销售价格</th>
+            {{#  layui.each(d.agentGrade, function(index, item){ }}
+            <th style="width: 70px">{{ item.name }}</th>
+            {{#  }); }}
+        </tr>
         </thead>
         <tbody>
 
-            {{#  layui.each(d.list, function(index, item){ }}
-            <tr>
-                <td style="text-align: left;">{{ item.spesDesc || '默认货品（无规格）'}}</td>
-                <td>{{ item.costprice }}￥</td>
-                <td>{{ item.price }}￥</td>
+        {{#  layui.each(d.list, function(index, item){ }}
+        <tr>
+            <td style="text-align: left;">
+                {{ item.spesDesc || '默认货品（无规格）'}}
+            </td>
+            <td>{{ item.costprice }}￥</td>
+            <td>{{ item.price }}￥</td>
 
-                {{#  layui.each(d.agentGrade, function(key, grade){ }}
-                <td>
-                    <input type="hidden" name="goodId[{{index* d.agentGrade.length + key}}]" value="{{item.goodsId}}">
-                    <input type="hidden" name="productId[{{index* d.agentGrade.length + key}}]" value="{{item.id}}">
-                    <input type="hidden" name="productCostPrice[{{index* d.agentGrade.length + key}}]" value="{{item.costprice}}">
-                    <input type="hidden" name="productPrice[{{index* d.agentGrade.length + key}}]" value="{{item.price}}">
-                    <input type="hidden" name="agentGradeId[{{index* d.agentGrade.length + key}}]" value="{{grade.id}}">
+            {{#  layui.each(d.agentGrade, function(key, grade){ }}
+            <td>
+                <input type="hidden" name="goodId[{{index* d.agentGrade.length + key}}]" value="{{item.goodsId}}">
+                <input type="hidden" name="productId[{{index* d.agentGrade.length + key}}]" value="{{item.id}}">
+                <input type="hidden" name="productCostPrice[{{index* d.agentGrade.length + key}}]" value="{{item.costprice}}">
+                <input type="hidden" name="productPrice[{{index* d.agentGrade.length + key}}]" value="{{item.price}}">
+                <input type="hidden" name="agentGradeId[{{index* d.agentGrade.length + key}}]" value="{{grade.id}}">
+                {{#  if(d.agentProducts && d.allNew==false){ }}
+                {{#  layui.each(d.agentProducts, function(apkey, ap){ }}
+                {{#  if(ap.agentGradeId == grade.id && ap.productId == item.id){ }}
+                <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ ap.agentGradePrice }}" data-agentGradeId="{{ ap.agentGradeId }}" lay-verify="required|number" class="layui-input">
+                {{#  } }}
 
-                    {{#  if(d.agentProducts && d.allNew==false){ }}
+                {{#  }); }}
 
-                    {{#  layui.each(d.agentProducts, function(apkey, ap){ }}
-                    {{#  if(ap.agentGradeId == grade.id && ap.productId == item.id){ }}
-                    <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ ap.agentGradePrice }}" lay-verify="required|number" class="layui-input">
+                {{#  }else{ }}
+
+                {{#  if(grade.defaultSalesPriceType === 1){ }}
+                <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ layui.coreHelper.toDecimal2(item.costprice + item.costprice * grade.defaultSalesPriceNumber / 100 , 2) }}" lay-verify="required|number" class="layui-input">
+                {{#  }else{ }}
+                <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ item.costprice + grade.defaultSalesPriceNumber }}" lay-verify="required|number" class="layui-input">
                     {{#  } }}
-                    {{#  }); }}
-
-
-                    {{#  }else{ }}
-
-                    {{#  if(grade.defaultSalesPriceType === 1){ }}
-                    <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ layui.coreHelper.toDecimal2(item.costprice + item.costprice * grade.defaultSalesPriceNumber / 100 , 2) }}" lay-verify="required|number" class="layui-input">
-                    {{#  }else{ }}
-                    <input type="text" name="agentGradePrice[{{index* d.agentGrade.length + key}}]" value="{{ item.costprice + grade.defaultSalesPriceNumber }}" lay-verify="required|number" class="layui-input">
-                    {{#  } }}
-
 
                     {{#  } }}
 
@@ -167,6 +166,7 @@
                     list: d.params.data.products,
                     agentGrade: d.params.data.agentGrade,
                     agentProducts: d.params.data.agentProducts,
+                    allNew: d.params.data.allNew
                 }
 
                 var getTpl = productBoxTmp.innerHTML, view = document.getElementById('productBox');
