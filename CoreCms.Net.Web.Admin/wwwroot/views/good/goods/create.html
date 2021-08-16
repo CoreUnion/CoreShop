@@ -1091,6 +1091,15 @@
 
                     },
                     delTr: function () {
+
+                        var delSn = $(this).parent().parent('tr').find("input[name='product[sn][]']").val();
+                        for (var i = 0; i < _that.tempMultitermData.length; i++) {
+                            if (_that.tempMultitermData[i].sn == delSn) {
+                                _that.tempMultitermData.splice(i, 1);
+                                break;
+                            }
+                        }
+
                         $(this).parent().parent('tr').remove();
                         var productsCount = parseInt($('#productsCount').val());
                         $('#productsCount').val(productsCount - 1);
