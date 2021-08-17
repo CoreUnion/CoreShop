@@ -141,7 +141,7 @@
             // #ifdef MP-WEIXIN
             var userInfo = this.$store.state.userInfo;
             //var token = this.$db.get('userToken');
-            if (userInfo) {
+            if (Object.keys(userInfo).length != 0) {
                 console.log("获取到用户数据");
             } else {
                 _this.doToken();
