@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import { linkType } from '@/common/setting/constVarsHelper.js';
+    import { navLinkType } from '@/common/setting/constVarsHelper.js';
     export default {
         name: "corecmsnavbar",
         components: {},
@@ -43,7 +43,7 @@
                 if (!val) {
                     return;
                 }
-                if (val.indexOf('http') != -1) {
+                if (this.$u.test.url(val)) {
                     // #ifdef H5
                     window.location.href = val
                     // #endif
@@ -54,18 +54,18 @@
                         return;
                     } else {
 
-                        if (type == this.$config.navLinkType.urlLink) {
+                        if (type == navLinkType.urlLink) {
                             this.$u.route(val);
-                        } else if (type == this.$config.navLinkType.shop) {
+                        } else if (type == navLinkType.shop) {
                             this.$u.route('/pages/goods/goodDetails/goodDetails', { id: val });
                         }
-                        else if (type == this.$config.navLinkType.article) {
+                        else if (type == navLinkType.article) {
                             this.$u.route('/pages/article/details/details', { idType: 1, id: val });
                         }
-                        else if (type == this.$config.navLinkType.articleCategory) {
+                        else if (type == navLinkType.articleCategory) {
                             this.$u.route('/pages/article/list/list')
                         }
-                        else if (type == this.$config.navLinkType.intelligentForms) {
+                        else if (type == navLinkType.intelligentForms) {
                             this.$u.route('/pages/form/details/details', { id: val });
                         } else {
                             this.$u.route(val);
