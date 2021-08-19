@@ -99,6 +99,7 @@ namespace CoreCms.Net.Services
             var jm = new WebApiCallBack();
 
             var orderService = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
+            var stockServices = container.ServiceProvider.GetService<ICoreCmsStockServices>();
             //获取订单详情
             var dInfoResult = await orderService.GetOrderShipInfo(orderId);
             if (!dInfoResult.status)
@@ -173,20 +174,17 @@ namespace CoreCms.Net.Services
                 }
 
                 //构建发货单明细
-                dInfo.items.ForEach(p =>
-                {
-                    var bdItem = new CoreCmsBillDeliveryItem();
-                    bdItem.deliveryId = billDelivery.deliveryId;
-                    bdItem.productId = p.productId;
-                    bdItem.goodsId = p.goodsId;
-                    bdItem.bn = p.bn;
-                    bdItem.sn = p.sn;
-                    bdItem.weight = p.weight;
-                    bdItem.name = p.name;
-                    bdItem.addon = !string.IsNullOrEmpty(p.addon) ? p.addon : "";
-                    bdItem.nums = orderItem.nums;
-                    bdRel.Add(bdItem);
-                });
+                var bdItem = new CoreCmsBillDeliveryItem();
+                bdItem.deliveryId = billDelivery.deliveryId;
+                bdItem.productId = orderItem.productId;
+                bdItem.goodsId = orderItem.goodsId;
+                bdItem.bn = orderItem.bn;
+                bdItem.sn = orderItem.sn;
+                bdItem.weight = orderItem.weight;
+                bdItem.name = orderItem.name;
+                bdItem.addon = !string.IsNullOrEmpty(orderItem.addon) ? orderItem.addon : "";
+                bdItem.nums = item.Value;
+                bdRel.Add(bdItem);
             }
             if (tNum < 1)
             {
@@ -218,6 +216,18 @@ namespace CoreCms.Net.Services
             {
                 await _billDeliveryOrderRelServices.InsertAsync(rels);
             }
+
+            var stock = new CoreCmsStock
+            {
+                manager = 0,
+                id = billDelivery.deliveryId,
+                createTime = DateTime.Now,
+                type = (int)GlobalEnumVars.StockType.DeliverGoods,
+                memo = "订单发货操作，发货单号：" + billDelivery.deliveryId
+            };
+
+            await stockServices.InsertAsync(stock);
+
             jm.status = true;
             jm.msg = "发货成功";
 
@@ -313,15 +323,6 @@ namespace CoreCms.Net.Services
 
                 if (stockLogs.Any())
                 {
-                    var stock = new CoreCmsStock
-                    {
-                        manager = 0,
-                        id = deliveryInfo.deliveryId,
-                        createTime = DateTime.Now,
-                        type = (int)GlobalEnumVars.StockType.DeliverGoods,
-                        memo = log.msg
-                    };
-                    await stockServices.InsertAsync(stock);
                     await stockLogServices.InsertAsync(stockLogs);
                 }
 
