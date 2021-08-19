@@ -24,3 +24,13 @@ export const paymentType = {
 // #ifdef MP-TOUTIAO
 export const ttPlatform = 'toutiao'; //toutiao=今日头条小程序, douyin=抖音小程序, pipixia=皮皮虾小程序, huoshan=火山小视频小程序
 // #endif
+
+
+//nav页面导航类型
+export const navLinkType = {
+    urlLink: 1, //"URL链接"
+    shop: 2,// "商品"
+    article: 3,// "文章"
+    articleCategory: 4,// "文章分类",
+    intelligentForms: 5// "智能表单"
+};

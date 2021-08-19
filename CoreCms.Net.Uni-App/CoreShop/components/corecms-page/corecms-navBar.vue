@@ -9,6 +9,7 @@
 </template>
 
 <script>
+    import { linkType } from '@/common/setting/constVarsHelper.js';
     export default {
         name: "corecmsnavbar",
         components: {},
@@ -52,7 +53,24 @@
                         this.$u.route({ type: 'switchTab', url: val });
                         return;
                     } else {
-                        this.$u.route(val);
+
+                        if (type == this.$config.navLinkType.urlLink) {
+                            this.$u.route(val);
+                        } else if (type == this.$config.navLinkType.shop) {
+                            this.$u.route('/pages/goods/goodDetails/goodDetails', { id: val });
+                        }
+                        else if (type == this.$config.navLinkType.article) {
+                            this.$u.route('/pages/article/details/details', { idType: 1, id: val });
+                        }
+                        else if (type == this.$config.navLinkType.articleCategory) {
+                            this.$u.route('/pages/article/list/list')
+                        }
+                        else if (type == this.$config.navLinkType.intelligentForms) {
+                            this.$u.route('/pages/form/details/details', { id: val });
+                        } else {
+                            this.$u.route(val);
+                        }
+
                         return;
                     }
                     // #endif
