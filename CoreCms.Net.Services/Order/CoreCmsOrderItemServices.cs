@@ -76,7 +76,8 @@ namespace CoreCms.Net.Services
                             isOver = false;
                         }
 
-                        await _dal.UpdateAsync(p => new CoreCmsOrderItem() { sendNums = item[child.productId] },
+                        var updateSendNums = item[child.productId] + child.sendNums;
+                        await _dal.UpdateAsync(p => new CoreCmsOrderItem() { sendNums = updateSendNums },
                             p => p.id == child.id);
 
                         //发货后，减库存
