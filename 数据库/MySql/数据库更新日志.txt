@@ -1,3 +1,6 @@
+2021-08-22
+1、因mysql不支持一定格式数据排序，调整部分longtext字段为text格式，保持富文本字段为longtext格式
+
 2021-08-01
 1、增加【WeChatAccessToken】表。用于存储微信公众号或者小程序存放交互accessToken用
 
