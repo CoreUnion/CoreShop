@@ -30,8 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreCms.Net.RedisMQ.Subscribe;
 using CoreCms.Net.Utility.Extensions;
+using CoreCms.Net.WeChat.Service.Mediator;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
+using MediatR;
 
 namespace CoreCms.Net.Web.WebApi
 {
@@ -81,6 +83,9 @@ namespace CoreCms.Net.Web.WebApi
             services.AddSession();
             // AutoMapper支持
             services.AddAutoMapper(typeof(AutoMapperConfiguration));
+
+            //MediatR（只需要注册一个,同项目或类库下就不需要注册多个）
+            services.AddMediatR(typeof(TextMessageEventCommand).Assembly);
 
             //使用 SignalR
             services.AddSignalR();
