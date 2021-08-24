@@ -821,7 +821,7 @@ namespace CoreCms.Net.Services
                 }
             }
             //把退款金额和退货商品查出来
-            AftersalesVal(order, aftersaleLevel);
+            AfterSalesVal(order, aftersaleLevel);
             //促销信息
             if (!string.IsNullOrEmpty(order.promotionList))
             {
@@ -859,7 +859,7 @@ namespace CoreCms.Net.Services
         /// </summary>
         /// <param name="order"></param>
         /// <param name="aftersaleLevel">取售后单的时候，售后单的等级，0：待审核的和审核通过的售后单，1未审核的，2审核通过的</param>
-        private void AftersalesVal(CoreCmsOrder order, int aftersaleLevel)
+        public void AfterSalesVal(CoreCmsOrder order, int aftersaleLevel)
         {
             var addAftersalesStatus = false;
             var res = _billAftersalesServices.OrderToAftersales(order.orderId, aftersaleLevel);
@@ -1300,6 +1300,20 @@ namespace CoreCms.Net.Services
                         await _invoiceServices.InsertAsync(taxInfo);
                     }
 
+                    //如果是门店自提，应该自动跳过发货，生成提货单信息，使用提货单核销。
+                    if (order.receiptType == (int)GlobalEnumVars.OrderReceiptType.SelfDelivery)
+                    {
+                        var allConfigs = await _settingServices.GetConfigDictionaries();
+                        var storeOrderAutomaticDelivery = CommonHelper
+                            .GetConfigDictionary(allConfigs, SystemSettingConstVars.StoreOrderAutomaticDelivery)
+                            .ObjectToInt(1);
+                        if (storeOrderAutomaticDelivery == 1)
+                        {
+                            //订单自动发货
+                            await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderAutomaticDelivery, JsonConvert.SerializeObject(order));
+                        }
+                    }
+
                     //结佣处理
                     await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderAgentOrDistribution, JsonConvert.SerializeObject(order));
                     //易联云打印机打印
@@ -1453,9 +1467,9 @@ namespace CoreCms.Net.Services
         }
         #endregion
 
-        #region 构建需要发货的数据，和发货单密切关联
+        #region 构建多个需要发货的数据，和发货单密切关联
         /// <summary>
-        /// 构建需要发货的数据，和发货单密切关联
+        /// 构建多个需要发货的数据，和发货单密切关联
         /// </summary>
         /// <returns></returns>
         public async Task<WebApiCallBack> GetOrderShipInfo(string[] ids)
@@ -1517,7 +1531,7 @@ namespace CoreCms.Net.Services
                     jm.msg = "订单号：" + item.orderId + "有未审核的售后单，请先处理掉才能发货。";
                     return jm;
                 }
-                AftersalesVal(item, 0);
+                AfterSalesVal(item, 0);
             }
 
             if (!jm.status)
@@ -1624,6 +1638,108 @@ namespace CoreCms.Net.Services
         }
         #endregion
 
+        #region 构建单个需要发货的数据，和发货单密切关联
+        /// <summary>
+        /// 构建单个需要发货的数据，和发货单密切关联
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetOrderShipInfo(string orderId)
+        {
+            var jm = new WebApiCallBack { status = true };
+
+            var orderInfo = await _dal.QueryByClauseAsync(p => p.orderId == orderId);
+            if (orderInfo == null)
+            {
+                jm.msg = "请选择订单";
+                return jm;
+            }
+            orderInfo.items = await _orderItemServices.QueryListByClauseAsync(p => p.orderId == orderId);
+            var isStoreId = 0;//校验是普通快递收货，还是门店自提，这两种收货方式不能混着发
+                              //更改状态和库存
+
+            if (orderInfo.status != (int)GlobalEnumVars.OrderStatus.Normal)
+            {
+                jm.status = false;
+                jm.msg = "订单号：" + orderInfo.orderId + "非正常状态不能发货。<br />";
+            }
+            else if (orderInfo.payStatus == (int)GlobalEnumVars.OrderPayStatus.No)
+            {
+                jm.status = false;
+                jm.msg = "订单号：" + orderInfo.orderId + "未支付不能发货。<br />";
+            }
+            else if (orderInfo.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No && orderInfo.shipStatus != (int)GlobalEnumVars.OrderShipStatus.PartialYes)
+            {
+                jm.status = false;
+                jm.msg = "订单号：" + orderInfo.orderId + "不是待发货和部分发货状态不能发货。<br />";
+            }
+            //校验，不能普通快递和门店自提，不能混发
+            isStoreId = orderInfo.storeId;
+
+            //判断是否有未审核的售后单，如果有，就不能发货，已做拦截
+            var isHaveBillAfterSales = await _billAftersalesServices.ExistsAsync(p =>
+                p.orderId == orderInfo.orderId &&
+                p.status == (int)GlobalEnumVars.BillAftersalesStatus.WaitAudit);
+            if (isHaveBillAfterSales)
+            {
+                jm.status = false;
+                jm.msg = "订单号：" + orderInfo.orderId + "有未审核的售后单，请先处理掉才能发货。";
+                return jm;
+            }
+            AfterSalesVal(orderInfo, 0);
+
+
+            if (!jm.status)
+            {
+                return jm;
+            }
+
+            var newOrder = new AdminOrderShipOneResult()
+            {
+                orderId = orderId,
+                weight = orderInfo.weight,
+                costFreight = orderInfo.costFreight,
+                storeId = orderInfo.storeId,
+                shipAreaId = orderInfo.shipAreaId,
+                shipAddress = orderInfo.shipAddress,
+                shipName = orderInfo.shipName,
+                shipMobile = orderInfo.shipMobile,
+                logisticsId = orderInfo.logisticsId,
+                logisticsName = orderInfo.logisticsName,
+                items = new List<CoreCmsOrderItem>(),
+                orderInfo = orderInfo,
+                memo = orderInfo.memo
+            };
+
+            if (newOrder.logisticsId > 0)
+            {
+                newOrder.ship = await _shipServices.QueryByClauseAsync(p => p.id == newOrder.logisticsId);
+            }
+
+            //组合总运费
+            foreach (var orderItem in orderInfo.items)
+            {
+                var model = newOrder.items.FirstOrDefault(p => p.productId == orderItem.productId);
+                if (model == null)
+                {
+                    newOrder.items.Add(orderItem);
+                }
+                else
+                {
+                    var index = newOrder.items.IndexOf(model);
+                    newOrder.items[index].nums += orderItem.nums;//总数量
+                    newOrder.items[index].weight += orderItem.weight;//总重量
+                    newOrder.items[index].sendNums += orderItem.sendNums;//已发送数量
+                    newOrder.items[index].reshipNums += orderItem.reshipNums;//退货数量
+                }
+            }
+
+            jm.status = true;
+            jm.data = newOrder;
+
+            return jm;
+        }
+        #endregion
+
         #region 发货改状态
         /// <summary>
         /// 发货改状态
@@ -1663,10 +1779,10 @@ namespace CoreCms.Net.Services
         }
         #endregion
 
-        #region 订单发货
+        #region 订单批量发货
 
         /// <summary>
-        /// 订单发货
+        /// 订单批量发货
         /// </summary>
         /// <param name="ids">订单标号</param>
         /// <param name="logiCode">物流公司编码</param>
@@ -1679,7 +1795,7 @@ namespace CoreCms.Net.Services
         /// <param name="storeId">店铺收货地址</param>
         /// <param name="shipAreaId">省市区id</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> OrderShip(string[] ids, string logiCode, string logiNo,
+        public async Task<WebApiCallBack> BatchShip(string[] ids, string logiCode, string logiNo,
             Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0)
         {
 
@@ -1688,6 +1804,34 @@ namespace CoreCms.Net.Services
 
         }
         #endregion
+
+        #region 订单单个发货
+
+        /// <summary>
+        /// 订单单个发货
+        /// </summary>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="logiCode">物流公司编码</param>
+        /// <param name="logiNo">物流单号</param>
+        /// <param name="items">发货明细</param>
+        /// <param name="shipName">收货人姓名</param>
+        /// <param name="shipMobile">收货人电话</param>
+        /// <param name="shipAddress">收货地址</param>
+        /// <param name="memo">发货描述</param>
+        /// <param name="storeId">店铺收货地址</param>
+        /// <param name="shipAreaId">省市区id</param>
+        /// <param name="deliveryCompanyId">直播物流编码</param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> Ship(string orderId, string logiCode, string logiNo,
+            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0)
+        {
+            var result = await _billDeliveryServices.Ship(orderId, logiCode, logiNo, items, storeId, shipName, shipMobile, shipAreaId, shipAddress, memo);
+            return result;
+
+        }
+        #endregion
+
+
 
         #region 完成订单
         /// <summary>

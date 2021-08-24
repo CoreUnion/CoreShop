@@ -148,6 +148,11 @@ namespace CoreCms.Net.IServices
         /// <returns></returns>
         Task<WebApiCallBack> GetOrderShipInfo(string[] ids);
 
+        /// <summary>
+        /// 构建单个需要发货的数据，和发货单密切关联
+        /// </summary>
+        /// <returns></returns>
+        Task<WebApiCallBack> GetOrderShipInfo(string orderId);
 
         /// <summary>
         ///     发货改状态
@@ -157,6 +162,24 @@ namespace CoreCms.Net.IServices
         /// <returns></returns>
         Task<WebApiCallBack> EditShipStatus(string orderId, Dictionary<int, int> items);
 
+
+        /// <summary>
+        ///     批量订单发货
+        /// </summary>
+        /// <param name="ids">订单标号</param>
+        /// <param name="logiCode">物流公司编码</param>
+        /// <param name="logiNo">物流单号</param>
+        /// <param name="items">发货明细</param>
+        /// <param name="shipName">收货人姓名</param>
+        /// <param name="shipMobile">收货人电话</param>
+        /// <param name="shipAddress">收货地址</param>
+        /// <param name="memo">发货描述</param>
+        /// <param name="storeId">店铺收货地址</param>
+        /// <param name="shipAreaId">省市区id</param>
+        /// <returns></returns>
+        Task<WebApiCallBack> BatchShip(string[] ids, string logiCode, string logiNo,
+            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo,
+            int storeId = 0, int shipAreaId = 0);
 
         /// <summary>
         ///     订单发货
@@ -172,9 +195,11 @@ namespace CoreCms.Net.IServices
         /// <param name="storeId">店铺收货地址</param>
         /// <param name="shipAreaId">省市区id</param>
         /// <returns></returns>
-        Task<WebApiCallBack> OrderShip(string[] ids, string logiCode, string logiNo,
+        Task<WebApiCallBack> Ship(string ids, string logiCode, string logiNo,
             Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo,
             int storeId = 0, int shipAreaId = 0);
+
+
 
         /// <summary>
         ///     后台完成订单

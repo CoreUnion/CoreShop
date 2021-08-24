@@ -1312,11 +1312,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return Json(jm);
             }
 
-            if (entity.code == "benditongcheng")
+            var systemLogistics = SystemSettingDictionary.GetSystemLogistics();
+            foreach (var p in systemLogistics)
             {
-                jm.code = 1;
-                jm.msg = "本地同城配送不支持轨迹查询";
-                return Json(jm);
+                if (entity.code == p.sKey)
+                {
+                    jm.msg = p.sDescription + "不支持轨迹查询";
+                    return Json(jm);
+                }
             }
 
             jm = await _logisticsServices.ExpressPoll(entity.code, entity.no, entity.mobile);

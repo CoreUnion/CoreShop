@@ -356,6 +356,18 @@
                                             </div>
                                             <div class="layui-form-mid layui-word-aux">退货的详细地址</div>
                                         </div>
+
+                                        <blockquote class="layui-elem-quote">
+                                            发货相关
+                                        </blockquote>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['storeOrderAutomaticDelivery']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-7">
+                                                <input type="radio" lay-filter="storeOrderAutomaticDelivery" name="storeOrderAutomaticDelivery" value="1" title="开启" {{d.data.configs['storeOrderAutomaticDelivery']['sValue']==="1" ? 'checked':''}}>
+                                                <input type="radio" lay-filter="storeOrderAutomaticDelivery" name="storeOrderAutomaticDelivery" value="2" title="不开启" {{d.data.configs['storeOrderAutomaticDelivery']['sValue']==="2" ? 'checked':''}}>
+                                            </div>
+                                        </div>
+
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">&nbsp;</label>
                                             <div class="layui-input-block">

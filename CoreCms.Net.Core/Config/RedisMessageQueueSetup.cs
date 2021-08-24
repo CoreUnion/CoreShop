@@ -29,6 +29,7 @@ namespace CoreCms.Net.Core.Config
                 //对应的订阅者类，需要new一个实例对象，当然你也可以传参，比如日志对象
                 m.ListSubscribe = new List<Type>() {
                     typeof(OrderAgentOrDistributionSubscribe),
+                    typeof(OrderAutomaticDeliverySubscribe),
                     typeof(OrderFinishCommandSubscribe),
                     typeof(OrderPrintSubscribe),
 
