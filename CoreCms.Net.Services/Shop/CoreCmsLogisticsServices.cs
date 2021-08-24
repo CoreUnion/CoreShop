@@ -94,16 +94,21 @@ namespace CoreCms.Net.Services
                     var list = new List<CoreCmsLogistics>();
 
 
-                    var logistics = new CoreCmsLogistics();
-                    logistics.logiCode = "benditongcheng";
-                    logistics.logiName = "本地同城配送";
-                    logistics.imgUrl = "";
-                    logistics.phone = shopMobile;
-                    logistics.url = "";
-                    logistics.sort = -1;
-                    logistics.isDelete = false;
+                    var systemLogistics = SystemSettingDictionary.GetSystemLogistics();
+                    systemLogistics.ForEach(p =>
+                    {
+                        var logistics = new CoreCmsLogistics();
+                        logistics.logiCode = p.sKey;
+                        logistics.logiName = p.sDescription;
+                        logistics.imgUrl = "";
+                        logistics.phone = shopMobile;
+                        logistics.url = "";
+                        logistics.sort = -1;
+                        logistics.isDelete = false;
 
-                    list.Add(logistics);
+                        list.Add(logistics);
+                    });
+
 
                     var count = 0;
                     person.showapi_res_body.expressList.ForEach(p =>

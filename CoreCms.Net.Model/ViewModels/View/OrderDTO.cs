@@ -318,7 +318,7 @@ namespace CoreCms.Net.Model.ViewModels.View
 
 
     /// <summary>
-    ///     后端订单发货返回实体
+    ///     后端订单发货返回集合实体
     /// </summary>
     public class AdminOrderShipResult
     {
@@ -337,6 +337,28 @@ namespace CoreCms.Net.Model.ViewModels.View
         public List<CoreCmsOrderItem> items { get; set; }
         public List<CoreCmsOrder> orders { get; set; }
     }
+
+    /// <summary>
+    ///     后端订单发货返回单个实体
+    /// </summary>
+    public class AdminOrderShipOneResult
+    {
+        public string orderId { get; set; }
+        public decimal weight { get; set; } = 0;
+        public string memo { get; set; }
+        public decimal costFreight { get; set; } = 0;
+        public int storeId { get; set; } = 0;
+        public int shipAreaId { get; set; } = 0;
+        public string shipAddress { get; set; }
+        public string shipName { get; set; }
+        public string shipMobile { get; set; }
+        public int logisticsId { get; set; } = 0;
+        public CoreCmsShip ship { get; set; } = null;
+        public string logisticsName { get; set; }
+        public List<CoreCmsOrderItem> items { get; set; }
+        public CoreCmsOrder orderInfo { get; set; }
+    }
+
 
     /// <summary>
     ///     前端提交售后单提交参数

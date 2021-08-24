@@ -499,9 +499,16 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var ids = entity.orderId.Split(",");
-
-            var result = await _coreCmsOrderServices.OrderShip(ids, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId);
+            WebApiCallBack result;
+            if (entity.orderId.Contains(","))
+            {
+                var ids = entity.orderId.Split(",");
+                result = await _coreCmsOrderServices.BatchShip(ids, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId);
+            }
+            else
+            {
+                result = await _coreCmsOrderServices.Ship(entity.orderId, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId);
+            }
 
             jm.code = result.status ? 0 : 1;
             jm.msg = result.msg;

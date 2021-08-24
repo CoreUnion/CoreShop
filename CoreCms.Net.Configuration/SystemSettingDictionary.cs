@@ -73,6 +73,11 @@ namespace CoreCms.Net.Configuration
             di.Add(SystemSettingConstVars.ReshipAddress, new DictionaryKeyValues() { sKey = "退货详细地址", sValue = "" });
             di.Add(SystemSettingConstVars.ReshipCoordinate, new DictionaryKeyValues() { sKey = "退货坐标", sValue = "" });
 
+
+            di.Add(SystemSettingConstVars.StoreOrderAutomaticDelivery, new DictionaryKeyValues() { sKey = "门店自提自动发货", sValue = "2" });
+
+
+
             //分销功能
 
             di.Add(SystemSettingConstVars.OpenDistribution, new DictionaryKeyValues() { sKey = "是否开启三级分销", sValue = "1" });
@@ -226,5 +231,24 @@ namespace CoreCms.Net.Configuration
             };
             return list;
         }
+
+
+
+        /// <summary>
+        /// 获取系统默认发货物流方式
+        /// </summary>
+        /// <returns></returns>
+        public static List<CommonKeyValues> GetSystemLogistics()
+        {
+            var list = new List<CommonKeyValues>
+            {
+                new CommonKeyValues() {sDescription = "本地同城配送", sValue = "无", sKey = "benditongcheng"},
+                new CommonKeyValues() {sDescription = "本地上门自提", sValue = "无", sKey = "shangmenziti"},
+            };
+            return list;
+        }
+
+
+
     }
 }

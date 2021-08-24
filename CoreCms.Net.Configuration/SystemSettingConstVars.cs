@@ -96,6 +96,10 @@ namespace CoreCms.Net.Configuration
         /// </summary>
         public const string RemindOrderTime = "remindOrderTime";
 
+        /// <summary>
+        /// 门店订单自动发货
+        /// </summary>
+        public const string StoreOrderAutomaticDelivery = "storeOrderAutomaticDelivery";
 
         //分销功能（老分销）=============================================================
         /// <summary>

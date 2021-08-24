@@ -358,6 +358,10 @@
         /// </summary>
         public const string OrderFinishCommand = "OrderFinishCommandQueue";
         /// <summary>
+        /// 订单完成时，门店订单自动发货
+        /// </summary>
+        public const string OrderAutomaticDelivery = "OrderAutomaticDeliveryQueue";
+        /// <summary>
         /// 订单完结后走打印模块
         /// </summary>
         public const string OrderPrint = "OrderPrintQueue";

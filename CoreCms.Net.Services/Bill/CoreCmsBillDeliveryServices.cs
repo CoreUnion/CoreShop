@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreCms.Net.Caching.AutoMate.RedisCache;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
@@ -23,6 +24,7 @@ using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Helper;
 using Flurl.Http;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -39,20 +41,22 @@ namespace CoreCms.Net.Services
         private readonly ICoreCmsBillDeliveryRepository _dal;
         private readonly ICoreCmsStoreServices _storeServices;
         private readonly ICoreCmsBillDeliveryItemServices _billDeliveryItemServices;
-        private readonly ICoreCmsBillDeliveryOrderRelServices _billDeliveryOrderRelServices;
         private readonly ICoreCmsOrderLogServices _orderLogServices;
         private readonly ICoreCmsSettingServices _settingServices;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IRedisOperationRepository _redisOperationRepository;
+
+
+
         public CoreCmsBillDeliveryServices(
             IUnitOfWork unitOfWork,
             IServiceProvider serviceProvider
             , ICoreCmsBillDeliveryRepository dal
             , ICoreCmsStoreServices storeServices
             , ICoreCmsBillDeliveryItemServices billDeliveryItemServices
-            , ICoreCmsBillDeliveryOrderRelServices billDeliveryOrderRelServices
             , ICoreCmsOrderLogServices orderLogServices
-            , ICoreCmsSettingServices settingServices)
+            , ICoreCmsSettingServices settingServices, IRedisOperationRepository redisOperationRepository)
         {
             this._dal = dal;
             base.BaseDal = dal;
@@ -60,9 +64,9 @@ namespace CoreCms.Net.Services
             _serviceProvider = serviceProvider;
             _storeServices = storeServices;
             _billDeliveryItemServices = billDeliveryItemServices;
-            _billDeliveryOrderRelServices = billDeliveryOrderRelServices;
             _orderLogServices = orderLogServices;
             _settingServices = settingServices;
+            _redisOperationRepository = redisOperationRepository;
         }
 
 
@@ -76,8 +80,6 @@ namespace CoreCms.Net.Services
 
             return await _dal.GetDeliveryList(orderId);
         }
-
-
 
         /// <summary>
         /// 批量发货，可以支持多个订单合并发货，单个订单拆分发货等。
@@ -150,6 +152,7 @@ namespace CoreCms.Net.Services
             billDelivery.memo = memo;
             billDelivery.createTime = DateTime.Now;
 
+
             //设置发货明细
             var bdRel = new List<CoreCmsBillDeliveryItem>();
 
@@ -174,6 +177,21 @@ namespace CoreCms.Net.Services
                 }
 
                 //构建发货单明细
+                //dInfo.items.ForEach(p =>
+                //{
+                //    var bdItem = new CoreCmsBillDeliveryItem();
+                //    bdItem.deliveryId = billDelivery.deliveryId;
+                //    bdItem.orderId = p.orderId;
+                //    bdItem.productId = p.productId;
+                //    bdItem.goodsId = p.goodsId;
+                //    bdItem.bn = p.bn;
+                //    bdItem.sn = p.sn;
+                //    bdItem.weight = p.weight;
+                //    bdItem.name = p.name;
+                //    bdItem.addon = !string.IsNullOrEmpty(p.addon) ? p.addon : "";
+                //    bdItem.nums = orderItem.nums;
+                //    bdRel.Add(bdItem);
+                //});
                 var bdItem = new CoreCmsBillDeliveryItem();
                 bdItem.deliveryId = billDelivery.deliveryId;
                 bdItem.productId = orderItem.productId;
@@ -195,26 +213,15 @@ namespace CoreCms.Net.Services
 
 
             //插入发货单主体表
-            await base.InsertAsync(billDelivery);
+            await _dal.InsertAsync(billDelivery);
 
             //插入发货单明细表
             await _billDeliveryItemServices.InsertAsync(bdRel);
 
             //订单更新发货状态，发送各种消息
-            var rels = new List<CoreCmsBillDeliveryOrderRel>(); //关系表
             foreach (var order in orders)
             {
-                await orderShip(order, items, billDelivery, storeId);
-                var rel = new CoreCmsBillDeliveryOrderRel
-                {
-                    deliveryId = billDelivery.deliveryId,
-                    orderId = order.orderId
-                };
-                rels.Add(rel);
-            }
-            if (rels.Any())
-            {
-                await _billDeliveryOrderRelServices.InsertAsync(rels);
+                await OrderShip(order, items, billDelivery, storeId);
             }
 
             var stock = new CoreCmsStock
@@ -237,13 +244,161 @@ namespace CoreCms.Net.Services
 
 
         /// <summary>
+        ///     发货，单个订单发货
+        /// </summary>
+        /// <param name="orderId">英文逗号分隔的订单号</param>
+        /// <param name="logiCode">物流公司编码</param>
+        /// <param name="logiNo">物流单号</param>
+        /// <param name="items">发货明细</param>
+        /// <param name="storeId">店铺收货地址</param>
+        /// <param name="shipName">收货人姓名</param>
+        /// <param name="shipMobile">收货人电话</param>
+        /// <param name="shipAreaId">省市区id</param>
+        /// <param name="shipAddress">收货地址</param>
+        /// <param name="memo">发货描述</param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> Ship(string orderId, string logiCode, string logiNo, Dictionary<int, int> items, int storeId = 0, string shipName = "", string shipMobile = "", int shipAreaId = 0, string shipAddress = "", string memo = "")
+        {
+            using var container = _serviceProvider.CreateScope();
+            var jm = new WebApiCallBack();
+
+            var orderService = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
+            var stockServices = container.ServiceProvider.GetService<ICoreCmsStockServices>();
+
+            //获取订单详情
+            var dInfoResult = await orderService.GetOrderShipInfo(orderId);
+            if (!dInfoResult.status)
+            {
+                return dInfoResult;
+            }
+            var dInfo = dInfoResult.data as AdminOrderShipOneResult;
+            var orderInfo = dInfo.orderInfo;
+
+            //校验门店自提和普通订单收货地址是否填写
+            if (storeId != 0)
+            {
+                var storeModel = await _storeServices.QueryByIdAsync(storeId);
+                if (storeModel == null)
+                {
+                    jm.msg = GlobalErrorCodeVars.Code10000;
+                    jm.data = 1000;
+                    jm.code = 1000;
+                    return jm;
+                }
+                shipName = storeModel.storeName;
+                shipMobile = storeModel.mobile;
+                shipAreaId = storeModel.areaId;
+                shipAddress = storeModel.address;
+            }
+            if (string.IsNullOrEmpty(shipName) || string.IsNullOrEmpty(shipMobile) || string.IsNullOrEmpty(shipAddress) || shipAreaId == 0)
+            {
+                jm.msg = "收货地址信息不全";
+                jm.otherData = new
+                {
+                    shipName,
+                    shipMobile,
+                    shipAddress,
+                    shipAreaId
+                };
+                return jm;
+            }
+            var billDelivery = new CoreCmsBillDelivery();
+            billDelivery.orderId = string.Join(",", orderId);
+            billDelivery.deliveryId = CommonHelper.GetSerialNumberType((int)GlobalEnumVars.SerialNumberType.发货单编号);
+            billDelivery.logiCode = logiCode;
+            billDelivery.logiNo = logiNo;
+            billDelivery.shipAreaId = shipAreaId;
+            billDelivery.shipAddress = shipAddress;
+            billDelivery.shipName = shipName;
+            billDelivery.shipMobile = shipMobile;
+            billDelivery.status = (int)GlobalEnumVars.BillDeliveryStatus.Already;
+            billDelivery.memo = memo;
+            billDelivery.createTime = DateTime.Now;
+
+
+            //设置发货明细
+            var bdRel = new List<CoreCmsBillDeliveryItem>();
+
+            //校验发货内容
+            var tNum = 0;
+            foreach (var item in items)
+            {
+                var orderItem = dInfo.items.Find(p => p.productId == item.Key);
+                if (orderItem == null)
+                {
+                    //发货的商品不在发货明细里，肯定有问题
+                    jm.msg = GlobalErrorCodeVars.Code10000;
+                    return jm;
+                }
+                //判断总发货数量
+                tNum = tNum + item.Value;
+
+                if ((orderItem.nums - orderItem.sendNums - (orderItem.reshipNums - orderItem.reshipedNums)) < item.Value)
+                {
+                    jm.msg = orderItem.name + "发超了";
+                    return jm;
+                }
+
+                //构建发货单明细
+                dInfo.items.ForEach(p =>
+                {
+                    var bdItem = new CoreCmsBillDeliveryItem();
+                    bdItem.deliveryId = billDelivery.deliveryId;
+                    bdItem.productId = p.productId;
+                    bdItem.goodsId = p.goodsId;
+                    bdItem.bn = p.bn;
+                    bdItem.sn = p.sn;
+                    bdItem.weight = p.weight;
+                    bdItem.name = p.name;
+                    bdItem.addon = !string.IsNullOrEmpty(p.addon) ? p.addon : "";
+                    bdItem.nums = orderItem.nums;
+                    bdRel.Add(bdItem);
+                });
+            }
+            if (tNum < 1)
+            {
+                jm.msg = "请至少发生一件商品!";
+                return jm;
+            }
+            //事务处理开始
+
+
+            //插入发货单主体表
+            await _dal.InsertAsync(billDelivery);
+
+            //插入发货单明细表
+            await _billDeliveryItemServices.InsertAsync(bdRel);
+
+            //订单更新发货状态，发送各种消息
+            await OrderShip(orderInfo, items, billDelivery, storeId);
+
+            var stock = new CoreCmsStock
+            {
+                manager = 0,
+                id = billDelivery.deliveryId,
+                createTime = DateTime.Now,
+                type = (int)GlobalEnumVars.StockType.DeliverGoods,
+                memo = "订单发货操作，发货单号：" + billDelivery.deliveryId
+            };
+
+            await stockServices.InsertAsync(stock);
+
+            jm.status = true;
+            jm.msg = "发货成功";
+
+            return jm;
+        }
+
+
+
+        /// <summary>
         /// 给订单发货
         /// </summary>
         /// <param name="orderInfo">订单信息</param>
         /// <param name="items">总的发货包裹内容</param>
         /// <param name="deliveryInfo">发货单信息</param>
         /// <param name="storeId">门店自提还是普通订单，0是普通订单，其他是门店自提</param>
-        private async Task<bool> orderShip(CoreCmsOrder orderInfo, Dictionary<int, int> items, CoreCmsBillDelivery deliveryInfo, int storeId = 0)
+        private async Task<bool> OrderShip(CoreCmsOrder orderInfo, Dictionary<int, int> items, CoreCmsBillDelivery deliveryInfo, int storeId = 0)
         {
             using var container = _serviceProvider.CreateScope();
             var orderService = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
@@ -323,6 +478,15 @@ namespace CoreCms.Net.Services
 
                 if (stockLogs.Any())
                 {
+                    //var stock = new CoreCmsStock
+                    //{
+                    //    manager = 0,
+                    //    id = deliveryInfo.deliveryId,
+                    //    createTime = DateTime.Now,
+                    //    type = (int)GlobalEnumVars.StockType.DeliverGoods,
+                    //    memo = log.msg
+                    //};
+                    //await stockServices.InsertAsync(stock);
                     await stockLogServices.InsertAsync(stockLogs);
                 }
 
@@ -375,9 +539,8 @@ namespace CoreCms.Net.Services
                 param = jsonParamData,
                 sign = signStr
             };
-            var result = await postUrl.WithHeader("Content-Type	", "application/x-www-form-urlencoded")
-                                .PostJsonAsync(postData)
-                                .ReceiveJson<KuaiDi100ApiPostResult>();
+
+            var result = await postUrl.PostUrlEncodedAsync(postData).ReceiveJson<KuaiDi100ApiPostResult>();
             if (result.status == "200")
             {
                 jm.status = true;
