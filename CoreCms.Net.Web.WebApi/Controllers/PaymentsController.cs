@@ -18,7 +18,7 @@ using CoreCms.Net.Configuration;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -85,7 +85,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public JsonResult CheckPay([FromBody] CheckPayPost entity)
+        public async Task<JsonResult> CheckPay([FromBody] CheckPayPost entity)
         {
             var jm = new WebApiCallBack();
 
@@ -95,9 +95,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 return Json(jm);
             }
 
-            var ids = CommonHelper.StringToStringArray(entity.ids);
-            jm = _billPaymentsServices.FormatPaymentRel(ids, entity.paymentType, entity.@params);
-            jm.otherData = entity;
+            jm = await _billPaymentsServices.FormatPaymentRel(entity.ids, entity.paymentType, entity.@params);
             return Json(jm);
 
         }

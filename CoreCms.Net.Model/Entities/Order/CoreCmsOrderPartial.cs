@@ -32,10 +32,10 @@ namespace CoreCms.Net.Model.Entities
         public CoreCmsUser user { get; set; }
 
         /// <summary>
-        ///     支付单
+        ///     支付单关系
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public List<CoreCmsBillPaymentsRel> paymentRelItem { get; set; }
+        public List<CoreCmsBillPayments> paymentItem { get; set; }
 
         /// <summary>
         ///     退款单

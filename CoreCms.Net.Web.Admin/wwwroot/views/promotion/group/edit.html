@@ -73,7 +73,7 @@
                 <table id="result" lay-filter="result"></table>
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-GroupEditForm-submit" id="LAY-app-CoreCmsPromotion-GroupEditForm-submit" value="确认编辑">
@@ -236,6 +236,10 @@
                                                 });
                                         });
                                     }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-createForm-submit").click();
+                                    }
                                 });
                             } else {
                                 layer.msg(e.msg);
@@ -324,6 +328,10 @@
                                                     });
                                                 });
                                         })
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-editForm-submit").click();
                                     }
                                 });
                             } else {

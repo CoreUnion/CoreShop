@@ -1231,12 +1231,33 @@
                                     var getTpl = getSpec_tpl.innerHTML, view = document.getElementById('more_spec');
                                     var tmpData = [];
 
+
+
                                     var skuArray = e.data.skuArray;
                                     var oldData = _that.tempMultitermData;
                                     var oldHaveDefault = false;
+
+                                    //if (skuArray) {
+                                    //    for (var i = 0; i < skuArray.length; i++) {
+                                    //        var isHave = false;
+                                    //        for (var j = 0; j < oldData.length; j++) {
+                                    //            if (skuArray.indexOf(oldData[i].spesDesc) != -1) {
+                                    //                tmpData.push(oldData[i]);
+                                    //                if (oldData[i].isDefalut) {
+                                    //                    oldHaveDefault = true;
+                                    //                }
+                                    //            }
+                                    //        }
+                                    //        if (isHave == false) {
+
+                                    //        }
+                                    //    }
+                                    //}
+
+
                                     if (oldData) {
                                         for (var i = 0; i < oldData.length; i++) {
-                                            if (skuArray.indexOf(oldData[i].spesDesc) > -1) {
+                                            if (skuArray.indexOf(oldData[i].spesDesc) != -1) {
                                                 tmpData.push(oldData[i]);
                                                 if (oldData[i].isDefalut) {
                                                     oldHaveDefault = true;
@@ -1255,7 +1276,7 @@
                                         tmpData[0].isDefalut = true;
                                     }
                                     _that.tempMultitermData = tmpData;
-
+                                    console.log(_that.tempMultitermData);
                                     laytpl(getTpl).render(tmpData, function (html) {
                                         view.innerHTML = html;
                                     });

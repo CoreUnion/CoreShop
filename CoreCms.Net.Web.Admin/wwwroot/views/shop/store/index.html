@@ -19,13 +19,13 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md3">
                 <div class="layui-card">
-                    <div class="layui-card-body" style="padding: 10px;">
+                    <div class="layui-card-body">
                         <!-- 表格工具栏1 -->
-                        <form class="layui-form toolbar">
+                        <form class="layui-form coreshop-toolbar-search-form">
                             <div class="layui-form-item" style="margin-bottom: 10px;">
                                 <input name="storeName" class="layui-input" placeholder="输入门店名称"
                                        style="max-width: 140px;display: inline-block;" />&emsp;
-                                <button class="layui-btn icon-btn" lay-filter="dictTbSearch" lay-submit>
+                                <button class="layui-btn layui-btn-sm icon-btn" lay-filter="dictTbSearch" lay-submit>
                                     <i class="layui-icon">&#xe615;</i>搜索
                                 </button>
                             </div>
@@ -37,10 +37,10 @@
             </div>
             <div class="layui-col-md9">
                 <div class="layui-card">
-                    <div class="layui-card-body" style="padding: 10px;">
+                    <div class="layui-card-body">
                         <!-- 表格工具栏2 -->
-                        <form class="layui-form toolbar">
-                            <div class="layui-form-item">
+                        <form class="layui-form coreshop-toolbar-search-form">
+                            <div class="layui-form-item" style="margin-bottom: 10px;">
                                 <div class="layui-inline">
                                     <label class="layui-form-label">用户昵称:</label>
                                     <div class="layui-input-inline">
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="layui-inline">
                                     &emsp;
-                                    <button class="layui-btn icon-btn" lay-filter="dictDataTbSearch" lay-submit>
+                                    <button class="layui-btn layui-btn-sm icon-btn" lay-filter="dictDataTbSearch" lay-submit>
                                         <i class="layui-icon">&#xe615;</i>搜索
                                     </button>
                                 </div>
@@ -93,6 +93,7 @@
 <script>
     var indexData;
     var debug = layui.setter.debug;
+    var storeId;
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d); }
@@ -118,7 +119,7 @@
                     elem: '#storeTable',
                     url: layui.setter.apiUrl + 'Api/CoreCmsStore/GetPageList',
                     method: 'Post',
-                    height: 'full-235',
+                    height: 'full-175',
                     toolbar: ['<p>',
                         '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
                         '<button lay-event="edit" class="layui-btn layui-btn-sm layui-btn-warm icon-btn"><i class="layui-icon">&#xe642;</i>修改</button>&nbsp;',
@@ -154,6 +155,7 @@
                 /* 监听行单击事件 */
                 table.on('row(storeTable)', function (obj) {
                     selObj = obj;
+                    storeId = obj.data.id;
                     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
                     insTb2.reload({
                         where: { storeId: obj.data.id },
@@ -201,6 +203,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsStore-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -246,6 +252,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsStore-editForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -267,7 +277,7 @@
                 var insTb2 = tableX.render({
                     elem: '#storeClerkTable',
                     method: 'Post',
-                    height: 'full-235',
+                    height: 'full-175',
                     page: true,
                     toolbar: ['<p>',
                         '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
@@ -297,7 +307,11 @@
 
                 /* 表格2搜索 */
                 form.on('submit(dictDataTbSearch)', function (data) {
-                    insTb2.reload({ where: data.field, page: { curr: 1 } });
+                    data.field.storeId = storeId;
+                    insTb2.reload({
+                        where: data.field,
+                        page: { curr: 1 }
+                    });
                     return false;
                 });
 
@@ -355,6 +369,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsStore-clerkCreateForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -395,6 +413,10 @@
                                     })
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsStore-clerkEdit-submit").click();
                                 }
                             });
                         } else {

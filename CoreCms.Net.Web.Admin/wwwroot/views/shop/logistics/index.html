@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsLogistics/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsLogistics-tableBox" lay-filter="LAY-app-CoreCmsLogistics-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsLogistics-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -38,11 +45,8 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsLogistics-tableBox" lay-filter="LAY-app-CoreCmsLogistics-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-CoreCmsLogistics-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsLogistics-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="updateCompany"><i class="layui-icon layui-icon-refresh-1"></i>刷新接口</button>
     </div>
@@ -77,7 +81,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsLogistics-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsLogistics-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -85,8 +89,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsLogistics/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsLogistics-toolbar',
+                    pagebar: '#LAY-app-CoreCmsLogistics-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -105,7 +111,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsLogistics-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsLogistics-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsLogistics-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -114,7 +120,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsLogistics-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsLogistics-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'updateCompany':
@@ -128,7 +134,7 @@
                     layer.confirm('确定刷新吗？刷新后将删除老数据。', function (index) {
                         coreHelper.Post("Api/CoreCmsLogistics/DoUpdateCompany", null, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsLogistics-tableBox');
+                            table.reloadData('LAY-app-CoreCmsLogistics-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -138,7 +144,7 @@
                 layui.form.on('switch(switch_isDelete)', function (obj) {
                     coreHelper.Post("Api/CoreCmsLogistics/DoSetisDelete", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsLogistics-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsLogistics-tableBox');
                         layer.msg(e.msg);
                     });
                 });

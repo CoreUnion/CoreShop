@@ -1,5 +1,9 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+
+<script type="text/html" id="LAY-app-getArticles-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label" for="title">标题</label>
@@ -13,7 +17,9 @@
         </div>
     </div>
 </script>
-<div class="table-body">
+
+
+<div class="table-body noDefaultToolbar">
     <table id="LAY-app-CoreCmsArticle-ArticleTable-TableBox" lay-filter="LAY-app-CoreCmsArticle-ArticleTable-TableBox"></table>
 </div>
 
@@ -43,12 +49,13 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsArticle-ArticleTable-TableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsArticle-ArticleTable-TableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsArticle-ArticleTable-TableBox',
                     url: layui.setter.apiUrl + 'Api/Tools/GetArticles',
+                    toolbar:'#LAY-app-getArticles-toolbar',
                     method: 'POST',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '380px',//无面包屑127,搜索框189,1行62

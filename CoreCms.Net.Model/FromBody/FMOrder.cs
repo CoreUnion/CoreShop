@@ -33,15 +33,47 @@ namespace CoreCms.Net.Model.FromBody
     /// </summary>
     public class AdminOrderShipPost
     {
+        /// <summary>
+        /// 订单编号
+        /// </summary>
         public string orderId { get; set; }
+        /// <summary>
+        /// 快递编码
+        /// </summary>
         public string logiCode { get; set; }
+        /// <summary>
+        /// 快递公司名称
+        /// </summary>
         public string logiNo { get; set; }
+        /// <summary>
+        /// 直播物流编码 
+        /// </summary>
+        public string deliveryCompanyId { get; set; }
+
         public Dictionary<int, int> items { get; set; }
+        /// <summary>
+        /// 门店编码
+        /// </summary>
         public int storeId { get; set; } = 0;
+        /// <summary>
+        /// 收货姓名
+        /// </summary>
         public string shipName { get; set; }
+        /// <summary>
+        /// 收货手机
+        /// </summary>
         public string shipMobile { get; set; }
+        /// <summary>
+        /// 收货地址
+        /// </summary>
         public string shipAddress { get; set; }
+        /// <summary>
+        /// 收货区域编码
+        /// </summary>
         public int shipAreaId { get; set; } = 0;
+        /// <summary>
+        /// 备注
+        /// </summary>
         public string memo { get; set; }
     }
 

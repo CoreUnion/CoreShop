@@ -3,26 +3,26 @@
     <div class="layui-form coreshop-form" lay-filter="LAY-app-CoreCmsAgentGoods-detailsForm" id="LAY-app-CoreCmsAgentGoods-detailsForm">
 
         <div class="layui-form-item">
-            <label for="goodId" class="layui-form-label ">商品</label>
+            <label for="goodId" class="layui-form-label ">商品：</label>
             <div class="layui-input-inline layui-inline-100  layui-form-mid">
                 {{ d.params.data.goods.name || '' }}
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label for="sortId" class="layui-form-label ">排序</label>
+            <label for="sortId" class="layui-form-label ">排序：</label>
             <div class="layui-input-inline layui-inline-2 layui-form-mid">
                 {{ d.params.data.model.sortId || '' }}
             </div>
-            <label for="isEnable" class="layui-form-label ">是否启用</label>
+            <label for="isEnable" class="layui-form-label ">是否启用：</label>
             <div class="layui-input-inline layui-inline-2 layui-form-mid">
                 <input type="checkbox" disabled name="isEnable" value="{{d.params.data.model.isEnable}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="isEnable" {{ d.params.data.model.isEnable ? 'checked' : '' }}>
             </div>
-            <label for="isEnable" class="layui-form-label ">创建时间</label>
+            <label for="isEnable" class="layui-form-label ">创建时间：</label>
             <div class="layui-input-inline layui-inline-3 layui-form-mid">
                 {{ d.params.data.model.createTime || '' }}
             </div>
-            <label for="isEnable" class="layui-form-label ">更新时间</label>
+            <label for="isEnable" class="layui-form-label ">更新时间：</label>
             <div class="layui-input-inline layui-inline-3 layui-form-mid">
                 {{ d.params.data.model.updateTime || '' }}
             </div>
@@ -30,9 +30,7 @@
 
         <fieldset class="layui-elem-field layui-field-title"> <legend style="font-size:14px;">货品信息</legend> </fieldset>
 
-
         <div id="productBox" class="productBox"></div>
-
     </div>
 </script>
 

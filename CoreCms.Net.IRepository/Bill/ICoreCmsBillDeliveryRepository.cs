@@ -21,14 +21,6 @@ namespace CoreCms.Net.IRepository
     public interface ICoreCmsBillDeliveryRepository : IBaseRepository<CoreCmsBillDelivery>
     {
         /// <summary>
-        ///     获取发货单列表
-        /// </summary>
-        /// <param name="orderId">订单编号</param>
-        /// <returns></returns>
-        Task<WebApiCallBack> GetDeliveryList(string orderId);
-
-
-        /// <summary>
         ///     发货单统计7天统计
         /// </summary>
         /// <returns></returns>

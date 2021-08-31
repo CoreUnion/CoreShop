@@ -11,7 +11,6 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsBillDelivery/GetIndex" lay-done="layui.data.done(d);">
-
 </script>
 <div class="table-body">
     <table id="LAY-app-CoreCmsBillDelivery-tableBox" lay-filter="LAY-app-CoreCmsBillDelivery-tableBox"></table>
@@ -37,19 +36,31 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
-                    <input type="text" name="confirmTime" id="searchTime-CoreCmsBillDelivery-confirmTime" placeholder="请输入确认收货时间" class="layui-input">
+                <div class="layui-input-inline core-time-input">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsBillDelivery-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsBillDelivery-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsBillDelivery-pagebar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
                 <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
                 <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
             </div>
         </div>
     </div>
-
 </script>
+
+
+
+
 <script type="text/html" id="LAY-app-CoreCmsBillDelivery-tableBox-bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -84,7 +95,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsBillDelivery-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsBillDelivery-tableBox', { where: field });
 
                     });
                 //数据绑定
@@ -93,6 +104,11 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsBillDelivery/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillDelivery-toolbar',
+                    pagebar: '#LAY-app-CoreCmsBillDelivery-pagebar',
+                    css: [
+                        '.layui-table-page{text-align: right;}'
+                        ,'.layui-table-pagebar{float: left;}'
+                    ].join(''),
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
@@ -123,17 +139,7 @@
                 });
 
                 laydate.render({
-                    elem: '#searchTime-CoreCmsBillDelivery-confirmTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
                     elem: '#searchTime-CoreCmsBillDelivery-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillDelivery-updateTime',
                     type: 'datetime',
                     range: '到',
                 });
@@ -141,7 +147,7 @@
 
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsBillDelivery-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsBillDelivery-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -154,8 +160,22 @@
                     //查看详情
                     doDetails(obj);
                 });
+
+                //分页栏事件
+                table.on('pagebar(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsBillDelivery-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'selectExportExcel':
@@ -197,7 +217,7 @@
                                                 coreHelper.Post("Api/CoreCmsBillDelivery/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsBillDelivery-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsBillDelivery-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {

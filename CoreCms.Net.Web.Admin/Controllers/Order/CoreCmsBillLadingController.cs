@@ -569,5 +569,33 @@ namespace CoreCms.Net.Web.Admin.Controllers
         }
 
         #endregion
+
+
+        #region 批量核销数据============================================================
+
+        // POST: Api/CoreCmsBillLading/LadingOperating/10
+        /// <summary>
+        ///     批量核销数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("核销数据")]
+        public async Task<JsonResult> BatchLadingOperating([FromBody] FMArrayStringIds entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            if (entity.id.Length == 0)
+            {
+                jm.msg = "请选择需要核销的数据";
+                return Json(jm);
+            }
+
+            jm = await _coreCmsBillLadingServices.LadingOperating(entity.id);
+
+            return Json(jm);
+        }
+
+        #endregion
     }
 }

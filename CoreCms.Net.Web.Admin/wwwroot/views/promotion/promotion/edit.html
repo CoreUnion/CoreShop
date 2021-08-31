@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-editForm-submit" id="LAY-app-CoreCmsPromotion-editForm-submit" value="确认编辑">
@@ -222,7 +222,7 @@
                                                         console.log(e)
                                                         if (e.code === 0) {
                                                             //table刷新即可
-                                                            conditionTables.reload();
+                                                            conditionTables.reloadData();
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -232,6 +232,12 @@
                                                 });
 
                                         });
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionCondition-createForm-submit").click();
                                     }
                                 });
                             } else {
@@ -319,6 +325,12 @@
                                                     });
                                                 });
                                         })
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionCondition-editForm-submit").click();
                                     }
                                 });
                             } else {
@@ -419,6 +431,12 @@
                                                     });
                                                 });
                                         });
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-createForm-submit").click();
                                     }
                                 });
                             } else {
@@ -508,6 +526,12 @@
                                                     });
                                                 });
                                         })
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-editForm-submit").click();
                                     }
                                 });
                             } else {

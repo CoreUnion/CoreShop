@@ -11,7 +11,9 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <input type="hidden" value="{{d.params.id}}" name="userId" />
+
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label" for="type">类型</label>
@@ -60,7 +62,6 @@
                     , coreHelper = layui.coreHelper
                     , util = layui.util
                     , view = layui.view;
-
                 laydate.render({
                     elem: '#searchTimeDetailsBalanceLog-createTime',
                     type: 'datetime',
@@ -75,7 +76,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsUserBalance-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsUserBalance-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -111,7 +112,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsUserBalance-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsUserBalance-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsUserBalance-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段

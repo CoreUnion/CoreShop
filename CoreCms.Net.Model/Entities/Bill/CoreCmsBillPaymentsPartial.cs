@@ -46,11 +46,5 @@ namespace CoreCms.Net.Model.Entities
         [SugarColumn(IsIgnore = true)]
         public System.String userNickName { get; set; }
 
-        /// <summary>
-        /// 子集
-        /// </summary>
-        [SugarColumn(IsIgnore = true)]
-        public List<CoreCmsBillPaymentsRel> rel { get; set; } = new List<CoreCmsBillPaymentsRel>();
-
     }
 }

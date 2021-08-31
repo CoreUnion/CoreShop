@@ -9,11 +9,12 @@
  ***********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using SqlSugar;
 
 namespace CoreCms.Net.IRepository
@@ -44,6 +45,15 @@ namespace CoreCms.Net.IRepository
         /// <returns></returns>
         int GetOrderNum(int userId, int goodId);
 
+        /// <summary>
+        ///     重写根据条件列表数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="orderByExpression"></param>
+        /// <returns></returns>
+        Task<List<CoreCmsOrder>> QueryListAsync(Expression<Func<CoreCmsOrder, bool>> predicate,
+            Expression<Func<CoreCmsOrder, object>> orderByExpression, OrderByType orderByType);
 
         /// <summary>
         ///     重写根据条件查询分页数据

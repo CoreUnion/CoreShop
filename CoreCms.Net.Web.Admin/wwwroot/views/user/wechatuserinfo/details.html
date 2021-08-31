@@ -1,0 +1,180 @@
+<script type="text/html" template  lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsUserWeChatInfo-detailsForm" id="LAY-app-CoreCmsUserWeChatInfo-detailsForm">
+        <colgroup>
+            <col width="100">
+            <col>
+        </colgroup>
+        <tbody>
+		    
+		    <tr>
+                <td>
+                    <label for="id">用户ID</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="type">第三方登录类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.type || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="userId">关联用户表</label>
+                </td>
+                <td>
+                    {{ d.params.data.userId || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="openid">openId</label>
+                </td>
+                <td>
+                    {{ d.params.data.openid || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="sessionKey">缓存key</label>
+                </td>
+                <td>
+                    {{ d.params.data.sessionKey || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="unionId">unionid</label>
+                </td>
+                <td>
+                    {{ d.params.data.unionId || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="avatar">头像</label>
+                </td>
+                <td>
+                    {{ d.params.data.avatar || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="nickName">昵称</label>
+                </td>
+                <td>
+                    {{ d.params.data.nickName || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="gender">性别</label>
+                </td>
+                <td>
+                    {{ d.params.data.gender || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="language">语言</label>
+                </td>
+                <td>
+                    {{ d.params.data.language || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="city">城市</label>
+                </td>
+                <td>
+                    {{ d.params.data.city || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="province">省</label>
+                </td>
+                <td>
+                    {{ d.params.data.province || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="country">国家</label>
+                </td>
+                <td>
+                    {{ d.params.data.country || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="countryCode">手机号码国家编码</label>
+                </td>
+                <td>
+                    {{ d.params.data.countryCode || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="mobile">手机号码</label>
+                </td>
+                <td>
+                    {{ d.params.data.mobile || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="createTime">创建时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+		    
+		    <tr>
+                <td>
+                    <label for="updateTime">更新时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+		    
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug= layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-CoreCmsUserWeChatInfo-detailsForm');
+        });
+    };
+</script>

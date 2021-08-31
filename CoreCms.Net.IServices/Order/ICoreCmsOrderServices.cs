@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using SqlSugar;
 
 namespace CoreCms.Net.IServices
@@ -115,13 +115,15 @@ namespace CoreCms.Net.IServices
             int page = 1, int limit = 5);
 
 
+
         /// <summary>
         ///     订单支付
         /// </summary>
         /// <param name="orderId">订单编号</param>
         /// <param name="paymentCode">支付方式</param>
+        /// <param name="billPaymentInfo">支付单据</param>
         /// <returns></returns>
-        Task<WebApiCallBack> Pay(string orderId, string paymentCode);
+        Task<WebApiCallBack> Pay(string orderId, string paymentCode, CoreCmsBillPayments billPaymentInfo);
 
 
         /// <summary>
@@ -138,8 +140,10 @@ namespace CoreCms.Net.IServices
         /// <param name="orderStatus">订单状态</param>
         /// <param name="payStatus">支付状态</param>
         /// <param name="shipStatus">发货状态</param>
+        /// <param name="receiptType">收货方式</param>
+        /// <param name="isDel">是否删除</param>
         /// <returns></returns>
-        string GetOperating(string orderId, int orderStatus, int payStatus, int shipStatus);
+        string GetOperating(string orderId, int orderStatus, int payStatus, int shipStatus, int receiptType, bool isDel);
 
 
         /// <summary>
@@ -176,10 +180,11 @@ namespace CoreCms.Net.IServices
         /// <param name="memo">发货描述</param>
         /// <param name="storeId">店铺收货地址</param>
         /// <param name="shipAreaId">省市区id</param>
+        /// <param name="deliveryCompanyId">直播物流编码</param>
         /// <returns></returns>
         Task<WebApiCallBack> BatchShip(string[] ids, string logiCode, string logiNo,
             Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo,
-            int storeId = 0, int shipAreaId = 0);
+            int storeId = 0, int shipAreaId = 0, string deliveryCompanyId = "");
 
         /// <summary>
         ///     订单发货
@@ -194,10 +199,11 @@ namespace CoreCms.Net.IServices
         /// <param name="memo">发货描述</param>
         /// <param name="storeId">店铺收货地址</param>
         /// <param name="shipAreaId">省市区id</param>
+        /// <param name="deliveryCompanyId">直播物流编码</param>
         /// <returns></returns>
         Task<WebApiCallBack> Ship(string ids, string logiCode, string logiNo,
             Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo,
-            int storeId = 0, int shipAreaId = 0);
+            int storeId = 0, int shipAreaId = 0, string deliveryCompanyId = "");
 
 
 
@@ -259,6 +265,18 @@ namespace CoreCms.Net.IServices
         /// </summary>
         /// <returns></returns>
         Task<WebApiCallBack> RemindOrderPay();
+
+
+
+        /// <summary>
+        ///     重写根据条件列表数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="orderByExpression"></param>
+        /// <returns></returns>
+        Task<List<CoreCmsOrder>> QueryListAsync(Expression<Func<CoreCmsOrder, bool>> predicate,
+            Expression<Func<CoreCmsOrder, object>> orderByExpression, OrderByType orderByType);
 
 
         /// <summary>

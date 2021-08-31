@@ -11,7 +11,13 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsUserTocash/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUserTocash-tableBox" lay-filter="LAY-app-CoreCmsUserTocash-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUserTocash-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -27,14 +33,14 @@
                 <div class="layui-input-inline">
                     <select name="status" id="status" lay-filter="conditionCode">
                         <option value="">请选择提现状态</option>
-                        {{# layui.each(d.data.userTocashTypes, function(index, item){ }}
+                        {{# layui.each(indexData.userTocashTypes, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.title }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsUserTocash-createTime" placeholder="请输入起止时间" class="layui-input">
                 </div>
             </div>
@@ -44,11 +50,8 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsUserTocash-tableBox" lay-filter="LAY-app-CoreCmsUserTocash-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-CoreCmsUserTocash-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsUserTocash-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
@@ -75,11 +78,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsUserTocash-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+                
                 //重载form
                 form.render();
                 var searchwhere;
@@ -89,7 +88,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsUserTocash-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsUserTocash-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -97,8 +96,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsUserTocash/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUserTocash-toolbar',
+                    pagebar: '#LAY-app-CoreCmsUserTocash-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -122,7 +123,7 @@
                                     return html;
                                 }
                             },
-                            { field: 'money', title: '提现金额', sort: false, width: 80, templet: function (data) { return '￥' + data.money }  },
+                            { field: 'money', title: '提现金额', sort: false, width: 80, templet: function (data) { return '￥' + data.money } },
                             { field: 'bankName', title: '银行名称', sort: false, width: 105 },
                             { field: 'bankCode', title: '银行缩写', sort: false, width: 65 },
                             //{ field: 'bankAreaId', title: '账号地区ID', sort: false, width: 105 },
@@ -147,7 +148,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsUserTocash-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsUserTocash-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsUserTocash-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -178,7 +179,8 @@
                 function doDetails(obj) {
                     coreHelper.Post("Api/CoreCmsUserTocash/GetDetails", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '查看详情',
                                 area: ['600px', '400px'],
                                 id: 'LAY-popup-CoreCmsUserTocash-details',
@@ -243,7 +245,7 @@
                         coreHelper.Post("Api/CoreCmsUserTocash/SetStatus", { 'id': id, 'data': type }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
                             if (e.code === 0) {
-                                layui.table.reload('LAY-app-CoreCmsUserTocash-tableBox'); //重载表格
+                                layui.table.reloadData('LAY-app-CoreCmsUserTocash-tableBox'); //重载表格
                                 layer.msg(e.msg);
                             } else {
                                 layer.msg(e.msg);
@@ -263,7 +265,7 @@
                         coreHelper.Post("Api/CoreCmsUserTocash/SetStatus", { 'id': id, 'data': type }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
                             if (e.code === 0) {
-                                layui.table.reload('LAY-app-CoreCmsUserTocash-tableBox'); //重载表格
+                                layui.table.reloadData('LAY-app-CoreCmsUserTocash-tableBox'); //重载表格
                                 layer.msg(e.msg);
                             } else {
                                 layer.msg(e.msg);
@@ -273,6 +275,14 @@
                         layer.close(1);
                     });
                 });
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsUserTocash-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+
+
             });
     };
 </script>

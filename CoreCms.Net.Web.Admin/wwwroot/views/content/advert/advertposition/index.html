@@ -1,0 +1,275 @@
+<title>广告位置表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsAdvertPosition/GetIndex" lay-done="layui.data.done(d);">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsAdvertPosition-tableBox" lay-filter="LAY-app-CoreCmsAdvertPosition-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsAdvertPosition-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入广告位名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="isEnable" id="isEnable">
+                        <option value="">请选择是否启用</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline core-time-input">
+                    <input type="text" name="updateTime" id="searchTime-CoreCmsAdvertPosition-updateTime" placeholder="请输入更新时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsAdvertPosition-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsAdvertPosition-pagebar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsAdvertPosition-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsAdvertPosition-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsAdvertPosition-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsAdvertPosition/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsAdvertPosition-toolbar',
+                    pagebar: '#LAY-app-CoreCmsAdvertPosition-pagebar',
+                    className: 'pagebarbox',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'name', title: '名称', sort: false },
+                            { field: 'code', title: '位置编码', sort: false },
+                            { field: 'createTime', title: '添加时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { field: 'isEnable', title: '是否启用', width: 95, templet: '#switch_isEnable', sort: false, unresize: true },
+                            { field: 'sort', title: '排序', sort: false, width: 105 },
+                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsAdvertPosition-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsAdvertPosition-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序是否启用。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //头工具栏事件
+                table.on('pagebar(LAY-app-CoreCmsAdvertPosition-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsAdvertPosition-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsAdvertPosition/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['600px', '330px'],
+                                id: 'LAY-popup-CoreCmsAdvertPosition-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/advert/advertposition/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAdvertPosition-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isEnable = field.isEnable == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAdvertPosition/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsAdvertPosition-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsAdvertPosition/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['600px', '330px'],
+                                id: 'LAY-popup-CoreCmsAdvertPosition-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/advert/advertposition/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsAdvertPosition-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                field.isEnable = field.isEnable == 'on';
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsAdvertPosition/DoEdit", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsAdvertPosition-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsAdvertPosition/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isEnable)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsAdvertPosition/DoSetisEnable", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reloadData('LAY-app-CoreCmsAdvertPosition-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsAdvertPosition-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsAdvertPosition-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+
+            });
+    };
+</script>
+
+<!--设置是否启用-->
+<script type="text/html" id="switch_isEnable">
+    <input type="checkbox" name="switch_isEnable" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isEnable" {{ d.isEnable ? 'checked' : '' }}>
+</script>

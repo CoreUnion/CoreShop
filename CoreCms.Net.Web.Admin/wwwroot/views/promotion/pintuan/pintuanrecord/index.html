@@ -11,7 +11,11 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsPinTuanRecord/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    
+</script>
+
+<script type="text/html" id="LAY-app-PinTuanRecord-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -24,14 +28,13 @@
                 <div class="layui-input-inline">
                     <select name="status" id="status">
                         <option value="">请选择状态</option>
-                        {{# layui.each(d.data.status, function(index, item){ }}
+                        {{# layui.each(indexData.status, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.description }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label" for="orderId">订单序列</label>
                 <div class="layui-input-inline">
                     <input type="text" name="orderId" id="orderId" placeholder="请输入订单序列" class="layui-input">
                 </div>
@@ -42,6 +45,7 @@
         </div>
     </div>
 </script>
+
 <div class="table-body">
     <table id="LAY-app-CoreCmsPinTuanRecord-tableBox" lay-filter="LAY-app-CoreCmsPinTuanRecord-tableBox"></table>
 </div>
@@ -75,15 +79,16 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsPinTuanRecord-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsPinTuanRecord-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPinTuanRecord-tableBox',
                     url: layui.setter.apiUrl + 'Api/CoreCmsPinTuanRecord/GetPageList',
                     method: 'POST',
+                    toolbar: '#LAY-app-PinTuanRecord-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -114,7 +119,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsPinTuanRecord-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsPinTuanRecord-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsPinTuanRecord-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段

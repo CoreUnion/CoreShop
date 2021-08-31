@@ -11,7 +11,13 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsBrand/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBrand-tableBox" lay-filter="LAY-app-CoreCmsBrand-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBrand-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -33,11 +39,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsBrand-tableBox" lay-filter="LAY-app-CoreCmsBrand-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsBrand-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsBrand-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
     </div>
@@ -67,11 +69,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBrand-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+
                 //重载form
                 form.render();
                 var searchwhere;
@@ -81,7 +79,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsBrand-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsBrand-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -89,8 +87,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsBrand/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBrand-toolbar',
+                    pagebar: '#LAY-app-CoreCmsBrand-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -119,7 +119,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsBrand-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsBrand-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsBrand-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -128,7 +128,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsBrand-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsBrand-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'addData':
@@ -149,9 +149,10 @@
                 function doCreate() {
                     coreHelper.Post("Api/CoreCmsBrand/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
-                                area: ['600px', '500px'],
+                                area: ['600px', '440px'],
                                 id: 'LAY-popup-CoreCmsBrand-create',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goodsbrand/create', { data: e.data }).done(function () {
@@ -167,7 +168,7 @@
                                                 coreHelper.Post("Api/CoreCmsBrand/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsBrand-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsBrand-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -176,6 +177,10 @@
                                                 });
                                             });
                                     });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsBrand-createForm-submit").click();
                                 }
                             });
                         } else {
@@ -187,9 +192,10 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsBrand/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
-                                area: ['600px', '500px'],
+                                area: ['600px', '440px'],
                                 id: 'LAY-popup-CoreCmsBrand-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('good/goodsbrand/edit', { data: e.data }).done(function () {
@@ -203,7 +209,7 @@
                                                 coreHelper.Post("Api/CoreCmsBrand/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsBrand-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsBrand-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -212,6 +218,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsBrand-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -224,7 +234,7 @@
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsBrand/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsBrand-tableBox');
+                            table.reloadData('LAY-app-CoreCmsBrand-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -235,11 +245,15 @@
                 layui.form.on('switch(switch_isShow)', function (obj) {
                     coreHelper.Post("Api/CoreCmsBrand/DoSetisShow", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsBrand-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsBrand-tableBox');
                         layer.msg(e.msg);
                     });
                 });
-
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBrand-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
             });
     };
 </script>

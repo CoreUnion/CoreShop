@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsPromotion/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsPromotion-tableBox" lay-filter="LAY-app-CoreCmsPromotion-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsPromotion-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -28,7 +35,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="startTime" id="searchTime-CoreCmsPromotion-startTime" placeholder="请输入开始时间" class="layui-input">
                 </div>
             </div>
@@ -38,11 +45,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsPromotion-tableBox" lay-filter="LAY-app-CoreCmsPromotion-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsPromotion-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsPromotion-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
     </div>
@@ -72,11 +75,6 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsPromotion-startTime',
-                    type: 'datetime',
-                    range: '到',
-                });
                 //重载form
                 form.render();
                 var searchwhere;
@@ -84,9 +82,10 @@
                 form.on('submit(LAY-app-CoreCmsPromotion-search)',
                     function (data) {
                         var field = data.field;
+                        field.types = 3;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsPromotion-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsPromotion-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -95,8 +94,10 @@
                     method: 'POST',
                     where: { types: 3 },
                     toolbar: '#LAY-app-CoreCmsPromotion-toolbar',
+                    pagebar: '#LAY-app-CoreCmsPromotion-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -126,7 +127,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsPromotion-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsPromotion-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsPromotion-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -135,7 +136,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsPromotion-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsPromotion-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'addData':
@@ -158,7 +159,8 @@
                 function doCreate() {
                     coreHelper.Post("Api/CoreCmsPromotion/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
                                 area: ['800px', '500px'],
                                 id: 'LAY-app-CoreCmsPromotion-GroupCreateForm',
@@ -184,7 +186,7 @@
                                                 coreHelper.Post("Api/CoreCmsPromotion/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -193,6 +195,10 @@
                                                 });
                                             });
                                     });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsPromotion-GroupCreateForm-submit").click();
                                 }
                             });
                         } else {
@@ -204,7 +210,8 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsPromotion/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
                                 area: ['800px', '90%'],
                                 id: 'LAY-app-CoreCmsPromotion-GroupEditForm',
@@ -240,7 +247,7 @@
                                                 coreHelper.Post("Api/CoreCmsPromotion/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsPromotion-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -249,6 +256,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsPromotion-GroupEditForm-submit").click();
                                 }
                             });
                         } else {
@@ -261,7 +272,7 @@
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsPromotion/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                            table.reloadData('LAY-app-CoreCmsPromotion-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -271,17 +282,25 @@
                 layui.form.on('switch(switch_isExclusive)', function (obj) {
                     coreHelper.Post("Api/CoreCmsPromotion/DoSetisExclusive", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsPromotion-tableBox');
                         layer.msg(e.msg);
                     });
                 });
                 layui.form.on('switch(switch_isEnable)', function (obj) {
                     coreHelper.Post("Api/CoreCmsPromotion/DoSetisEnable", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsPromotion-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsPromotion-tableBox');
                         layer.msg(e.msg);
                     });
                 });
+
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsPromotion-startTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+
             });
     };
 </script>

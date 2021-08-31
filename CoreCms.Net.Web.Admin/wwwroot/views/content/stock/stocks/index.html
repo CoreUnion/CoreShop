@@ -1,0 +1,267 @@
+<title>库存操作表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsStock/GetIndex" lay-done="layui.data.done(d);">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsStock-tableBox" lay-filter="LAY-app-CoreCmsStock-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsStock-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <label class="layui-form-label" for="id">序列</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="id" placeholder="请输入序列" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="type">
+                        <option value="">请选择类型</option>
+                        {{# layui.each(indexData.stockType, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.description }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="memo">备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="memo" placeholder="请输入备注" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" for="createTime">创建时间</label>
+                <div class="layui-input-inline core-time-input">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsStock-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsStock-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsStock-pagebar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加单据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsStock-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsStock-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsStock-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsStock-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsStock-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsStock/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsStock-toolbar',
+                    pagebar: '#LAY-app-CoreCmsStock-pagebar',
+                    className: 'pagebarbox',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '单号', sort: false, width: 130 },
+                            {
+                                field: 'type', title: '操作类型', sort: false, width: 105, templet: function (data) {
+                                    for (var i = 0; i < d.data.stockType.length; i++) {
+                                        if (data.type == d.data.stockType[i].value) {
+                                            return d.data.stockType[i].description;
+                                        }
+                                    }
+                                    return "";
+                                }
+                            },
+                            { field: 'managerName', title: '操作员', sort: false, width: 150 },
+                            { field: 'memo', title: '备注', sort: false },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { width: 62, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsStock-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsStock-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-CoreCmsStock-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsStock-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('pagebar(LAY-app-CoreCmsStock-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsStock-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsStock/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建单据',
+                                area: ['95%', '90%'],
+                                id: 'LAY-popup-CoreCmsStock-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/stock/stocks/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsStock-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (!!!field.type) {
+                                                    layer.msg("请选择操作类型")
+                                                    return false;
+                                                }
+
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('item.productId') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                var items = [];
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var item = {};
+                                                        item.productId = field['item.productId[' + i + ']'];
+                                                        item.nums = field['item.nums[' + i + ']'];
+                                                        items.push(item);
+                                                    }
+                                                }
+                                                field.items = items;
+                                                var model = {};
+                                                model.id = field.id;
+                                                model.type = field.type;
+                                                model.memo = field.memo;
+                                                field.model = model;
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsStock/DoCreate", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsStock-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsStock-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsStock/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['1000px', '500px'],
+                                id: 'LAY-popup-CoreCmsStock-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/stock/stocks/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+
+            });
+    };
+</script>
+

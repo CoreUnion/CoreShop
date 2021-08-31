@@ -11,9 +11,15 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsBillPayments/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
-        <div class="layui-form-item">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillPayments-tableBox" lay-filter="LAY-app-CoreCmsBillPayments-tableBox"></table>
+</div>
 
+<script type="text/html" id="LAY-app-CoreCmsBillPayments-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
                     <input type="text" name="paymentId" id="paymentId" placeholder="请输入支付单号" class="layui-input">
@@ -23,7 +29,7 @@
                 <div class="layui-input-inline">
                     <select name="type" id="type" lay-filter="conditionCode">
                         <option value="">请选择单据类型</option>
-                        {{# layui.each(d.data.paymentsResourceTypes, function(index, item){ }}
+                        {{# layui.each(indexData.paymentsResourceTypes, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.description }}</option>
                         {{# }); }}
                     </select>
@@ -33,7 +39,7 @@
                 <div class="layui-input-inline">
                     <select name="status" id="status" lay-filter="conditionCode">
                         <option value="">请选择支付状态</option>
-                        {{# layui.each(d.data.paymentsStatus, function(index, item){ }}
+                        {{# layui.each(indexData.paymentsStatus, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.description }}</option>
                         {{# }); }}
                     </select>
@@ -45,7 +51,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsBillPayments-createTime" placeholder="请输入起止时间" class="layui-input">
                 </div>
             </div>
@@ -55,11 +61,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsBillPayments-tableBox" lay-filter="LAY-app-CoreCmsBillPayments-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsBillPayments-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsBillPayments-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
@@ -89,11 +91,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillPayments-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+                
                 //重载form
                 form.render();
                 var searchwhere;
@@ -103,7 +101,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsBillPayments-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsBillPayments-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -111,8 +109,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsBillPayments/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillPayments-toolbar',
+                    pagebar: '#LAY-app-CoreCmsBillPayments-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -169,7 +169,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsBillPayments-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsBillPayments-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsBillPayments-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -178,7 +178,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsBillPayments-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsBillPayments-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'selectExportExcel':
@@ -202,7 +202,7 @@
                         if (e.code === 0) {
                             admin.popup({ shadeClose: false,
                                 title: '查看详情',
-                                area: ['600px', '90%'],
+                                area: ['600px', '550px'],
                                 id: 'LAY-popup-CoreCmsBillPayments-details',
                                 success: function (layero, index) {
                                     view(this.id).render('financial/billpayments/details', { data: e.data }).done(function () {
@@ -256,7 +256,11 @@
                         });
                 }
                 //监听 表格复选框操作
-
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillPayments-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
             });
     };
 </script>

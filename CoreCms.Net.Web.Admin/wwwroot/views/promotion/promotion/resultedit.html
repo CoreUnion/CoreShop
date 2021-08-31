@@ -14,7 +14,7 @@
             </div>
         </div>
         <div id="ResultBox"></div>
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotionResult-editForm-submit" id="LAY-app-CoreCmsPromotionResult-editForm-submit" value="确认添加">
@@ -97,7 +97,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">第几件：</label>
         <div class="layui-input-inline seller-inline-2">
-            <input name="num" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.num}}" placeholder="" class="layui-input" type="text">
+            <input name="num" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.num}}" placeholder="" class="layui-input" type="number">
         </div>
         <div class="layui-form-mid layui-word-aux">每第几件商品</div>
     </div>

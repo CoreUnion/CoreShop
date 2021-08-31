@@ -10,7 +10,7 @@
             </div>
             <label for="mobile" class="layui-form-label  layui-form-required">手机号</label>
             <div class="layui-input-inline">
-                <input name="mobile" lay-verType="tips" lay-verify="required|verifymobile" class="layui-input" placeholder="请输入手机号" lay-reqText="请输入手机号" value="{{d.params.data.model.mobile || '' }}" />
+                <input name="mobile" lay-verType="tips" lay-verify="required|phone" class="layui-input" placeholder="请输入手机号" lay-reqText="请输入手机号" value="{{d.params.data.model.mobile || '' }}" />
             </div>
         </div>
 
@@ -21,7 +21,7 @@
             </div>
             <label for="qq" class="layui-form-label  layui-form-required">qq号</label>
             <div class="layui-input-inline">
-                <input name="qq" lay-verType="tips" lay-verify="required|verifyqq" class="layui-input" placeholder="请输入qq号" lay-reqText="请输入qq号" value="{{d.params.data.model.qq || '' }}" />
+                <input name="qq" lay-verType="tips" lay-verify="required|number" class="layui-input" placeholder="请输入qq号" lay-reqText="请输入qq号" value="{{d.params.data.model.qq || '' }}" />
             </div>
         </div>
 
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item text-right">
+        <div class="layui-form-item text-right core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAgent-editForm-submit" id="LAY-app-CoreCmsAgent-editForm-submit" value="确认编辑">
         </div>
     </div>

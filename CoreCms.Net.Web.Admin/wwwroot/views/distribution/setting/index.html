@@ -32,8 +32,9 @@
 
                         <div class="layui-tab  layui-tab-card" lay-filter="setting">
                             <ul class="layui-tab-title">
-                                <li lay-id="agent" class="layui-this">分销设置</li>
-                                <li lay-id="platform">用户须知、分销协议</li>
+                                <li lay-id="distributionSet" class="layui-this">分销设置</li>
+                                <li lay-id="userAgreement ">用户须知</li>
+                                <li lay-id="distributionAgreement">分销协议</li>
                             </ul>
                             <div class="layui-tab-content">
 
@@ -123,14 +124,9 @@
                                 </div>
 
                                 <div class="layui-tab-item">
-
-
                                     <div class="layui-fluid">
                                         <div class="layui-row layui-col-space10">
-                                            <div class="layui-col-md6">
-                                                <fieldset class="layui-elem-field layui-field-title site-title">
-                                                    <legend><a>{{d.data.configs['distributionNotes']['sKey']}}</a></legend>
-                                                </fieldset>
+                                            <div class="layui-col-md12">
                                                 <div class="document-editor">
                                                     <div class="toolbar-container" id="distributionNotes-toolbar-container"></div>
                                                     <div class="content-container">
@@ -138,10 +134,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="layui-col-md6">
-                                                <fieldset class="layui-elem-field layui-field-title site-title">
-                                                    <legend><a>{{d.data.configs['distributionAgreement']['sKey']}}</a></legend>
-                                                </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">&nbsp;</label>
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="saveEditor">保存更改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-tab-item">
+
+
+                                    <div class="layui-fluid">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
                                                 <div class="document-editor">
                                                     <div class="toolbar-container" id="distributionAgreement-toolbar-container"></div>
                                                     <div class="content-container">
@@ -161,7 +169,6 @@
 
 
                                 </div>
-
                             </div>
                         </div>
 

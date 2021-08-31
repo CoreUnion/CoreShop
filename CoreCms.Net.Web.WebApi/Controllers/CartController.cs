@@ -12,7 +12,7 @@ using CoreCms.Net.Auth.HttpContextUser;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

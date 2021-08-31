@@ -1,16 +1,12 @@
-
-
 <script type="text/html" template lay-done="layui.data.done(d);">
     <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsAgentGoods-createForm" id="LAY-app-CoreCmsAgentGoods-createForm">
 
         <div class="layui-form-item">
             <label for="goodId" class="layui-form-label  layui-form-required">商品选择</label>
             <div class="layui-input-block">
-                <!--<input type="number" min="0" max="999999" name="goodId" lay-verType="tips" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入商品序列" lay-reqText="请输入商品序列并为数字" />-->
                 <div id="goodId" class="xm-select-demo"></div>
             </div>
         </div>
-
         <div class="layui-form-item">
             <label for="sortId" class="layui-form-label  layui-form-required">排序</label>
             <div class="layui-input-inline layui-inline-4">
@@ -24,12 +20,7 @@
 
         <fieldset class="layui-elem-field layui-field-title"> <legend style="font-size:14px;">货品信息</legend> </fieldset>
 
-
         <div id="productBox" class="productBox"></div>
-
-
-
-
         <div class="layui-form-item text-right core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAgentGoods-createForm-submit" id="LAY-app-CoreCmsAgentGoods-createForm-submit" value="确认添加">
         </div>

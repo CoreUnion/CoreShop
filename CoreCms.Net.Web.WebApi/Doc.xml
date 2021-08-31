@@ -164,7 +164,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.SetCartNum(CoreCms.Net.Model.ViewModels.View.FMSetCartNum)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CartController.SetCartNum(CoreCms.Net.Model.ViewModels.DTO.FMSetCartNum)">
             <summary>
             设置购物车商品数量
             </summary>
@@ -473,13 +473,13 @@
             构造函数
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetTaxCode(CoreCms.Net.Model.ViewModels.View.GetTaxCodePost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetTaxCode(CoreCms.Net.Model.ViewModels.DTO.GetTaxCodePost)">
             <summary>
             发票模糊查询
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.CreateOrder(CoreCms.Net.Model.ViewModels.View.CreateOrder)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.CreateOrder(CoreCms.Net.Model.ViewModels.DTO.CreateOrder)">
             <summary>
             创建订单
             </summary>
@@ -491,13 +491,13 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderStatusNum(CoreCms.Net.Model.ViewModels.View.GetOrderStatusNumPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderStatusNum(CoreCms.Net.Model.ViewModels.DTO.GetOrderStatusNumPost)">
             <summary>
             获取订单不同状态的数量
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderList(CoreCms.Net.Model.ViewModels.View.GetOrderListPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.GetOrderList(CoreCms.Net.Model.ViewModels.DTO.GetOrderListPost)">
             <summary>
             获取个人订单列表
             </summary>
@@ -521,7 +521,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.AddAftersales(CoreCms.Net.Model.ViewModels.View.ToAddBillAfterSalesPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.OrderController.AddAftersales(CoreCms.Net.Model.ViewModels.DTO.ToAddBillAfterSalesPost)">
             <summary>
             添加售后单
             </summary>
@@ -598,7 +598,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.CheckPay(CoreCms.Net.Model.ViewModels.View.CheckPayPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.PaymentsController.CheckPay(CoreCms.Net.Model.ViewModels.DTO.CheckPayPost)">
             <summary>
             支付确认页面取信息
             </summary>
@@ -815,7 +815,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetOrderPageByMerchant(CoreCms.Net.Model.ViewModels.View.GetOrderPageByMerchantPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetOrderPageByMerchant(CoreCms.Net.Model.ViewModels.DTO.GetOrderPageByMerchantPost)">
             <summary>
             获取个人订单列表
             </summary>
@@ -897,7 +897,7 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetAreaId(CoreCms.Net.Model.ViewModels.View.GetAreaIdPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetAreaId(CoreCms.Net.Model.ViewModels.DTO.GetAreaIdPost)">
             <summary>
             获取区域ID
             </summary>
@@ -984,7 +984,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserPoint(CoreCms.Net.Model.ViewModels.View.GetUserPointPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.GetUserPoint(CoreCms.Net.Model.ViewModels.DTO.GetUserPointPost)">
             <summary>
             判断用户下单可以使用多少积分
             </summary>
@@ -996,7 +996,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SaveUserShip(CoreCms.Net.Model.ViewModels.View.SaveUserShipPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.SaveUserShip(CoreCms.Net.Model.ViewModels.DTO.SaveUserShipPost)">
             <summary>
             保存用户地址
             </summary>
@@ -1015,13 +1015,13 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Pay(CoreCms.Net.Model.ViewModels.View.PayPost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.Pay(CoreCms.Net.Model.ViewModels.DTO.PayPost)">
             <summary>
             支付
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.OrderEvaluate(CoreCms.Net.Model.ViewModels.View.OrderEvaluatePost)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.UserController.OrderEvaluate(CoreCms.Net.Model.ViewModels.DTO.OrderEvaluatePost)">
             <summary>
             订单评价
             </summary>

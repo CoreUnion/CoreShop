@@ -1,0 +1,563 @@
+<style>
+    #container { padding: 0px; border-radius: 0px; border-width: 0px; }
+    #img_preview { display: inline; float: left; margin-top: 40px; overflow: hidden; }
+    .imgdiv { float: left; text-align: center; border: 1px solid #ccc; padding: 5px; padding-bottom: 0; margin-right: 10px; background-color: #fff; }
+    .layui-upload-img { margin: 0; }
+    .layui-upload-list { margin: 10px 0; overflow: hidden; }
+    #operate { margin-top: 5px; }
+        #operate a { cursor: pointer }
+            #operate a:hover { color: #009688; }
+    .sm-input { height: 24px; margin-top: 5px; margin-bottom: 5px !important; }
+    .table-button { margin-top: 0px; }
+    .layui-table .layui-form-select, .layui-table .layui-select-title, .layui-table .layui-unselect { height: 24px; }
+        .layui-table .layui-form-select dl dd, .layui-table .layui-form-select dl dt { line-height: 24px; }
+    .layui-table .layui-form-radio { margin: 0px 0px 0 0; }
+    .layui-table .layui-btn { margin-top: 0px; }
+</style>
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsForm-createForm" id="LAY-app-CoreCmsForm-createForm">
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">表单名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入表单名称" placeholder="请输入表单名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">表单类型</label>
+            <div class="layui-input-inline">
+                <select name="type" id="type" lay-verify="required|number" lay-reqText="请选择表单类型">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.formTypes, function(index, item){ }}
+                    <option value="{{ item.value }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">请选择表单类型</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="headType" class="layui-form-label">表头类型</label>
+            <div class="layui-input-inline">
+                <select name="headType" id="headType" lay-verify="required|number" lay-reqText="请选择表头类型" lay-filter="head_type">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.formHeadTypes, function(index, item){ }}
+                    <option value="{{ item.value }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">请选择表头类型</div>
+        </div>
+
+        <div class="layui-form-item image">
+            <label for="imageIds" class="layui-form-label">缩略图集</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="images" id="imageIds" class="layui-input" placeholder="请上传缩略图" lay-reqText="请上传缩略图" />
+                <button type="button" class="layui-btn" style="margin-left: 10px;" id="upBtnimageIds"><i class="layui-icon"></i>上传图片</button>
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                请选择小于5M的图片进行裁剪上传
+            </div>
+        </div>
+        <div class="layui-form-item image">
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                预览图：[第一张图片为默认图，可拖动图片进行排序]：
+                <div class="layui-upload-list" id="upload-more-list"></div>
+            </blockquote>
+        </div>
+
+        <div class="layui-form-item video" style="display: none;">
+            <label class="layui-form-label">头部视频：</label>
+            <div class="layui-input-inline layui-inline-10">
+                <input name="headTypeVideo" id="headTypeVideo" class="layui-input" placeholder="请填写视频播放地址" lay-reqText="请填写视频播放地址" />
+            </div>
+
+            <!--<div class="layui-input-inline">
+                <button type="button" class="layui-btn" style="margin-left: 10px;" id="video"><i class="layui-icon"></i>上传视频</button>
+            </div>
+            <div id="fileName">
+            </div>-->
+        </div>
+
+        <div class="layui-form-item layui-upload video" style="display: none;">
+            <label class="layui-form-label">视频封面：</label>
+            <div class="layui-input-inline layui-inline-10">
+                <input name="headTypeValue" id="headTypeValue" class="layui-input" placeholder="请上传视频封面" lay-reqText="请上传视频封面" />
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="upBtnimages">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="viewImgBoximages" src="{{ layui.setter.noImagePicUrl }}">
+                        <p id="viewTextBoximages"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="description" class="layui-form-label">表单描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="description" lay-verify="required|verifydescription" placeholder="请输入内容" class="layui-textarea" lay-reqText="请输入表单描述" placeholder="请输入表单描述"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">表单字段：</label>
+            <div class="layui-input-block">
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th style="width: 100px;">类型</th>
+                            <th style="width: 200px;">字段值</th>
+                            <th>默认值</th>
+                            <th style="width: 112px;">验证类型</th>
+                            <th style="width: 112px;">必填</th>
+                            <th style="width: 112px;">排序</th>
+                            <th style="width: 82px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view">
+                        <tr data-id="0">
+                            <td>
+                                <input type="hidden" id="id" name="item.id[0]" value="0" />
+                                <input type="text" id="name" name="item.name[0]" required value="" placeholder="" autocomplete="off"
+                                       class="layui-input  sm-input">
+                            </td>
+                            <td>
+                                <select id="type" name="item.type[0]" class="sm-input" style="height: 24px;" lay-filter="change_type">
+                                    {{# layui.each(d.params.data.formFieldTypes, function(index, item){ }}
+                                    <option value="{{ item.title }}">{{ item.description }}</option>
+                                    {{# }); }}
+                                </select>
+                            </td>
+                            <td class="field_value">
+                                <input type="text" id="value" name="item.value[0]" required value="" placeholder="逗号分割"
+                                       autocomplete="off" class="layui-input  sm-input">
+                            </td>
+                            <td>
+                                <input type="text" id="defaultValue" name="item.defaultValue[0]" required value="" lay-verify=""
+                                       placeholder="逗号分割" autocomplete="off" class="layui-input  sm-input">
+                            </td>
+                            <td>
+                                <select id="validationType" name="item.validationType[0]" class="sm-input" style="height: 24px;">
+                                    {{# layui.each(d.params.data.formValidationTypes, function(index, item){ }}
+                                    <option value="{{ item.description }}">{{ item.title }}</option>
+                                    {{# }); }}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="radio" id="required1" name="item.required[0]" value="1" title="是">
+                                <input type="radio" id="required2" name="item.required[0]" value="2" title="否" checked>
+                            </td>
+                            <td>
+                                <input type="text" id="sort" name="item.sort[0]" required value="100" placeholder="" autocomplete="off"
+                                       class="layui-input seller-inline-1 sm-input">
+                            </td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs addfield-class table-button">
+                                    添加
+                                </a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs del-class table-button">
+                                    删除
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="layui-input-block layui-word-aux">
+                1、<font style="color:#ff0000;">【字段值】【默认值】填写的内容如果为多词组选择，请使用小写的逗号【,】进行分隔，如：张三,李四,王五</font><br />
+                2. 类型是商品时：可不输入字段名，默认值为默认下单数量<br />
+                3. 类型是金额时，字段值可不填
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label for="headTypeValue" class="layui-form-label">表单头值</label>
+            <div class="layui-input-inline">
+                <input name="headTypeValue" id="headTypeValue" lay-verify="required|verifyheadTypeValue" class="layui-input" lay-reqText="请输入表单头值" placeholder="请输入表单头值" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过200个字符内容</div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <label for="buttonName" class="layui-form-label">按钮名称</label>
+            <div class="layui-input-inline">
+                <input name="buttonName" id="buttonName" lay-verify="required|verifybuttonName" class="layui-input" lay-reqText="请输入表单提交按钮名称" placeholder="请输入表单提交按钮名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="buttonColor" class="layui-form-label">按钮颜色</label>
+            <div class="layui-input-inline">
+                <input name="buttonColor" id="buttonColor" lay-verify="required|verifybuttonColor" class="layui-input" lay-reqText="请输入表单按钮颜色" placeholder="请输入表单按钮颜色" />
+            </div>
+            <div class="layui-inline" style="left: -11px;">
+                <div id="color-form"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label for="isLogin" class="layui-form-label">是否需要登录</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="checkbox" lay-filter="switch" name="isLogin" id="isLogin" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <div class="layui-form-mid layui-word-aux">订单和付款码类型请一定要选择登录哦~</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="times" class="layui-form-label">可提交次数</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="times" id="times" lay-verify="required|number" class="layui-input" value="0" placeholder="请输入可提交次数" lay-reqText="请输入可提交次数并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">为0时不限制用户提交次数，不为0时，请选择需要登录</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入表单排序" lay-reqText="请输入表单排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越小越靠前</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="returnMsg" class="layui-form-label">提交后提示语</label>
+            <div class="layui-input-inline">
+                <input name="returnMsg" id="returnMsg" lay-verify="required|verifyreturnMsg" class="layui-input" lay-reqText="请输入提交后提示语" placeholder="请输入提交后提示语" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">表单提交后给用户展示</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="endDateTime" class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input name="endDateTime" id="createTime-CoreCmsForm-endDateTime" type="text" lay-verify="required|datetime" class="layui-input" placeholder="请输入结束时间" lay-reqText="请输入结束时间" />
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsForm-createForm-submit" id="LAY-app-CoreCmsForm-createForm-submit" value="确认添加">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script id="tr_tpl" type="text/html">
+    <tr data-id="{{ d.id }}">
+        <td>
+            <input type="hidden" id="id" name="item.id[{{ d.id }}]" value="0" />
+            <input type="text" id="name" name="item.name[{{ d.id }}]" required value="" placeholder="" autocomplete="off" class="layui-input  sm-input">
+        </td>
+        <td>
+            <select id="type" name="item.type[{{ d.id }}]" class="sm-input" style="height: 24px;" lay-filter="change_type">
+                {{# layui.each(formFieldTypes, function(index, item){ }}
+                <option value="{{ item.title }}">{{ item.description }}</option>
+                {{# }); }}
+            </select>
+        </td>
+        <td class="field_value">
+            <input type="text" id="value" name="item.value[{{ d.id }}]" required value="" placeholder="逗号分割" autocomplete="off" class="layui-input  sm-input">
+        </td>
+        <td>
+            <input type="text" id="defaultValue" name="item.defaultValue[{{ d.id }}]" required value="" placeholder="逗号分割" autocomplete="off" class="layui-input  sm-input">
+        </td>
+        <td>
+            <select id="validationType" name="item.validationType[{{ d.id }}]" class="sm-input" style="height: 24px;">
+                {{# layui.each(formValidationTypes, function(index, item){ }}
+                <option value="{{ item.description }}">{{ item.title }}</option>
+                {{# }); }}
+            </select>
+        </td>
+        <td>
+            <input type="radio" id="required1" name="item.required[{{ d.id }}]" value="1" title="是">
+            <input type="radio" id="required2" name="item.required[{{ d.id }}]" value="2" title="否" checked>
+        </td>
+        <td>
+            <input type="text" id="sort" name="item.sort[{{ d.id }}]" required value="100" placeholder="" autocomplete="off" class="layui-input seller-inline-1 sm-input">
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-xs addfield-class table-button">
+                添加
+            </a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs del-class table-button">
+                删除
+            </a>
+        </td>
+    </tr>
+</script>
+
+<script id="image_tpl" type="text/html">
+    {{# layui.each(d, function(index, item){  }}
+    <div class="imgdiv">
+        <img src="{{ item }}" class="layui-upload-img" onclick='layui.coreHelper.viewImage("{{ item }}")' style="width: 100px;height:100px;">
+        <div id="operate">
+            <div><a class="del" onclick="delImg(this,'{{ item }}')">删除</a>|<a class="setmain" onclick="setDefault(this,'{{ item }}')">设为主图</a></div>
+        </div>
+    </div>
+    {{#  }); }}
+</script>
+
+<div id="selectgoods" style="display: none;">
+    <div id="selectgoods_box" class="select_seller_goods_box">
+        <div>
+            <a href="javascript:;" class="layui-btn layui-btn-sm" lay-active="selectActive"><i class="iconfont icon-choose1"></i>选择商品</a>
+        </div>
+        <input type="hidden" name="item.value[]" id="selectgoods_input" value="">
+        <ul id="selectgoods_list" class="sellect_seller_goods_list">
+        </ul>
+    </div>
+</div>
+
+<script>
+    var $, imgs = [], debug = layui.setter.debug, formFieldTypes, formValidationTypes;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        formFieldTypes = d.params.data.formFieldTypes;
+        formValidationTypes = d.params.data.formValidationTypes;
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'laytpl', 'colorpicker', 'util'],
+            function () {
+                var form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , colorpicker = layui.colorpicker
+                    , laytpl = layui.laytpl
+                    , util = layui.util
+                    , coreHelper = layui.coreHelper;
+                $ = layui.$;
+
+                form.on('select(head_type)', function (data) {
+                    var type_id = data.value;
+                    if (type_id == 3) {
+                        $(".video").show();
+                        $(".image").hide();
+                    } else {
+                        $(".image").show();
+                        $(".video").hide();
+                    }
+                });
+                form.on('select(change_type)', function (data) {
+
+                    var type = data.value;
+                    if (type == 'goods') {
+                        var goodsHtml = $("#selectgoods").html();
+                        var tempid = $("#selectgoods").find(".select_seller_goods_box").attr("id");
+                        var id = tempid.split("_");
+                        var currentid = $(data.elem).parent().parent().attr('data-id');
+                        var newid = id[0] + "_" + currentid;
+                        var reg = new RegExp(id[0], "g"); //创建正则RegExp对象
+                        goodsHtml = goodsHtml.replace(reg, newid);
+
+                        goodsHtml = goodsHtml.replace("[]", "[" + currentid + "]");
+
+                        $(data.elem).parent().next('.field_value').html(goodsHtml);
+                        var title = $("#" + newid + "_list").html();
+                        form.render();
+                    }
+                });
+
+                //表单赋值
+                colorpicker.render({
+                    elem: '#color-form'
+                    , color: '#1c97f5'
+                    , done: function (color) {
+                        console.log(color)
+                        $('#buttonColor').val(color);
+                        form.render();
+                    }
+                });
+
+                //封面图图片上传
+                $('#upBtnimages').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 16 / 9,
+                        imgSrc: $('#viewImgBoximages').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBoximages').attr('src', res.data.fileUrl);
+                                    $("#headTypeValue").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                //上传缩略图集
+                $('#upBtnimageIds').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 16 / 9,
+                        imgSrc: $('#viewImgBoximages').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    imgs.push(res.data.fileUrl);
+                                    $('#imageIds').val(imgs);
+                                    var getTpl = image_tpl.innerHTML, view = document.getElementById('upload-more-list');
+                                    laytpl(getTpl).render(imgs, function (html) {
+                                        view.innerHTML = html;
+                                    });
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                $(".layui-table").on('click', '.addfield-class', function (e) {
+                    var getTpl = tr_tpl.innerHTML;
+                    var lastId = $(this).parent().parent().parent().find('tr').last().attr('data-id');
+                    console.log(lastId);
+                    var tmpData = {};
+                    tmpData.id = parseInt(lastId) + 1;
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        $("#view").append(html);
+                        form.render();
+                    });
+                });
+
+                $(".layui-table").on('click', '.del-class', function (e) {
+                    if ($(".del-class").length > 1) {
+                        $(this).parent().parent().remove();
+                        resetInputNameID();
+                    } else {
+                        layer.msg("至少保留1个表单字段");
+                    }
+                })
+
+                //重置排序
+                function resetInputNameID() {
+                    $.each($("#view tr"), function (i, tr) {
+                        $(this).attr('data-id', i);
+                        $(this).find("#id").attr("name", "item.id[" + i + "]");
+                        $(this).find("#name").attr("name", "item.name[" + i + "]");
+                        $(this).find("#type").attr("name", "item.type[" + i + "]");
+                        $(this).find("#value").attr("name", "item.value[" + i + "]");
+                        $(this).find("#defaultValue").attr("name", "item.defaultValue[" + i + "]");
+                        $(this).find("#validationType").attr("name", "item.validationType[" + i + "]");
+                        $(this).find("#required1").attr("name", "item.required[" + i + "]");
+                        $(this).find("#required2").attr("name", "item.required[" + i + "]");
+                        $(this).find("#sort").attr("name", "item.sort[" + i + "]");
+                    });
+                }
+
+
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsForm-endDateTime',
+                    type: 'datetime'
+                });
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    selectActive: function () {
+                        var numid = $(this).parent().parent().parent().parent().attr('data-id');
+                        console.log('当前表格id：' + numid);
+                        var obj_selectgoodsIds = {};
+                        var num_selectgoods = "1";
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择商品',
+                            area: ['750px', '600px'],
+                            id: 'LAY-app-CoreCmsForm-GetGoodsList',
+                            success: function (layero, index) {
+                                layui.view(this.id).render('common/getGoodIds', null).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+                                    var obj_goodsIds = {};
+                                    form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                        function (data) {
+                                            //判断个数是否满足
+                                            if (Object.getOwnPropertyNames(ids).length > num_selectgoods) {
+                                                layer.msg("最多只能选择" + num_selectgoods + "个");
+                                                return false;
+                                            }
+
+                                            var el = $("#selectgoods_" + numid + "_list")
+                                            el.empty();
+                                            var the_val = "";
+                                            for (var key in ids) {
+                                                el.append('<li><span id="' + key + '"  >×</span>' + ids[key].name + '</li>');
+                                                the_val += "," + key;
+                                            }
+                                            var inputEl = $("#selectgoods_" + numid + "_input");
+
+                                            inputEl.val(the_val.slice(1));
+
+                                            el.delegate("span", "click", function () {
+                                                var ids_array = inputEl.val().split(",");
+                                                for (var i = 0; i < ids_array.length; i++) {
+                                                    if (ids_array[i] == $(this).attr("id")) {
+                                                        ids_array.splice(i, 1);
+                                                    }
+                                                }
+                                                inputEl.val(ids_array.join(","));
+                                                $(this).parent().remove();
+                                            });
+
+                                            layer.close(index);
+                                        });
+                                });
+                            }
+                        });
+                    }
+                });
+
+                form.verify({
+
+                    verifyname: [/^[\S]{0,100}$/, '表单名称最大只允许输入100位字符，且不能出现空格'],
+                    verifydescription: [/^(.|\n){0,500}$/, '表单描述最大只允许输入255位字符，且不能出现空格'],
+                    verifyheadTypeValue: [/^[\S]{0,200}$/, '表单头值最大只允许输入200位字符，且不能出现空格'],
+                    verifyheadTypeVideo: [/^[\S]{0,200}$/, '表单视频最大只允许输入200位字符，且不能出现空格'],
+                    verifybuttonName: [/^[\S]{0,50}$/, '表单提交按钮名称最大只允许输入50位字符，且不能出现空格'],
+                    verifybuttonColor: [/^[\S]{0,30}$/, '表单按钮颜色最大只允许输入30位字符，且不能出现空格'],
+                    verifyqrcode: [/^[\S]{0,200}$/, '二维码图片地址最大只允许输入200位字符，且不能出现空格'],
+                    verifyreturnMsg: [/^[\S]{0,200}$/, '提交后提示语最大只允许输入200位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsForm-createForm');
+            })
+    };
+
+    //删除图片
+    function delImg(obj, imageUrl) {
+        var imgDiv = $(obj).parent().parent().parent();
+        imgDiv.remove();
+        var index = imgs.indexOf(imageUrl);
+        if (index > -1) {
+            imgs.splice(index, 1);
+        }
+        $('#imageIds').val(imgs);
+    }
+    //设为默认图
+    function setDefault(obj, imageUrl) {
+        var imgDiv = $(obj).parent().parent().parent();
+        $("#upload-more-list").prepend(imgDiv);
+        var index = imgs.indexOf(imageUrl);
+        if (index > -1) {
+            imgs.unshift(imgs.splice(index, 1)[0]);
+        }
+        $('#imageIds').val(imgs);
+    }
+</script>

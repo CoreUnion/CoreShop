@@ -1,0 +1,361 @@
+﻿/* ---------- common ---------- */
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar { width: 6px; height: 6px; background-color: #F5F5F5; }
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); border-radius: 6px; background-color: #F5F5F5; }
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb { border-radius: 6px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); background-color: #009688; }
+
+
+/*body { font-size: 12px; font: 12px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif; }*/
+a { cursor: pointer }
+//鼠标按钮效果
+.cursor:hover { cursor: pointer }
+/*重写左侧导航*/
+.layui-nav * { font-size: 13.5px; }
+/*重写导航字体*/
+.layui-breadcrumb > * { font-size: 12px; }
+/*重写表单内字左侧间距*/
+.layui-input, .layui-textarea { display: block; width: 100%; padding-left: 5px; }
+//设置新的头部搜索框背景颜色
+.coreshop-search-form, .layui-table-box, .layui-table-view, .coreshop-form { background-color: #fff; }
+/*重写左侧导航icon图标大小*/
+.layui-side-menu .layui-nav .layui-nav-item .layui-icon { font-size: 14px; }
+/*重写左侧导航右侧icon图标*/
+.layui-nav-tree .layui-nav-more { right: 15px; padding: 0; }
+/*自建表格区域（重写下表单外框及边缘效果）*/
+.table-body { background-color: #fff; margin: 10px; padding: 0 10px; border: 1px solid #e6e6e6; }
+/*后台快捷方式图标字体大小重写*/
+.layadmin-shortcut li cite { font-size: 13px; }
+/*tab切换标题显示字体大小*/
+.layui-tab-title li { font-size: 13px; width: 100px; }
+
+/*带标题的栅格线*/
+.layui-elem-field legend { font-size: 13px; }
+/*附着表单输入整体样式细调整*/
+.coreshop-form {
+    .layui-form-item { margin-bottom: 10px; font-size: 12px; }
+    .order-ship-btn { margin: 0 auto; margin-top: 25px; display: block; }
+    .layui-btn-fluid { width: 50%; }
+    .layui-tab-content { padding: 10px; }
+    .add-save-btn { width: 100%; }
+    .layui-form-pane .layui-form-label { padding: 8px 5px; }
+    .layui-form-mid { padding: 8px 10px !important; border-bottom: 1px dashed #eee; min-height: 21px; color: #999 !important;
+        .layui-form-switch { margin-top: -3px; }
+    }
+    /*表单左侧label文字大小重写*/ .layui-form-label { font-size: 12px; }
+}
+/*用于给*打红色标记一般用于<i>*/
+.required-color { color: red; }
+/*地址三级联动css效果*/
+.select-address { display: inline-block !important; width: 30%; margin-right: 2%; padding: 10px 0px; border: 1px solid #e6e6e6; margin-bottom: 0px; }
+.sellect_seller_brands_list li, .sellect_seller_goods_list li { background-color: #f9f9f9; padding: 4px; margin: 4px;
+    span { color: #FF0000; margin-right: 7px; cursor: pointer; }
+}
+/*平台设置-分类样式-三行说明文字样式*/
+.list-tag { float: right; margin-right: 0; }
+/*超链接颜色, 并给鼠标放上去手指效果*/
+.link-hot { color: #009688; cursor: pointer; }
+/*重写按钮*/
+.layui-btn + .layui-btn { margin-left: 5px; }
+/*商品维系按钮*/
+.have-add .layui-form-switch, .have-add-td .layui-form-switch { margin-top: 0; }
+.help-tip { float: right; }
+.icon-wenhao { color: #9e9e9e; font-size: 16px !important; position: relative; top: 11px; }
+.layui-iconpicker { margin-bottom: 10px; }
+
+/** 搜索框后台样式 */
+.layui-field-title { margin: 10px 0 10px; }
+
+.noDefaultToolbar {
+    .layui-table-tool {
+        .layui-table-tool-temp { padding-right: 0px; }
+    }
+}
+
+
+.coreshop-toolbar-search-form, .coreshop-search-form { border: 1px solid #e6e6e6; padding: 10px; margin: 10px 10px 0 10px;
+    .layui-input-wrap { line-height: 30px; }
+    .layui-input, .layui-select, .layui-textarea { height: 30px; line-height: 1.3; line-height: 30px\9; border-width: 1px; border-style: solid; background-color: #fff; border-radius: 2px }
+    .layui-form-label { float: left; display: block; padding: 5px 5px 5px 2px; width: auto; min-width: 60px; max-width: 120px; font-weight: 400; line-height: 20px; text-align: center; font-size: 12px; }
+    .layui-input-block { margin-left: 74px; min-height: 26px }
+    .layui-form-select dl { top: 29px; }
+    .layui-form-end-item { margin-bottom: 0; }
+    .layui-form-item { margin-bottom: 0;
+        .layui-inline { margin-bottom: 0px; margin-right: 0px;
+            .layui-input-inline { margin-right: 5px; width: 150px; font-size: 12px;
+                input::-webkit-input-placeholder { /* Chrome/Opera/Safari */ font-size: 12px; }
+                input::-moz-placeholder { /* Firefox 19+ */ font-size: 12px; }
+                input:-ms-input-placeholder { /* IE 10+ */ font-size: 12px; }
+                input:-moz-placeholder { /* Firefox 18- */ font-size: 12px; }
+            }
+            .core-time-input { width: 308px; }
+        }
+    }
+    xm-select { min-height: 28px; line-height: 28px; }
+    xm-select * { font-size: 12px; }
+    .xm-body .xm-tree .xm-option-content { padding-left: 6px; font-size: 12px; }
+    xm-select .xm-label .scroll .label-content { line-height: 28px; }
+    xm-select > .xm-label .scroll .label-content { display: flex; padding: 0px 20px 0px 10px; font-size: 12px; }
+    .layui-form-mid { padding: 4px 0 !important; }
+    .layui-input-inline.core-time-input { width: 300px; }
+}
+
+.coreshop-toolbar-search-form { border: 0px; padding: 0px; margin: 0px; }
+
+
+/*订单界面调整样式*/
+.order-form {
+    .layui-form-item {
+        .layui-inline { margin-bottom: 5px; margin-right: 0px; }
+    }
+}
+.order-table {
+    .layui-table-tool-temp { padding-right: 0px; }
+    table {
+        th { padding: 0px; }
+    }
+    .layui-table-cell { height: auto; line-height: 28px; padding: 0px 5px; position: relative; box-sizing: border-box; }
+    .layui-table-cell, .layui-table-tool-panel li { overflow: inherit; text-overflow: ellipsis; white-space: inherit; }
+    .orderShip { padding: 0 5px; }
+}
+
+.order-min-table { background: #fafafa;
+    .layui-table { border-width: 1px; border-style: solid; border-color: #eee;
+        th { text-align: center; font-weight: 400; }
+        tr {
+            td { text-align: center;
+                .title { padding: 0 5px; }
+            }
+        }
+    }
+}
+.order-tab-card {
+    .layui-tab-title { padding-left: 25px; padding-top: 5px; }
+    .layui-tab-title .layui-this:after { border-top: 1px solid #eee; }
+}
+
+
+.layui-elem-quote { border-radius: 0 2px 2px 0; background-color: #f2f2f2; font-size: 12px; padding: 10px; }
+
+/*弹出框样式*/
+.layui-layout-admin {
+    .layui-side { overflow-x: hidden; }
+    .layui-side::-webkit-scrollbar { display: none; }
+    .layui-layer-title { height: 40px; line-height: 40px; border: 0; background-color: #20222A; color: #fff; }
+    i[close] { top: 5px; }
+}
+/*弹出框头部说明和按钮大小间距等调整*/
+.layui-layer-admin { /*重写Admin弹出框标题大小*/ .layui-layer-title { font-size: 13px; }
+    .layui-layer-title { height: 40px; line-height: 40px; border: 0; background-color: #20222A; color: #fff; }
+    i[close] { top: 8px; }
+}
+
+
+/*弹窗重写*/
+.layui-layer-iframe .layui-layer-btn, .layui-layer-page .layui-layer-btn, .layui-layer-dialog .layui-layer-btn { padding-top: 10px; }
+.layui-layer-iframe .layui-layer-btn, .layui-layer-page .layui-layer-btn { /*background-color: #f0f0f0;*/ border-top: 1px dashed #eeeeee; }
+.layui-layer-btn .layui-layer-btn0 { border-color: #009688; background-color: #009688; color: #fff; }
+.layui-layer-btn a { height: 32px; line-height: 32px; padding: 0 25px; margin: 5px 0 0 10px; border-radius: 100px; }
+
+
+//上传图片大小预览设置
+.layui-upload-img { height: 90px; max-height: 90px; width: auto; /*margin: 0 10px 10px 0;*/ }
+
+//弹出错误提示tips背景和字体颜色
+.layui-layer-tips .layui-layer-content { position: relative; line-height: 22px; min-width: 12px; padding: 4px 5px; font-size: 12px; _float: left; border-radius: 2px; box-shadow: 1px 1px 3px rgba(0,0,0,.2); background-color: #000; color: #fff }
+/*.layui-layer-tips .layui-layer-content { background-color: red; }
+.layui-layer-tips i.layui-layer-TipsB, .layui-layer-tips i.layui-layer-TipsT { border-right-color: #ff0000; }*/
+
+
+//layui圆标描线风格
+.layui-badge-green { color: #52c41a; background: #f6ffed; border: 1px solid #b7eb8f }
+.layui-badge-blue { color: #1890ff; background: #e6f7ff; border: 1px solid #91d5ff }
+.layui-badge-red { color: #f5222d; background: #fff1f0; border: 1px solid #ffa39e }
+.layui-badge-yellow { color: #faad14; background: #fffbe6; border: 1px solid #ffe58f }
+.layui-badge-gray { color: #8c8c8c; background: #fafafa; border: 1px solid #ccc }
+
+/*XmSelect下拉效果替换*/
+xm-select > .xm-body { margin-left: -2px }
+    xm-select > .xm-body .xm-option { background-color: transparent !important }
+        xm-select > .xm-body .xm-option.hide-icon.selected { background-color: #5fb878 !important }
+        xm-select > .xm-body .xm-option:hover { background-color: #f2f2f2 !important }
+.xm-body .xm-tree { min-width: 200px }
+    .xm-body .xm-tree .xm-option-content { padding-left: 6px }
+xm-select { border-color: #e6e6e6 !important }
+    xm-select:hover { border-color: #d2d2d2 !important }
+    xm-select[style="border-color: rgb(229, 77, 66);"] { border-color: #e54d42 !important }
+body .ew-xmselect-tree xm-select .xm-body .xm-option .xm-option-icon { position: absolute; left: 30px; top: 0; right: 0; bottom: 0; width: auto; height: auto; border: none !important; z-index: 1 }
+    body .ew-xmselect-tree xm-select .xm-body .xm-option .xm-option-icon:before { display: none }
+body .ew-xmselect-tree xm-select .xm-body .xm-option.selected { background-color: #f2f2f2 !important }
+    body .ew-xmselect-tree xm-select .xm-body .xm-option.selected .xm-option-content { color: #5fb878 !important }
+/*选择之后呈现按钮效果*/
+xm-select .xm-body .xm-option .xm-option-icon { border-color: #2d8cf0 !important }
+xm-select .xm-label .xm-label-block, xm-select .xm-body .xm-option.hide-icon.selected { background-color: #2d8cf0 !important }
+/*红点提醒（多用于表单填写label前面加个红点）*/
+.layui-form-required:before { content: "*"; display: inline-block; font-family: SimSun; margin-right: 4px; font-size: 14px; line-height: 1; color: #ed4014 }
+/*表单内radio文字字体大小*/
+.layui-form-radio * { font-size: 12px; }
+/*重写table字体样式*/
+.layui-table td, .layui-table th { position: relative; padding: 9px 15px; min-height: 20px; line-height: 20px; font-size: 12px; }
+.layui-table-cell { height: 28px; line-height: 28px; padding: 0 8px; position: relative; box-sizing: border-box; }
+.layui-table { word-break: break-all; word-wrap: break-word; }
+/*重写弹出面板框内容和边框间距*/
+.layui-layer-admin .layui-layer-content { padding: 10px; line-height: 22px; }
+.layui-layer-admin .layui-layer-setwin { position: absolute; right: 15px; *right: 0; top: 8px; font-size: 0; line-height: initial; }
+    .layui-layer-admin .layui-layer-setwin a { position: relative; width: 31px; height: 31px; margin-left: 10px; font-size: 12px; _overflow: hidden; color: #fff; }
+    .layui-layer-admin .layui-layer-setwin .layui-layer-close1 { background-position: -149px -31px; cursor: pointer; }
+/*重写导航区域*/
+.layadmin-header { display: none; height: 35px; line-height: 35px; margin-bottom: 0; border-radius: 0; }
+
+/*整体按钮内文字大小重写*/
+.layui-btn { font-size: 12px; }
+
+/*上传控件样式*/
+.ew-crop-img-preview { float: left; margin-bottom: 10px; margin-right: 15px; overflow: hidden; background: #e6e6e6; }
+/*四个不同规则裁剪图片预览框*/
+.preview-lg { width: 256px; height: 144px; }
+.preview-md { width: 128px; height: 72px; }
+.preview-sm { width: 64px; height: 36px; }
+.preview-xs { width: 32px; height: 18px; margin-right: 0; }
+.docs-data { width: 100%; float: left; text-align: left; }
+.myCropperBox .layui-form-label { width: 70px; padding: 2px 5px; height: 25px; line-height: 20px; border-width: 1px; border-style: solid; border-radius: 2px 0 0 2px; text-align: center; background-color: #FBFBFB; overflow: hidden; box-sizing: border-box; }
+.myCropperBox .layui-form-item { margin-bottom: 5px; clear: both; *zoom: 1; }
+.myCropperBox .layui-input { height: 25px; line-height: 1.3; border-width: 1px; border-style: solid; background-color: #fff; }
+.myCropperBox .layui-input-inline { margin-left: -1px; margin-right: 10px; }
+.myCropperBox .layui-form-mid { float: left; display: block; padding: 2px 0 !important; line-height: 20px; height: 25px; line-height: 20px; text-align: left; overflow: hidden; box-sizing: border-box; }
+
+/*添加商品界面特效*/
+.addGoods, .editGoodsTypes, .editGoodsParameters {
+    .layui-form-pane xm-select { margin: 0 -1px -1px 0; }
+    .grade_price { width: 80% !important; float: left; display: inline; }
+    .grade_price input { display: inline; width: 100px; }
+    .spec-item { float: left; margin: 5px; }
+    .spec-item .layui-form-checkbox { margin-top: 0 !important; }
+    .spec-item .checkboxBox { float: left; display: block; line-height: 20px; width: 75px; /*margin-right: 10px; padding: 9px 0 !important;*/ }
+    /*.new-spec { display: inline-block; width: 100px; }*/ .layui-form-pane .layui-form-item[pane] .layui-input-inline { margin-left: 0px; width: auto; }
+
+    .del-img { position: absolute; background-color: rgba(0,0,0,.5); color: #fff; width: 13px; height: 13px; line-height: 12px; font-size: 10px; display: inline-block; text-align: center; border-radius: 50%; right: -6px; top: -6px; }
+    .w-e-text-container { height: 600px !important; }
+    /*.layui-form-label {*/ /*min-width: 60px; max-width: 100px; */ /*padding: 8px 3px; width: 90px; }*/ /*.layui-form-pane .layui-input-block { margin-left: 90px; left: -1px; }*/ .layui-form-text .layui-input-block { margin-left: 0px; left: 0px; }
+}
+.addGoods, .editGoodsTypes, .editGoodsParameters, .transactioncomponent {
+    .imgdiv { float: left; text-align: center; border: 1px solid #ccc; padding: 5px; padding-bottom: 0; margin-right: 10px; background-color: #fff; }
+    .layui-upload-img { margin: 0; }
+    .layui-upload-list { margin: 10px 0; overflow: hidden; }
+    .spec_image { display: inline-block; }
+    .spec_image_item { position: relative; display: inline-block; }
+}
+#parametersBox {
+    .layui-form-item { background: #fff; }
+}
+/*自建方法*/
+//内容右对齐,多用于弹出表单按钮
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+.core-hidden { display: none; }
+.core-show { display: block; }
+.float-left { float: left !important; }
+.float-right { float: right !important; }
+.float-none { float: none !important; }
+
+
+.text-red, .line-red, .lines-red { color: #e54d42; }
+.text-orange, .line-orange, .lines-orange { color: #f37b1d; }
+.text-yellow, .line-yellow, .lines-yellow { color: #fbbd08; }
+.text-olive, .line-olive, .lines-olive { color: #8dc63f; }
+.text-green, .line-green, .lines-green { color: #39b54a; }
+.text-cyan, .line-cyan, .lines-cyan { color: #1cbbb4; }
+.text-blue, .line-blue, .lines-blue { color: #0081ff; }
+.text-purple, .line-purple, .lines-purple { color: #6739b6; }
+.text-mauve, .line-mauve, .lines-mauve { color: #9c26b0; }
+.text-pink, .line-pink, .lines-pink { color: #e03997; }
+.text-brown, .line-brown, .lines-brown { color: #a5673f; }
+.text-grey, .line-grey, .lines-grey { color: #8799a3; }
+.text-gray, .line-gray, .lines-gray { color: #aaaaaa; }
+.text-black, .line-black, .lines-black { color: #333333; }
+.text-white, .line-white, .lines-white { color: #ffffff; }
+
+
+//表单填写框内容布局大小
+.layui-form-item {
+    .layui-inline-1 { width: 50px; }
+    .layui-inline-2 { width: 100px; }
+    .layui-inline-3 { width: 150px; }
+    .layui-inline-4 { width: 200px; }
+    .layui-inline-5 { width: 250px; }
+    .layui-inline-6 { width: 300px; }
+    .layui-inline-7 { width: 350px; }
+    .layui-inline-8 { width: 400px; }
+    .layui-inline-9 { width: 450px; }
+    .layui-inline-10 { width: 500px; }
+    .layui-inline-11 { width: 550px; }
+    .layui-inline-12 { width: 600px; }
+    .layui-inline-13 { width: 650px; }
+    .layui-inline-14 { width: 700px; }
+
+    .layui-inline-100 { width: calc( 100% - 110px - 20px - 10px); padding: 0 10px; }
+
+    .layui-form-mid.layui-inline-1 { width: 20px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-2 { width: 80px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-3 { width: 130px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-4 { width: 180px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-5 { width: 230px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-6 { width: 280px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-7 { width: 330px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-8 { width: 380px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-9 { width: 430px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-10 { width: 480px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-11 { width: 530px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-12 { width: 580px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-13 { width: 630px; padding: 0 10px; }
+    .layui-form-mid.layui-inline-14 { width: 680px; padding: 0 10px; }
+
+
+    .layui-form-mid.layui-inline-100 { width: calc( 100% - 110px - 20px - 10px); padding: 0 10px; }
+}
+
+/*自定义左侧tree效果*/
+.coreshop-nav-tree {
+    .layui-nav-more { right: 15px; padding: 0; }
+    .layui-nav-item > a { height: 45px; line-height: 45px; }
+    .layui-nav-item a cite { letter-spacing: 2px; font-size: 13.5px; }
+    .layui-icon { font-size: 13px; }
+    .layui-nav-item .layui-icon:first-child { position: absolute; top: 50%; left: 20px; margin-top: -24px; }
+}
+/*自定义全局包围*/
+.coreshop-admin {
+    .layui-logo { padding: 0px;
+        span { font-size: 21px; font-weight: 550; letter-spacing: 5px; }
+    }
+}
+
+.coreshop-upload-img { height: 37px; max-height: 37px; width: auto; margin: 0 8px 0 0; }
+
+
+//代理模块
+.productBox .layui-table td, .productBox .layui-table th { padding: 9px 5px; text-align: center; }
+.productBox .layui-input, .productBox .layui-select, .productBox .layui-textarea { height: 28px; }
+
+
+//重写iconSelect下不显示问题。
+/*.layui-input-prefix .layui-icon, .layui-input-split .layui-icon, .layui-input-suffix .layui-icon { z-index: 1; }*/
+
+
+.pagebarbox {
+    .layui-table-page { text-align: right; }
+    .layui-table-pagebar { float: left; }
+}
+
+
+.longLogo { height: 50px; width: 220px; display: block }
+
+
+.layadmin-side-shrink {
+    .longLogo { height: 50px; width: 220px; display: none; }
+}
+
+    .layadmin-side-shrink .layui-layout-admin .layui-logo { width: 60px; background-image: url(../images/common/logoMin.png); }

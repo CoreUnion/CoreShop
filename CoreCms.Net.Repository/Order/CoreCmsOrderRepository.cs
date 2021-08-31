@@ -21,7 +21,7 @@ using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -112,6 +112,77 @@ namespace CoreCms.Net.Repository
             }).Where((op, ot) => op.userId == userId && ot.goodsId == goodId).Count();
             return num;
         }
+        #endregion
+
+        #region 重写根据条件列表数据
+        /// <summary>
+        ///     重写根据条件列表数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="orderByExpression"></param>
+        /// <returns></returns>
+        public async Task<List<CoreCmsOrder>> QueryListAsync(Expression<Func<CoreCmsOrder, bool>> predicate,
+            Expression<Func<CoreCmsOrder, object>> orderByExpression, OrderByType orderByType)
+        {
+            List<CoreCmsOrder> list = await DbClient.Queryable<CoreCmsOrder, CoreCmsUser>((sOrder, sUser) => new JoinQueryInfos(
+                     JoinType.Left, sOrder.userId == sUser.id))
+                    .Select((sOrder, sUser) => new CoreCmsOrder
+                    {
+                        orderId = sOrder.orderId,
+                        goodsAmount = sOrder.goodsAmount,
+                        payedAmount = sOrder.payedAmount,
+                        orderAmount = sOrder.orderAmount,
+                        payStatus = sOrder.payStatus,
+                        shipStatus = sOrder.shipStatus,
+                        status = sOrder.status,
+                        orderType = sOrder.orderType,
+                        receiptType = sOrder.receiptType,
+                        paymentCode = sOrder.paymentCode,
+                        paymentTime = sOrder.paymentTime,
+                        logisticsId = sOrder.logisticsId,
+                        logisticsName = sOrder.logisticsName,
+                        costFreight = sOrder.costFreight,
+                        userId = sOrder.userId,
+                        sellerId = sOrder.sellerId,
+                        confirmStatus = sOrder.confirmStatus,
+                        confirmTime = sOrder.confirmTime,
+                        storeId = sOrder.storeId,
+                        shipAreaId = sOrder.shipAreaId,
+                        shipAddress = sOrder.shipAddress,
+                        shipName = sOrder.shipName,
+                        shipMobile = sOrder.shipMobile,
+                        weight = sOrder.weight,
+                        taxType = sOrder.taxType,
+                        taxCode = sOrder.taxCode,
+                        taxTitle = sOrder.taxTitle,
+                        point = sOrder.point,
+                        pointMoney = sOrder.pointMoney,
+                        orderDiscountAmount = sOrder.orderDiscountAmount,
+                        goodsDiscountAmount = sOrder.goodsDiscountAmount,
+                        couponDiscountAmount = sOrder.couponDiscountAmount,
+                        coupon = sOrder.coupon,
+                        promotionList = sOrder.promotionList,
+                        memo = sOrder.memo,
+                        ip = sOrder.ip,
+                        mark = sOrder.mark,
+                        source = sOrder.source,
+                        isComment = sOrder.isComment,
+                        isdel = sOrder.isdel,
+                        createTime = sOrder.createTime,
+                        updateTime = sOrder.updateTime,
+                        userNickName = sUser.nickName
+                    })
+                    .With(SqlWith.NoLock)
+                    .MergeTable()
+                    .Mapper(sOrder => sOrder.aftersalesItem, sOrder => sOrder.aftersalesItem.First().orderId)
+                    .Mapper(sOrder => sOrder.items, sOrder => sOrder.items.First().orderId)
+                    .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
+                    .WhereIF(predicate != null, predicate)
+                    .ToListAsync();
+            return list;
+        }
+
         #endregion
 
         #region 重写根据条件查询分页数据

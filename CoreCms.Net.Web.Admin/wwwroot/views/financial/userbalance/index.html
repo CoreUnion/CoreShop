@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsUserBalance/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUserBalance-tableBox" lay-filter="LAY-app-CoreCmsUserBalance-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUserBalance-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -23,14 +30,14 @@
                 <div class="layui-input-inline">
                     <select name="type" id="type" lay-filter="conditionCode">
                         <option value="">请选择类型</option>
-                        {{# layui.each(d.data.userBalanceSourceTypes, function(index, item){ }}
+                        {{# layui.each(indexData.userBalanceSourceTypes, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.description }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsUserBalance-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
             </div>
@@ -40,11 +47,8 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsUserBalance-tableBox" lay-filter="LAY-app-CoreCmsUserBalance-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-CoreCmsUserBalance-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsUserBalance-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
@@ -71,11 +75,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsUserBalance-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+                
                 //重载form
                 form.render();
                 var searchwhere;
@@ -85,7 +85,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsUserBalance-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsUserBalance-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -93,8 +93,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsUserBalance/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUserBalance-toolbar',
+                    pagebar: '#LAY-app-CoreCmsUserBalance-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -128,7 +130,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsUserBalance-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsUserBalance-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsUserBalance-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -176,7 +178,11 @@
                         });
                 }
                 //监听 表格复选框操作
-
+                laydate.render({
+                    elem: '#searchTime-CoreCmsUserBalance-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
             });
     };
 </script>

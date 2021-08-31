@@ -11,7 +11,7 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsUserServicesTicket/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -64,19 +64,19 @@
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="validityStartTime">核销开始时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="validityStartTime" id="searchTime-CoreCmsUserServicesTicket-validityStartTime" placeholder="请输入核销开始时间" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="validityEndTime">核销结束时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="validityEndTime" id="searchTime-CoreCmsUserServicesTicket-validityEndTime" placeholder="请输入核销结束时间" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="createTime">创建时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsUserServicesTicket-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
             </div>
@@ -92,7 +92,7 @@
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="verificationTime">核销时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="verificationTime" id="searchTime-CoreCmsUserServicesTicket-verificationTime" placeholder="请输入核销时间" class="layui-input">
                 </div>
             </div>
@@ -181,7 +181,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox',{ where: field });
+                        table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox',{ where: field });
                     });
                 //数据绑定
                 table.render({
@@ -190,7 +190,7 @@
                     method: 'POST',
 				    toolbar: '#LAY-app-CoreCmsUserServicesTicket-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -217,7 +217,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsUserServicesTicket-tableBox)', function(obj){
-                    table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -281,7 +281,7 @@
                                                     coreHelper.Post("Api/CoreCmsUserServicesTicket/DoCreate", field, function (e) {
                                                             console.log(e)
                                                             if (e.code === 0) {
-                                                                layui.table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox'); //重载表格
+                                                                layui.table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox'); //重载表格
                                                                 layer.close(index); //再执行关闭
                                                                 layer.msg(e.msg);
                                                             } else {
@@ -321,7 +321,7 @@
                                                 coreHelper.Post("Api/CoreCmsUserServicesTicket/DoEdit", field, function (e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            layui.table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox'); //重载表格
+                                                            layui.table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox'); //重载表格
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -364,7 +364,7 @@
                 function doDelete(obj){
                     coreHelper.Post("Api/CoreCmsUserServicesTicket/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox');
+                            table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox');
                             layer.msg(e.msg);
                         });
 			    }
@@ -383,7 +383,7 @@
                                 });
                             coreHelper.Post("Api/CoreCmsUserServicesTicket/DoBatchDelete", { id: delidsStr }, function (e) {
                                     if (debug) { console.log(e); } //开启调试返回数据
-                                    table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox');
+                                    table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox');
                                     layer.msg(e.msg);
                                 });
                         });
@@ -432,7 +432,7 @@
                 layui.form.on('switch(switch_isVerification)', function (obj) {
                     coreHelper.Post("Api/CoreCmsUserServicesTicket/DoSetisVerification", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsUserServicesTicket-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsUserServicesTicket-tableBox');
                         layer.msg(e.msg);
                     });
                 });

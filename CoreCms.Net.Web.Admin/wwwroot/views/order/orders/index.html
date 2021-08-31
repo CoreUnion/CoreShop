@@ -8,130 +8,10 @@
     .layui-table,
     .layui-table-view { margin: 0; }
     .cursor { cursor: pointer; }
-    .coreshop-search-form { border: 0px solid #e6e6e6; padding: 10px; margin: 10px 10px 0 10px; }
+    .coreshop-toolbar-search-form { border: 0px solid #e6e6e6; padding: 10px; margin: 10px 10px 0 10px; }
     .layui-tab-card { border-width: 1px; border-style: solid; border-radius: 0px; box-shadow: none; }
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsOrder/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form order-form core-hidden" id="searchDiv">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">订单类型</label>
-                <div class="layui-input-inline">
-                    <select name="orderType" id="orderType">
-                        <option value="">请选择订单类型</option>
-                        {{# layui.each(d.data.orderType, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">订单来源</label>
-                <div class="layui-input-inline">
-                    <select name="source" id="source">
-                        <option value="">请选择订单来源</option>
-                        {{# layui.each(d.data.source, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">订单状态</label>
-                <div class="layui-input-inline">
-                    <select name="status" id="status">
-                        <option value="">请选择订单状态</option>
-                        {{# layui.each(d.data.orderStatus, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">付款状态</label>
-                <div class="layui-input-inline">
-                    <select name="payStatus" id="payStatus">
-                        <option value="">请选择付款状态</option>
-                        {{# layui.each(d.data.payStatus, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">发货状态</label>
-                <div class="layui-input-inline">
-                    <select name="shipStatus" id="shipStatus">
-                        <option value="">请选择发货状态</option>
-                        {{# layui.each(d.data.shipStatus, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-inline">
-                <label class="layui-form-label">订单属性</label>
-                <div class="layui-input-inline">
-                    <select name="receiptType" id="shipStatus">
-                        <option value="">请选择订单属性</option>
-                        {{# layui.each(d.data.receiptType, function(index, item){ }}
-                        <option value="{{ item.value }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-inline">
-                <label class="layui-form-label">支付方式</label>
-                <div class="layui-input-inline">
-                    <select name="paymentCode" id="paymentCode">
-                        <option value="">请选择支付方式</option>
-                        {{# layui.each(d.data.paymentCode, function(index, item){ }}
-                        <option value="{{ item.title }}">{{ item.description }}</option>
-                        {{# }); }}
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-inline">
-                <label class="layui-form-label">订单号</label>
-
-                <div class="layui-input-inline">
-                    <input type="text" name="orderId" id="orderId" placeholder="请输入订单号" class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-inline">
-                <label class="layui-form-label">收货人</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="shipName" id="shipName" placeholder="请输入收货人姓名" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">联系电话</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="shipMobile" id="shipMobile" placeholder="请输入收货电话" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">地址</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="shipAddress" id="shipAddress" placeholder="请输入收货地址" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">下单时间</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="createTime" id="searchTime-CoreCmsOrder-createTime" placeholder="请选择时间" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline core-hidden">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsOrder-search" id="LAY-app-CoreCmsOrder-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
-            </div>
-        </div>
-    </div>
-
     <div class="layui-card-body">
         <div class="layui-tab  layui-tab-card order-tab-card" lay-filter="order-tab">
             <ul class="layui-tab-title">
@@ -143,20 +23,163 @@
                 <li lay-id="noevaluat">待评价<span class="layui-badge layui-bg-orange" id="countNoevaluat">{{d.data.noevaluat}}</span></li>
                 <li lay-id="cancel">已取消<span class="layui-badge layui-bg-cyan" id="countCancel">{{d.data.cancel}}</span></li>
                 <li lay-id="complete">已完成<span class="layui-badge layui-bg-gray" id="countComplete">{{d.data.complete}}</span></li>
+                <li lay-id="delete">已删除<span class="layui-badge layui-bg-red" id="countDelete">{{d.data.delete}}</span></li>
             </ul>
-            <div style="position: absolute;top: 7px;right: 10px;">
+            <!--<div style="position: absolute;top: 7px;right: 10px;">
                 <div class="layui-inline">
-                    <button class="layui-btn layui-btn-sm" lay-active="showSearchBox"><i class="layui-icon layui-icon-search"></i>筛选</button>
                     <button class="layui-btn layui-btn-sm" lay-active="payOrderArray">批量支付</button>
                     <button class="layui-btn layui-btn-sm" lay-active="shipOrderArray">合并发货</button>
                     <button class="layui-btn layui-btn-sm" lay-active="batchCancelOrder">取消订单</button>
                     <button class="layui-btn layui-btn-sm" lay-active="batchDeleteOrder">批量删除</button>
                 </div>
-            </div>
+            </div>-->
             <div class="layui-tab-content order-table">
-                <!--<table id="order" lay-data="{id:'order'}"></table>-->
                 <table id="LAY-app-CoreCmsOrder-tableBox" lay-filter="LAY-app-CoreCmsOrder-tableBox" lay-data="{id:'order'}"></table>
             </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsOrder-pagebar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="payOrderArray"><i class="layui-icon layui-icon-cart"></i>批量支付</button>
+        <button class="layui-btn layui-btn-sm" lay-event="shipOrderArray"><i class="layui-icon layui-icon-templeate-1"></i>合并发货</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchCancelOrder"><i class="layui-icon layui-icon-close"></i>取消订单</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleteOrder"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>导出勾选订单</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>导出查询结果</button>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsOrder-toolbar">
+    <div class="layui-form  coreshop-toolbar-search-form order-form">
+        <div class="layui-form-item">
+
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="orderType" id="orderType">
+                                <option value="">请选择订单类型</option>
+                                {{# layui.each(indexData.orderType, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="source" id="source">
+                                <option value="">请选择订单来源</option>
+                                {{# layui.each(indexData.source, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="status" id="status">
+                                <option value="">请选择订单状态</option>
+                                {{# layui.each(indexData.orderStatus, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="payStatus" id="payStatus">
+                                <option value="">请选择付款状态</option>
+                                {{# layui.each(indexData.payStatus, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="shipStatus" id="shipStatus">
+                                <option value="">请选择发货状态</option>
+                                {{# layui.each(indexData.shipStatus, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="receiptType" id="shipStatus">
+                                <option value="">请选择订单属性</option>
+                                {{# layui.each(indexData.receiptType, function(index, item){ }}
+                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="paymentCode" id="paymentCode">
+                                <option value="">请选择支付方式</option>
+                                {{# layui.each(indexData.paymentCode, function(index, item){ }}
+                                <option value="{{ item.title }}">{{ item.description }}</option>
+                                {{# }); }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-inline layui-input-wrap-prefix">
+                        <div class="layui-input-inline">
+                            <div class="layui-input-prefix">
+                                <i class="layui-icon layui-icon-date"></i>
+                            </div>
+                            <input type="text" name="orderId" id="orderId" placeholder="请输入订单号" class="layui-input" lay-affix="clear">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline layui-input-wrap-prefix">
+                        <div class="layui-input-inline">
+                            <div class="layui-input-prefix">
+                                <i class="layui-icon layui-icon-username"></i>
+                            </div>
+                            <input type="text" name="shipName" id="shipName" placeholder="请输入收货人姓名" class="layui-input" lay-affix="clear">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-input-wrap-prefix">
+                        <div class="layui-input-inline">
+                            <div class="layui-input-prefix">
+                                <i class="layui-icon layui-icon-cellphone-fine"></i>
+                            </div>
+                            <input type="text" name="shipMobile" id="shipMobile" placeholder="请输入收货电话" class="layui-input" lay-affix="clear">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-input-wrap-prefix">
+                        <div class="layui-input-inline">
+                            <div class="layui-input-prefix">
+                                <i class="layui-icon layui-icon-location"></i>
+                            </div>
+                            <input type="text" name="shipAddress" id="shipAddress" placeholder="请输入收货地址" class="layui-input" lay-affix="clear">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-input-wrap-prefix">
+                        <div class="layui-input-inline core-time-input">
+                            <div class="layui-input-prefix">
+                                <i class="layui-icon layui-icon-time"></i>
+                            </div>
+                            <input type="text" name="createTime" id="searchTime-CoreCmsOrder-createTime" placeholder="请选择时间" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsOrder-search" id="LAY-app-CoreCmsOrder-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </script>
@@ -173,6 +196,7 @@
     var $;
     var indexData;
     var debug = layui.setter.debug;
+    var orderStatus = [];
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d); }
@@ -190,11 +214,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsOrder-createTime',
-                    type: 'date',
-                    range: '到',
-                });
+                orderStatus = d.data.orderStatus;
 
                 var searchwhere = {};
                 //监听搜索
@@ -202,7 +222,7 @@
                     function (data) {
                         var tempfilter = $.extend({}, searchwhere, data.field);//合并tab筛选和普通搜索
                         //执行重载
-                        table.reload('LAY-app-CoreCmsOrder-tableBox', { where: tempfilter });
+                        table.reloadData('LAY-app-CoreCmsOrder-tableBox', { where: tempfilter });
                     });
 
                 //tab切换事件
@@ -224,14 +244,16 @@
                         searchwhere.orderUnifiedStatus = 7;
                     } else if (type === 'complete') {
                         searchwhere.orderUnifiedStatus = 6;
+                    } else if (type === 'delete') {
+                        searchwhere.orderUnifiedStatus = 999;
                     }
-                    var basefilter = $(".coreshop-search-form").serializeArray();
+                    var basefilter = $(".coreshop-toolbar-search-form").serializeArray();
                     $.each(basefilter, function (i, obj) {
                         if (!searchwhere.hasOwnProperty(obj.name)) {
                             searchwhere[obj.name] = obj.value;
                         }
                     });
-                    table.reload('LAY-app-CoreCmsOrder-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsOrder-tableBox', {
                         where: searchwhere,
                         page: { curr: 1 }
                     });
@@ -244,8 +266,14 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsOrder/GetPageList',
                     method: 'POST',
                     height: 'full-130', //无面包屑127,搜索框189,1行62
+                    //lineStyle: 'min-height: 100px;',
+                    toolbar: '#LAY-app-CoreCmsOrder-toolbar',
+                    pagebar: '#LAY-app-CoreCmsOrder-pagebar',
+                    className: 'pagebarbox',
+                    defaultToolbar: null,
                     page: true,
                     even: false,
+                    totalRow: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
                     text: { none: '暂无相关数据' },
@@ -266,7 +294,7 @@
                                     }
                                 }
                             },
-                            { field: 'orderAmount', title: '订单总额', width: 70, align: 'center', templet: '#orderAmount' },
+                            { field: 'orderAmount', title: '订单总额', width: 100, align: 'center', templet: '#orderAmount', totalRow: true },
                             {
                                 field: 'item', title: '货品', align: 'center', width: 330, templet: "#orderItems"
                             },
@@ -304,14 +332,15 @@
                                 title: '订单状态',
                                 width: 80,
                                 align: 'center',
-                                templet: function (data) {
-                                    for (var i = 0; i < d.data.orderStatus.length; i++) {
-                                        if (data.status == d.data.orderStatus[i].value) {
-                                            return d.data.orderStatus[i].description;
-                                        }
-                                    }
-                                    return "";
-                                }
+                                templet: '#statusText'
+                                //templet: function (data) {
+                                //    for (var i = 0; i < d.data.orderStatus.length; i++) {
+                                //        if (data.status == d.data.orderStatus[i].value) {
+                                //            return d.data.orderStatus[i].description;
+                                //        }
+                                //    }
+                                //    return "";
+                                //}
                             },
                             //{
                             //    field: 'payStatus',
@@ -436,7 +465,12 @@
                     //发货
                     shipOrder: function () {
                         var id = $(this).attr('data-id');
-                        doShip(id);
+                        doShip(id, 1);
+                    },
+                    //秒发货
+                    secondsShipOrder: function () {
+                        var id = $(this).attr('data-id');
+                        doSecondsShip(id);
                     },
                     //编辑
                     editOrder: function () {
@@ -478,47 +512,42 @@
                         var id = $(this).attr('data-id');
                         printExpress(id)
                     },
-                    //批量支付
-                    payOrderArray: function () {
-                        doPayOrderArray();
+                    //通过接口获取远端交易组件订单信息
+                    showTcOrder: function () {
+                        var id = $(this).attr('data-id');
+                        showTcOrder(id);
                     },
-                    //合并发货
-                    shipOrderArray: function () {
-                        doShipOrderArray();
-                    },
-                    //批量取消订单
-                    batchCancelOrder: function () {
-                        doCancelOrderArray();
-                    },
-                    //批量删除订单
-                    batchDeleteOrder: function () {
-                        doDeleteOrderArray();
-                    },
-                    //显示查询框
-                    showSearchBox: function () {
-                        doShowSearchBox();
+                    //通过接口获取远端交易组件订单信息
+                    refreshDelivery: function () {
+                        var id = $(this).attr('data-deliveryId');
+                        refreshDelivery(id);
                     },
                 });
 
-                //显示查询框
-                function doShowSearchBox() {
-                    //自定页
-                    layer.open({
-                        title: '查询检索',
-                        type: 1,
-                        shade: 0,
-                        area: ['500px', '500px'], //宽高
-                        content: $('#searchDiv')
-                        , btn: ['确定', '重置', '取消']
-                        , yes: function (index, layero) {
-                            layero.contents().find("#LAY-app-CoreCmsOrder-search").click();
-                            layer.closeAll();
-                        }
-                        , btn2: function (index, layero) {
-                            admin.events.refresh()
-                        }
-                    });
-                }
+                //头工具栏事件
+                table.on('pagebar(LAY-app-CoreCmsOrder-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'payOrderArray':
+                            doPayOrder(checkStatus);
+                            break;
+                        case 'shipOrderArray':
+                            doShip(checkStatus, 0);
+                            break;
+                        case 'batchCancelOrder':
+                            doCancelOrderArray(checkStatus);
+                            break;
+                        case 'batchDeleteOrder':
+                            doDeleteOrderArray(checkStatus);
+                            break;
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
 
                 //取消订单
                 function doreLoadOrderCount() {
@@ -532,9 +561,27 @@
                             $('#countNoevaluat').html(e.data.noevaluat);
                             $('#countCancel').html(e.data.cancel);
                             $('#countComplete').html(e.data.complete);
+                            $('#countDelete').html(e.data.delete);
                         }
                     });
                 }
+
+                //秒发货
+                function doSecondsShip(id) {
+                    layer.confirm('确认秒发货：' + id + ' 的订单吗？', {
+                        title: '提示', btn: ['确认', '取消'] //按钮
+                    }, function () {
+                        coreHelper.Post("Api/CoreCmsOrder/DoSecondsShip", { id: id }, function (e) {
+                            layer.msg(e.msg, { time: 1300 }, function () {
+                                layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                doreLoadOrderCount();
+                            });
+                        });
+                    });
+                    return false;
+                }
+
+
                 //取消订单
                 function doCancelOrder(id) {
                     layer.confirm('确认取消订单号：' + id + ' 的订单吗？', {
@@ -542,7 +589,7 @@
                     }, function () {
                         coreHelper.Post("Api/CoreCmsOrder/CancelOrder", { id: id }, function (e) {
                             layer.msg(e.msg, { time: 1300 }, function () {
-                                layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                 doreLoadOrderCount();
                             });
                         });
@@ -551,90 +598,49 @@
                 }
 
                 //批量取消订单
-                function doCancelOrderArray() {
-                    var checkStatus = table.checkStatus('LAY-app-CoreCmsOrder-tableBox');
-                    var data = checkStatus.data;
-                    var ids = '';
-                    $.each(data, function () {
-                        ids += this.orderId + ',';
-                    });
-                    ids = ids.substring(0, ids.length - 1);
-                    if (ids) {
-                        layer.msg('已选择' + ids);
-                        //提交 Ajax 成功后，关闭当前弹层并重载表格
-                        coreHelper.Post("Api/CoreCmsOrder/CancelOrder", { id: ids }, function (e) {
+                function doCancelOrderArray(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要取消的数据');
+                    }
+                    var delidsStr = [];
+                    layui.each(checkData,
+                        function (index, item) {
+                            delidsStr.push(item.orderId);
+                        });
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    layer.confirm('确认取消' + delidsStr.length + ' 个已选订单吗？', function (index) {
+                        coreHelper.Post("Api/CoreCmsOrder/CancelOrder", { id: delidsStr }, function (e) {
                             layer.msg(e.msg, { time: 1300 }, function () {
-                                layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                 doreLoadOrderCount();
                             });
                         });
-                    } else {
-                        layer.msg('请勾选需要取消的订单');
-                    }
+                    });
                     return false;
                 };
 
                 //批量删除订单
-                function doDeleteOrderArray() {
-                    var checkStatus = table.checkStatus('LAY-app-CoreCmsOrder-tableBox');
-                    var data = checkStatus.data;
-                    var ids = '';
-                    $.each(data, function () {
-                        ids += this.orderId + ',';
-                    });
-                    ids = ids.substring(0, ids.length - 1);
-                    if (ids) {
-                        //layer.msg('已选择' + ids);
-                        layer.confirm('确认删除' + data.length + ' 个已选订单吗？', function (index) {
-                            //提交 Ajax 成功后，关闭当前弹层并重载表格
-                            coreHelper.Post("Api/CoreCmsOrder/DeleteOrder", { id: ids }, function (e) {
-                                layer.msg(e.msg, { time: 1300 }, function () {
-                                    layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
-                                    doreLoadOrderCount();
-                                });
+                function doDeleteOrderArray(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要取消的数据');
+                    }
+                    var delidsStr = [];
+                    layui.each(checkData,
+                        function (index, item) {
+                            delidsStr.push(item.orderId);
+                        });
+                    //layer.msg('已选择' + ids);
+                    layer.confirm('确认删除' + delidsStr.length + ' 个已选订单吗？', function (index) {
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        coreHelper.Post("Api/CoreCmsOrder/DeleteOrder", { id: delidsStr }, function (e) {
+                            layer.msg(e.msg, { time: 1300 }, function () {
+                                layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                doreLoadOrderCount();
                             });
                         });
-
-                    } else {
-                        layer.msg('请勾选需要删除的订单');
-                    }
-                    return false;
-                };
-
-                //批量支付
-                function doPayOrderArray() {
-                    var checkStatus = table.checkStatus('LAY-app-CoreCmsOrder-tableBox');
-                    var data = checkStatus.data;
-                    var ids = '';
-                    $.each(data, function () {
-                        ids += this.orderId + ',';
                     });
-                    ids = ids.substring(0, ids.length - 1);
-                    if (ids) {
-                        layer.msg('已选择' + ids);
-                        //提交 Ajax 成功后，关闭当前弹层并重载表格
-                        doPayOrder(ids);
-                    } else {
-                        layer.msg('请勾选需要发货的订单');
-                    }
-                    return false;
-                };
-                //合并发货
-                function doShipOrderArray() {
-                    var checkStatus = table.checkStatus('LAY-app-CoreCmsOrder-tableBox');
-                    var data = checkStatus.data;
-                    var ids = '';
-                    $.each(data, function () {
-                        ids += this.orderId + ',';
-                    });
-                    ids = ids.substring(0, ids.length - 1);
-                    if (ids) {
-                        layer.msg('已选择' + ids);
-                        //提交 Ajax 成功后，关闭当前弹层并重载表格
-                        doShip(ids);
-                    } else {
-                        layer.msg('请勾选需要发货的订单');
-                    }
                     return false;
                 };
 
@@ -687,7 +693,6 @@
                         }
                     })
                 }
-
 
                 //==判断是否需要CLodop(那些不支持插件的浏览器):==
                 function needCLodop() {
@@ -748,7 +753,6 @@
                 }
 
                 if (needCLodop()) { loadCLodop(); }//加载
-
 
                 //==获取LODOP对象主过程,判断是否安装、需否升级:==
                 function getLodop(oOBJECT, oEMBED) {
@@ -841,8 +845,6 @@
                         alert("getLodop出错:" + err);
                     }
                 }
-
-
 
                 //打印购物订单
                 function shoppingPrint(orderId) {
@@ -945,6 +947,28 @@
                     layer.msg("打印快递单" + orderId);
                 };
 
+
+                //通过接口获取远端交易组件订单信息
+                function showTcOrder(ids) {
+                    coreHelper.Post("Api/CoreCmsOrder/GetTcOrder", { id: ids }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['1200px', '90%'],
+                                id: 'LAY-popup-CoreCmsOrder-tcorderdetails',
+                                success: function (layero, index) {
+                                    view(this.id).render('order/orders/tcorderdetails', { data: e.data }).done(function () {
+                                        //监听提交
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
                 //查看订单
                 function viewOrder(ids) {
                     coreHelper.Post("Api/CoreCmsOrder/GetDetails", { id: ids }, function (e) {
@@ -965,7 +989,7 @@
                                                 coreHelper.Post("Api/CoreCmsOrder/DoUpdateMark", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                                         doreLoadOrderCount();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
@@ -1004,7 +1028,7 @@
                                                 coreHelper.Post("Api/CoreCmsOrder/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                                         doreLoadOrderCount();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
@@ -1026,8 +1050,23 @@
                     });
                 }
                 //执行发货操作
-                function doShip(ids) {
-                    coreHelper.Post("Api/CoreCmsOrder/GetShip", { id: ids }, function (e) {
+                function doShip(checkStatus, type) {
+                    var delidsStr = [];
+                    if (type == 0) {
+                        var checkData = checkStatus.data;
+                        if (checkData.length === 0) {
+                            return layer.msg('请选择您要发货的数据');
+                        }
+                        layui.each(checkData,
+                            function (index, item) {
+                                delidsStr.push(item.orderId);
+                            });
+                    } else if (type == 1) {
+                        delidsStr.push(checkStatus);
+                    }
+
+
+                    coreHelper.Post("Api/CoreCmsOrder/GetShip", { id: delidsStr }, function (e) {
                         if (e.code === 0) {
                             admin.popup({
                                 shadeClose: false,
@@ -1065,7 +1104,7 @@
                                                 coreHelper.Post("Api/CoreCmsOrder/DoShip", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                                         doreLoadOrderCount();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
@@ -1086,8 +1125,19 @@
                     });
                 }
                 //执行支付操作
-                function doPayOrder(ids) {
-                    coreHelper.Post("Api/CoreCmsOrder/GetPay", { id: ids, data: 1 }, function (e) {
+                function doPayOrder(checkStatus) {
+
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要支付的数据');
+                    }
+                    var delidsStr = [];
+                    layui.each(checkData,
+                        function (index, item) {
+                            delidsStr.push(item.orderId);
+                        });
+
+                    coreHelper.Post("Api/CoreCmsOrder/GetPay", { id: delidsStr, data: 1 }, function (e) {
                         if (e.code === 0) {
                             admin.popup({
                                 shadeClose: false,
@@ -1105,7 +1155,7 @@
                                                 coreHelper.Post("Api/CoreCmsOrder/DoToPay", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                                         doreLoadOrderCount();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
@@ -1133,7 +1183,19 @@
                     layer.confirm('确认删除订单号：' + id + ' 的订单吗？', function (index) {
                         coreHelper.Post("Api/CoreCmsOrder/DoDelete", { id: id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsOrder-tableBox');
+                            table.reloadData('LAY-app-CoreCmsOrder-tableBox');
+                            doreLoadOrderCount();
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                //同步发货订单到微信交易组件远端
+                function refreshDelivery(id) {
+                    layer.confirm('确认同步发货订单吗？', function (index) {
+                        coreHelper.Post("Api/CoreCmsOrder/RefreshDelivery", { id: id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reloadData('LAY-app-CoreCmsOrder-tableBox');
                             doreLoadOrderCount();
                             layer.msg(e.msg);
                         });
@@ -1151,7 +1213,7 @@
                             }, function () {
                                 coreHelper.Post("Api/CoreCmsOrder/DoComplete", { id: id }, function (e) {
                                     if (debug) { console.log(e); } //开启调试返回数据
-                                    table.reload('LAY-app-CoreCmsOrder-tableBox');
+                                    table.reloadData('LAY-app-CoreCmsOrder-tableBox');
                                     doreLoadOrderCount();
                                     layer.msg(e.msg);
                                 });
@@ -1186,7 +1248,7 @@
                             var delidsStr = [];
                             layui.each(checkData,
                                 function (index, item) {
-                                    delidsStr.push(item.id);
+                                    delidsStr.push(item.orderId);
                                 });
                             layer.close(index);
                             coreHelper.Post("Api/CoreCmsOrder/SelectExportExcel", { id: delidsStr }, function (e) {
@@ -1199,6 +1261,15 @@
                             });
                         });
                 }
+
+
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsOrder-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+
 
             });
     };
@@ -1217,7 +1288,7 @@
 <!--订单来源-->
 <script type="text/html" id="orderItems">
     <div class="order-min-table">
-        <table class="layui-table order-min-table" lay-size="sm">
+        <table class="layui-table" lay-size="sm">
             <colgroup>
                 <col width="40">
                 <col width="200">
@@ -1240,7 +1311,9 @@
                     <td>
                         <a href="javascript:void(0);" onclick="layui.coreHelper.viewImage('{{item.imageUrl}}')"><image style="max-width: 30px; max-height: 30px;" src="{{item.imageUrl}}" /></a>
                     </td>
-                    <td>{{item.addon}}</td>
+                    <td style="text-align: left">
+                        <div class="title"> {{item.addon || item.name}}</div>
+                    </td>
                     <td>{{item.nums}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.promotionAmount}}</td>
@@ -1259,10 +1332,25 @@
     <font class="layui-font-14">{{d.orderAmount}}</font>
 </script>
 
+
+<!--直播订单-->
+<script type="text/html" id="statusText">
+    {{#  layui.each(orderStatus, function(index, item){ }}
+    {{#  if(d.status == item.value){ }}
+    {{item.description}}
+    {{#  } }}
+    {{#  }); }}
+    {{#  if(d.tcOrder){ }}
+    <button type="button" class="layui-btn  layui-btn-warm layui-btn-xs" data-id="{{d.orderId}}" lay-active="showTcOrder" style="margin-left: 0px">直播订单</button>
+    {{#  } }}
+</script>
+
+
 <!--用户地址-->
 <script type="text/html" id="orderShip">
     <div class="orderShip">
-        {{d.storeId > 0?'自提配送：':'物流地址：'}} {{d.shipName}}{{d.shipAreaName}}
+        联系方式：【{{d.shipName}}】【{{d.shipMobile}}】<br />
+        {{d.storeId > 0?'自提配送：':'物流地址：'}}  {{d.shipAreaName}}
     </div>
     <!--<button type="button" class="layui-btn  layui-btn-normal  layui-btn-xs">复制</button>-->
 </script>

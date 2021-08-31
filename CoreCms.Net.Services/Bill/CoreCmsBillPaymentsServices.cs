@@ -21,8 +21,8 @@ using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.ViewModels.Basics;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using CoreCms.Net.WeChat.Service.Options;
@@ -32,6 +32,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using SqlSugar;
 
 
@@ -47,17 +48,16 @@ namespace CoreCms.Net.Services
         private readonly IServiceProvider _serviceProvider;
 
 
-        private ICoreCmsSettingServices _settingServices;
-        private ICoreCmsUserBalanceServices _userBalanceServices;
-        private ICoreCmsFormSubmitServices _formSubmitServices;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly ICoreCmsSettingServices _settingServices;
+        private readonly ICoreCmsUserBalanceServices _userBalanceServices;
+        private readonly ICoreCmsFormSubmitServices _formSubmitServices;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         //private IWeChatPayServices _weChatPayServices;
-        private ICoreCmsPaymentsServices _paymentsServices;
-        private ICoreCmsBillPaymentsRelServices _billPaymentsRelServices;
-        private ICoreCmsOrderItemServices _orderItemServices;
-        private ICoreCmsServicesServices _servicesServices;
-        private ICoreCmsUserServicesOrderServices _userServicesOrderServices;
-
+        private readonly ICoreCmsPaymentsServices _paymentsServices;
+        private readonly ICoreCmsOrderItemServices _orderItemServices;
+        private readonly ICoreCmsServicesServices _servicesServices;
+        private readonly ICoreCmsUserServicesOrderServices _userServicesOrderServices;
+        private readonly ICoreCmsUserWeChatInfoServices _userWeChatInfoServices;
         private readonly WeChatOptions _weChatOptions;
 
 
@@ -71,10 +71,10 @@ namespace CoreCms.Net.Services
             , ICoreCmsFormSubmitServices formSubmitServices
             //, IWeChatPayServices weChatPayServices
             , ICoreCmsPaymentsServices paymentsServices
-            , ICoreCmsBillPaymentsRelServices billPaymentsRelServices
             , ICoreCmsOrderItemServices orderItemServices
             , IServiceProvider serviceProvider, ICoreCmsServicesServices servicesServices
             , ICoreCmsUserServicesOrderServices userServicesOrderServices
+            , ICoreCmsUserWeChatInfoServices userWeChatInfoServices
             , IOptions<WeChatOptions> weChatOptions
             )
         {
@@ -89,16 +89,165 @@ namespace CoreCms.Net.Services
             //_weChatPayServices = weChatPayServices;
             _formSubmitServices = formSubmitServices;
             _paymentsServices = paymentsServices;
-            _billPaymentsRelServices = billPaymentsRelServices;
             _orderItemServices = orderItemServices;
             _serviceProvider = serviceProvider;
             _servicesServices = servicesServices;
             _userServicesOrderServices = userServicesOrderServices;
+            _userWeChatInfoServices = userWeChatInfoServices;
             _weChatOptions = weChatOptions.Value;
-
         }
 
         #region 生成支付单的时候，格式化支付单明细
+
+        /// <summary>
+        /// 生成支付单的时候，格式化支付单明细
+        /// </summary>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="type"></param>
+        /// <param name="params"></param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> FormatPaymentRel(string orderId, int type, JObject @params)
+        {
+            using var container = _serviceProvider.CreateScope();
+            var orderServices = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
+
+            var jm = new WebApiCallBack();
+
+            var dto = new CheckPayDTO();
+
+            //订单
+            if (type == (int)GlobalEnumVars.BillPaymentsType.Order)
+            {
+                //如果是订单生成支付单的话，取第一条订单的店铺id，后面的所有订单都要保证是此店铺的id
+                var orderModel = await orderServices.QueryByClauseAsync(p =>
+                    p.orderId == orderId && p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No &&
+                    p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                if (orderModel != null)
+                {
+                    dto.rel.Add(new rel()
+                    {
+                        sourceId = orderId,
+                        money = orderModel.orderAmount
+                    });
+                    dto.money += orderModel.orderAmount;
+                }
+                else
+                {
+                    jm.status = false;
+                    jm.msg = "订单号：" + orderId + "没有找到,或不是未支付状态";
+                    return jm;
+                }
+                jm.status = true;
+                jm.data = dto;
+
+            }
+            //充值
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.Recharge)
+            {
+                if (@params != null && @params.ContainsKey("money"))
+                {
+                    dto.money = @params["money"].ObjectToDecimal(0); //充值金额
+                }
+                else
+                {
+                    jm.status = false;
+                    jm.msg = "请输入正确的充值金额";
+                    return jm;
+                }
+                dto.rel.Add(new rel()
+                {
+                    sourceId = orderId,
+                    money = dto.money
+                });
+                jm.status = true;
+                jm.data = dto;
+            }
+            //表单
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.FormPay || type == (int)GlobalEnumVars.BillPaymentsType.FormOrder)
+            {
+                dto.money = 0;
+                var intId = orderId.ObjectToInt(0);
+                if (intId <= 0)
+                {
+                    jm.status = false;
+                    jm.msg = "表单：" + intId + "没有找到,或不是未支付状态";
+                    return jm;
+                }
+
+
+                var formInfo = await _formSubmitServices.QueryByClauseAsync(p => p.id == intId && p.payStatus == false);
+                if (formInfo != null)
+                {
+                    dto.rel.Add(new rel()
+                    {
+                        sourceId = intId.ToString(),
+                        money = formInfo.money
+                    });
+                    dto.money += formInfo.money;
+                }
+                else
+                {
+                    jm.status = false;
+                    jm.msg = "表单：" + intId + "没有找到,或不是未支付状态";
+                    return jm;
+                }
+                jm.status = true;
+                jm.data = dto;
+            }
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.ServiceOrder)
+            {
+                dto.money = 0;
+
+                var order = await _userServicesOrderServices.QueryByClauseAsync(p => p.serviceOrderId == orderId);
+
+                var dt = DateTime.Now;
+                var where = PredicateBuilder.True<CoreCmsServices>();
+                @where = @where.And(p => p.status == (int)GlobalEnumVars.ServicesStatus.Shelve);
+                @where = @where.And(p => p.amount > 0);
+                @where = @where.And(p => p.startTime < dt && p.endTime > dt);
+                @where = @where.And(p => p.id == order.servicesId);
+
+                var serviceInfo = await _servicesServices.QueryByClauseAsync(@where);
+                if (serviceInfo != null)
+                {
+                    dto.rel.Add(new rel()
+                    {
+                        sourceId = orderId,
+                        money = serviceInfo.money
+                    });
+                    dto.money += serviceInfo.money;
+                }
+                else
+                {
+                    jm.status = false;
+                    jm.msg = "服务订单：" + orderId + "没有找到,或不是有效状态";
+                    return jm;
+                }
+
+                jm.status = true;
+                jm.data = dto;
+            }
+
+            else if (false)
+            {
+                //todo 其他业务逻辑
+            }
+            else
+            {
+                jm.status = false;
+                jm.msg = GlobalErrorCodeVars.Code10054;
+                jm.data = 10054;
+                return jm;
+            }
+
+            return jm;
+        }
+
+
+        #endregion
+
+        #region 生成支付单的时候，格式化支付单明细
+
         /// <summary>
         /// 生成支付单的时候，格式化支付单明细
         /// </summary>
@@ -106,153 +255,150 @@ namespace CoreCms.Net.Services
         /// <param name="type"></param>
         /// <param name="params"></param>
         /// <returns></returns>
-        public WebApiCallBack FormatPaymentRel(string[] sourceStr, int type, JObject @params)
+        public async Task<WebApiCallBack> BatchFormatPaymentRel(string[] sourceStr, int type, JObject @params)
         {
-            using (var container = _serviceProvider.CreateScope())
+            using var container = _serviceProvider.CreateScope();
+            var orderServices = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
+
+            var jm = new WebApiCallBack();
+            var dto = new CheckPayDTO();
+
+            //订单
+            if (type == (int)GlobalEnumVars.BillPaymentsType.Order)
             {
-                var orderServices = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
-
-                var jm = new WebApiCallBack();
-
-                var dto = new CheckPayDTO();
-
-                //订单
-                if (type == (int)GlobalEnumVars.BillPaymentsType.Order)
+                //如果是订单生成支付单的话，取第一条订单的店铺id，后面的所有订单都要保证是此店铺的id
+                foreach (var item in sourceStr)
                 {
-                    //如果是订单生成支付单的话，取第一条订单的店铺id，后面的所有订单都要保证是此店铺的id
-                    foreach (var item in sourceStr)
-                    {
-                        var orderModel = orderServices.QueryByClause(p =>
-                            p.orderId == item && p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No &&
-                            p.status == (int)GlobalEnumVars.OrderStatus.Normal);
-                        if (orderModel != null)
-                        {
-                            dto.rel.Add(new rel()
-                            {
-                                sourceId = item,
-                                money = orderModel.orderAmount
-                            });
-                            dto.money += orderModel.orderAmount;
-                        }
-                        else
-                        {
-                            jm.status = false;
-                            jm.msg = "订单号：" + item + "没有找到,或不是未支付状态";
-                            return jm;
-                        }
-                    }
-                    jm.status = true;
-                    jm.data = dto;
-                }
-                //充值
-                else if (type == (int)GlobalEnumVars.BillPaymentsType.Recharge)
-                {
-                    if (@params != null && @params.ContainsKey("money"))
-                    {
-                        dto.money = @params["money"].ObjectToDecimal(0); //充值金额
-                    }
-                    else
-                    {
-                        jm.status = false;
-                        jm.msg = "请输入正确的充值金额";
-                        return jm;
-                    }
-                    foreach (var item in sourceStr)
+                    var orderModel = await orderServices.QueryByClauseAsync(p =>
+                         p.orderId == item && p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No &&
+                         p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    if (orderModel != null)
                     {
                         dto.rel.Add(new rel()
                         {
                             sourceId = item,
-                            money = dto.money
+                            money = orderModel.orderAmount
                         });
+                        dto.money += orderModel.orderAmount;
                     }
-                    jm.status = true;
-                    jm.data = dto;
-                }
-                //表单
-                else if (type == (int)GlobalEnumVars.BillPaymentsType.FormPay || type == (int)GlobalEnumVars.BillPaymentsType.FormOrder)
-                {
-                    dto.money = 0;
-                    var intIds = CommonHelper.StringArrAyToIntArray(sourceStr);
-
-                    foreach (var item in intIds)
+                    else
                     {
-                        var formInfo = _formSubmitServices.QueryByClause(p => p.id == item && p.payStatus == false);
-                        if (formInfo != null)
-                        {
-                            dto.rel.Add(new rel()
-                            {
-                                sourceId = item.ToString(),
-                                money = formInfo.money
-                            });
-                            dto.money += formInfo.money;
-                        }
-                        else
-                        {
-                            jm.status = false;
-                            jm.msg = "表单：" + item + "没有找到,或不是未支付状态";
-                            return jm;
-                        }
-
+                        jm.status = false;
+                        jm.msg = "订单号：" + item + "没有找到,或不是未支付状态";
+                        return jm;
                     }
-                    jm.status = true;
-                    jm.data = dto;
                 }
-                else if (type == (int)GlobalEnumVars.BillPaymentsType.ServiceOrder)
+                jm.status = true;
+                jm.data = dto;
+            }
+            //充值
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.Recharge)
+            {
+                if (@params != null && @params.ContainsKey("money"))
                 {
-                    dto.money = 0;
-
-                    foreach (var item in sourceStr)
-                    {
-
-                        var order = _userServicesOrderServices.QueryByClause(p => p.serviceOrderId == item);
-
-                        var dt = DateTime.Now;
-                        var where = PredicateBuilder.True<CoreCmsServices>();
-                        where = where.And(p => p.status == (int)GlobalEnumVars.ServicesStatus.Shelve);
-                        where = where.And(p => p.amount > 0);
-                        where = where.And(p => p.startTime < dt && p.endTime > dt);
-                        where = where.And(p => p.id == order.servicesId);
-
-                        var serviceInfo = _servicesServices.QueryByClause(where);
-                        if (serviceInfo != null)
-                        {
-                            dto.rel.Add(new rel()
-                            {
-                                sourceId = item,
-                                money = serviceInfo.money
-                            });
-                            dto.money += serviceInfo.money;
-                        }
-                        else
-                        {
-                            jm.status = false;
-                            jm.msg = "服务订单：" + item + "没有找到,或不是有效状态";
-                            return jm;
-                        }
-
-                    }
-                    jm.status = true;
-                    jm.data = dto;
-                }
-
-                else if (false)
-                {
-                    //todo 其他业务逻辑
+                    dto.money = @params["money"].ObjectToDecimal(0); //充值金额
                 }
                 else
                 {
                     jm.status = false;
-                    jm.msg = GlobalErrorCodeVars.Code10054;
-                    jm.data = 10054;
+                    jm.msg = "请输入正确的充值金额";
                     return jm;
                 }
+                foreach (var item in sourceStr)
+                {
+                    dto.rel.Add(new rel()
+                    {
+                        sourceId = item,
+                        money = dto.money
+                    });
+                }
+                jm.status = true;
+                jm.data = dto;
+            }
+            //表单
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.FormPay || type == (int)GlobalEnumVars.BillPaymentsType.FormOrder)
+            {
+                dto.money = 0;
+                var intIds = CommonHelper.StringArrAyToIntArray(sourceStr);
 
+                foreach (var item in intIds)
+                {
+                    var formInfo = await _formSubmitServices.QueryByClauseAsync(p => p.id == item && p.payStatus == false);
+                    if (formInfo != null)
+                    {
+                        dto.rel.Add(new rel()
+                        {
+                            sourceId = item.ToString(),
+                            money = formInfo.money
+                        });
+                        dto.money += formInfo.money;
+                    }
+                    else
+                    {
+                        jm.status = false;
+                        jm.msg = "表单：" + item + "没有找到,或不是未支付状态";
+                        return jm;
+                    }
 
+                }
+                jm.status = true;
+                jm.data = dto;
+            }
+            else if (type == (int)GlobalEnumVars.BillPaymentsType.ServiceOrder)
+            {
+                dto.money = 0;
+
+                foreach (var item in sourceStr)
+                {
+
+                    var order = await _userServicesOrderServices.QueryByClauseAsync(p => p.serviceOrderId == item);
+
+                    var dt = DateTime.Now;
+                    var where = PredicateBuilder.True<CoreCmsServices>();
+                    @where = @where.And(p => p.status == (int)GlobalEnumVars.ServicesStatus.Shelve);
+                    @where = @where.And(p => p.amount > 0);
+                    @where = @where.And(p => p.startTime < dt && p.endTime > dt);
+                    @where = @where.And(p => p.id == order.servicesId);
+
+                    var serviceInfo = await _servicesServices.QueryByClauseAsync(@where);
+                    if (serviceInfo != null)
+                    {
+                        dto.rel.Add(new rel()
+                        {
+                            sourceId = item,
+                            money = serviceInfo.money
+                        });
+                        dto.money += serviceInfo.money;
+                    }
+                    else
+                    {
+                        jm.status = false;
+                        jm.msg = "服务订单：" + item + "没有找到,或不是有效状态";
+                        return jm;
+                    }
+
+                }
+                jm.status = true;
+                jm.data = dto;
+            }
+
+            else if (false)
+            {
+                //todo 其他业务逻辑
+            }
+            else
+            {
+                jm.status = false;
+                jm.msg = GlobalErrorCodeVars.Code10054;
+                jm.data = 10054;
                 return jm;
-
             }
 
 
+
+
+
+            return jm;
         }
 
 
@@ -405,41 +551,41 @@ namespace CoreCms.Net.Services
                 return jm;
             }
 
+            var paymentRelData = new CheckPayDTO();
+
             var sourceStrArr = sourceStr.Split(",");
-            var paymentRel = FormatPaymentRel(sourceStrArr, type, @params);
-            if (paymentRel.status == false)
+            if (sourceStrArr.Length > 0)
             {
-                return paymentRel;
+                var paymentRel = await BatchFormatPaymentRel(sourceStrArr, type, @params);
+                if (paymentRel.status == false)
+                {
+                    return paymentRel;
+                }
+                paymentRelData = paymentRel.data as CheckPayDTO;
             }
-            var paymentRelData = paymentRel.data as CheckPayDTO;
+            else
+            {
+                var paymentRel = await FormatPaymentRel(sourceStr, type, @params);
+                if (paymentRel.status == false)
+                {
+                    return paymentRel;
+                }
+                paymentRelData = paymentRel.data as CheckPayDTO;
+            }
+
             var billPayments = new CoreCmsBillPayments();
             billPayments.paymentId = CommonHelper.GetSerialNumberType((int)GlobalEnumVars.SerialNumberType.支付单编号);
+            billPayments.sourceId = sourceStr;
             billPayments.money = paymentRelData.money;
             billPayments.userId = userId;
             billPayments.type = type;
             billPayments.status = (int)GlobalEnumVars.BillPaymentsStatus.NoPay;
             billPayments.paymentCode = paymentCode;
-            billPayments.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
-
+            billPayments.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
             billPayments.parameters = @params != null ? JsonConvert.SerializeObject(@params) : "";
             billPayments.createTime = DateTime.Now;
 
             await _dal.InsertAsync(billPayments);
-            //上面保存好收款单表，下面保存收款单明细表
-            var paymentsRels = new List<CoreCmsBillPaymentsRel>();
-            if (paymentRelData.rel != null && paymentRelData.rel.Any())
-            {
-                foreach (var item in paymentRelData.rel)
-                {
-                    paymentsRels.Add(new CoreCmsBillPaymentsRel()
-                    {
-                        money = item.money,
-                        paymentId = billPayments.paymentId,
-                        sourceId = sourceStr
-                    });
-                }
-                await _billPaymentsRelServices.InsertAsync(paymentsRels);
-            }
 
             //判断支付单金额是否为0，如果为0，直接支付成功,
             if (billPayments.money == 0)
@@ -452,7 +598,7 @@ namespace CoreCms.Net.Services
                 return jm;
             }
             //取支付标题，就不往数据库里存了吧
-            billPayments.payTitle = await payTitle(billPayments, paymentsRels);
+            billPayments.payTitle = await PayTitle(billPayments);
 
             jm.status = true;
             jm.data = billPayments;
@@ -487,6 +633,7 @@ namespace CoreCms.Net.Services
                 p.status != (int)GlobalEnumVars.BillPaymentsStatus.Payed);
             if (billPaymentInfo == null)
             {
+                NLogUtil.WriteAll(LogLevel.Trace, LogType.Order, "支付成功后，更新支付单状态", "没有找到此未支付的支付单号");
                 jm.msg = "没有找到此未支付的支付单号";
                 return jm;
             }
@@ -500,40 +647,27 @@ namespace CoreCms.Net.Services
             await _dal.UpdateAsync(billPaymentInfo);
             if (status == (int)GlobalEnumVars.BillPaymentsStatus.Payed)
             {
-                var billPaymentRelList = await _billPaymentsRelServices.QueryListByClauseAsync(p => p.paymentId == paymentId);
                 if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.Order)
                 {
                     //如果是订单类型，做支付后处理
-                    foreach (var item in billPaymentRelList)
-                    {
-                        await orderServices.Pay(item.sourceId, paymentCode);
-                    }
+                    await orderServices.Pay(billPaymentInfo.sourceId, paymentCode, billPaymentInfo);
                 }
                 else if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.Recharge)
                 {
                     //给用户做充值
-                    foreach (var item in billPaymentRelList)
-                    {
-                        var userId = item.sourceId.ObjectToInt(0);
-                        await _userBalanceServices.Change(userId, (int)GlobalEnumVars.UserBalanceSourceTypes.Recharge, item.money, item.paymentId);
-                    }
+                    var userId = billPaymentInfo.sourceId.ObjectToInt(0);
+                    await _userBalanceServices.Change(userId, (int)GlobalEnumVars.UserBalanceSourceTypes.Recharge, billPaymentInfo.money, billPaymentInfo.paymentId);
                 }
                 else if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.ServiceOrder)
                 {
                     //给用户做增加购买关系和生成券操作
-                    foreach (var item in billPaymentRelList)
-                    {
-                        await _userServicesOrderServices.CreateUserServicesTickets(item.sourceId, item.paymentId);
-                    }
+                    await _userServicesOrderServices.CreateUserServicesTickets(billPaymentInfo.sourceId, billPaymentInfo.paymentId);
                 }
                 else if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.FormOrder || billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.FormPay)
                 {
                     //form表单支付
-                    foreach (var item in billPaymentRelList)
-                    {
-                        var Id = item.sourceId.ObjectToInt(0);
-                        await _formSubmitServices.Pay(Id);
-                    }
+                    var id = billPaymentInfo.sourceId.ObjectToInt(0);
+                    await _formSubmitServices.Pay(id);
                 }
                 else
                 {
@@ -578,8 +712,6 @@ namespace CoreCms.Net.Services
                 return jm;
             }
 
-            billPayments.rel = await _billPaymentsRelServices.QueryListByClauseAsync(p => p.paymentId == paymentId);
-
             jm.status = true;
             jm.data = billPayments;
             return jm;
@@ -589,21 +721,17 @@ namespace CoreCms.Net.Services
         //扩展方法==========================================================================================
 
         #region 扩展方法
-        private async Task<string> payTitle(CoreCmsBillPayments entity, List<CoreCmsBillPaymentsRel> rel)
+        private async Task<string> PayTitle(CoreCmsBillPayments entity)
         {
 
             var res = string.Empty;
             switch (entity.type)
             {
                 case (int)GlobalEnumVars.BillPaymentsType.Order:
-                    if (rel != null && rel.Any())
+                    var orderItem = await _orderItemServices.QueryByClauseAsync(p => p.orderId == entity.sourceId);
+                    if (orderItem != null)
                     {
-                        var sourceId = rel.First().sourceId;
-                        var orderItem = _orderItemServices.QueryByClause(p => p.orderId == sourceId);
-                        if (orderItem != null)
-                        {
-                            res = orderItem.name;
-                        }
+                        res = orderItem.name;
                     }
                     break;
                 case (int)GlobalEnumVars.BillPaymentsType.Recharge:
@@ -675,18 +803,6 @@ namespace CoreCms.Net.Services
         }
         #endregion
 
-        #region 根据资源id和类型取支付成功的支付单,可能查不到内容，所以，要用的话，在外面一定要判断一下
-        /// <summary>
-        /// 根据资源id和类型取支付成功的支付单,可能查不到内容，所以，要用的话，在外面一定要判断一下。
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public async Task<CoreCmsBillPayments> GetSuccessPaymentInfo(string sourceId, int type)
-        {
-            return await _dal.GetSuccessPaymentInfo(sourceId, type);
-        }
-        #endregion
 
         #region 支付单7天统计
         /// <summary>

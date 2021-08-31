@@ -14,7 +14,7 @@
             </div>
         </div>
         <div id="conditionBox"></div>
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotionCondition-editForm-submit" id="LAY-app-CoreCmsPromotionCondition-editForm-submit" value="确认编辑">
@@ -56,7 +56,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">商品数量：</label>
         <div class="layui-input-inline seller-inline-2">
-            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="text">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="number">
         </div>
         <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
     </div>
@@ -85,7 +85,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">商品数量：</label>
         <div class="layui-input-inline seller-inline-2">
-            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="text">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.nums}}" placeholder="商品数量" class="layui-input" type="number">
         </div>
         <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
     </div>
@@ -112,7 +112,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">商品数量：</label>
         <div class="layui-input-inline seller-inline-2">
-            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.obj.nums || '1'}}" placeholder="商品数量" class="layui-input" type="text">
+            <input name="nums" lay-verType="tips" lay-verify="required|number" autocomplete="off" value="{{d.obj.nums || '1'}}" placeholder="商品数量" class="layui-input" type="number">
         </div>
         <div class="layui-form-mid layui-word-aux">大于等于此商品数量才满足条件</div>
     </div>
@@ -128,7 +128,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">满多少：</label>
         <div class="layui-input-inline seller-inline-2">
-            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="{{d.money || '1'}}" placeholder="金额" class="layui-input" type="text">
+            <input name="money" lay-verType="tips" lay-verify="required|money" autocomplete="off" value="{{d.money || '1'}}" placeholder="金额" class="layui-input" type="number">
         </div>
         <div class="layui-form-mid layui-word-aux">订单金额满多少的时候，优惠</div>
     </div>
@@ -154,7 +154,7 @@
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d.params.data); }
-        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'dtree', 'util', 'table'],
+        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'dtree', 'util', 'table','xmSelect'],
             function () {
                 var $ = layui.$
                     , form = layui.form
@@ -164,6 +164,7 @@
                     , dtree = layui.dtree
                     , coreHelper = layui.coreHelper
                     , table = layui.table
+                    , xmSelect = layui.xmSelect
                     , util = layui.util;
 
                 var code = d.params.data.promotionModel.code;

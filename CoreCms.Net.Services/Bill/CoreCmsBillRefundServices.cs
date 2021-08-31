@@ -84,7 +84,7 @@ namespace CoreCms.Net.Services
             billRefund.sourceId = sourceId;
             billRefund.type = type;
             //取支付成功的支付单号
-            var paymentsInfo = await _billPaymentsServices.GetSuccessPaymentInfo(sourceId, type);
+            var paymentsInfo = await _billPaymentsServices.QueryByClauseAsync(p => p.sourceId == sourceId && p.type == type && p.status == (int)GlobalEnumVars.BillPaymentsStatus.Payed);
             if (paymentsInfo != null)
             {
                 billRefund.paymentCode = paymentsInfo.paymentCode;
@@ -195,7 +195,7 @@ namespace CoreCms.Net.Services
             }
 
             //取支付成功的支付单号
-            var panyMentsInfo = await _billPaymentsServices.GetSuccessPaymentInfo(info.sourceId, info.type);
+            var panyMentsInfo = await _billPaymentsServices.QueryByClauseAsync(p => p.sourceId == info.sourceId && p.type == info.type && p.status == (int)GlobalEnumVars.BillPaymentsStatus.Payed);
             if (panyMentsInfo == null)
             {
                 jm.msg = "没有找到支付成功的支付单号";

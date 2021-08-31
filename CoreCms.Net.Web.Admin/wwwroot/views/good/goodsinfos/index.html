@@ -11,7 +11,7 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsGoods/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label" for="bn">商品编码</label>
@@ -117,7 +117,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsGoods-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsGoods-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -126,7 +126,7 @@
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsGoods-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -182,7 +182,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsGoods-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsGoods-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -248,7 +248,7 @@
                                                 coreHelper.Post("Api/CoreCmsGoods/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsGoods-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsGoods-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -288,7 +288,7 @@
                                                 coreHelper.Post("Api/CoreCmsGoods/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsGoods-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsGoods-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -327,7 +327,7 @@
                 function doDelete(obj) {
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsGoods/DoDelete", { id: obj.data.id }, function (e) {
-                            table.reload('LAY-app-CoreCmsGoods-tableBox');
+                            table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -346,7 +346,7 @@
                                     delidsStr.push(item.id);
                                 });
                             coreHelper.Post("Api/CoreCmsGoods/DoBatchDelete", { id: delidsStr }, function (e) {
-                                table.reload('LAY-app-CoreCmsGoods-tableBox');
+                                table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                                 layer.msg(e.msg);
                             });
                         });
@@ -392,35 +392,35 @@
 
                 layui.form.on('switch(switch_isNomalVirtual)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoods/DoSetisNomalVirtual", { id: this.value, data: obj.elem.checked }, function (res) {
-                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                         layer.msg(res.msg);
                     });
                 });
 
                 layui.form.on('switch(switch_isMarketable)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoods/DoSetisMarketable", { id: this.value, data: obj.elem.checked }, function (res) {
-                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                         layer.msg(res.msg);
                     });
                 });
 
                 layui.form.on('switch(switch_isRecommend)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoods/DoSetisRecommend", { id: this.value, data: obj.elem.checked }, function (res) {
-                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                         layer.msg(res.msg);
                     });
                 });
 
                 layui.form.on('switch(switch_isHot)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoods/DoSetisHot", { id: this.value, data: obj.elem.checked }, function (res) {
-                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                         layer.msg(res.msg);
                     });
                 });
 
                 layui.form.on('switch(switch_isDel)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoods/DoSetisDel", { id: this.value, data: obj.elem.checked }, function (res) {
-                        //table.reload('LAY-app-CoreCmsGoods-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoods-tableBox');
                         layer.msg(res.msg);
                     });
                 });

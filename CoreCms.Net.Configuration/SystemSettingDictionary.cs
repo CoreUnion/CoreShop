@@ -183,7 +183,7 @@ namespace CoreCms.Net.Configuration
             di.Add(SystemSettingConstVars.FilesStoragePath, new DictionaryKeyValues() { sKey = "存储路径", sValue = "/upload/" });
             di.Add(SystemSettingConstVars.FilesStorageFileSuffix, new DictionaryKeyValues() { sKey = "文件后缀类型", sValue = "gif,jpg,jpeg,png,bmp,xls,xlsx,doc,pdf,mp4,WebM,Ogv" });
             di.Add(SystemSettingConstVars.FilesStorageFileMaxSize, new DictionaryKeyValues() { sKey = "文件最大大小", sValue = "10" });
-            di.Add(SystemSettingConstVars.FilesStorageBucketBindUrl, new DictionaryKeyValues() { sKey = "云存储绑定域名", sValue = "https://www.corecms.net/" });
+            di.Add(SystemSettingConstVars.FilesStorageBucketBindUrl, new DictionaryKeyValues() { sKey = "云存储绑定域名", sValue = "http://www.coreshop.cn/" });
             di.Add(SystemSettingConstVars.FilesStorageAccessKeyId, new DictionaryKeyValues() { sKey = "云存储授权账户", sValue = "" });
             di.Add(SystemSettingConstVars.FilesStorageAccessKeySecret, new DictionaryKeyValues() { sKey = "云存储授权密钥", sValue = "" });
             di.Add(SystemSettingConstVars.FilesStorageTencentAccountId, new DictionaryKeyValues() { sKey = "腾讯云账户标识", sValue = "" });

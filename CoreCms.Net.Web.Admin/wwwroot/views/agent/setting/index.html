@@ -21,18 +21,14 @@
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsAgentSetting/GetIndex" lay-done="layui.data.done(d);">
     <div class="layui-fluid">
         <div class="layui-row layui-col-space15">
-
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <!--<div class="layui-card-header">
-
-                    </div>-->
-
                     <div class="layui-card-body">
                         <div class="layui-tab  layui-tab-card" lay-filter="setting">
                             <ul class="layui-tab-title">
-                                <li lay-id="agent" class="layui-this">代理设置</li>
-                                <li lay-id="platform">用户须知、代理协议</li>
+                                <li lay-id="agentSet" class="layui-this">代理设置</li>
+                                <li lay-id="userAgreement ">用户须知</li>
+                                <li lay-id="agentAgreement">代理协议</li>
                             </ul>
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show">
@@ -69,13 +65,11 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="layui-tab-item">
                                     <div class="layui-fluid">
-                                        <div class="layui-row layui-col-space10">
-                                            <div class="layui-col-md6">
-                                                <fieldset class="layui-elem-field layui-field-title site-title">
-                                                    <legend><a>{{d.data.configs['agentNotes']['sKey']}}</a></legend>
-                                                </fieldset>
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
                                                 <div class="document-editor">
                                                     <div class="toolbar-container" id="agentNotes-toolbar-container"></div>
                                                     <div class="content-container">
@@ -83,10 +77,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="layui-col-md6">
-                                                <fieldset class="layui-elem-field layui-field-title site-title">
-                                                    <legend><a>{{d.data.configs['agentAgreement']['sKey']}}</a></legend>
-                                                </fieldset>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">&nbsp;</label>
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit="" lay-filter="saveEditor">保存更改</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="layui-tab-item">
+                                    <div class="layui-fluid">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
                                                 <div class="document-editor">
                                                     <div class="toolbar-container" id="agentAgreement-toolbar-container"></div>
                                                     <div class="content-container">
@@ -96,14 +103,18 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">&nbsp;</label>
                                         <div class="layui-input-block">
                                             <button class="layui-btn" lay-submit="" lay-filter="saveEditor">保存更改</button>
                                         </div>
                                     </div>
+
+
                                 </div>
+
+                                
                             </div>
                         </div>
                     </div>
