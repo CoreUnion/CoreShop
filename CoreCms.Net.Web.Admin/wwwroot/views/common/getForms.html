@@ -1,5 +1,8 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+
+<script type="text/html" id="LAY-app-getForms-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -47,13 +50,14 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsForm-FormTable-TableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsForm-FormTable-TableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsForm-FormTable-TableBox',
                     url: layui.setter.apiUrl + 'Api/Tools/GetForms',
                     method: 'POST',
+                    toolbar:'#LAY-app-getForms-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '380px',//无面包屑127,搜索框189,1行62
                     page: true,

@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsPromotion-editForm-submit" id="LAY-app-CoreCmsPromotion-editForm-submit" value="确认编辑">
@@ -193,7 +193,7 @@
                                 admin.popup({
                                     shadeClose: false,
                                     title: '创建数据',
-                                    area: ['600px', '400px'],
+                                    area: ['600px', '90%'],
                                     id: 'LAY-popup-CoreCmsPromotionCondition-GetConditionCreate',
                                     success: function (layero, index) {
                                         view(this.id).render('promotion/promotion/conditioncreate', { data: e.data }).done(function () {
@@ -267,6 +267,12 @@
                                                 });
 
                                         });
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionCondition-createForm-submit").click();
                                     }
                                 });
                             } else {
@@ -282,7 +288,7 @@
                                 admin.popup({
                                     shadeClose: false,
                                     title: '编辑数据',
-                                    area: ['600px', '400px'],
+                                    area: ['600px', '90%'],
                                     id: 'LAY-popup-CoreCmsPromotionCondition-GetConditionEdit',
                                     success: function (layero, index) {
                                         view(this.id).render('promotion/promotion/conditionedit', { data: e.data }).done(function () {
@@ -354,6 +360,12 @@
                                                     });
                                                 });
                                         })
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionCondition-editForm-submit").click();
                                     }
                                 });
                             } else {
@@ -454,6 +466,12 @@
                                                     });
                                                 });
                                         });
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-createForm-submit").click();
                                     }
                                 });
                             } else {
@@ -543,6 +561,12 @@
                                                     });
                                                 });
                                         })
+                                        // 禁止弹窗出现滚动条
+                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                    }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsPromotionResult-editForm-submit").click();
                                     }
                                 });
                             } else {

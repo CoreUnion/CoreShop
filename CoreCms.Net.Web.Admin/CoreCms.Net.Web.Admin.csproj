@@ -58,8 +58,8 @@
     <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.4" />
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.0" />
@@ -67,15 +67,15 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="NLog" Version="4.7.10" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
-    <PackageReference Include="NPOI" Version="2.5.3" />
+    <PackageReference Include="NLog" Version="4.7.11" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+    <PackageReference Include="NPOI" Version="2.4.1" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
-    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.19" />
-    <PackageReference Include="ToolGood.Words" Version="3.0.2.6" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
+    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.22" />
+    <PackageReference Include="ToolGood.Words" Version="3.0.2.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,37 +93,6 @@
     <ProjectReference Include="..\CoreCms.Net.Services\CoreCms.Net.Services.csproj" />
     <ProjectReference Include="..\CoreCms.Net.Task\CoreCms.Net.Task.csproj" />
     <ProjectReference Include="..\CoreCms.Net.WeChat.Service\CoreCms.Net.WeChat.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\views\good\goods\batchModifyPrice.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\batchModifyStock.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\create.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\delLabel.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\edit.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\getLabel.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\views\good\goods\index.html">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -213,10 +182,12 @@
     <None Include="wwwroot\lib\custom\js\sortable.min.js" />
     <None Include="wwwroot\lib\custom\js\vue.min.js" />
     <None Include="wwwroot\lib\custom\js\vuedraggable.min.js" />
+    <None Include="wwwroot\lib\layuiAdmin\config.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\breadcrumb.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\common.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\contextMenu.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\contlist.js" />
+    <None Include="wwwroot\lib\layuiAdmin\controller\coredropdown.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\Cropper.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\CropperImg.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\iconPicker.js" />
@@ -224,6 +195,7 @@
     <None Include="wwwroot\lib\layuiAdmin\controller\treeTable.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\xmSelect.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\zTree.js" />
+    <None Include="wwwroot\lib\layuiAdmin\index.js" />
     <None Include="wwwroot\lib\layuiAdmin\lib\admin.js" />
     <None Include="wwwroot\lib\layuiAdmin\lib\extend\coreHelper.js" />
     <None Include="wwwroot\lib\layuiAdmin\lib\extend\dltable.js" />
@@ -250,15 +222,18 @@
     <None Include="wwwroot\lib\jquery\jquery.validate.unobtrusive.js" />
     <None Include="wwwroot\lib\jquery\jquery.validate.unobtrusive.min.js" />
     <None Include="wwwroot\lib\jquery\lazyloadv3.js" />
-    <None Include="wwwroot\lib\layuiAdmin\style\overWrite.less" />
     <None Include="wwwroot\lib\layuiAdmin\style\res\logo.psd" />
     <None Include="wwwroot\lib\layuiAdmin\style\res\noImage.psd" />
     <None Include="wwwroot\lib\layui\font\iconfont.svg" />
     <None Include="wwwroot\lib\layui\font\iconfont.woff2" />
+    <None Include="wwwroot\static\css\documentEditor.less" />
+    <None Include="wwwroot\static\css\overWrite.less" />
+    <None Include="wwwroot\static\js\common.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\Order\" />
+    <Folder Include="wwwroot\views\" />
   </ItemGroup>
 
   <ItemGroup>

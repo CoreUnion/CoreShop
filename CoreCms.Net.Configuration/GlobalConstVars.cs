@@ -231,7 +231,6 @@
         public const string CacheCoreCmsPages = "CacheCoreCmsPages"; // 单页
         public const string CacheCoreCmsPagesItems = "CacheCoreCmsPagesItems"; //单页内容
         public const string CacheCoreCmsPayments = "CacheCoreCmsPayments"; // 支付方式表
-        public const string CacheCoreCmsPaymentsFile = "CacheCoreCmsPaymentsFile"; //文件表
         public const string CacheCoreCmsPinTuanGoods = "CacheCoreCmsPinTuanGoods"; //拼团商品表
         public const string CacheCoreCmsPinTuanRecord = "CacheCoreCmsPinTuanRecord"; //拼团记录表
         public const string CacheCoreCmsPinTuanRule = "CacheCoreCmsPinTuanRule"; //拼团规则表

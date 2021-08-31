@@ -24,14 +24,6 @@ namespace CoreCms.Net.IRepository
     /// </summary>
     public interface ICoreCmsBillPaymentsRepository : IBaseRepository<CoreCmsBillPayments>
     {
-        /// <summary>
-        ///     //根据资源id和类型取支付成功的支付单,可能查不到内容，所以，要用的话，在外面一定要判断一下。
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        Task<CoreCmsBillPayments> GetSuccessPaymentInfo(string sourceId, int type);
-
 
         /// <summary>
         ///     支付单7天统计

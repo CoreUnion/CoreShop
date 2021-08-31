@@ -16,7 +16,7 @@ using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

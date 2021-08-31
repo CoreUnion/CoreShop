@@ -34,24 +34,6 @@ namespace CoreCms.Net.Repository
 
         }
 
-        /// <summary>
-        /// //根据资源id和类型取支付成功的支付单,可能查不到内容，所以，要用的话，在外面一定要判断一下。
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public async Task<CoreCmsBillPayments> GetSuccessPaymentInfo(string sourceId, int type)
-        {
-            var model = await DbClient.Queryable<CoreCmsBillPayments, CoreCmsBillPaymentsRel>((p, pr) => new object[] {
-                    JoinType.Left,p.paymentId==pr.paymentId})
-                .Where((p, pr) => pr.sourceId == sourceId)
-                .Where((p, pr) => p.type == type)
-                .Where((p, pr) => p.status == (int)GlobalEnumVars.BillPaymentsStatus.Payed)
-                .Select((p, pr) => p).FirstAsync();
-            return model;
-        }
-
-
 
         /// <summary>
         /// 支付单7天统计

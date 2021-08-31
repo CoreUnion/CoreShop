@@ -1,5 +1,8 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<script type="text/html" id="LAY-app-getPingTuanIds-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -10,11 +13,11 @@
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsPinTuanRule-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
             </div>
             <div class="layui-inline"><div class="layui-form-mid">您选择了:<span id="tagGoodsNum">0</span>个拼团活动</div></div>
-            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsPinTuanRule-tableBox_submit" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
+            <button class="layui-btn layui-btn-sm float-right" lay-submit lay-filter="LAY-app-CoreCmsPinTuanRule-tableBox_submit" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
         </div>
     </div>
 </script>
-<div class="table-body">
+<div class="noDefaultToolbar">
     <table id="LAY-app-CoreCmsPinTuanRule-tableBox" lay-filter="LAY-app-CoreCmsPinTuanRule-tableBox"></table>
 </div>
 
@@ -54,14 +57,15 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsPinTuanRule-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsPinTuanRule-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsPinTuanRule-tableBox',
                     url: layui.setter.apiUrl + 'Api/Tools/tagPinTuan',
                     method: 'POST',
-                    defaultToolbar: ['filter', 'print', 'exports'],
+                    toolbar: '#LAY-app-getPingTuanIds-toolbar',
+                    defaultToolbar: null,
                     height: 'full-260',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,

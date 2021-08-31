@@ -1,0 +1,330 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsServices-editForm" id="LAY-app-CoreCmsServices-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.model.id || '' }}" />
+
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label  layui-form-required">项目名称</label>
+            <div class="layui-input-block">
+                <input name="title" lay-verify="required|verifytitle" value="{{d.params.data.model.title || '' }}" class="layui-input" lay-reqText="请输入项目名称" placeholder="请输入项目名称" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="description" class="layui-form-label  layui-form-required">售价</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input name="money" lay-verify="required|money" value="{{d.params.data.model.money || '' }}" class="layui-input" placeholder="请输入售价" lay-reqText="请输入售价" />
+            </div>
+            <label for="thumbnail" class="layui-form-label  layui-form-required">项目缩略图</label>
+            <div class="layui-input-inline layui-inline-8">
+                <input name="thumbnail" id="thumbnailInput" lay-verify="required" value="{{d.params.data.model.thumbnail || '' }}" class="layui-input" placeholder="请上传项目缩略图" lay-reqText="请上传项目缩略图" />
+            </div>
+            <div class="layui-input-inline">
+                <img class="coreshop-upload-img" id="viewImgBoxthumbnail" src="{{d.params.data.model.thumbnail || layui.setter.noImagePicUrl }}">
+                <button type="button" class="layui-btn" id="upBtnthumbnail" lay-active="doCropperImg">上传图片</button>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="description" class="layui-form-label  layui-form-required">一句话概述</label>
+            <div class="layui-input-block">
+                <input name="description" lay-verify="required|verifydescription" class="layui-input" lay-reqText="请输入项目概述" placeholder="请输入项目概述" value="{{d.params.data.model.description || '' }}" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="allowedMembership" class="layui-form-label  layui-form-required">允许会员</label>
+            <div class="layui-input-block">
+                <div id="selectBox" class="xm-select-demo"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="consumableStore" class="layui-form-label  layui-form-required">核销门店</label>
+            <div class="layui-input-block">
+                <div id="selectStoreBox" class="xm-select-demo"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label  layui-form-required">项目状态</label>
+            <div class="layui-input-inline">
+                <select name="status">
+                    {{# layui.each(d.params.data.status, function(index, item){ }}
+                    <option value="{{ item.value }}" {{ d.params.data.model.status==item.value ? 'selected="selected"' : '' }}>{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <label for="maxBuyNumber" class="layui-form-label  layui-form-required">重复购买数</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="maxBuyNumber" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.maxBuyNumber}}" placeholder="请输入项目重复购买次数" lay-reqText="请输入项目重复购买次数并为数字" />
+            </div>
+            <div class="layui-form-mid">0为不限制</div>
+            <label for="amount" class="layui-form-label  layui-form-required">可销售数量</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="amount" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.amount }}" placeholder="请输入项目可销售数量" lay-reqText="请输入项目可销售数量并为数字" />
+            </div>
+            <div class="layui-form-mid">销售完售罄状态</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="startTime" class="layui-form-label  layui-form-required">可购买时间</label>
+            <div class="layui-input-inline">
+                <input name="startTime" id="editTime-CoreCmsServices-startTime" type="text" lay-verify="required|datetime" class="layui-input" placeholder="请输入项目开始时间" lay-reqText="请输入项目开始时间" value="{{d.params.data.model.startTime  }}" />
+            </div>
+            <div class="layui-form-mid">至</div>
+            <div class="layui-input-inline">
+                <input name="endTime" id="editTime-CoreCmsServices-endTime" type="text" lay-verify="required|datetime" class="layui-input" placeholder="请输入项目截止时间" lay-reqText="请输入项目截止时间" value="{{d.params.data.model.endTime  }}" />
+            </div>
+            <div class="layui-form-mid">在此时间段内，前端才能进行显示并购买</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="validityType" class="layui-form-label  layui-form-required">有效期类型</label>
+            <div class="layui-input-inline">
+
+                <select name="validityType" id="validityType" lay-verify="required" lay-verify="required|number" lay-reqText="请选择核销有效期类型" lay-filter="validityTypeChange">
+                    {{# layui.each(d.params.data.types, function(index, item){ }}
+                    <option value="{{ item.value }}" {{ d.params.data.model.validityType==item.value ? 'selected="selected"' : '' }}>{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <div class="layui-form-mid">不限：购买后不限制核销服务券时间，限时间段：只能在允许的时间段内进行服务券的核销消费。</div>
+        </div>
+
+        <div class="layui-form-item" style="display: none;" id="validityBox">
+            <label for="validityStartTime" class="layui-form-label">核销时间段</label>
+            <div class="layui-input-inline">
+                <input name="validityStartTime" id="editTime-CoreCmsServices-validityStartTime" type="text" class="layui-input" placeholder="请输入核销开始时间" lay-reqText="请输入核销开始时间" value="{{d.params.data.model.validityStartTime || '' }}" />
+            </div>
+            <div class="layui-form-mid">至</div>
+            <div class="layui-input-inline">
+                <input name="validityEndTime" id="editTime-CoreCmsServices-validityEndTime" type="text" class="layui-input" placeholder="请输入核销结束时间" lay-reqText="请输入核销结束时间" value="{{d.params.data.model.validityEndTime || '' }}" />
+            </div>
+            <button type="button" class="layui-btn" lay-active="e1">三月内</button>
+            <button type="button" class="layui-btn" lay-active="e2">半年内</button>
+            <button type="button" class="layui-btn" lay-active="e3">一年内</button>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="ticketNumber" class="layui-form-label  layui-form-required">服务券数量</label>
+            <div class="layui-input-inline layui-inline-2">
+                <input type="number" min="0" max="999999" name="ticketNumber" lay-verify="required|number" class="layui-input" value="{{d.params.data.model.ticketNumber || '' }}" placeholder="请输入核销服务券数量" lay-reqText="请输入核销服务券数量并为数字" />
+            </div>
+            <div class="layui-form-mid">购买服务项目后，将按照此数量发送服务券。到店使用服务券上的核销码进行核销消费</div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="contentBody" class="layui-form-label  layui-form-required">详细说明</label>
+            <div class="layui-input-block">
+                <div class="document-editor">
+                    <div class="toolbar-container" id="toolbar-container"></div>
+                    <div class="content-container">
+                        <div id="editor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsServices-editForm-submit" id="LAY-app-CoreCmsServices-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'coreHelper', 'cropperImg', 'xmSelect', 'util'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , cropperImg = layui.cropperImg
+                    , xmSelect = layui.xmSelect
+                    , util = layui.util
+                    , coreHelper = layui.coreHelper;
+
+                if (d.params.data.model.validityType == 2) {
+                    $('#validityBox').show();
+                }
+
+                let dataStrArr = d.params.data.model.allowedMembership.split(",");  //分割成字符串数组
+                let dataIntArr = [];//保存转换后的整型字符串
+                dataStrArr.forEach(item => {
+                    dataIntArr.push(+item);
+                });
+
+                var selectBox = xmSelect.render({
+                    el: '#selectBox',
+                    tips: '请选择用户级别?',
+                    name: 'allowedMembership',
+                    layVerify: 'required',
+                    prop: {
+                        name: 'title',
+                        value: 'id',
+                    },
+                    data: d.params.data.userGrade,
+                    initValue: dataIntArr
+                })
+
+                let dataStoreStrArr = d.params.data.model.consumableStore.split(",");  //分割成字符串数组
+                let dataStoreIntArr = [];//保存转换后的整型字符串
+                dataStoreStrArr.forEach(item => {
+                    dataStoreIntArr.push(+item);
+                });
+                var selectStoreBox = xmSelect.render({
+                    el: '#selectStoreBox',
+                    tips: '请选择核销门店?',
+                    name: 'consumableStore',
+                    layVerify: 'required',
+                    prop: {
+                        name: 'storeName',
+                        value: 'id',
+                    },
+                    data: d.params.data.stores,
+                    initValue: dataStoreIntArr
+                })
+
+                //加载编辑器
+                //加载编辑器
+                var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+                //重点代码 适配器
+                class UploadAdapter {
+                    constructor(loader) {
+                        this.loader = loader;
+                    }
+                    upload() {
+                        return new Promise((resolve, reject) => {
+                            const data = new FormData();
+                            let file = [];
+                            this.loader.file.then(res => {
+                                file = res; //文件流
+                                data.append('upload', file);
+                                $.ajax({
+                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: 'json',
+                                    headers: {
+                                        'Authorization': Authorization
+                                    },
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data) {
+                                            console.log(data)
+                                            resolve({
+                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                            });
+                                        } else {
+                                            reject(data.msg);
+                                        }
+
+                                    }
+                                });
+                            })
+                        });
+                    }
+                    abort() {
+                    }
+                }
+                DecoupledEditor
+                    .create(document.querySelector('#editor'),
+                        {
+                            language: 'zh-cn',
+                        })
+                    .then(editor => {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                            return new UploadAdapter(loader);
+                        };
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                        editor.setData(d.params.data.model.contentBody);
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+
+                //项目缩略图图片上传
+                $('#upBtnthumbnail').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 1 / 1,
+                        imgSrc: $('#viewImgBoxthumbnail').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBoxthumbnail').attr('src', res.data.fileUrl);
+                                    $("#thumbnailInput").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                laydate.render({
+                    elem: '#editTime-CoreCmsServices-startTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsServices-endTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsServices-validityStartTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsServices-validityEndTime',
+                    type: 'datetime'
+                });
+
+                form.verify({
+                    money: [/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/, '请输入金额'],
+                    verifytitle: [/^[\S]{0,50}$/, '项目名称最大只允许输入50位字符，且不能出现空格'],
+                    verifythumbnail: [/^[\S]{0,255}$/, '项目缩略图最大只允许输入255位字符，且不能出现空格'],
+                    verifydescription: [/^[\S]{0,255}$/, '项目概述最大只允许输入255位字符，且不能出现空格'],
+                    verifyallowedMembership: [/^[\S]{0,50}$/, '允许购买会员级别最大只允许输入50位字符，且不能出现空格'],
+                });
+
+                form.on('select(validityTypeChange)', function (data) {
+                    console.log(data.value);
+                    if (data.value == 2) {
+                        $('#validityBox').show();
+                    } else {
+                        $('#validityBox').hide();
+                        $('#editTime-CoreCmsServices-validityStartTime').val("");
+                        $('#editTime-CoreCmsServices-validityEndTime').val("");
+                    }
+                });
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    e1: function () {
+                        $('#editTime-CoreCmsServices-validityStartTime').val(layui.util.toDateString(new Date(), 'yyyy-MM-dd 00:00:00'));
+                        $('#editTime-CoreCmsServices-validityEndTime').val(layui.util.toDateString((new Date()).setMonth((new Date()).getMonth() + 3), 'yyyy-MM-dd 00:00:00'));
+                    }
+                    , e2: function () {
+                        $('#editTime-CoreCmsServices-validityStartTime').val(layui.util.toDateString(new Date(), 'yyyy-MM-dd 00:00:00'));
+                        $('#editTime-CoreCmsServices-validityEndTime').val(layui.util.toDateString((new Date()).setMonth((new Date()).getMonth() + 6), 'yyyy-MM-dd 00:00:00'));
+                    }
+                    , e3: function () {
+                        $('#editTime-CoreCmsServices-validityStartTime').val(layui.util.toDateString(new Date(), 'yyyy-MM-dd 00:00:00'));
+                        $('#editTime-CoreCmsServices-validityEndTime').val(layui.util.toDateString((new Date()).setFullYear((new Date()).getFullYear() + 1), 'yyyy-MM-dd 00:00:00'));
+                    }
+                });
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsServices-editForm');
+            })
+    };
+</script>

@@ -13,24 +13,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
+using CoreCms.Net.Caching.AccressToken;
+using CoreCms.Net.Caching.AutoMate.RedisCache;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.Filter;
 using CoreCms.Net.IServices;
-using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
+using CoreCms.Net.Model.ViewModels.Excel;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
+using CoreCms.Net.WeChat.Service.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Util;
+using SKIT.FlurlHttpClient.Wechat.Api;
+using SKIT.FlurlHttpClient.Wechat.Api.Models;
 using SqlSugar;
 
 namespace CoreCms.Net.Web.Admin.Controllers
@@ -51,11 +54,19 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsAreaServices _areaServices;
         private readonly ICoreCmsBillAftersalesServices _aftersalesServices;
         private readonly ICoreCmsBillPaymentsServices _billPaymentsServices;
-        private readonly ICoreCmsBillPaymentsRelServices _billPaymentsRelServices;
+        private readonly ICoreCmsBillDeliveryServices _billDeliveryServices;
         private readonly ICoreCmsStoreServices _storeServices;
         private readonly ICoreCmsLogisticsServices _logisticsServices;
         private readonly ICoreCmsPaymentsServices _paymentsServices;
         private readonly ICoreCmsSettingServices _settingServices;
+        private readonly ICoreCmsUserWeChatInfoServices _userWeChatInfoServices;
+        private readonly IRedisOperationRepository _redisOperationRepository;
+        private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
+
+
+        private readonly ICoreCmsOrderItemServices _orderItemServices;
+
+
 
         /// <summary>
         /// 构造函数
@@ -69,9 +80,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ICoreCmsLogisticsServices logisticsServices
             , ICoreCmsBillPaymentsServices billPaymentsServices
             , ICoreCmsPaymentsServices paymentsServices
-            , ICoreCmsSettingServices settingServices
-            , ICoreCmsBillPaymentsRelServices billPaymentsRelServices
-            )
+            , ICoreCmsSettingServices settingServices, ICoreCmsUserWeChatInfoServices userWeChatInfoServices, IRedisOperationRepository redisOperationRepository, ICoreCmsBillDeliveryServices billDeliveryServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsOrderItemServices orderItemServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsOrderServices = coreCmsOrderServices;
@@ -83,8 +92,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _billPaymentsServices = billPaymentsServices;
             _paymentsServices = paymentsServices;
             _settingServices = settingServices;
-            _billPaymentsRelServices = billPaymentsRelServices;
-
+            _userWeChatInfoServices = userWeChatInfoServices;
+            _redisOperationRepository = redisOperationRepository;
+            _billDeliveryServices = billDeliveryServices;
+            _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
+            _orderItemServices = orderItemServices;
         }
 
         #region 获取列表============================================================
@@ -98,8 +110,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<JsonResult> GetPageList()
         {
             var jm = new AdminUiCallBack();
-            var pageCurrent = ObjectExtensions.ObjectToInt(Request.Form["page"].FirstOrDefault(), 1);
-            var pageSize = ObjectExtensions.ObjectToInt(Request.Form["limit"].FirstOrDefault(), 30);
+            var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
+            var pageSize = Request.Form["limit"].FirstOrDefault().ObjectToInt(30);
             var where = PredicateBuilder.True<CoreCmsOrder>();
             //获取排序字段
 
@@ -193,21 +205,21 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (createTime.Contains("到"))
                 {
                     var dts = createTime.Split("到");
-                    var dtStart = ObjectExtensions.ObjectToDate(dts[0].Trim());
+                    var dtStart = dts[0].Trim().ObjectToDate();
                     where = where.And(p => p.createTime > dtStart);
-                    var dtEnd = ObjectExtensions.ObjectToDate(dts[1].Trim());
+                    var dtEnd = dts[1].Trim().ObjectToDate();
                     where = where.And(p => p.createTime < dtEnd);
                 }
                 else
                 {
-                    var dt = ObjectExtensions.ObjectToDate(createTime);
+                    var dt = createTime.ObjectToDate();
                     where = where.And(p => p.createTime > dt);
                 }
             }
 
 
             //订单状态 int
-            var orderUnifiedStatus = ObjectExtensions.ObjectToInt(Request.Form["orderUnifiedStatus"].FirstOrDefault(), 0);
+            var orderUnifiedStatus = Request.Form["orderUnifiedStatus"].FirstOrDefault().ObjectToInt(0);
             if (orderUnifiedStatus > 0)
             {
                 if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.payment)
@@ -245,6 +257,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     //已取消
                     where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_CANCEL));
                 }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.delete)
+                {
+                    //已取消
+                    where = where.And(p => p.isdel == true);
+                }
             }
             else
             {
@@ -258,7 +275,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 var areaCache = await _areaServices.GetCaChe();
                 foreach (var item in list)
                 {
-                    item.operating = _coreCmsOrderServices.GetOperating(item.orderId, item.status, item.payStatus, item.shipStatus);
+                    item.operating = _coreCmsOrderServices.GetOperating(item.orderId, item.status, item.payStatus, item.shipStatus, item.receiptType, item.isdel);
                     item.afterSaleStatus = "";
                     if (item.aftersalesItem != null && item.aftersalesItem.Any())
                     {
@@ -317,6 +334,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //已取消
             var cancelWhere = _coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_CANCEL);
             var cancel = await _coreCmsOrderServices.GetCountAsync(cancelWhere);
+            //删除
+            var delete = await _coreCmsOrderServices.GetCountAsync(p => p.isdel == true);
 
 
             //订单状态说明
@@ -346,6 +365,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 noevaluat,
                 complete,
                 cancel,
+                delete,
                 orderStatus,
                 payStatus,
                 shipStatus,
@@ -447,15 +467,23 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("发货")]
-        public async Task<JsonResult> GetShip([FromBody] FMStringId entity)
+        public async Task<JsonResult> GetShip([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
+
+            if (entity.id.Length == 0)
+            {
+                jm.msg = "请选择需要发货的数据";
+                return Json(jm);
+            }
+
+
 
             var storeList = await _storeServices.QueryAsync();
 
             var logistics = await _logisticsServices.QueryListByClauseAsync(p => p.isDelete == false);
-            var ids = entity.id.Split(",");
-            var result = await _coreCmsOrderServices.GetOrderShipInfo(ids);
+
+            var result = await _coreCmsOrderServices.GetOrderShipInfo(entity.id);
             if (!result.status)
             {
                 jm.msg = result.msg;
@@ -479,7 +507,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 orderModel = result.data,
                 storeList,
-                logistics
+                logistics,
             };
 
             return Json(jm);
@@ -503,11 +531,65 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (entity.orderId.Contains(","))
             {
                 var ids = entity.orderId.Split(",");
-                result = await _coreCmsOrderServices.BatchShip(ids, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId);
+                result = await _coreCmsOrderServices.BatchShip(ids, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId, entity.deliveryCompanyId);
             }
             else
             {
-                result = await _coreCmsOrderServices.Ship(entity.orderId, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId);
+                result = await _coreCmsOrderServices.Ship(entity.orderId, entity.logiCode, entity.logiNo, entity.items, entity.shipName, entity.shipMobile, entity.shipAddress, entity.memo, entity.storeId, entity.shipAreaId, entity.deliveryCompanyId);
+            }
+
+            jm.code = result.status ? 0 : 1;
+            jm.msg = result.msg;
+            jm.data = result.data;
+            jm.otherData = entity;
+
+            return Json(jm);
+        }
+        #endregion
+
+        #region 秒发货============================================================
+        // POST: Admins/CoreCmsOrder/Edit
+        /// <summary>
+        /// 秒发货
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("秒发货")]
+        public async Task<JsonResult> DoSecondsShip([FromBody] FMStringId entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            var order = await _coreCmsOrderServices.QueryByIdAsync(entity.id);
+            if (order == null)
+            {
+                jm.msg = "不存在此信息";
+                return Json(jm);
+            }
+
+            var goodItems = await _orderItemServices.QueryListByClauseAsync(p => p.orderId == entity.id);
+            if (!goodItems.Any())
+            {
+                jm.msg = "明细获取失败";
+                return Json(jm);
+            }
+
+            Dictionary<int, int> items = new Dictionary<int, int>();
+
+            goodItems.ForEach(p =>
+            {
+                items.Add(p.productId, p.nums);
+            });
+
+            var result = new WebApiCallBack();
+
+            if (order.receiptType == (int)GlobalEnumVars.OrderReceiptType.SelfDelivery)
+            {
+                result = await _coreCmsOrderServices.Ship(order.orderId, "shangmenziti", "无", items, order.shipName, order.shipMobile, order.shipAddress, order.memo, order.storeId, order.shipAreaId, "OTHERS");
+            }
+            else if (order.receiptType == (int)GlobalEnumVars.OrderReceiptType.IntraCityService)
+            {
+                result = await _coreCmsOrderServices.Ship(order.orderId, "benditongcheng", "无", items, order.shipName, order.shipMobile, order.shipAddress, order.memo, order.storeId, order.shipAreaId, "OTHERS");
             }
 
             jm.code = result.status ? 0 : 1;
@@ -528,19 +610,18 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("支付")]
-        public async Task<JsonResult> GetPay([FromBody] FMStringId entity)
+        public async Task<JsonResult> GetPay([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
-            var ids = entity.id.Split(",");
             var type = entity.data.ObjectToInt();
-            if (type == 0 || ids.Length == 0)
+            if (type == 0 || entity.id.Length == 0)
             {
                 jm.msg = "请提交合法的数据";
                 return Json(jm);
             }
 
-            var result = _billPaymentsServices.FormatPaymentRel(ids, type, null);
+            var result = await _billPaymentsServices.BatchFormatPaymentRel(entity.id, type, null);
             if (result.status == false)
             {
                 jm.msg = result.msg;
@@ -742,107 +823,230 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
+            if (entity.id.Length == 0)
+            {
+                jm.msg = "请选择要导出的数据";
+                return Json(jm);
+            }
+
+
+            //获取数据
+            var list = await _coreCmsOrderServices.QueryListAsync(p => entity.id.Contains(p.orderId), p => p.createTime, OrderByType.Desc);
+            if (list != null && list.Any())
+            {
+                var areaCache = await _areaServices.GetCaChe();
+                foreach (var item in list)
+                {
+                    //item.operating = _coreCmsOrderServices.GetOperating(item.orderId, item.status, item.payStatus, item.shipStatus, item.isdel);
+                    //item.afterSaleStatus = "";
+                    //if (item.aftersalesItem != null && item.aftersalesItem.Any())
+                    //{
+                    //    foreach (var sale in item.aftersalesItem)
+                    //    {
+                    //        item.afterSaleStatus += EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillAftersalesStatus>(sale.status) + "<br>";
+                    //    }
+                    //}
+                    var areas = await _areaServices.GetAreaFullName(item.shipAreaId, areaCache);
+                    item.shipAreaName = areas.status ? areas.data + "-" + item.shipAddress : item.shipAddress;
+                }
+            }
+
+
+            //订单状态说明
+            var orderStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderStatusDescription>();
+            //付款状态
+            var orderPayStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderPayStatus>();
+            //发货状态
+            var shipStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderShipStatus>();
+            //订单来源
+            var sourceEntities = EnumHelper.EnumToList<GlobalEnumVars.Source>();
+            //订单类型
+            var orderTypeEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderType>();
+            //订单支付方式
+            var paymentsTypesEntities = EnumHelper.EnumToList<GlobalEnumVars.PaymentsTypes>();
+            //收货状态
+            var orderConfirmStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderConfirmStatus>();
+            //订单收货方式
+            var orderReceiptTypeEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderReceiptType>();
+
+
+            //获取数据
             //创建Excel文件的对象
             var book = new HSSFWorkbook();
             //添加一个sheet
             var sheet1 = book.CreateSheet("Sheet1");
+
             //获取list数据
-            var listmodel = await _coreCmsOrderServices.QueryListByClauseAsync(p => entity.id.Contains(p.orderId), p => p.orderId, OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("订单号");
-            row1.CreateCell(1).SetCellValue("商品总价");
-            row1.CreateCell(2).SetCellValue("已支付的金额");
-            row1.CreateCell(3).SetCellValue("订单实际销售总额");
-            row1.CreateCell(4).SetCellValue("支付状态");
-            row1.CreateCell(5).SetCellValue("发货状态");
-            row1.CreateCell(6).SetCellValue("订单状态");
-            row1.CreateCell(7).SetCellValue("订单类型");
-            row1.CreateCell(8).SetCellValue("支付方式代码");
-            row1.CreateCell(9).SetCellValue("支付时间");
-            row1.CreateCell(10).SetCellValue("配送方式ID 关联ship.id");
-            row1.CreateCell(11).SetCellValue("配送方式名称");
-            row1.CreateCell(12).SetCellValue("配送费用");
-            row1.CreateCell(13).SetCellValue("用户ID 关联user.id");
-            row1.CreateCell(14).SetCellValue("店铺ID 关联seller.id");
-            row1.CreateCell(15).SetCellValue("售后状态");
-            row1.CreateCell(16).SetCellValue("确认收货时间");
-            row1.CreateCell(17).SetCellValue("自提门店ID，0就是不门店自提");
-            row1.CreateCell(18).SetCellValue("收货地区ID");
-            row1.CreateCell(19).SetCellValue("收货详细地址");
-            row1.CreateCell(20).SetCellValue("收货人姓名");
-            row1.CreateCell(21).SetCellValue("收货电话");
-            row1.CreateCell(22).SetCellValue("商品总重量");
-            row1.CreateCell(23).SetCellValue("是否开发票");
-            row1.CreateCell(24).SetCellValue("税号");
-            row1.CreateCell(25).SetCellValue("发票抬头");
-            row1.CreateCell(26).SetCellValue("使用积分");
-            row1.CreateCell(27).SetCellValue("积分抵扣金额");
-            row1.CreateCell(28).SetCellValue("订单优惠金额");
-            row1.CreateCell(29).SetCellValue("商品优惠金额");
-            row1.CreateCell(30).SetCellValue("优惠券优惠额度");
-            row1.CreateCell(31).SetCellValue("优惠券信息");
-            row1.CreateCell(32).SetCellValue("优惠信息");
-            row1.CreateCell(33).SetCellValue("买家备注");
-            row1.CreateCell(34).SetCellValue("下单IP");
-            row1.CreateCell(35).SetCellValue("卖家备注");
-            row1.CreateCell(36).SetCellValue("订单来源");
-            row1.CreateCell(37).SetCellValue("是否评论");
-            row1.CreateCell(38).SetCellValue("删除标志");
-            row1.CreateCell(39).SetCellValue("");
-            row1.CreateCell(40).SetCellValue("");
 
-            //将数据逐步写入sheet1各个行
-            for (var i = 0; i < listmodel.Count; i++)
+            var items = new List<CellValueItem>();
+            items.Add(new CellValueItem() { name = "序号", width = 10 });
+            items.Add(new CellValueItem() { name = "订单号", width = 20 });
+            items.Add(new CellValueItem() { name = "商品总价", width = 12 });
+            items.Add(new CellValueItem() { name = "支付金额", width = 12 });
+            items.Add(new CellValueItem() { name = "订单总额", width = 12 });
+            items.Add(new CellValueItem() { name = "支付状态", width = 12 });
+            items.Add(new CellValueItem() { name = "发货状态", width = 12 });
+            items.Add(new CellValueItem() { name = "订单状态", width = 12 });
+            items.Add(new CellValueItem() { name = "订单类型", width = 12 });
+            items.Add(new CellValueItem() { name = "支付方式", width = 12 });
+            items.Add(new CellValueItem() { name = "支付时间", width = 20 });
+
+            items.Add(new CellValueItem() { name = "货品名称", width = 40 });
+            items.Add(new CellValueItem() { name = "数量", width = 12 });
+            items.Add(new CellValueItem() { name = "单价", width = 12 });
+            items.Add(new CellValueItem() { name = "优惠", width = 12 });
+            items.Add(new CellValueItem() { name = "合计", width = 12 });
+
+
+            items.Add(new CellValueItem() { name = "收货人姓名", width = 12 });
+            items.Add(new CellValueItem() { name = "收货电话", width = 12 });
+            items.Add(new CellValueItem() { name = "收货详细地址", width = 40 });
+
+
+            items.Add(new CellValueItem() { name = "配送方式名称", width = 20 });
+            items.Add(new CellValueItem() { name = "配送费用", width = 12 });
+            items.Add(new CellValueItem() { name = "用户ID", width = 12 });
+
+            items.Add(new CellValueItem() { name = "是否收货", width = 20 });
+            items.Add(new CellValueItem() { name = "确认收货时间", width = 20 });
+
+
+            items.Add(new CellValueItem() { name = "商品总重量", width = 20 });
+            items.Add(new CellValueItem() { name = "是否开发票", width = 20 });
+            items.Add(new CellValueItem() { name = "税号", width = 20 });
+            items.Add(new CellValueItem() { name = "发票抬头", width = 20 });
+            items.Add(new CellValueItem() { name = "使用积分", width = 20 });
+            items.Add(new CellValueItem() { name = "积分抵扣金额", width = 20 });
+            items.Add(new CellValueItem() { name = "订单优惠金额", width = 20 });
+            items.Add(new CellValueItem() { name = "商品优惠金额", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠券优惠额度", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠券信息", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠信息", width = 20 });
+            items.Add(new CellValueItem() { name = "买家备注", width = 20 });
+            items.Add(new CellValueItem() { name = "下单IP", width = 20 });
+            items.Add(new CellValueItem() { name = "卖家备注", width = 20 });
+            items.Add(new CellValueItem() { name = "订单来源", width = 20 });
+            items.Add(new CellValueItem() { name = "是否评论", width = 20 });
+            items.Add(new CellValueItem() { name = "删除标志", width = 20 });
+            items.Add(new CellValueItem() { name = "订单时间", width = 20 });
+            items.Add(new CellValueItem() { name = "更新时间", width = 20 });
+
+            var headerStyle = ExcelHelper.GetHeaderStyle(book);
+
+            for (int i = 0; i < items.Count; i++)
             {
-                var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].orderId.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].goodsAmount.ToString());
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].payedAmount.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].orderAmount.ToString());
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].payStatus.ToString());
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].shipStatus.ToString());
-                rowtemp.CreateCell(6).SetCellValue(listmodel[i].status.ToString());
-                rowtemp.CreateCell(7).SetCellValue(listmodel[i].orderType.ToString());
-                rowtemp.CreateCell(8).SetCellValue(listmodel[i].paymentCode.ToString());
-                rowtemp.CreateCell(9).SetCellValue(listmodel[i].paymentTime.ToString());
-                rowtemp.CreateCell(10).SetCellValue(listmodel[i].logisticsId.ToString());
-                rowtemp.CreateCell(11).SetCellValue(listmodel[i].logisticsName.ToString());
-                rowtemp.CreateCell(12).SetCellValue(listmodel[i].costFreight.ToString());
-                rowtemp.CreateCell(13).SetCellValue(listmodel[i].userId.ToString());
-                rowtemp.CreateCell(14).SetCellValue(listmodel[i].sellerId.ToString());
-                rowtemp.CreateCell(15).SetCellValue(listmodel[i].confirmStatus.ToString());
-                rowtemp.CreateCell(16).SetCellValue(listmodel[i].confirmTime.ToString());
-                rowtemp.CreateCell(17).SetCellValue(listmodel[i].storeId.ToString());
-                rowtemp.CreateCell(18).SetCellValue(listmodel[i].shipAreaId.ToString());
-                rowtemp.CreateCell(19).SetCellValue(listmodel[i].shipAddress.ToString());
-                rowtemp.CreateCell(20).SetCellValue(listmodel[i].shipName.ToString());
-                rowtemp.CreateCell(21).SetCellValue(listmodel[i].shipMobile.ToString());
-                rowtemp.CreateCell(22).SetCellValue(listmodel[i].weight.ToString());
-                rowtemp.CreateCell(23).SetCellValue(listmodel[i].taxType.ToString());
-                rowtemp.CreateCell(24).SetCellValue(listmodel[i].taxCode.ToString());
-                rowtemp.CreateCell(25).SetCellValue(listmodel[i].taxTitle.ToString());
-                rowtemp.CreateCell(26).SetCellValue(listmodel[i].point.ToString());
-                rowtemp.CreateCell(27).SetCellValue(listmodel[i].pointMoney.ToString());
-                rowtemp.CreateCell(28).SetCellValue(listmodel[i].orderDiscountAmount.ToString());
-                rowtemp.CreateCell(29).SetCellValue(listmodel[i].goodsDiscountAmount.ToString());
-                rowtemp.CreateCell(30).SetCellValue(listmodel[i].couponDiscountAmount.ToString());
-                rowtemp.CreateCell(31).SetCellValue(listmodel[i].coupon.ToString());
-                rowtemp.CreateCell(32).SetCellValue(listmodel[i].promotionList.ToString());
-                rowtemp.CreateCell(33).SetCellValue(listmodel[i].memo.ToString());
-                rowtemp.CreateCell(34).SetCellValue(listmodel[i].ip.ToString());
-                rowtemp.CreateCell(35).SetCellValue(listmodel[i].mark.ToString());
-                rowtemp.CreateCell(36).SetCellValue(listmodel[i].source.ToString());
-                rowtemp.CreateCell(37).SetCellValue(listmodel[i].isComment.ToString());
-                rowtemp.CreateCell(38).SetCellValue(listmodel[i].isdel.ToString());
-                rowtemp.CreateCell(39).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(40).SetCellValue(listmodel[i].updateTime.ToString());
+                var cell = row1.CreateCell(i);
+                cell.SetCellValue(items[i].name);
+                cell.CellStyle = headerStyle;
+                sheet1.SetColumnWidth(i, items[i].width * 256);
+            }
+
+            row1.Height = 30 * 20;
+
+            var commonCellStyle = ExcelHelper.GetCommonStyle(book);
+
+
+            var detailsStartNumber = 0;
+            var listStartNumber = 0;
+            foreach (var order in list)
+            {
+                listStartNumber++;
+                //当前开始行
+                var nowNumber = detailsStartNumber;
+                //将数据逐步写入sheet1各个行
+                foreach (var t in order.items)
+                {
+                    var rowTemp = sheet1.CreateRow(detailsStartNumber + 1);
+
+                    rowTemp.CreateCell(0).SetCellValue(listStartNumber);
+                    rowTemp.CreateCell(1).SetCellValue(order.orderId);
+                    rowTemp.CreateCell(2).SetCellValue(order.goodsAmount.ToString());
+                    rowTemp.CreateCell(3).SetCellValue(order.payedAmount.ToString());
+                    rowTemp.CreateCell(4).SetCellValue(order.orderAmount.ToString());
+
+                    var payModel = orderPayStatusEntities.Find(p => p.value == order.payStatus);
+                    rowTemp.CreateCell(5).SetCellValue(payModel != null ? payModel.description : "");
+
+                    var shipStatusModel = shipStatusEntities.Find(p => p.value == order.shipStatus);
+                    rowTemp.CreateCell(6).SetCellValue(shipStatusModel != null ? shipStatusModel.description : "");
+
+                    var statusModel = orderStatusEntities.Find(p => p.value == order.status);
+                    rowTemp.CreateCell(7).SetCellValue(statusModel != null ? statusModel.description : "");
+
+                    var orderTypeModel = orderTypeEntities.Find(p => p.value == order.orderType);
+                    rowTemp.CreateCell(8).SetCellValue(orderTypeModel != null ? orderTypeModel.description : "");
+
+                    var paymentCodeModel = paymentsTypesEntities.Find(p => p.title == order.paymentCode);
+                    rowTemp.CreateCell(9).SetCellValue(paymentCodeModel != null ? paymentCodeModel.description : "");
+
+                    rowTemp.CreateCell(10).SetCellValue(order.paymentTime.ToString());
+
+
+                    rowTemp.CreateCell(11).SetCellValue(!string.IsNullOrEmpty(t.addon) ? t.addon : t.name);
+                    rowTemp.CreateCell(12).SetCellValue(t.nums);
+                    rowTemp.CreateCell(13).SetCellValue(t.price + "元");
+                    rowTemp.CreateCell(14).SetCellValue(t.promotionAmount + "元");
+                    rowTemp.CreateCell(15).SetCellValue(t.amount + "元");
+
+
+                    rowTemp.CreateCell(16).SetCellValue(order.shipName);
+                    rowTemp.CreateCell(17).SetCellValue(order.shipMobile);
+                    rowTemp.CreateCell(18).SetCellValue(order.shipAddress);
+
+                    rowTemp.CreateCell(19).SetCellValue(!string.IsNullOrEmpty(order.logisticsName) ? order.logisticsName : "自提配送");
+                    rowTemp.CreateCell(20).SetCellValue(order.costFreight.ToString());
+                    rowTemp.CreateCell(21).SetCellValue(order.userId.ToString());
+
+                    var confirmStatusModel = orderConfirmStatusEntities.Find(p => p.value == order.confirmStatus);
+                    rowTemp.CreateCell(22).SetCellValue(confirmStatusModel != null ? confirmStatusModel.description : "");
+
+                    rowTemp.CreateCell(23).SetCellValue(order.confirmTime.ToString());
+
+                    rowTemp.CreateCell(24).SetCellValue(order.weight.ToString());
+                    rowTemp.CreateCell(25).SetCellValue(order.taxType.ToString());
+                    rowTemp.CreateCell(26).SetCellValue(order.taxCode);
+                    rowTemp.CreateCell(27).SetCellValue(order.taxTitle);
+                    rowTemp.CreateCell(28).SetCellValue(order.point.ToString());
+                    rowTemp.CreateCell(29).SetCellValue(order.pointMoney.ToString());
+                    rowTemp.CreateCell(30).SetCellValue(order.orderDiscountAmount.ToString());
+                    rowTemp.CreateCell(31).SetCellValue(order.goodsDiscountAmount.ToString());
+                    rowTemp.CreateCell(32).SetCellValue(order.couponDiscountAmount.ToString());
+                    rowTemp.CreateCell(33).SetCellValue(order.coupon);
+                    rowTemp.CreateCell(34).SetCellValue(order.promotionList);
+                    rowTemp.CreateCell(35).SetCellValue(order.memo);
+                    rowTemp.CreateCell(36).SetCellValue(order.ip);
+                    rowTemp.CreateCell(37).SetCellValue(order.mark);
+                    rowTemp.CreateCell(38).SetCellValue(order.source.ToString());
+                    rowTemp.CreateCell(39).SetCellValue(order.isComment.ToString());
+                    rowTemp.CreateCell(40).SetCellValue(order.isdel.ToString());
+                    rowTemp.CreateCell(41).SetCellValue(order.createTime.ToString());
+                    rowTemp.CreateCell(42).SetCellValue(order.updateTime.ToString());
+
+
+                    rowTemp.Cells.ForEach(p =>
+                    {
+                        p.CellStyle = commonCellStyle;
+                    });
+                    rowTemp.Height = 20 * 20;
+
+
+                    detailsStartNumber++;
+                }
+                //合并单元格（第几行，到第几行，第几列，到第几列）
+                var marId = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42 };
+                foreach (var id in marId)
+                {
+                    sheet1.AddMergedRegion(new CellRangeAddress(nowNumber + 1, detailsStartNumber, id, id));
+                }
 
             }
-            // 导出excel
+
+            // 写入到excel
             string webRootPath = _webHostEnvironment.WebRootPath;
             string tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            string fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-CoreCmsOrder导出(选择结果).xls";
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-订单导出(选择结果).xls";
             string filePath = webRootPath + tpath;
             DirectoryInfo di = new DirectoryInfo(filePath);
             if (!di.Exists)
@@ -871,10 +1075,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
         [Description("查询导出")]
         public async Task<JsonResult> QueryExportExcel()
         {
-            var jm = new AdminUiCallBack();
 
+            var jm = new AdminUiCallBack();
+            var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
+            var pageSize = Request.Form["limit"].FirstOrDefault().ObjectToInt(30);
             var where = PredicateBuilder.True<CoreCmsOrder>();
-            //查询筛选
+            //获取排序字段
 
             //订单号 nvarchar
             var orderId = Request.Form["orderId"].FirstOrDefault();
@@ -882,29 +1088,30 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 where = where.And(p => p.orderId.Contains(orderId));
             }
-            //支付状态 int
-            var payStatus = ObjectExtensions.ObjectToInt(Request.Form["payStatus"].FirstOrDefault(), 0);
-            if (payStatus > 0)
-            {
-                where = where.And(p => p.payStatus == payStatus);
-            }
-            //发货状态 int
-            var shipStatus = ObjectExtensions.ObjectToInt(Request.Form["shipStatus"].FirstOrDefault(), 0);
-            if (shipStatus > 0)
-            {
-                where = where.And(p => p.shipStatus == shipStatus);
-            }
+
             //订单状态 int
-            var status = ObjectExtensions.ObjectToInt(Request.Form["status"].FirstOrDefault(), 0);
+            var status = Request.Form["status"].FirstOrDefault().ObjectToInt(0);
             if (status > 0)
             {
                 where = where.And(p => p.status == status);
             }
             //订单类型 int
-            var orderType = ObjectExtensions.ObjectToInt(Request.Form["orderType"].FirstOrDefault(), 0);
+            var orderType = Request.Form["orderType"].FirstOrDefault().ObjectToInt(0);
             if (orderType > 0)
             {
                 where = where.And(p => p.orderType == orderType);
+            }
+            //发货状态 int
+            var shipStatus = Request.Form["shipStatus"].FirstOrDefault().ObjectToInt(0);
+            if (shipStatus > 0)
+            {
+                where = where.And(p => p.shipStatus == shipStatus);
+            }
+            //支付状态 int
+            var payStatus = Request.Form["payStatus"].FirstOrDefault().ObjectToInt(0);
+            if (payStatus > 0)
+            {
+                where = where.And(p => p.payStatus == payStatus);
             }
             //支付方式代码 nvarchar
             var paymentCode = Request.Form["paymentCode"].FirstOrDefault();
@@ -912,264 +1119,339 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 where = where.And(p => p.paymentCode.Contains(paymentCode));
             }
-            //支付时间 datetime
-            var paymentTime = Request.Form["paymentTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(paymentTime))
-            {
-                var dt = ObjectExtensions.ObjectToDate(paymentTime);
-                where = where.And(p => p.paymentTime > dt);
-            }
-            //配送方式名称 nvarchar
-            var logisticsName = Request.Form["logisticsName"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(logisticsName))
-            {
-                where = where.And(p => p.logisticsName.Contains(logisticsName));
-            }
-            //用户ID 关联user.id int
-            var userId = ObjectExtensions.ObjectToInt(Request.Form["userId"].FirstOrDefault(), 0);
-            if (userId > 0)
-            {
-                where = where.And(p => p.userId == userId);
-            }
-            //店铺ID 关联seller.id int
-            var sellerId = ObjectExtensions.ObjectToInt(Request.Form["sellerId"].FirstOrDefault(), 0);
-            if (sellerId > 0)
-            {
-                where = where.And(p => p.sellerId == sellerId);
-            }
             //售后状态 int
-            var confirmStatus = ObjectExtensions.ObjectToInt(Request.Form["confirmStatus"].FirstOrDefault(), 0);
+            var confirmStatus = Request.Form["confirmStatus"].FirstOrDefault().ObjectToInt(0);
             if (confirmStatus > 0)
             {
                 where = where.And(p => p.confirmStatus == confirmStatus);
             }
-            //确认收货时间 datetime
-            var confirmTime = Request.Form["confirmTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(confirmTime))
+            //订单来源 int
+            var source = Request.Form["source"].FirstOrDefault().ObjectToInt(0);
+            if (source > 0)
             {
-                var dt = ObjectExtensions.ObjectToDate(confirmTime);
-                where = where.And(p => p.confirmTime > dt);
+                where = where.And(p => p.source == source);
             }
-            //自提门店ID，0就是不门店自提 int
-            var storeId = ObjectExtensions.ObjectToInt(Request.Form["storeId"].FirstOrDefault(), 0);
-            if (storeId > 0)
+            //收货方式 int
+            var receiptType = Request.Form["receiptType"].FirstOrDefault().ObjectToInt(0);
+            if (receiptType > 0)
             {
-                where = where.And(p => p.storeId == storeId);
+                where = where.And(p => p.receiptType == receiptType);
             }
-            //收货地区ID int
-            var shipAreaId = ObjectExtensions.ObjectToInt(Request.Form["shipAreaId"].FirstOrDefault(), 0);
-            if (shipAreaId > 0)
-            {
-                where = where.And(p => p.shipAreaId == shipAreaId);
-            }
-            //收货详细地址 nvarchar
-            var shipAddress = Request.Form["shipAddress"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(shipAddress))
-            {
-                where = where.And(p => p.shipAddress.Contains(shipAddress));
-            }
+
             //收货人姓名 nvarchar
             var shipName = Request.Form["shipName"].FirstOrDefault();
             if (!string.IsNullOrEmpty(shipName))
             {
                 where = where.And(p => p.shipName.Contains(shipName));
             }
+            //收货人地址 nvarchar
+            var shipAddress = Request.Form["shipAddress"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(shipAddress))
+            {
+                where = where.And(p => p.shipAddress.Contains(shipAddress));
+            }
+
             //收货电话 nvarchar
             var shipMobile = Request.Form["shipMobile"].FirstOrDefault();
             if (!string.IsNullOrEmpty(shipMobile))
             {
                 where = where.And(p => p.shipMobile.Contains(shipMobile));
             }
-            //税号 nvarchar
-            var taxCode = Request.Form["taxCode"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(taxCode))
+
+            //付款单号 nvarchar
+            var paymentId = Request.Form["paymentId"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(paymentId))
             {
-                where = where.And(p => p.taxCode.Contains(taxCode));
+                where = where.And(p => p.shipMobile.Contains(paymentId));
             }
-            //发票抬头 nvarchar
-            var taxTitle = Request.Form["taxTitle"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(taxTitle))
-            {
-                where = where.And(p => p.taxTitle.Contains(taxTitle));
-            }
-            //使用积分 int
-            var point = ObjectExtensions.ObjectToInt(Request.Form["point"].FirstOrDefault(), 0);
-            if (point > 0)
-            {
-                where = where.And(p => p.point == point);
-            }
-            //优惠券信息 nvarchar
-            var coupon = Request.Form["coupon"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(coupon))
-            {
-                where = where.And(p => p.coupon.Contains(coupon));
-            }
-            //优惠信息 nvarchar
-            var promotionList = Request.Form["promotionList"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(promotionList))
-            {
-                where = where.And(p => p.promotionList.Contains(promotionList));
-            }
-            //买家备注 nvarchar
-            var memo = Request.Form["memo"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(memo))
-            {
-                where = where.And(p => p.memo.Contains(memo));
-            }
-            //下单IP nvarchar
-            var ip = Request.Form["ip"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(ip))
-            {
-                where = where.And(p => p.ip.Contains(ip));
-            }
-            //卖家备注 nvarchar
-            var mark = Request.Form["mark"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(mark))
-            {
-                where = where.And(p => p.mark.Contains(mark));
-            }
-            //订单来源 int
-            var source = ObjectExtensions.ObjectToInt(Request.Form["source"].FirstOrDefault(), 0);
-            if (source > 0)
-            {
-                where = where.And(p => p.source == source);
-            }
-            //是否评论 bit
-            var isComment = Request.Form["isComment"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(isComment) && isComment.ToLowerInvariant() == "true")
-            {
-                where = where.And(p => p.isComment == true);
-            }
-            else if (!string.IsNullOrEmpty(isComment) && isComment.ToLowerInvariant() == "false")
-            {
-                where = where.And(p => p.isComment == false);
-            }
-            //删除标志 bit
-            var isdel = Request.Form["isdel"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(isdel) && isdel.ToLowerInvariant() == "true")
-            {
-                where = where.And(p => p.isdel == true);
-            }
-            else if (!string.IsNullOrEmpty(isdel) && isdel.ToLowerInvariant() == "false")
-            {
-                where = where.And(p => p.isdel == false);
-            }
+
             // datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
             {
-                var dt = ObjectExtensions.ObjectToDate(createTime);
-                where = where.And(p => p.createTime > dt);
+                if (createTime.Contains("到"))
+                {
+                    var dts = createTime.Split("到");
+                    var dtStart = dts[0].Trim().ObjectToDate();
+                    where = where.And(p => p.createTime > dtStart);
+                    var dtEnd = dts[1].Trim().ObjectToDate();
+                    where = where.And(p => p.createTime < dtEnd);
+                }
+                else
+                {
+                    var dt = createTime.ObjectToDate();
+                    where = where.And(p => p.createTime > dt);
+                }
             }
-            // datetime
-            var updateTime = Request.Form["updateTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(updateTime))
+
+
+            //订单状态 int
+            var orderUnifiedStatus = Request.Form["orderUnifiedStatus"].FirstOrDefault().ObjectToInt(0);
+            if (orderUnifiedStatus > 0)
             {
-                var dt = ObjectExtensions.ObjectToDate(updateTime);
-                where = where.And(p => p.updateTime > dt);
+                if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.payment)
+                {
+                    //待支付
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_PAYMENT));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.delivered)
+                {
+                    //待发货
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_DELIVERY));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.receive)
+                {
+                    //待收货
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_RECEIPT));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.evaluated)
+                {
+                    //已评价
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED_EVALUATE));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.noevaluat)
+                {
+                    //待评价
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_EVALUATE));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.complete)
+                {
+                    //已完成
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.cancel)
+                {
+                    //已取消
+                    where = where.And(_coreCmsOrderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_CANCEL));
+                }
+                else if (orderUnifiedStatus == (int)GlobalEnumVars.OrderCountType.delete)
+                {
+                    //已取消
+                    where = where.And(p => p.isdel == true);
+                }
             }
+            else
+            {
+                where = where.And(p => p.isdel == false);
+            }
+
+            //获取数据
+            var list = await _coreCmsOrderServices.QueryListAsync(where, p => p.createTime, OrderByType.Desc);
+            if (list != null && list.Any())
+            {
+                var areaCache = await _areaServices.GetCaChe();
+                foreach (var item in list)
+                {
+                    //item.operating = _coreCmsOrderServices.GetOperating(item.orderId, item.status, item.payStatus, item.shipStatus, item.isdel);
+                    //item.afterSaleStatus = "";
+                    //if (item.aftersalesItem != null && item.aftersalesItem.Any())
+                    //{
+                    //    foreach (var sale in item.aftersalesItem)
+                    //    {
+                    //        item.afterSaleStatus += EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillAftersalesStatus>(sale.status) + "<br>";
+                    //    }
+                    //}
+                    var areas = await _areaServices.GetAreaFullName(item.shipAreaId, areaCache);
+                    item.shipAreaName = areas.status ? areas.data + "-" + item.shipAddress : item.shipAddress;
+                }
+            }
+
+
+            //订单状态说明
+            var orderStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderStatusDescription>();
+            //付款状态
+            var orderPayStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderPayStatus>();
+            //发货状态
+            var shipStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderShipStatus>();
+            //订单来源
+            var sourceEntities = EnumHelper.EnumToList<GlobalEnumVars.Source>();
+            //订单类型
+            var orderTypeEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderType>();
+            //订单支付方式
+            var paymentsTypesEntities = EnumHelper.EnumToList<GlobalEnumVars.PaymentsTypes>();
+            //收货状态
+            var orderConfirmStatusEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderConfirmStatus>();
+            //订单收货方式
+            var orderReceiptTypeEntities = EnumHelper.EnumToList<GlobalEnumVars.OrderReceiptType>();
+
+
             //获取数据
             //创建Excel文件的对象
             var book = new HSSFWorkbook();
             //添加一个sheet
             var sheet1 = book.CreateSheet("Sheet1");
+
             //获取list数据
-            var listmodel = await _coreCmsOrderServices.QueryListByClauseAsync(where, p => p.orderId, OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("订单号");
-            row1.CreateCell(1).SetCellValue("商品总价");
-            row1.CreateCell(2).SetCellValue("已支付的金额");
-            row1.CreateCell(3).SetCellValue("订单实际销售总额");
-            row1.CreateCell(4).SetCellValue("支付状态");
-            row1.CreateCell(5).SetCellValue("发货状态");
-            row1.CreateCell(6).SetCellValue("订单状态");
-            row1.CreateCell(7).SetCellValue("订单类型");
-            row1.CreateCell(8).SetCellValue("支付方式代码");
-            row1.CreateCell(9).SetCellValue("支付时间");
-            row1.CreateCell(10).SetCellValue("配送方式ID 关联ship.id");
-            row1.CreateCell(11).SetCellValue("配送方式名称");
-            row1.CreateCell(12).SetCellValue("配送费用");
-            row1.CreateCell(13).SetCellValue("用户ID 关联user.id");
-            row1.CreateCell(14).SetCellValue("店铺ID 关联seller.id");
-            row1.CreateCell(15).SetCellValue("售后状态");
-            row1.CreateCell(16).SetCellValue("确认收货时间");
-            row1.CreateCell(17).SetCellValue("自提门店ID，0就是不门店自提");
-            row1.CreateCell(18).SetCellValue("收货地区ID");
-            row1.CreateCell(19).SetCellValue("收货详细地址");
-            row1.CreateCell(20).SetCellValue("收货人姓名");
-            row1.CreateCell(21).SetCellValue("收货电话");
-            row1.CreateCell(22).SetCellValue("商品总重量");
-            row1.CreateCell(23).SetCellValue("是否开发票");
-            row1.CreateCell(24).SetCellValue("税号");
-            row1.CreateCell(25).SetCellValue("发票抬头");
-            row1.CreateCell(26).SetCellValue("使用积分");
-            row1.CreateCell(27).SetCellValue("积分抵扣金额");
-            row1.CreateCell(28).SetCellValue("订单优惠金额");
-            row1.CreateCell(29).SetCellValue("商品优惠金额");
-            row1.CreateCell(30).SetCellValue("优惠券优惠额度");
-            row1.CreateCell(31).SetCellValue("优惠券信息");
-            row1.CreateCell(32).SetCellValue("优惠信息");
-            row1.CreateCell(33).SetCellValue("买家备注");
-            row1.CreateCell(34).SetCellValue("下单IP");
-            row1.CreateCell(35).SetCellValue("卖家备注");
-            row1.CreateCell(36).SetCellValue("订单来源");
-            row1.CreateCell(37).SetCellValue("是否评论");
-            row1.CreateCell(38).SetCellValue("删除标志");
-            row1.CreateCell(39).SetCellValue("");
-            row1.CreateCell(40).SetCellValue("");
 
-            //将数据逐步写入sheet1各个行
-            for (var i = 0; i < listmodel.Count; i++)
+            var items = new List<CellValueItem>();
+            items.Add(new CellValueItem() { name = "序号", width = 10 });
+            items.Add(new CellValueItem() { name = "订单号", width = 20 });
+            items.Add(new CellValueItem() { name = "商品总价", width = 12 });
+            items.Add(new CellValueItem() { name = "支付金额", width = 12 });
+            items.Add(new CellValueItem() { name = "订单总额", width = 12 });
+            items.Add(new CellValueItem() { name = "支付状态", width = 12 });
+            items.Add(new CellValueItem() { name = "发货状态", width = 12 });
+            items.Add(new CellValueItem() { name = "订单状态", width = 12 });
+            items.Add(new CellValueItem() { name = "订单类型", width = 12 });
+            items.Add(new CellValueItem() { name = "支付方式", width = 12 });
+            items.Add(new CellValueItem() { name = "支付时间", width = 20 });
+
+            items.Add(new CellValueItem() { name = "货品名称", width = 40 });
+            items.Add(new CellValueItem() { name = "数量", width = 12 });
+            items.Add(new CellValueItem() { name = "单价", width = 12 });
+            items.Add(new CellValueItem() { name = "优惠", width = 12 });
+            items.Add(new CellValueItem() { name = "合计", width = 12 });
+
+
+            items.Add(new CellValueItem() { name = "收货人姓名", width = 12 });
+            items.Add(new CellValueItem() { name = "收货电话", width = 12 });
+            items.Add(new CellValueItem() { name = "收货详细地址", width = 40 });
+
+
+            items.Add(new CellValueItem() { name = "配送方式名称", width = 20 });
+            items.Add(new CellValueItem() { name = "配送费用", width = 12 });
+            items.Add(new CellValueItem() { name = "用户ID", width = 12 });
+
+            items.Add(new CellValueItem() { name = "是否收货", width = 20 });
+            items.Add(new CellValueItem() { name = "确认收货时间", width = 20 });
+
+
+            items.Add(new CellValueItem() { name = "商品总重量", width = 20 });
+            items.Add(new CellValueItem() { name = "是否开发票", width = 20 });
+            items.Add(new CellValueItem() { name = "税号", width = 20 });
+            items.Add(new CellValueItem() { name = "发票抬头", width = 20 });
+            items.Add(new CellValueItem() { name = "使用积分", width = 20 });
+            items.Add(new CellValueItem() { name = "积分抵扣金额", width = 20 });
+            items.Add(new CellValueItem() { name = "订单优惠金额", width = 20 });
+            items.Add(new CellValueItem() { name = "商品优惠金额", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠券优惠额度", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠券信息", width = 20 });
+            items.Add(new CellValueItem() { name = "优惠信息", width = 20 });
+            items.Add(new CellValueItem() { name = "买家备注", width = 20 });
+            items.Add(new CellValueItem() { name = "下单IP", width = 20 });
+            items.Add(new CellValueItem() { name = "卖家备注", width = 20 });
+            items.Add(new CellValueItem() { name = "订单来源", width = 20 });
+            items.Add(new CellValueItem() { name = "是否评论", width = 20 });
+            items.Add(new CellValueItem() { name = "删除标志", width = 20 });
+            items.Add(new CellValueItem() { name = "订单时间", width = 20 });
+            items.Add(new CellValueItem() { name = "更新时间", width = 20 });
+
+            var headerStyle = ExcelHelper.GetHeaderStyle(book);
+
+            for (int i = 0; i < items.Count; i++)
             {
-                var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].orderId.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].goodsAmount.ToString());
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].payedAmount.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].orderAmount.ToString());
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].payStatus.ToString());
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].shipStatus.ToString());
-                rowtemp.CreateCell(6).SetCellValue(listmodel[i].status.ToString());
-                rowtemp.CreateCell(7).SetCellValue(listmodel[i].orderType.ToString());
-                rowtemp.CreateCell(8).SetCellValue(listmodel[i].paymentCode.ToString());
-                rowtemp.CreateCell(9).SetCellValue(listmodel[i].paymentTime.ToString());
-                rowtemp.CreateCell(10).SetCellValue(listmodel[i].logisticsId.ToString());
-                rowtemp.CreateCell(11).SetCellValue(listmodel[i].logisticsName.ToString());
-                rowtemp.CreateCell(12).SetCellValue(listmodel[i].costFreight.ToString());
-                rowtemp.CreateCell(13).SetCellValue(listmodel[i].userId.ToString());
-                rowtemp.CreateCell(14).SetCellValue(listmodel[i].sellerId.ToString());
-                rowtemp.CreateCell(15).SetCellValue(listmodel[i].confirmStatus.ToString());
-                rowtemp.CreateCell(16).SetCellValue(listmodel[i].confirmTime.ToString());
-                rowtemp.CreateCell(17).SetCellValue(listmodel[i].storeId.ToString());
-                rowtemp.CreateCell(18).SetCellValue(listmodel[i].shipAreaId.ToString());
-                rowtemp.CreateCell(19).SetCellValue(listmodel[i].shipAddress.ToString());
-                rowtemp.CreateCell(20).SetCellValue(listmodel[i].shipName.ToString());
-                rowtemp.CreateCell(21).SetCellValue(listmodel[i].shipMobile.ToString());
-                rowtemp.CreateCell(22).SetCellValue(listmodel[i].weight.ToString());
-                rowtemp.CreateCell(23).SetCellValue(listmodel[i].taxType.ToString());
-                rowtemp.CreateCell(24).SetCellValue(listmodel[i].taxCode.ToString());
-                rowtemp.CreateCell(25).SetCellValue(listmodel[i].taxTitle.ToString());
-                rowtemp.CreateCell(26).SetCellValue(listmodel[i].point.ToString());
-                rowtemp.CreateCell(27).SetCellValue(listmodel[i].pointMoney.ToString());
-                rowtemp.CreateCell(28).SetCellValue(listmodel[i].orderDiscountAmount.ToString());
-                rowtemp.CreateCell(29).SetCellValue(listmodel[i].goodsDiscountAmount.ToString());
-                rowtemp.CreateCell(30).SetCellValue(listmodel[i].couponDiscountAmount.ToString());
-                rowtemp.CreateCell(31).SetCellValue(listmodel[i].coupon.ToString());
-                rowtemp.CreateCell(32).SetCellValue(listmodel[i].promotionList.ToString());
-                rowtemp.CreateCell(33).SetCellValue(listmodel[i].memo.ToString());
-                rowtemp.CreateCell(34).SetCellValue(listmodel[i].ip.ToString());
-                rowtemp.CreateCell(35).SetCellValue(listmodel[i].mark.ToString());
-                rowtemp.CreateCell(36).SetCellValue(listmodel[i].source.ToString());
-                rowtemp.CreateCell(37).SetCellValue(listmodel[i].isComment.ToString());
-                rowtemp.CreateCell(38).SetCellValue(listmodel[i].isdel.ToString());
-                rowtemp.CreateCell(39).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(40).SetCellValue(listmodel[i].updateTime.ToString());
+                var cell = row1.CreateCell(i);
+                cell.SetCellValue(items[i].name);
+                cell.CellStyle = headerStyle;
+                sheet1.SetColumnWidth(i, items[i].width * 256);
+            }
+
+            row1.Height = 30 * 20;
+
+            var commonCellStyle = ExcelHelper.GetCommonStyle(book);
+
+
+            var detailsStartNumber = 0;
+            var listStartNumber = 0;
+            foreach (var order in list)
+            {
+                listStartNumber++;
+                //当前开始行
+                var nowNumber = detailsStartNumber;
+                //将数据逐步写入sheet1各个行
+                foreach (var t in order.items)
+                {
+                    var rowTemp = sheet1.CreateRow(detailsStartNumber + 1);
+
+                    rowTemp.CreateCell(0).SetCellValue(listStartNumber);
+                    rowTemp.CreateCell(1).SetCellValue(order.orderId);
+                    rowTemp.CreateCell(2).SetCellValue(order.goodsAmount.ToString());
+                    rowTemp.CreateCell(3).SetCellValue(order.payedAmount.ToString());
+                    rowTemp.CreateCell(4).SetCellValue(order.orderAmount.ToString());
+
+                    var payModel = orderPayStatusEntities.Find(p => p.value == order.payStatus);
+                    rowTemp.CreateCell(5).SetCellValue(payModel != null ? payModel.description : "");
+
+                    var shipStatusModel = shipStatusEntities.Find(p => p.value == order.shipStatus);
+                    rowTemp.CreateCell(6).SetCellValue(shipStatusModel != null ? shipStatusModel.description : "");
+
+                    var statusModel = orderStatusEntities.Find(p => p.value == order.status);
+                    rowTemp.CreateCell(7).SetCellValue(statusModel != null ? statusModel.description : "");
+
+                    var orderTypeModel = orderTypeEntities.Find(p => p.value == order.orderType);
+                    rowTemp.CreateCell(8).SetCellValue(orderTypeModel != null ? orderTypeModel.description : "");
+
+                    var paymentCodeModel = paymentsTypesEntities.Find(p => p.title == order.paymentCode);
+                    rowTemp.CreateCell(9).SetCellValue(paymentCodeModel != null ? paymentCodeModel.description : "");
+
+                    rowTemp.CreateCell(10).SetCellValue(order.paymentTime.ToString());
+
+
+                    rowTemp.CreateCell(11).SetCellValue(!string.IsNullOrEmpty(t.addon) ? t.addon : t.name);
+                    rowTemp.CreateCell(12).SetCellValue(t.nums);
+                    rowTemp.CreateCell(13).SetCellValue(t.price + "元");
+                    rowTemp.CreateCell(14).SetCellValue(t.promotionAmount + "元");
+                    rowTemp.CreateCell(15).SetCellValue(t.amount + "元");
+
+
+                    rowTemp.CreateCell(16).SetCellValue(order.shipName);
+                    rowTemp.CreateCell(17).SetCellValue(order.shipMobile);
+                    rowTemp.CreateCell(18).SetCellValue(order.shipAddress);
+
+                    rowTemp.CreateCell(19).SetCellValue(!string.IsNullOrEmpty(order.logisticsName) ? order.logisticsName : "自提配送");
+                    rowTemp.CreateCell(20).SetCellValue(order.costFreight.ToString());
+                    rowTemp.CreateCell(21).SetCellValue(order.userId.ToString());
+
+                    var confirmStatusModel = orderConfirmStatusEntities.Find(p => p.value == order.confirmStatus);
+                    rowTemp.CreateCell(22).SetCellValue(confirmStatusModel != null ? confirmStatusModel.description : "");
+
+                    rowTemp.CreateCell(23).SetCellValue(order.confirmTime.ToString());
+
+                    rowTemp.CreateCell(24).SetCellValue(order.weight.ToString());
+                    rowTemp.CreateCell(25).SetCellValue(order.taxType.ToString());
+                    rowTemp.CreateCell(26).SetCellValue(order.taxCode);
+                    rowTemp.CreateCell(27).SetCellValue(order.taxTitle);
+                    rowTemp.CreateCell(28).SetCellValue(order.point.ToString());
+                    rowTemp.CreateCell(29).SetCellValue(order.pointMoney.ToString());
+                    rowTemp.CreateCell(30).SetCellValue(order.orderDiscountAmount.ToString());
+                    rowTemp.CreateCell(31).SetCellValue(order.goodsDiscountAmount.ToString());
+                    rowTemp.CreateCell(32).SetCellValue(order.couponDiscountAmount.ToString());
+                    rowTemp.CreateCell(33).SetCellValue(order.coupon);
+                    rowTemp.CreateCell(34).SetCellValue(order.promotionList);
+                    rowTemp.CreateCell(35).SetCellValue(order.memo);
+                    rowTemp.CreateCell(36).SetCellValue(order.ip);
+                    rowTemp.CreateCell(37).SetCellValue(order.mark);
+                    rowTemp.CreateCell(38).SetCellValue(order.source.ToString());
+                    rowTemp.CreateCell(39).SetCellValue(order.isComment.ToString());
+                    rowTemp.CreateCell(40).SetCellValue(order.isdel.ToString());
+                    rowTemp.CreateCell(41).SetCellValue(order.createTime.ToString());
+                    rowTemp.CreateCell(42).SetCellValue(order.updateTime.ToString());
+
+
+                    rowTemp.Cells.ForEach(p =>
+                    {
+                        p.CellStyle = commonCellStyle;
+                    });
+                    rowTemp.Height = 20 * 20;
+
+
+                    detailsStartNumber++;
+                }
+                //合并单元格（第几行，到第几行，第几列，到第几列）
+                var marId = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42 };
+                foreach (var id in marId)
+                {
+                    sheet1.AddMergedRegion(new CellRangeAddress(nowNumber + 1, detailsStartNumber, id, id));
+                }
 
             }
+
             // 写入到excel
             string webRootPath = _webHostEnvironment.WebRootPath;
             string tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            string fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-CoreCmsOrder导出(查询结果).xls";
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-订单导出(查询结果).xls";
             string filePath = webRootPath + tpath;
             DirectoryInfo di = new DirectoryInfo(filePath);
             if (!di.Exists)
@@ -1283,17 +1565,17 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("取消订单")]
-        public async Task<JsonResult> CancelOrder([FromBody] FMStringId entity)
+        public async Task<JsonResult> CancelOrder([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
-            if (string.IsNullOrEmpty(entity.id))
+            if (entity.id.Length == 0)
             {
                 jm.msg = "请提交要取消的订单号";
                 return Json(jm);
             }
-            var ids = entity.id.Split(",");
-            var result = await _coreCmsOrderServices.CancelOrder(ids);
+
+            var result = await _coreCmsOrderServices.CancelOrder(entity.id);
             jm.code = result.status ? 0 : 1;
             jm.msg = result.msg;
 
@@ -1311,7 +1593,34 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("批量删除订单")]
-        public async Task<JsonResult> DeleteOrder([FromBody] FMStringId entity)
+        public async Task<JsonResult> DeleteOrder([FromBody] FMArrayStringIds entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            if (entity.id.Length == 0)
+            {
+                jm.msg = "请提交要批量删除的订单号";
+                return Json(jm);
+            }
+
+            var result = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { isdel = true }, p => entity.id.Contains(p.orderId));
+            jm.code = result ? 0 : 1;
+            jm.msg = result ? "删除成功" : "删除失败";
+
+            return Json(jm);
+        }
+        #endregion
+
+        #region 重新同步发货============================================================
+        // POST: Api/CoreCmsOrder/DeleteOrder/10
+        /// <summary>
+        /// 批量删除订单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("批量删除订单")]
+        public async Task<JsonResult> RefreshDelivery([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -1320,10 +1629,16 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 jm.msg = "请提交要取消的订单号";
                 return Json(jm);
             }
-            var ids = entity.id.Split(",");
-            var result = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { isdel = true }, p => ids.Contains(p.orderId));
-            jm.code = result ? 0 : 1;
-            jm.msg = result ? "删除成功" : "删除失败";
+
+            var delivery = await _billDeliveryServices.QueryByClauseAsync(p => p.deliveryId == entity.id);
+            if (delivery == null)
+            {
+                jm.msg = "发货单获取失败";
+                return Json(jm);
+            }
+
+            jm.code = 0;
+            jm.msg = "提交任务成功,请核实远端状态";
 
             return Json(jm);
         }
@@ -1355,7 +1670,5 @@ namespace CoreCms.Net.Web.Admin.Controllers
             return Json(jm);
         }
         #endregion
-
-
     }
 }

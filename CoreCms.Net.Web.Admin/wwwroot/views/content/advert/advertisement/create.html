@@ -1,0 +1,280 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsAdvertisement-createForm" id="LAY-app-CoreCmsAdvertisement-createForm">
+
+        <div class="layui-form-item">
+            <label for="positionId" class="layui-form-label">广告位置</label>
+            <div class="layui-input-inline">
+                <select name="positionId" id="positionId" required lay-verify="required" lay-reqText="请输入位置序列" placeholder="请输入位置序列">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.advertPosition, function(index, item){ }}
+                    <option value="{{ item.id }}">{{ item.name }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">广告名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入广告名称" placeholder="请输入广告名称" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过50个字符内容</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="imageUrl" class="layui-form-label">广告图片</label>
+            <div class="layui-input-inline">
+                <input name="imageUrl" id="imageUrl" lay-verify="required" class="layui-input" placeholder="请上传广告图片" lay-reqText="请上传广告图片" />
+            </div>
+            <div class="layui-input-inline">
+                <img class="coreshop-upload-img" id="viewImgBoximageUrl" src="{{ layui.setter.noImagePicUrl }}">
+                <button type="button" class="layui-btn" lay-active="doCropperImg">上传图片</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">类型</label>
+            <div class="layui-input-inline">
+                <select name="type" id="type" required lay-filter="type" lay-verify="required" lay-reqText="请输入类型" placeholder="请输入类型">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data.types, function(index, item){ }}
+                    <option value="{{ item.value }}" {{item.value==2?'selected="selected"':''}}>{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div id="div1" style="display: none">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="required-color">*</i>广告链接URL：</label>
+                <div class="layui-input-inline layui-inline-5">
+                    <input type="text" id="url" name="url" required placeholder="请输入合法的URL链接,必须以http://开头" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div id="div2" style="display: none">
+            <input type="hidden" name="goodsId" id="goodsId">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="required-color">*</i>广告商品：</label>
+                <div class="layui-input-inline layui-inline-5">
+                    <input type="text" id="goods" name="goods" readonly="readonly" required placeholder="请选择广告商品" autocomplete="off" class="layui-input" lay-active="getGoodsList">
+                </div>
+            </div>
+        </div>
+
+        <div id="div3" style="display: none">
+            <input type="hidden" name="articleId" id="articleId">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="required-color">*</i>广告文章：</label>
+                <div class="layui-input-inline layui-inline-5">
+                    <input type="text" id="article" name="article" readonly="readonly" required placeholder="请选择广告文章" autocomplete="off" class="layui-input" lay-active="getArticleList">
+                </div>
+            </div>
+        </div>
+
+        <div id="div4" style="display: none">
+            <input type="hidden" name="articleTypeId" id="articleTypeId">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="required-color">*</i>文章分类：</label>
+                <div class="layui-input-inline layui-inline-5">
+                    <input type="text" id="articleType" name="articleType" readonly="readonly" required placeholder="请选择文章分类" autocomplete="off" class="layui-input" lay-active="getArticleTypeList">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+        <div class="layui-form-item core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAdvertisement-createForm-submit" id="LAY-app-CoreCmsAdvertisement-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var $;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'table', 'util', 'treeTable', 'cropperImg'],
+            function () {
+                $ = layui.$;
+                var form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , table = layui.table
+                    , cropperImg = layui.cropperImg
+                    , view = layui.view
+                    , coreHelper = layui.coreHelper
+                    , treeTable = layui.treeTable
+                    , util = layui.util;
+
+                var type = $('select[name=type] option:selected').val();
+
+                if (type === '1') {
+                    $("#div1").show();
+                } else if (type === '2') {
+                    $("#div2").show();
+                } else if (type === '3') {
+                    $("#div3").show();
+                } else {
+                    $("#div4").show()
+                }
+
+                form.on('select(type)', function (data) {
+                    if (data.value === '1') {
+                        $("#div1").show();
+                        $("#div2").hide();
+                        $("#div3").hide();
+                        $("#div4").hide();
+                    }
+                    if (data.value === '2') {
+                        $("#div1").hide();
+                        $("#div2").show();
+                        $("#div3").hide();
+                        $("#div4").hide();
+                    }
+                    if (data.value === '3') {
+                        $("#div1").hide();
+                        $("#div2").hide();
+                        $("#div3").show();
+                        $("#div4").hide();
+                    }
+                    if (data.value === '4') {
+                        $("#div1").hide()
+                        $("#div2").hide()
+                        $("#div3").hide()
+                        $("#div4").show()
+                    }
+                });
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    getGoodsList: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择商品',
+                            area: ['1200px', '90%'],
+                            id: 'LAY-popup-CoreCmsAdvertisement-GetGoodsList',
+                            success: function (layero, index) {
+                                view(this.id).render('content/advert/advertisement/getGoods', null).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+                                    table.on('tool(LAY-app-CoreCmsGoods-tableBox)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        var data = obj.data; //获得当前行数据
+                                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                        var tr = obj.tr; //获得当前行 tr 的DOM对象
+                                        if (layEvent === 'selectGoods') { //选择
+                                            console.log(layEvent);
+                                            $("#goods").val(data.name);
+                                            $("#goodsId").val(data.id);
+                                            $("#articleId").val('');
+                                            $("#article").val('');
+                                            $("#url").val('');
+                                            $("#articleTypeId").val('');
+                                            $("#articleType").val('');
+                                            layer.close(index); //再执行关闭
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    }
+                    , getArticleList: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择文章',
+                            area: ['1200px', '90%'],
+                            id: 'LAY-popup-CoreCmsAdvertisement-GetArticleList',
+                            success: function (layero, index) {
+                                view(this.id).render('content/advert/advertisement/getArticle', null).done(function () {
+                                    form.render();
+                                    //监听文章列表页工具条
+                                    table.on('tool(LAY-app-CoreCmsArticle-tableBox)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        var data = obj.data; //获得当前行数据
+                                        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                        var tr = obj.tr; //获得当前行 tr 的DOM对象
+                                        if (layEvent === 'selectArticle') { //选择
+                                            $("#article").val(data.title);
+                                            $("#articleId").val(data.id);
+                                            $("#goods").val('');
+                                            $("#goodsId").val('');
+                                            $("#url").val('');
+                                            $("#articleTypeId").val('');
+                                            $("#articleType").val('');
+                                            layer.close(index); //再执行关闭
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    }
+                    , getArticleTypeList: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择文章分类',
+                            area: ['1200px', '90%'],
+                            id: 'LAY-popup-CoreCmsAdvertisement-GetArticleTypeList',
+                            success: function (layero, index) {
+                                view(this.id).render('content/advert/advertisement/getArticleType', null).done(function () {
+                                    form.render();
+                                    // 监听文章分类列表页工具条
+                                    treeTable.on('tool(LAY-app-CoreCmsArticleType-tableBox)', function (obj) {
+                                        var data = obj.data;
+                                        var layEvent = obj.event;
+                                        var tr = obj.tr;
+                                        if (layEvent === 'selectType') { //选择
+                                            console.log(layEvent);
+                                            $("#articleTypeId").val(data.id);
+                                            $("#articleType").val(data.name);
+                                            $("#goods").val('');
+                                            $("#goodsId").val('');
+                                            $("#articleId").val('');
+                                            $("#article").val('');
+                                            $("#url").val('');
+                                            layer.close(index); //再执行关闭
+                                        }
+                                    })
+                                });
+                            }
+                        });
+                    },
+                    doCropperImg: function () {
+                        cropperImg.cropImg({
+                            imgSrc: $('#viewImgBoximageUrl').attr('src'),
+                            onCrop: function (data) {
+                                var loadIndex = layer.load(2);
+                                coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                    if (0 === res.code) {
+                                        $('#viewImgBoximageUrl').attr('src', res.data.fileUrl);
+                                        $("#imageUrl").val(res.data.fileUrl);
+                                        layer.msg(res.msg);
+                                        layer.close(loadIndex);
+                                    } else {
+                                        layer.close(loadIndex);
+                                        layer.msg(res.msg, { icon: 2, anim: 6 });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                form.verify({
+
+                    verifyname: [/^[\S]{0,50}$/, '广告名称最大只允许输入50位字符，且不能出现空格'],
+                    verifyimageUrl: [/^[\S]{0,255}$/, '广告图片id最大只允许输入255位字符，且不能出现空格'],
+                    verifyval: [/^[\S]{0,255}$/, '链接属性值最大只允许输入255位字符，且不能出现空格'],
+                    verifycode: [/^[\S]{0,32}$/, '广告位置编码最大只允许输入32位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsAdvertisement-createForm');
+
+            })
+    };
+</script>

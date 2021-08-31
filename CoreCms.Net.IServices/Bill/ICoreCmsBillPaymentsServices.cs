@@ -26,13 +26,24 @@ namespace CoreCms.Net.IServices
     public interface ICoreCmsBillPaymentsServices : IBaseServices<CoreCmsBillPayments>
     {
         /// <summary>
-        ///     生成支付单的时候，格式化支付单明细
+        ///     单个生成支付单的时候，格式化支付单明细
+        /// </summary>
+        /// <param name="orderId">订单号</param>
+        /// <param name="type"></param>
+        /// <param name="params"></param>
+        /// <returns></returns>
+        Task<WebApiCallBack> FormatPaymentRel(string orderId, int type, JObject @params);
+
+
+        /// <summary>
+        ///     批量生成支付单的时候，格式化支付单明细
         /// </summary>
         /// <param name="sourceStr"></param>
         /// <param name="type"></param>
         /// <param name="params"></param>
         /// <returns></returns>
-        WebApiCallBack FormatPaymentRel(string[] sourceStr, int type, JObject @params);
+        Task<WebApiCallBack> BatchFormatPaymentRel(string[] sourceStr, int type, JObject @params);
+
 
         /// <summary>
         ///     支付，先生成支付单，然后去支付
@@ -71,14 +82,6 @@ namespace CoreCms.Net.IServices
         /// <param name="paymentCode">支付类型编码</param>
         /// <returns></returns>
         Task<WebApiCallBack> ToPay(string orderId, int type, string paymentCode);
-
-        /// <summary>
-        ///     //根据资源id和类型取支付成功的支付单,可能查不到内容，所以，要用的话，在外面一定要判断一下。
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        Task<CoreCmsBillPayments> GetSuccessPaymentInfo(string sourceId, int type);
 
         /// <summary>
         ///     支付单7天统计

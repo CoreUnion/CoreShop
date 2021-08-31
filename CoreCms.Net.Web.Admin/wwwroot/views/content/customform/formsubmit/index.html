@@ -1,0 +1,513 @@
+<title>用户对表的提交记录</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsFormSubmit/GetIndex" lay-done="layui.data.done(d);">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsFormSubmit-tableBox" lay-filter="LAY-app-CoreCmsFormSubmit-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsFormSubmit-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="formId">
+                        <option value="">请选择表单</option>
+                        {{# layui.each(indexData.forms, function(index, item){ }}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="userName" placeholder="请输入会员昵称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="payStatus">
+                        <option value="">请选择是否支付</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status">
+                        <option value="">请选择是否处理</option>
+                        <option value="True">是</option>
+                        <option value="False">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="ip" placeholder="请输入提交人ip" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline core-time-input">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsFormSubmit-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsFormSubmit-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsFormSubmit-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">反馈</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" data-dropdown="#CoreCmsFormSubmitTbDelDrop{{d.LAY_INDEX}}" no-shade="true">删除</a>
+    <div class="dropdown-menu-nav dropdown-popconfirm dropdown-top-right layui-hide" id="CoreCmsFormSubmitTbDelDrop{{d.LAY_INDEX}}"
+         style="max-width: 200px;white-space: normal;min-width: auto;margin-left: 10px;">
+        <div class="dropdown-anchor"></div>
+        <div class="dropdown-popconfirm-title">
+            <i class="layui-icon layui-icon-help"></i>
+            确定要删除吗？
+        </div>
+        <div class="dropdown-popconfirm-btn">
+            <a class="layui-btn layui-btn-primary cursor" btn-cancel>取消</a>
+            <a class="layui-btn layui-btn-normal cursor" lay-event="del">确定</a>
+        </div>
+    </div>
+
+
+</script>
+
+<div id="printImageBox" style="display: none;"></div>
+
+
+<script>
+    var CreatedOKLodopObject, CLodopIsLocal, CLodopJsState;
+    var LODOP;
+    var $;
+
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsFormSubmit-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsFormSubmit-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsFormSubmit/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsFormSubmit-toolbar',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            //{ field: 'formId', title: '表单id', sort: false, width: 105 },
+                            { field: 'formName', title: '表单名称', sort: false },
+                            {
+                                field: 'userId', title: '会员', sort: false, width: 155, templet: function (data) {
+                                    if (data.avatarImage) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + data.avatarImage + '")><image style="max-width:28px;max-height:28px;" src="' + data.avatarImage + '" /></a> ' + data.userName + "（" + data.userId + "）";
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a> ' + data.userName + "（" + data.userId + "）";
+                                    }
+                                }
+                            },
+                            { field: 'money', title: '总金额', sort: false, width: 105, templet: function (data) { return '￥' + data.money } },
+                            { field: 'payStatus', title: '是否支付', width: 95, templet: '#switch_payStatus', sort: false, unresize: true },
+                            { field: 'status', title: '是否处理', width: 95, templet: '#switch_status', sort: false, unresize: true },
+                            { field: 'feedback', title: '表单反馈', sort: false, edit: 'text' },
+                            { field: 'ip', title: '提交人ip', sort: false, width: 105 },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { width: 162, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsFormSubmit-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsFormSubmit-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsFormSubmit-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsFormSubmit-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsFormSubmit-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        }
+                    });
+
+                //监听单元格编辑
+                table.on('edit(LAY-app-CoreCmsFormSubmit-tableBox)', function (obj) {
+                    var value = obj.value //得到修改后的值
+                        , data = obj.data //得到所在行所有键值
+                        , field = obj.field; //得到字段
+                    console.log(obj.value);
+                    if (!!!obj.value) {
+                        layer.msg("内容不能为空");
+                        return false;
+                    }
+                    if (field == 'feedback') {
+                        coreHelper.Post("Api/CoreCmsFormSubmit/DoSetFeedback", { id: data.id, data: value }, function (e) {
+                            console.log(e)
+                            if (e.code === 0) {
+                                layui.table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox'); //重载表格
+                                layer.msg(e.msg);
+                            } else {
+                                layer.msg(e.msg);
+                            }
+                        });
+                    }
+                });
+
+                //执行表单反馈
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsFormSubmit/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '表单反馈',
+                                area: ['500px', '280px'],
+                                id: 'LAY-popup-CoreCmsFormSubmit-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/formsubmit/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsFormSubmit-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsFormSubmit/DoSetFeedback", field, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsFormSubmit-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+
+                //==判断是否需要CLodop(那些不支持插件的浏览器):==
+                function needCLodop() {
+                    try {
+                        var ua = navigator.userAgent;
+                        if (ua.match(/Windows\sPhone/i))
+                            return true;
+                        if (ua.match(/iPhone|iPod|iPad/i))
+                            return true;
+                        if (ua.match(/Android/i))
+                            return true;
+                        if (ua.match(/Edge\D?\d+/i))
+                            return true;
+
+                        var verTrident = ua.match(/Trident\D?\d+/i);
+                        var verIE = ua.match(/MSIE\D?\d+/i);
+                        var verOPR = ua.match(/OPR\D?\d+/i);
+                        var verFF = ua.match(/Firefox\D?\d+/i);
+                        var x64 = ua.match(/x64/i);
+                        if ((!verTrident) && (!verIE) && (x64))
+                            return true;
+                        else if (verFF) {
+                            verFF = verFF[0].match(/\d+/);
+                            if ((verFF[0] >= 41) || (x64))
+                                return true;
+                        } else if (verOPR) {
+                            verOPR = verOPR[0].match(/\d+/);
+                            if (verOPR[0] >= 32)
+                                return true;
+                        } else if ((!verTrident) && (!verIE)) {
+                            var verChrome = ua.match(/Chrome\D?\d+/i);
+                            if (verChrome) {
+                                verChrome = verChrome[0].match(/\d+/);
+                                if (verChrome[0] >= 41)
+                                    return true;
+                            }
+                        }
+                        return false;
+                    } catch (err) {
+                        return true;
+                    }
+                }
+
+                //==加载引用CLodop的主JS,用双端口8000和18000(以防其中一个被占):==
+                function loadCLodop() {
+                    if (CLodopJsState == "loading" || CLodopJsState == "complete") return;
+                    CLodopJsState = "loading";
+                    var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+                    var JS1 = document.createElement("script");
+                    var JS2 = document.createElement("script");
+                    JS1.src = "http://localhost:8000/CLodopfuncs.js?priority=1";
+                    JS2.src = "http://localhost:18000/CLodopfuncs.js";
+                    JS1.onload = JS2.onload = function () { CLodopJsState = "complete"; }
+                    JS1.onerror = JS2.onerror = function (evt) { CLodopJsState = "complete"; }
+                    head.insertBefore(JS1, head.firstChild);
+                    head.insertBefore(JS2, head.firstChild);
+                    CLodopIsLocal = !!((JS1.src + JS2.src).match(/\/\/localho|\/\/127.0.0./i));
+                }
+
+                if (needCLodop()) { loadCLodop(); }//加载
+
+
+                //==获取LODOP对象主过程,判断是否安装、需否升级:==
+                function getLodop(oOBJECT, oEMBED) {
+                    var strHtmInstall = "<font color='#FF00FF'>打印控件未安装!点击这里<a href='/lib/lodop/install_lodop32.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
+                    var strHtmUpdate = "<font color='#FF00FF'>打印控件需要升级!点击这里<a href='/lib/lodop/install_lodop32.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
+                    var strHtm64_Install = "<font color='#FF00FF'>打印控件未安装!点击这里<a href='/lib/lodop/install_lodop64.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
+                    var strHtm64_Update = "<font color='#FF00FF'>打印控件需要升级!点击这里<a href='/lib/lodop/install_lodop64.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
+                    var strHtmFireFox = "<font color='#FF00FF'>（注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它）</font>";
+                    var strHtmChrome = "<font color='#FF00FF'>(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装）</font>";
+                    var strCLodopInstall_1 = "<font color='#FF00FF'>Web打印服务CLodop未安装启动，点击这里<a href='/lib/lodop/CLodop_Setup_for_Win32NT.exe' target='_self'>下载执行安装</a>";
+                    var strCLodopInstall_2 = "（若此前已安装过，可<a href='CLodop.protocol:setup' target='_self'>点这里直接再次启动</a>）";
+                    var strCLodopInstall_3 = "，成功后请刷新本页面。</font>";
+                    var strCLodopUpdate = "<font color='#FF00FF'>Web打印服务CLodop需升级!点击这里<a href='/lib/lodop/CLodop_Setup_for_Win32NT.exe' target='_self'>执行升级</a>,升级后请刷新页面。</font>";
+                    var LODOP;
+                    try {
+                        var ua = navigator.userAgent;
+                        var isIE = !!(ua.match(/MSIE/i)) || !!(ua.match(/Trident/i));
+                        if (needCLodop()) {
+                            try {
+                                LODOP = getCLodop();
+                            } catch (err) { }
+                            if (!LODOP && CLodopJsState !== "complete") {
+                                if (CLodopJsState == "loading") {
+                                    layer.alert("网页还没下载完毕，请稍等一下再操作.")
+                                } else {
+                                    layer.alert("没有加载CLodop的主js，请先调用loadCLodop过程.")
+                                }
+                                return false;
+                            }
+                            if (!LODOP) {
+                                layer.alert(strCLodopInstall_1 + (CLodopIsLocal ? strCLodopInstall_2 : "") + strCLodopInstall_3);
+                                return false;
+                            } else {
+                                if (CLODOP.CVERSION < "4.1.0.4") {
+                                    layer.alert(strCLodopUpdate);
+                                }
+                                if (oEMBED && oEMBED.parentNode) {
+                                    oEMBED.parentNode.removeChild(oEMBED); //清理旧版无效元素
+                                }
+                                if (oOBJECT && oOBJECT.parentNode) {
+                                    oOBJECT.parentNode.removeChild(oOBJECT);
+                                }
+                            }
+                        } else {
+                            var is64IE = isIE && !!(ua.match(/x64/i));
+                            //==如果页面有Lodop就直接使用,否则新建:==
+                            if (oOBJECT || oEMBED) {
+                                if (isIE) {
+                                    LODOP = oOBJECT;
+                                } else {
+                                    LODOP = oEMBED;
+                                }
+                            } else if (!CreatedOKLodopObject) {
+                                LODOP = document.createElement("object");
+                                LODOP.setAttribute("width", 0);
+                                LODOP.setAttribute("height", 0);
+                                LODOP.setAttribute("style", "position:absolute;left:0px;top:-100px;width:0px;height:0px;");
+                                if (isIE) {
+                                    LODOP.setAttribute("classid", "clsid:2105C259-1E0C-4534-8141-A753534CB4CA");
+                                } else {
+                                    LODOP.setAttribute("type", "application/x-print-lodop");
+                                }
+                                document.documentElement.appendChild(LODOP);
+                                CreatedOKLodopObject = LODOP;
+                            } else {
+                                LODOP = CreatedOKLodopObject;
+                            }
+                            //==Lodop插件未安装时提示下载地址:==
+                            if ((!LODOP) || (!LODOP.VERSION)) {
+                                if (ua.indexOf('Chrome') >= 0) {
+                                    layer.alert(strHtmChrome);
+                                }
+                                if (ua.indexOf('Firefox') >= 0) {
+                                    layer.alert((is64IE ? strHtm64_Install : strHtmInstall) + strHtmFireFox);
+                                }
+                                return LODOP;
+                            }
+                        }
+                        if (LODOP.VERSION < "6.2.2.6") {
+                            if (!needCLodop()) {
+                                layer.alert(is64IE ? strHtm64_Update : strHtmUpdate);
+                            }
+                        }
+                        //===如下空白位置适合调用统一功能(如注册语句、语言选择等):==
+
+
+                        //=======================================================
+                        return LODOP;
+                    } catch (err) {
+                        alert("getLodop出错:" + err);
+                    }
+                }
+
+
+
+
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsFormSubmit/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['600px', '90%'],
+                                id: 'LAY-popup-CoreCmsFormSubmit-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/formsubmit/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }, btn: ['打印', '取消']
+                                , yes: function (index, layero) {
+
+                                    LODOP = getLodop();
+                                    LODOP.ADD_PRINT_HTM(20, "5%", "90%", "100%", document.getElementById("printDiv").innerHTML);
+                                    LODOP.PREVIEW();
+                                    form.render();
+
+
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    coreHelper.Post("Api/CoreCmsFormSubmit/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox');
+                        layer.msg(e.msg);
+                    });
+                }
+               
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_payStatus)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsFormSubmit/DoSetpayStatus", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+                layui.form.on('switch(switch_status)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsFormSubmit/DoSetstatus", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reloadData('LAY-app-CoreCmsFormSubmit-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsFormSubmit-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsFormSubmit-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+
+
+            });
+    };
+</script>
+
+<!--设置是否支付-->
+<script type="text/html" id="switch_payStatus">
+    <input type="checkbox" name="switch_payStatus" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="switch_payStatus" {{ d.payStatus ? 'checked' : '' }}>
+</script>
+
+<!--设置是否处理-->
+<script type="text/html" id="switch_status">
+    <input type="checkbox" name="switch_status" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="switch_status" {{ d.status ? 'checked' : '' }}>
+</script>
+

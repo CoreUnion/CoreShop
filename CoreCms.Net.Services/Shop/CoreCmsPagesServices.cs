@@ -22,7 +22,7 @@ using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -97,7 +97,7 @@ namespace CoreCms.Net.Services
                 return jm;
             }
             jm.status = true;
-            var items = await _pagesItemsRepository.QueryListByClauseAsync(p => p.pageCode == code);
+            var items = await _pagesItemsRepository.QueryListByClauseAsync(p => p.pageCode == code, p => p.sort, OrderByType.Asc);
 
             var itemsDto = new List<PagesItemsDto>();
             foreach (var item in items)

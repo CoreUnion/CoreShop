@@ -14,11 +14,9 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">配送方式</label>
-            <div class="layui-input-inline layui-inline-100 layui-form-mid">
+            <div class="layui-input-inline layui-inline-4 layui-form-mid">
                 {{d.params.data.orderModel.logisticsName || ''}}
             </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">配送费</label>
             <div class="layui-input-inline layui-inline-4 layui-form-mid">
                 {{d.params.data.orderModel.costFreight}}
@@ -78,15 +76,15 @@
                     <col width="70">
                 </colgroup>
                 <thead>
-                    <tr>
-                        <th>商品名称</th>
-                        <th>商品编码</th>
-                        <th>货品编码</th>
-                        <th>购买数量</th>
-                        <th>已退数量</th>
-                        <th>已发数量</th>
-                        <th>发货数量</th>
-                    </tr>
+                <tr>
+                    <th>商品名称</th>
+                    <th>商品编码</th>
+                    <th>货品编码</th>
+                    <th>购买数量</th>
+                    <th>已退数量</th>
+                    <th>已发数量</th>
+                    <th>发货数量</th>
+                </tr>
                 </thead>
                 {{# layui.each(d.params.data.orderModel.items, function(index, item){ }}
                 <tr>
@@ -113,6 +111,18 @@
                         <option value="">搜索选择物流公司</option>
                         {{# layui.each(d.params.data.logistics, function(index, item){ }}
                         <option value="{{item.logiCode}}">{{item.logiName}}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">直播物流</label>
+                <div class="layui-input-inline layui-inline-4">
+                    <select name="deliveryCompanyId" lay-verify="required" lay-reqText="直播物流" lay-search>
+                        <option value="">搜索选择物流公司</option>
+                        <option value="OTHERS" selected="selected">无物流</option>
+                        {{# layui.each(d.params.data.deliveryCompany, function(index, item){ }}
+                        <option value="{{item.deliveryId}}">{{item.deliveryName}}</option>
                         {{# }); }}
                     </select>
                 </div>

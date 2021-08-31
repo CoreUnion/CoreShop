@@ -11,11 +11,6 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsAgentGrade/GetIndex" lay-done="layui.data.done(d);">
-    <div class="warning-msg" style="border: 1px solid #e6e6e6;margin: 10px 10px 0 10px;">
-        <div class="warning-msg-content" style="margin-bottom: 0px;">
-            <p>等级排序越大，等级越高</p>
-        </div>
-    </div>
 </script>
 <div class="table-body">
     <table id="LAY-app-CoreCmsAgentGrade-tableBox" lay-filter="LAY-app-CoreCmsAgentGrade-tableBox"></table>
@@ -74,7 +69,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -83,7 +78,7 @@
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsAgentGrade-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -106,7 +101,7 @@
                                 }
                             },
                             { field: 'defaultSalesPriceNumber', title: '价格加成值', sort: false, width: 105 },
-                            { field: 'sortId', title: '等级排序', sort: false, width: 105 },
+                            { field: 'sortId', title: '等级排序（等级排序越大，等级越高）', sort: false, width: 240 },
                             { field: 'description', title: '等级说明', sort: false },
                             { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsAgentGrade-tableBox-bar' }
                         ]
@@ -114,7 +109,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsAgentGrade-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsAgentGrade-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -164,7 +159,7 @@
                                                 coreHelper.Post("Api/CoreCmsAgentGrade/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -210,7 +205,7 @@
                                                 coreHelper.Post("Api/CoreCmsAgentGrade/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -236,7 +231,7 @@
                 function doDelete(obj) {
                     coreHelper.Post("Api/CoreCmsAgentGrade/DoDelete", { id: obj.data.id }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox');
                         layer.msg(e.msg);
                     });
                 }
@@ -247,7 +242,7 @@
                 layui.form.on('switch(switch_isDefault)', function (obj) {
                     coreHelper.Post("Api/CoreCmsAgentGrade/DoSetisDefault", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox');
                         layer.msg(e.msg);
                     });
                 });
@@ -255,7 +250,7 @@
                 layui.form.on('switch(switch_isAutoUpGrade)', function (obj) {
                     coreHelper.Post("Api/CoreCmsAgentGrade/DoSetisAutoUpGrade", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsAgentGrade-tableBox');
+                        table.reloadData('LAY-app-CoreCmsAgentGrade-tableBox');
                         layer.msg(e.msg);
                     });
                 });

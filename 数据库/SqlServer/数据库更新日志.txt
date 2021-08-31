@@ -1,3 +1,8 @@
+2021-08-31
+1、【调整】删除【支付单关系表CoreCmsBillPaymentsRel】，【CoreCmsBillPayments】表增加【sourceId】字段，替换不同类型数据单据关联。
+2、【调整】删除【发货单关系表CoreCmsBillDeliveryOrderRel】，【CoreCmsBillDeliveryItem】表增加【orderId】字段，直接对接订单表。
+3、【调整】删除【支付票据文件表CoreCmsPaymentsFile】
+
 2021-08-01
 1、增加【WeChatAccessToken】表。用于存储微信公众号或者小程序存放交互accessToken用
 

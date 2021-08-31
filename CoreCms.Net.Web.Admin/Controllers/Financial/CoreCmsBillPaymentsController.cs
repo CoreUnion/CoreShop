@@ -42,7 +42,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Authorize]
     public class CoreCmsBillPaymentsController : Controller
     {
-        private readonly ICoreCmsBillPaymentsRelServices _billPaymentsRelServices;
         private readonly ICoreCmsBillPaymentsServices _coreCmsBillPaymentsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -51,14 +50,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <param name="webHostEnvironment"></param>
         /// <param name="coreCmsBillPaymentsServices"></param>
-        /// <param name="billPaymentsRelServices"></param>
         public CoreCmsBillPaymentsController(IWebHostEnvironment webHostEnvironment
-            , ICoreCmsBillPaymentsServices coreCmsBillPaymentsServices,
-            ICoreCmsBillPaymentsRelServices billPaymentsRelServices)
+            , ICoreCmsBillPaymentsServices coreCmsBillPaymentsServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _coreCmsBillPaymentsServices = coreCmsBillPaymentsServices;
-            _billPaymentsRelServices = billPaymentsRelServices;
         }
 
         #region 获取列表============================================================
@@ -264,13 +260,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return Json(jm);
             }
 
-            var paymentsStatus =
-                EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(model.status);
-            var paymentsResourceTypes =
-                EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsType>(model.type);
+            var paymentsStatus = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(model.status);
+            var paymentsResourceTypes = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsType>(model.type);
             var paymentCode = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(model.paymentCode);
-
-            var rel = await _billPaymentsRelServices.QueryListByClauseAsync(p => p.paymentId == model.paymentId);
 
             jm.code = 0;
             jm.data = new
@@ -279,7 +271,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 paymentsStatus,
                 paymentsResourceTypes,
                 paymentCode,
-                rel
             };
 
 

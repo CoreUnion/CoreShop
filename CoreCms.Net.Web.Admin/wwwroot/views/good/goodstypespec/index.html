@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsGoodsTypeSpec/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsGoodsTypeSpec-tableBox" lay-filter="LAY-app-CoreCmsGoodsTypeSpec-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsGoodsTypeSpec-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -24,11 +31,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsGoodsTypeSpec-tableBox" lay-filter="LAY-app-CoreCmsGoodsTypeSpec-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsGoodsTypeSpec-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsGoodsTypeSpec-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
     </div>
@@ -40,7 +43,7 @@
 
 <script>
     var indexData;
-    var debug= layui.setter.debug;
+    var debug = layui.setter.debug;
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d); }
@@ -67,7 +70,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsGoodsTypeSpec-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsGoodsTypeSpec-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -75,8 +78,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsGoodsTypeSpec/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsGoodsTypeSpec-toolbar',
+                    pagebar: '#LAY-app-CoreCmsGoodsTypeSpec-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -85,20 +90,21 @@
                         [
                             { field: 'id', title: '序列', sort: false, width: 60 },
                             { field: 'name', title: 'SKU模型名称', sort: false, width: 205 },
-                            {
-                                field: 'specValues', title: 'SKU模型值', templet: function (data) {
-                                    var html = "";
-                                    if (data.specValues.length > 0) {
-                                        $.each(data.specValues, function (i, j) {
-                                            html = html + '<a class="layui-btn  layui-btn-normal layui-btn-xs">' + j.value + '</a>';
-                                        });
-                                        //html = html.substr(1);
-                                        return html;
-                                    } else {
-                                        return '无SKU模型值';
-                                    }
-                                }
-                            },
+                            { field: 'specValues', title: 'SKU模型值', sort: false, templet:"#specValues" },
+                            //{
+                            //    field: 'specValues', title: 'SKU模型值', templet: function (data) {
+                            //        var html = "";
+                            //        if (data.specValues.length > 0) {
+                            //            $.each(data.specValues, function (i, j) {
+                            //                html = html + '<a class="layui-btn  layui-btn-normal layui-btn-xs">' + j.value + '</a>';
+                            //            });
+                            //            //html = html.substr(1);
+                            //            return html;
+                            //        } else {
+                            //            return '无SKU模型值';
+                            //        }
+                            //    }
+                            //},
                             { field: 'sort', title: 'SKU模型排序', sort: false, width: 105 },
                             { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoodsTypeSpec-tableBox-bar' }
                         ]
@@ -106,7 +112,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsGoodsTypeSpec-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsGoodsTypeSpec-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsGoodsTypeSpec-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -115,12 +121,12 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsGoodsTypeSpec-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsGoodsTypeSpec-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
-                        case 'addData':
-                            doCreate();
-                            break;
+                    case 'addData':
+                        doCreate();
+                        break;
                     };
                 });
                 //监听工具条
@@ -136,7 +142,8 @@
                 function doCreate() {
                     coreHelper.Post("Api/CoreCmsGoodsTypeSpec/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
                                 area: ['550px', '90%'],
                                 id: 'LAY-popup-CoreCmsGoodsTypeSpec-create',
@@ -158,7 +165,7 @@
                                                 coreHelper.Post("Api/CoreCmsGoodsTypeSpec/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsGoodsTypeSpec-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsGoodsTypeSpec-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -167,6 +174,10 @@
                                                 });
                                             });
                                     });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsGoodsTypeSpec-createForm-submit").click();
                                 }
                             });
                         } else {
@@ -178,7 +189,8 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsGoodsTypeSpec/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
                                 area: ['550px', '90%'],
                                 id: 'LAY-popup-CoreCmsGoodsTypeSpec-edit',
@@ -200,7 +212,7 @@
                                                 coreHelper.Post("Api/CoreCmsGoodsTypeSpec/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsGoodsTypeSpec-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsGoodsTypeSpec-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -209,6 +221,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsGoodsTypeSpec-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -220,7 +236,7 @@
                 function doDelete(obj) {
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsGoodsTypeSpec/DoDelete", { id: obj.data.id }, function (e) {
-                            table.reload('LAY-app-CoreCmsGoodsTypeSpec-tableBox');
+                            table.reloadData('LAY-app-CoreCmsGoodsTypeSpec-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -228,4 +244,12 @@
 
             });
     };
+</script>
+
+
+<!--直播订单-->
+<script type="text/html" id="specValues">
+    {{#  layui.each(d.specValues, function(index, item){ }}
+    <a class="layui-btn  layui-btn-normal layui-btn-xs">{{item.value}}</a>
+    {{#  }); }}
 </script>

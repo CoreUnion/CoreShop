@@ -20,7 +20,7 @@ using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using SqlSugar;
 

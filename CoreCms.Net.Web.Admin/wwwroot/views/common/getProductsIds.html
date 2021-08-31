@@ -1,0 +1,146 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+
+</script>
+<script type="text/html" id="LAY-app-getProductsIds-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="name">商品名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入商品名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsProducts-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+            <div class="layui-inline"><div class="layui-form-mid">您选择了:<span id="selectGoodsNum">0</span>个货品</div></div>
+            <button class="layui-btn layui-btn-sm float-right" lay-submit lay-filter="LAY-app-CoreCmsProducts-getData" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
+        </div>
+    </div>
+</script>
+
+<div class="noDefaultToolbar">
+    <table id="LAY-app-CoreCmsProducts-tableBox" lay-filter="LAY-app-CoreCmsProducts-tableBox"></table>
+</div>
+
+<script>
+    //var ids = {}; //需要调用页面增加ids对象，不然无法默认选中。
+    var table_data = new Array();
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper', 'table'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , table = layui.table
+                    , view = layui.view;
+
+                $('#selectGoodsNum').html(Object.getOwnPropertyNames(ids).length);
+
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsProducts-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsProducts-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsProducts-tableBox',
+                    url: layui.setter.apiUrl + 'Api/Tools/GetProductsPages',
+                    method: 'POST',
+                    toolbar: '#LAY-app-getProductsIds-toolbar',
+                    defaultToolbar: null,
+                    height: 'full-360',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '商品ID', width: 60, sort: false },
+                            { field: 'name', title: '商品名称', sort: false },
+                            { field: 'spesDesc', title: '货品SKU', sort: false },
+                            {
+                                field: 'image', title: '图集', width: 60, sort: false,
+                                templet: function (d) {
+                                    if (d.images) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.images + '")><image style="max-width:28px;max-height:28px;" src="' + d.images + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }
+                            },
+                            { field: 'stock', title: '库存', sort: false, width: 60 },
+                        ]
+                    ],
+                    done: function (res, curr, count) {
+                        //数据表格加载完成时调用此函数
+                        //如果是异步请求数据方式，res即为你接口返回的信息。
+                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+
+                        //设置全部数据到全局变量
+                        table_data = res.data;
+
+                        //在缓存中找到id ,然后设置data表格中的选中状态
+                        //循环所有数据，找出对应关系，设置checkbox选中状态
+                        for (var i = 0; i < res.data.length; i++) {
+                            if (ids[res.data[i].id]) {
+                                //这里才是真正的有效勾选
+                                res.data[i]["LAY_CHECKED"] = 'true';
+                                //找到对应数据改变勾选样式，呈现出选中效果
+                                var index = res.data[i]['LAY_TABLE_INDEX'];
+                                $('#LAY-app-CoreCmsProducts-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                                $('#LAY-app-CoreCmsProducts-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                            }
+                        }
+                        //设置全选checkbox的选中状态，只有改变LAY_CHECKED的值， table.checkStatus才能抓取到选中的状态
+                        var checkStatus = layui.table.checkStatus('tagGoodsTable');
+                        if (checkStatus.isAll) {
+                            $('#LAY-app-CoreCmsProducts-tableBox + div .layui-table-header th[data-field="0"] input[type="checkbox"]').prop('checked', true);
+                            $('#LAY-app-CoreCmsProducts-tableBox + div .layui-table-header th[data-field="0"] input[type="checkbox"]').next().addClass('layui-form-checked');
+                        }
+                    }
+                });
+
+                //监听表格复选框选择
+                layui.table.on('checkbox(LAY-app-CoreCmsProducts-tableBox)', function (obj) {
+                    if (obj.checked) {
+                        if (obj.type == 'one') {
+                            ids[obj.data.id] = obj.data;
+                        } else {
+                            for (var i = 0; i < table_data.length; i++) {
+                                ids[table_data[i].id] = table_data[i];
+                            }
+                        }
+                    } else {
+                        if (obj.type == 'one') {
+                            delete ids[obj.data.id];
+                        } else {
+                            for (var i = 0; i < table_data.length; i++) {
+                                delete ids[table_data[i].id];
+                            }
+                        }
+                    }
+                    $('#selectGoodsNum').html(Object.getOwnPropertyNames(ids).length);
+                });
+
+            });
+    };
+</script>

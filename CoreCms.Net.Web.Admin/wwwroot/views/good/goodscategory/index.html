@@ -62,7 +62,7 @@
                         openName: 'name',
                         isPidData: true
                     },
-                    height: 'full-254',//无面包屑127,搜索框189,1行62
+                    height: 'full-230',//无面包屑127,搜索框189,1行62
                     cols: [
                         { field: 'id', title: '序列', width: 60, sort: false },
                         { field: 'name', title: '名称', sort: false },
@@ -139,6 +139,10 @@
                                                 });
                                         });
                                     }
+                                    , btn: ['确定', '取消']
+                                    , yes: function (index, layero) {
+                                        layero.contents().find("#LAY-app-CoreCmsGoodsCategory-createForm-submit").click();
+                                    }
                                 });
                             } else {
                                 layer.msg(e.msg);
@@ -178,6 +182,10 @@
                                             });
                                     })
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsGoodsCategory-editForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -199,7 +207,7 @@
                 layui.form.on('switch(switch_isShow)', function (obj) {
                     coreHelper.Post("Api/CoreCmsGoodsCategory/DoSetisShow", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsGoodsCategory-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsGoodsCategory-tableBox');
                         layer.msg(e.msg);
                     });
                 });

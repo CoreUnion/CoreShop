@@ -55,7 +55,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsShip-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsShip-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -94,7 +94,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsShip-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsShip-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsShip-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -127,7 +127,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '创建数据',
-                                area: ['90%', '90%'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-CoreCmsShip-create',
                                 success: function (layero, index) {
                                     view(this.id).render('shop/ship/create', { data: e.data }).done(function () {
@@ -191,7 +191,7 @@
                                                 coreHelper.Post("Api/CoreCmsShip/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsShip-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsShip-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -200,6 +200,12 @@
                                                 });
                                             });
                                     });
+                                    // 禁止弹窗出现滚动条
+                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsShip-createForm-submit").click();
                                 }
                             });
                         } else {
@@ -214,7 +220,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '编辑数据',
-                                area: ['90%', '90%'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-CoreCmsShip-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('shop/ship/edit', { data: e.data }).done(function () {
@@ -267,10 +273,6 @@
                                                         areaModel.firstunitAreaPrice = field[firstunitAreaPrice];
                                                         areaFee.push(areaModel);
                                                     }
-
-
-
-
                                                     field.areaFee = JSON.stringify(areaFee);
                                                 } else {
                                                     field.areaFee = "";
@@ -282,7 +284,7 @@
                                                 coreHelper.Post("Api/CoreCmsShip/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsShip-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsShip-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -291,6 +293,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsShip-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -303,7 +309,7 @@
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsShip/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsShip-tableBox');
+                            table.reloadData('LAY-app-CoreCmsShip-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -312,7 +318,7 @@
                 layui.form.on('switch(switch_isCashOnDelivery)', function (obj) {
                     coreHelper.Post("Api/CoreCmsShip/DoSetisCashOnDelivery", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsShip-tableBox');
+                        table.reloadData('LAY-app-CoreCmsShip-tableBox');
                         layer.msg(e.msg);
                     });
                 });
@@ -320,7 +326,7 @@
                 layui.form.on('switch(switch_isdefaultAreaFee)', function (obj) {
                     coreHelper.Post("Api/CoreCmsShip/DoSetisdefaultAreaFee", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsShip-tableBox');
+                        table.reloadData('LAY-app-CoreCmsShip-tableBox');
                         layer.msg(e.msg);
                     });
                 });
@@ -328,7 +334,7 @@
                 layui.form.on('switch(switch_isDefault)', function (obj) {
                     coreHelper.Post("Api/CoreCmsShip/DoSetisDefault", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsShip-tableBox');
+                        table.reloadData('LAY-app-CoreCmsShip-tableBox');
                         layer.msg(e.msg);
                     });
                 });
@@ -336,7 +342,7 @@
                 layui.form.on('switch(switch_isfreePostage)', function (obj) {
                     coreHelper.Post("Api/CoreCmsShip/DoSetisfreePostage", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-CoreCmsShip-tableBox');
+                        table.reloadData('LAY-app-CoreCmsShip-tableBox');
                         layer.msg(e.msg);
                     });
                 });

@@ -11,54 +11,83 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsUser/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUser-tableBox" lay-filter="LAY-app-CoreCmsUser-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUser-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
                 <div class="layui-input-inline">
-                    <input type="text" name="mobile" id="mobile" placeholder="请输入手机号" class="layui-input">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-user"></i>
+                    </div>
+                    <input type="number" name="id" id="id" placeholder="输入用户编码" class="layui-input" lay-affix="clear">
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
                 <div class="layui-input-inline">
-                    <input type="text" name="nickName" id="nickName" placeholder="请输入昵称" class="layui-input">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-cellphone-fine"></i>
+                    </div>
+                    <input type="text" name="mobile" id="mobile" placeholder="请输入手机号" class="layui-input" lay-affix="clear">
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
                 <div class="layui-input-inline">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-username"></i>
+                    </div>
+                    <input type="text" name="nickName" id="nickName" placeholder="请输入昵称" class="layui-input" lay-affix="clear">
+                </div>
+            </div>
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
+                <div class="layui-input-inline">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-male"></i>
+                    </div>
                     <select name="sex" id="sex">
                         <option value="">请选择性别</option>
-                        {{# layui.each(d.data.sexTypes, function(index, item){ }}
+                        {{# layui.each(indexData.sexTypes, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.title }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
                 <div class="layui-input-inline">
-                    <select name="status" id="status">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-diamond"></i>
+                    </div>
+                    <select name="grade" id="grade">
                         <option value="">请选择等级</option>
-                        {{# layui.each(d.data.userGrade, function(index, item){ }}
+                        {{# layui.each(indexData.userGrade, function(index, item){ }}
                         <option value="{{ item.id }}">{{ item.title }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-inline layui-input-wrap layui-input-wrap-prefix">
                 <div class="layui-input-inline">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-chart"></i>
+                    </div>
                     <select name="status" id="status">
                         <option value="">请选择状态</option>
-                        {{# layui.each(d.data.userStatus, function(index, item){ }}
+                        {{# layui.each(indexData.userStatus, function(index, item){ }}
                         <option value="{{ item.value }}">{{ item.title }}</option>
                         {{# }); }}
                     </select>
                 </div>
             </div>
-            <!--<div class="layui-inline">
+            <div class="layui-inline">
                 <label class="layui-form-label" for="createTime">创建时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
-            </div>-->
+            </div>
 
             <div class="layui-inline">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsUser-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
@@ -66,17 +95,15 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsUser-tableBox" lay-filter="LAY-app-CoreCmsUser-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-CoreCmsUser-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsUser-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
     </div>
 </script>
+
 <script type="text/html" id="LAY-app-CoreCmsUser-tableBox-bar">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs" lay-event="editBalance">修改余额</a>
@@ -119,16 +146,19 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsUser-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsUser-tableBox', { where: field });
                     });
+
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsUser-tableBox',
                     url: layui.setter.apiUrl + 'Api/CoreCmsUser/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsUser-toolbar',
+                    pagebar: '#LAY-app-CoreCmsUser-pagebar',
+                    className:'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -230,7 +260,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsUser-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsUser-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsUser-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -240,6 +270,24 @@
                 });
                 //头工具栏事件
                 table.on('toolbar(LAY-app-CoreCmsUser-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                        case 'batchDelete':
+                            doBatchDelete(checkStatus);
+                            break;
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+                //头工具栏事件
+                table.on('pagebar(LAY-app-CoreCmsUser-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'addData':
@@ -290,7 +338,7 @@
                                                 coreHelper.Post("Api/CoreCmsUser/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsUser-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -331,7 +379,7 @@
                                                 coreHelper.Post("Api/CoreCmsUser/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsUser-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -373,7 +421,7 @@
                                                 coreHelper.Post("Api/CoreCmsUser/DoEditBalance", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsUser-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -414,7 +462,7 @@
                                                 coreHelper.Post("Api/CoreCmsUser/DoEditPoint", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsUser-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsUser-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -510,7 +558,7 @@
                 function doDelete(obj) {
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsUser/DoDelete", { id: obj.data.id }, function (e) {
-                            table.reload('LAY-app-CoreCmsUser-tableBox');
+                            table.reloadData('LAY-app-CoreCmsUser-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -529,7 +577,7 @@
                                     delidsStr.push(item.id);
                                 });
                             coreHelper.Post("Api/CoreCmsUser/DoBatchDelete", { id: delidsStr }, function (e) {
-                                table.reload('LAY-app-CoreCmsUser-tableBox');
+                                table.reloadData('LAY-app-CoreCmsUser-tableBox');
                                 layer.msg(e.msg);
                             });
                         });

@@ -20,7 +20,7 @@ using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

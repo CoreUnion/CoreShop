@@ -1,0 +1,122 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+
+</script>
+<script type="text/html" id="LAY-app-getGoodAndSku-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" for="name">商品名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入商品名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsGoods-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+
+            <button class="layui-btn layui-btn-sm float-right" lay-submit lay-filter="LAY-app-CoreCmsGoods-getData" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
+        </div>
+    </div>
+</script>
+<div class="noDefaultToolbar">
+    <table id="LAY-app-CoreCmsGoods-tableBox" lay-filter="LAY-app-CoreCmsGoods-tableBox"></table>
+</div>
+
+<script>
+    var ids = {};
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper', 'table'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , table = layui.table
+                    , view = layui.view;
+                if (d.params.data) {
+                    ids = d.params.data;
+                    console.log(ids);
+                }
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsGoods-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsGoods-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsGoods-tableBox',
+                    url: layui.setter.apiUrl + 'Api/Tools/GetGoodAndSku',
+                    method: 'POST',
+                    toolbar: '#LAY-app-getGoodAndSku-toolbar',
+                    defaultToolbar: null,
+                    height: '430',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "radio", fixed: "left" },
+                            { field: 'id', title: '商品ID', width: 60, sort: false },
+                            { field: 'name', title: '商品名称', sort: false },
+                            {
+                                field: 'image', title: '图集', width: 60, sort: false,
+                                templet: function (d) {
+                                    if (d.image) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.image + '")><image style="max-width:28px;max-height:28px;" src="' + d.image + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }
+                            },
+                        ]
+                    ],
+                    done: function (res, curr, count) {
+                        //数据表格加载完成时调用此函数
+                        //如果是异步请求数据方式，res即为你接口返回的信息。
+                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+
+                        //在缓存中找到id ,然后设置data表格中的选中状态
+                        //循环所有数据，找出对应关系，设置checkbox选中状态
+                        for (var i = 0; i < res.data.length; i++) {
+                            if (ids.id == res.data[i].id) {
+                                //这里才是真正的有效勾选
+                                res.data[i]["LAY_CHECKED"] = 'true';
+                                //找到对应数据改变勾选样式，呈现出选中效果
+                                var index = res.data[i]['LAY_TABLE_INDEX'];
+                                console.log(index);
+                                $('#LAY-app-CoreCmsGoods-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="radio"]').prop('checked', true);
+                                $('#LAY-app-CoreCmsGoods-tableBox + div .layui-table-body tr[data-index=' + index + '] ').addClass('layui-table-click');
+                                $('#LAY-app-CoreCmsGoods-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="radio"]').next().addClass('layui-form-radioed');
+                                $('#LAY-app-CoreCmsGoods-tableBox + div .layui-table-body tr[data-index=' + index + '] .layui-anim').addClass('layui-anim-scaleSpring');
+                            }
+                        }
+                        form.render();
+                    }
+                });
+
+                //监听表格复选框选择
+                layui.table.on('radio(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
+                    ids = obj.data;
+                    console.log(ids);
+                });
+
+            });
+    };
+</script>

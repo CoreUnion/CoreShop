@@ -1,0 +1,505 @@
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsSolitaire-editForm" id="LAY-app-CoreCmsSolitaire-editForm">
+        <input type="hidden" name="id" value="{{d.params.data.model.id}}" />
+
+
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基础设置</li>
+                <li>商品SKU选择</li>
+                <li>活动说明</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+
+                    <div class="layui-form-item">
+                        <label for="title" class="layui-form-label  layui-form-required">活动标题</label>
+                        <div class="layui-input-block">
+                            <input name="title" lay-verify="required|verifytitle" class="layui-input" value="{{d.params.data.model.title || '' }}" lay-reqText="请输入活动标题" placeholder="请输入活动标题" />
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label for="thumbnail" class="layui-form-label  layui-form-required">缩略图</label>
+                        <div class="layui-input-inline layui-inline-10">
+                            <input name="thumbnail" id="thumbnailInput" lay-verType="tips" lay-verify="required" class="layui-input" value="{{d.params.data.model.thumbnail || '' }}" placeholder="请上传缩略图" lay-reqText="请上传缩略图" />
+                        </div>
+                        <div class="layui-input-inline">
+                            <img class="coreshop-upload-img" id="viewImgBoxthumbnail" src="{{d.params.data.model.thumbnail || layui.setter.noImagePicUrl }}">
+                            <button type="button" class="layui-btn" id="upBtnthumbnail">上传图片</button>
+                        </div>
+                    </div>
+
+
+
+                    <div class="layui-form-item">
+                        <label for="startTime" class="layui-form-label  layui-form-required">起止时间</label>
+                        <div class="layui-input-inline">
+                            <input name="startTime" id="editTime-CoreCmsSolitaire-startTime" type="text" value="{{d.params.data.model.startTime || '' }}" lay-verify="required|datetime" class="layui-input" placeholder="请输入开始时间" lay-reqText="请输入开始时间" />
+                        </div>
+                        <div class="layui-form-mid">
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setStartDate">现在</button>
+                        </div>
+                        <div class="layui-input-inline">
+                            <input name="endTime" id="editTime-CoreCmsSolitaire-endTime" value="{{d.params.data.model.endTime || '' }}" type="text" lay-verify="required|datetime" class="layui-input" placeholder="请输入结束时间" lay-reqText="请输入结束时间" />
+                        </div>
+                        <div class="layui-form-mid">
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate1">一日</button>
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate2">一周</button>
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate3">半月</button>
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate4">一月</button>
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate5">二月</button>
+                            <button type="button" class="layui-btn layui-btn-xs" lay-active="setEndDate6">三月</button>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="startBuyPrice" class="layui-form-label  layui-form-required">起购价格</label>
+                        <div class="layui-input-inline">
+                            <input name="startBuyPrice" lay-verify="required" value="{{d.params.data.model.startBuyPrice || '0' }}" type="number" class="layui-input" placeholder="请输入起购价格" lay-reqText="请输入起购价格" />
+                        </div>
+                        <div class="layui-form-mid">元</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="minDeliveryPrice" class="layui-form-label  layui-form-required">起送价格</label>
+                        <div class="layui-input-inline">
+                            <input name="minDeliveryPrice" lay-verify="required" value="{{d.params.data.model.minDeliveryPrice || '' }}" type="number" class="layui-input" placeholder="请输入起送价格" lay-reqText="请输入起送价格" />
+                        </div>
+                        <div class="layui-form-mid">元</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="isShow" class="layui-form-label  layui-form-required">是否显示</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" lay-filter="switch" name="isShow" lay-skin="switch" {{ d.params.data.model.isShow ? 'checked' : '' }} lay-text="开启|关闭" checked="checked">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="status" class="layui-form-label  layui-form-required">活动状态</label>
+                        <div class="layui-input-block">
+                            {{# layui.each(d.params.data.solitaireStatus, function(index, item){ }}
+                            <input type="radio" name="status" value="{{ item.value }}" title="{{ item.description }}" lay-verify="required|number" {{item.value==d.params.data.model.status?'checked="checked"':''}} lay-reqText="请选择活动状态">
+                            {{# }); }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-tab-item">
+                    <div>
+                        <button class="layui-btn layui-btn-sm" lay-active="goodsShow">选择商品SKU</button>
+                        <input type="hidden" name="goodsId" id="goodsId" value="{{d.params.data.goodsId }}" class="layui-input">
+                        <input type="hidden" name="productsCount" id="productsCount" value="{{d.params.data.items.length || '0' }}">
+                    </div>
+                    <table class="layui-table" lay-size="sm">
+                        <colgroup>
+                            <col width="45">
+                            <col>
+                            <col width="60">
+                            <col width="150">
+                            <col width="50">
+                            <col width="60">
+                            <col width="80">
+                            <col width="80">
+                            <col width="80">
+                            <col width="60">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>序列</th>
+                                <th>商品名称</th>
+                                <th>规格图</th>
+                                <th>规格名称</th>
+                                <th>库存</th>
+                                <th>销售价</th>
+                                <th>接龙价</th>
+                                <th>活动库存</th>
+                                <th>每人可买</th>
+                                <th>顺序</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTbody">
+
+                            {{# layui.each(d.params.data.items, function(index, item){ }}
+                            <tr id="tr{{item.productId}}">
+                                <td>
+                                    {{item.productId}}
+                                </td>
+                                <td>
+                                    <input type="hidden" value="{{item.id}}" name="product[id][]" />
+                                    <input type="hidden" value="{{item.productId}}" name="product[productId][]" />
+                                    <input type="hidden" value="{{item.goodId}}" name="product[goodId][]" />
+                                    <input type="hidden" value="{{item.solitaireId}}" name="product[solitaireId][]" />
+                                    {{item.goodObj.name}}
+                                </td>
+                                <td>
+                                    <img src="{{ item.productObj.images && item.productObj.images !='null'? item.productObj.images : item.goodObj.image }}" id="productImagesSrc" style="width:40px;height:40px">
+                                </td>
+                                <td>
+                                    {{item.productObj.spesDesc || '默认规格'}}
+                                </td>
+                                <td>
+                                    {{item.productObj.stock}}
+                                </td>
+                                <td>
+                                    ¥{{item.productObj.price}}
+                                </td>
+                                <td>
+                                    <input type="text" name="product[price][]" value="{{item.price}}" placeholder="接龙价" class="layui-input layui-inline-1">
+                                </td>
+                                <td>
+                                    <input type="text" name="product[activityStock][]" value="{{item.activityStock}}" placeholder="活动库存" class="layui-input layui-inline-1 goods-stock">
+                                </td>
+                                <td>
+                                    <input type="text" name="product[oneCanBuy][]" value="{{item.oneCanBuy}}" placeholder="每人可买" class="layui-input layui-inline-1">
+                                </td>
+                                <td>
+                                    <input type="text" name="product[sortId][]" value="{{item.sortId}}" placeholder="排序" class="layui-input layui-inline-1">
+                                </td>
+                                <td>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs del-class" id="{{item.productId}}" lay-active="goodsDelete">删除</a>
+                                </td>
+                            </tr>
+                            {{# }); }}
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="layui-tab-item">
+
+                    <div class="layui-form-item layui-form-text">
+                        <div class="layui-input-block">
+                            <div class="document-editor">
+                                <div class="toolbar-container" id="toolbar-container"></div>
+                                <div class="content-container">
+                                    <div id="editor"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-right core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsSolitaire-editForm-submit" id="LAY-app-CoreCmsSolitaire-editForm-submit" value="确认编辑">
+        </div>
+    </div>
+</script>
+
+
+
+<script id="get_tpl" type="text/html">
+    {{# layui.each(d.list, function(index, item){ }}
+    <tr>
+        <td>
+            {{item.productId || item.id}}
+        </td>
+        <td>
+            <input type="hidden" value="{{item.id || 0}}" name="product[id][]" />
+            <input type="hidden" value="{{item.productId || item.id}}" name="product[productId][]" />
+            <input type="hidden" value="{{item.goodsId}}" name="product[goodId][]" />
+            <input type="hidden" value="0" name="product[solitaireId][]" />
+            {{item.name}}
+        </td>
+        <td>
+            <img src="{{ item.images && item.images !='null'? item.images : layui.setter.noImagePicUrl }}" id="productImagesSrc" style="width:40px;height:40px">
+        </td>
+        <td>
+            {{item.spesDesc || '默认规格'}}
+        </td>
+        <td>
+            {{item.stock}}
+        </td>
+        <td>
+            ¥{{item.price}}
+        </td>
+        <td>
+            <input type="text" name="product[price][]" value="{{item.activityPrice || item.price}}" placeholder="接龙价" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <input type="text" name="product[activityStock][]" value="{{item.activityStock || item.stock}}" placeholder="活动库存" class="layui-input layui-inline-1 goods-stock">
+        </td>
+        <td>
+            <input type="text" name="product[oneCanBuy][]" value="{{item.oneCanBuy || 10}}" placeholder="每人可买" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <input type="text" name="product[sortId][]" value="{{item.sortId}}" placeholder="排序" class="layui-input layui-inline-1">
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-danger layui-btn-xs del-class" id="{{item.productId || item.id}}" lay-active="goodsDelete">删除</a>
+        </td>
+    </tr>
+    {{# }); }}
+</script>
+
+
+
+
+<script>
+    var ids = {};
+    var items = [];
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg', 'util', 'view', 'laytpl'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , util = layui.util
+                    , view = layui.view
+                    , laytpl = layui.laytpl
+                    , coreHelper = layui.coreHelper;
+
+
+                //缩略图图片裁剪上传
+                $('#upBtnthumbnail').click(function () {
+                    cropperImg.cropImg({
+                        aspectRatio: 1 / 1,
+                        imgSrc: $('#viewImgBoxthumbnail').attr('src'),
+                        onCrop: function (data) {
+                            var loadIndex = layer.load(2);
+                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
+                                if (0 === res.code) {
+                                    $('#viewImgBoxthumbnail').attr('src', res.data.fileUrl);
+                                    $("#thumbnailInput").val(res.data.fileUrl);
+                                    layer.msg(res.msg);
+                                    layer.close(loadIndex);
+                                } else {
+                                    layer.close(loadIndex);
+                                    layer.msg(res.msg, { icon: 2, anim: 6 });
+                                }
+                            });
+                        }
+                    });
+                });
+
+                //加载编辑器
+                var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+                //重点代码 适配器
+                class UploadAdapter {
+                    constructor(loader) {
+                        this.loader = loader;
+                    }
+                    upload() {
+                        return new Promise((resolve, reject) => {
+                            const data = new FormData();
+                            let file = [];
+                            this.loader.file.then(res => {
+                                file = res; //文件流
+                                data.append('upload', file);
+                                $.ajax({
+                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: 'json',
+                                    headers: {
+                                        'Authorization': Authorization
+                                    },
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data) {
+                                            console.log(data)
+                                            resolve({
+                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                            });
+                                        } else {
+                                            reject(data.msg);
+                                        }
+
+                                    }
+                                });
+                            })
+                        });
+                    }
+                    abort() {
+                    }
+                }
+                DecoupledEditor
+                    .create(document.querySelector('#editor'),
+                        {
+                            language: 'zh-cn',
+                        })
+                    .then(editor => {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                            return new UploadAdapter(loader);
+                        };
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                        editor.setData(d.params.data.model.contentBody);
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+
+                items = d.params.data.items;
+
+                for (var i = 0; i < items.length; i++) {
+                    let obj = {
+                        id: items[i].id,
+                        productId: items[i].productId,
+                        goodsId: items[i].goodId,
+                        solitaireId: items[i].solitaireId,
+                        name: items[i].goodObj.name,
+                        images: items[i].productObj.images && items[i].productObj.images != 'null' ? items[i].productObj.images : items[i].goodObj.image,
+
+                        spesDesc: items[i].productObj.spesDesc,
+                        stock: items[i].productObj.stock,
+                        price: items[i].productObj.price,
+
+                        activityPrice: items[i].price,
+                        activityStock: items[i].activityStock,
+                        oneCanBuy: items[i].oneCanBuy,
+                        isDelete: items[i].isDelete,
+                        sortId: items[i].sortId,
+
+                    }
+                    ids[items[i].productId] = obj;
+                }
+                console.log(ids);
+
+                //处理属性 为 lay-active 的所有元素事件
+                util.event('lay-active', {
+                    setStartDate: function () {
+                        var nowTime = layui.util.toDateString(new Date(), 'yyyy-MM-dd HH:mm:ss');
+                        $('#createTime-CoreCmsSolitaire-startTime').val(nowTime);
+                    },
+                    setEndDate1: function () {
+                        addEndDateDay(1, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    }, setEndDate2: function () {
+                        addEndDateDay(7, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    }, setEndDate3: function () {
+                        addEndDateDay(15, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    }, setEndDate4: function () {
+                        addEndDateMonth(1, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    }, setEndDate5: function () {
+                        addEndDateMonth(2, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    }, setEndDate6: function () {
+                        addEndDateMonth(3, 'createTime-CoreCmsSolitaire-startTime', 'createTime-CoreCmsSolitaire-endTime');
+                    },
+                    goodsShow: function () {
+                        admin.popup({
+                            shadeClose: false,
+                            title: '选择商品',
+                            area: ['900px', '80%'],
+                            id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
+                            success: function (layero, index) {
+                                view(this.id).render('common/getProductsIds', null).done(function () {
+                                    form.render();
+                                    //监听商品列表页工具条
+                                    form.on('submit(LAY-app-CoreCmsProducts-getData)',
+                                        function (data) {
+                                            if (Object.getOwnPropertyNames(ids).length === 0) {
+                                                layer.msg("请先选择商品");
+                                                return;
+                                            }
+                                            //判断个数是否满足
+                                            if (Object.getOwnPropertyNames(ids).length > 10) {
+                                                layer.msg("最多只能选择" + 10 + "个");
+                                                return false;
+                                            }
+
+                                            console.log(ids);
+
+                                            var the_val = "";
+                                            var count = 0;
+                                            for (var key in ids) {
+                                                the_val += "," + key;
+                                                count++;
+                                            }
+                                            $("#goodsId").val(the_val.slice(1));
+                                            $('#productsCount').val(count);
+
+                                            var getTpl = get_tpl.innerHTML, view = document.getElementById('productsTbody');
+                                            var tmpData = {};
+                                            tmpData.list = ids;
+                                            laytpl(getTpl).render(tmpData, function (html) {
+                                                view.innerHTML = html;
+                                            });
+                                            form.render();
+                                            layer.close(index);
+                                        });
+
+                                });
+                            }
+                        });
+                    },
+                    goodsDelete: function () {
+                        var idsArray = $("#goodsId").val().split(",");
+                        for (var i = 0; i < idsArray.length; i++) {
+                            var id = $(this).attr("id");
+                            if (idsArray[i] == id) {
+                                idsArray.splice(i, 1);
+                            }
+                            if (ids[id]) {
+                                delete ids[id];
+                            }
+                        }
+                        $("#goodsId").val(idsArray.join(","));
+                        $('#productsCount').val(idsArray.length);
+                        $(this).parent().parent('tr').remove();
+                        form.render();
+                    }
+                });
+
+
+
+
+                function addEndDateDay(num, sinput, einput) {
+                    var startTime = $("#" + sinput).val();
+                    if (!!!startTime) {
+                        layer.msg("请先设置开始时间", { icon: 2, anim: 6 });
+                        return false;
+                    } else {
+                        startTime = new Date(startTime);
+                    }
+                    startTime = +startTime + 1000 * 60 * 60 * 24 * num;
+                    startTime = new Date(startTime);
+                    var endTime = layui.util.toDateString(startTime, 'yyyy-MM-dd HH:mm:ss');
+                    $("#" + einput).val(endTime);
+                }
+
+                function addEndDateMonth(num, sinput, einput) {
+                    var startTime = $("#" + sinput).val();
+                    if (!!!startTime) {
+                        layer.msg("请先设置开始时间", { icon: 2, anim: 6 });
+                        return false;
+                    }
+                    var s = (new Date(startTime)).setMonth((new Date(startTime)).getMonth() + num);
+                    var endTime = layui.util.toDateString(s, 'yyyy-MM-dd HH:mm:ss');
+                    $("#" + einput).val(endTime);
+                }
+
+
+
+                laydate.render({
+                    elem: '#editTime-CoreCmsSolitaire-startTime',
+                    type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#editTime-CoreCmsSolitaire-endTime',
+                    type: 'datetime'
+                });
+
+                form.verify({
+
+                    verifytitle: [/^.{0,250}$/, '活动标题最大只允许输入250位字符'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsSolitaire-editForm');
+            })
+    };
+</script>

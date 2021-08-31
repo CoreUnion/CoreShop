@@ -1,0 +1,279 @@
+<title>用户表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsUserWeChatInfo/GetIndex" lay-done="layui.data.done(d);">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsUserWeChatInfo-tableBox" lay-filter="LAY-app-CoreCmsUserWeChatInfo-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsUserWeChatInfo-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="id" placeholder="微信序列" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="userId" placeholder="请输入用户编号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="openid" placeholder="请输入openId" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="nickName" placeholder="请输入昵称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" placeholder="请输入手机号码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline core-time-input">
+                    <input type="text" name="createTime" id="searchTime-CoreCmsUserWeChatInfo-createTime" placeholder="请输入创建时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsUserWeChatInfo-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/html" id="LAY-app-CoreCmsUserWeChatInfo-pagebar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
+        <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsUserWeChatInfo-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsUserWeChatInfo-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsUserWeChatInfo-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsUserWeChatInfo-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsUserWeChatInfo-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsUserWeChatInfo/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsUserWeChatInfo-toolbar',
+                    pagebar: '#LAY-app-CoreCmsUserWeChatInfo-pagebar',
+                    css: [
+                        '.layui-table-page{text-align: right;}'
+                        ,'.layui-table-pagebar{float: left;}'
+                    ].join(''),
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            { type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '微信序列', width: 70, sort: false },
+                            //{ field: 'type', title: '第三方登录类型', sort: false,width: 105 },
+                            { field: 'userId', title: '用户序列', sort: false, width: 80 },
+                            { field: 'openid', title: 'openId', sort: false },
+                            //{ field: 'sessionKey', title: '缓存key', sort: false,width: 105 },
+                            { field: 'unionId', title: 'unionid', sort: false },
+                            {
+                                field: 'avatar', title: '头像', sort: false,
+                                templet: function (d) {
+                                    if (d.avatarImage) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.avatar + '")><image style="max-width:28px;max-height:28px;" src="' + d.avatar + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }, width: 60
+                            },
+                            { field: 'nickName', title: '昵称', sort: false },
+                            { field: 'gender', title: '性别', sort: false, width: 105 },
+                            //{ field: 'language', title: '语言', sort: false, width: 105 },
+                            { field: 'city', title: '城市', sort: false, width: 105 },
+                            { field: 'province', title: '省', sort: false, width: 105 },
+                            { field: 'country', title: '国家', sort: false, width: 105 },
+                            //{ field: 'countryCode', title: '手机号码国家编码', sort: false,width: 105 },
+                            //{ field: 'mobile', title: '手机号码', sort: false,width: 105 },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            //{ field: 'updateTime', title: '更新时间', width: 130, sort: false},
+                            { width: 80, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsUserWeChatInfo-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsUserWeChatInfo-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-CoreCmsUserWeChatInfo-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsUserWeChatInfo-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('toolbar(LAY-app-CoreCmsUserWeChatInfo-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+
+                //分页栏事件
+                table.on('pagebar(LAY-app-CoreCmsUserWeChatInfo-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'selectExportExcel':
+                            doSelectExportExcel(checkStatus);
+                            break;
+                        case 'queryExportExcel':
+                            doQueryExportexcel();
+                            break;
+                    };
+                });
+
+
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsUserWeChatInfo-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        }
+                    });
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsUserWeChatInfo/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['1000px', '500px'],
+                                id: 'LAY-popup-CoreCmsUserWeChatInfo-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('user/wechatuserinfo/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行单个删除
+                function doDelete(obj) {
+                    coreHelper.Post("Api/CoreCmsUserWeChatInfo/DoDelete", { id: obj.data.id }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        table.reloadData('LAY-app-CoreCmsUserWeChatInfo-tableBox');
+                        layer.msg(e.msg);
+                    });
+                }
+                //执行查询条件导出excel
+                function doQueryExportexcel() {
+                    layer.confirm('确定根据当前的查询条件导出数据吗？',
+                        function (index) {
+                            var field = searchwhere;
+                            coreHelper.PostForm("Api/CoreCmsUserWeChatInfo/QueryExportExcel", field, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //执行选择目录导出数据
+                function doSelectExportExcel(checkStatus) {
+                    var checkData = checkStatus.data;
+                    if (checkData.length === 0) {
+                        return layer.msg('请选择您要导出的数据');
+                    }
+                    layer.confirm('确定导出选择的内容吗？',
+                        function (index) {
+                            var delidsStr = [];
+                            layui.each(checkData,
+                                function (index, item) {
+                                    delidsStr.push(item.id);
+                                });
+                            layer.close(index);
+                            coreHelper.Post("Api/CoreCmsUserWeChatInfo/SelectExportExcel", { id: delidsStr }, function (e) {
+                                if (debug) { console.log(e); } //开启调试返回数据
+                                if (e.code === 0) {
+                                    window.open(e.data);
+                                } else {
+                                    layer.msg(e.msg);
+                                }
+                            });
+                        });
+                }
+                //监听 表格复选框操作
+
+            });
+    };
+</script>
+

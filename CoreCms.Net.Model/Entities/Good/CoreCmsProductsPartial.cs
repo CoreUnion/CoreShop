@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CoreCms.Net.Model.FromBody;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using SqlSugar;
 
 namespace CoreCms.Net.Model.Entities

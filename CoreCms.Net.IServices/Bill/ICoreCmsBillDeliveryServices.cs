@@ -20,13 +20,6 @@ namespace CoreCms.Net.IServices
     /// </summary>
     public interface ICoreCmsBillDeliveryServices : IBaseServices<CoreCmsBillDelivery>
     {
-        /// <summary>
-        ///     获取发货单列表
-        /// </summary>
-        /// <param name="orderId">订单编号</param>
-        /// <returns></returns>
-        Task<WebApiCallBack> GetDeliveryList(string orderId);
-
 
         /// <summary>
         ///     批量发货，可以支持多个订单合并发货，单个订单拆分发货等。

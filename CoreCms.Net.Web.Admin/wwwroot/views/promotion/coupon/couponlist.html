@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsPromotion/GetCouponIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<div>
+    <table id="LAY-app-CoreCmsCoupon-tableBox" lay-filter="LAY-app-CoreCmsCoupon-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsCoupon-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -31,7 +38,7 @@
             </div>
 
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsCoupon-createTime" placeholder="请输入起止时间" class="layui-input">
                 </div>
             </div>
@@ -41,11 +48,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsCoupon-tableBox" lay-filter="LAY-app-CoreCmsCoupon-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsCoupon-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsCoupon-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
@@ -75,16 +78,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsCoupon-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
-                    elem: '#searchTime-CoreCmsCoupon-updateTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+
                 //重载form
                 form.render();
                 var searchwhere;
@@ -92,9 +86,10 @@
                 form.on('submit(LAY-app-CoreCmsCoupon-search)',
                     function (data) {
                         var field = data.field;
+                        field.promotionId = d.params.id;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsCoupon-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsCoupon-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -103,6 +98,8 @@
                     method: 'POST',
                     where: { promotionId: d.params.id },
                     toolbar: '#LAY-app-CoreCmsCoupon-toolbar',
+                    pagebar: '#LAY-app-CoreCmsCoupon-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: '400px',//无面包屑127,搜索框189,1行62
                     page: true,
@@ -122,15 +119,15 @@
                                 }
                             },
                             //{ field: 'usedId', title: '使用者', sort: false },
-                            { field: 'createTime', title: '生成时间', width: 130, sort: false },
-                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { field: 'createTime', title: '生成时间', width: 140, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 140, sort: false },
                             //{ width: 62, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsCoupon-tableBox-bar' }
                         ]
                     ]
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsCoupon-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsCoupon-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsCoupon-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -169,7 +166,7 @@
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsPromotion/DoCouponDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsCoupon-tableBox');
+                            table.reloadData('LAY-app-CoreCmsCoupon-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -218,9 +215,20 @@
                 layui.form.on('switch(switch_isUsed)', function (obj) {
                     coreHelper.Post("Api/CoreCmsPromotion/DoSetCouponisUsed", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-CoreCmsCoupon-tableBox');
+                        //table.reloadData('LAY-app-CoreCmsCoupon-tableBox');
                         layer.msg(e.msg);
                     });
+                });
+
+                laydate.render({
+                    elem: '#searchTime-CoreCmsCoupon-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-CoreCmsCoupon-updateTime',
+                    type: 'datetime',
+                    range: '到',
                 });
 
             });

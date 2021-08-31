@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/SysRole/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+<div class="table-body">
+    <table id="LAY-app-SysRole-tableBox" lay-filter="LAY-app-SysRole-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-SysRole-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -31,14 +38,10 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-SysRole-tableBox" lay-filter="LAY-app-SysRole-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-SysRole-toolbar">
+<script type="text/html" id="LAY-app-SysRole-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
     </div>
 </script>
 <script type="text/html" id="LAY-app-SysRole-tableBox-bar">
@@ -79,18 +82,6 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-SysRole-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
-                    elem: '#searchTime-SysRole-updateTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                //重载form
-                form.render();
                 var searchwhere;
                 //监听搜索
                 form.on('submit(LAY-app-SysRole-search)',
@@ -98,7 +89,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-SysRole-tableBox', { where: field });
+                        table.reloadData('LAY-app-SysRole-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -106,8 +97,10 @@
                     url: layui.setter.apiUrl + 'Api/SysRole/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-SysRole-toolbar',
+                    pagebar: '#LAY-app-SysRole-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -127,7 +120,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-SysRole-tableBox)', function (obj) {
-                    table.reload('LAY-app-SysRole-tableBox', {
+                    table.reloadData('LAY-app-SysRole-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -136,7 +129,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-SysRole-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-SysRole-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'addData':
@@ -162,7 +155,8 @@
                 function doCreate() {
                     coreHelper.Post("Api/SysRole/GetCreate", null, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '创建数据',
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysRole-create',
@@ -180,7 +174,7 @@
                                                 coreHelper.Post("Api/SysRole/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-SysRole-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-SysRole-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -192,6 +186,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-SysRole-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -202,7 +200,8 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/SysRole/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysRole-edit',
@@ -224,7 +223,7 @@
                                                     function (e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            layui.table.reload('LAY-app-SysRole-tableBox'); //重载表格
+                                                            layui.table.reloadData('LAY-app-SysRole-tableBox'); //重载表格
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -236,6 +235,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-SysRole-editForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -245,10 +248,11 @@
                 //执行权限设置操作
                 function doRoleSet(obj) {
                     console.log(obj);
-                    admin.popup({ shadeClose: false,
+                    admin.popup({
+                        shadeClose: false,
                         title: '角色权限分配',
                         area: ['600px', '90%'],
-                        btn: ['保存', '全选','取消全选','取消'],
+                        btn: ['保存', '全选', '取消全选', '取消'],
                         content: '<ul id="roleAuthTree" class="ztree" style="padding-left: 15px;min-height: 500px;"></ul>',
                         success: function (layero, dIndex) {
                             var loadIndex = layer.load(2);
@@ -311,7 +315,7 @@
                 function doDelete(obj) {
                     coreHelper.Post("Api/SysRole/DoDelete", { id: obj.data.id }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        table.reload('LAY-app-SysRole-tableBox');
+                        table.reloadData('LAY-app-SysRole-tableBox');
                         layer.msg(e.msg);
                     });
                 }
@@ -330,12 +334,25 @@
                                 });
                             coreHelper.Post("Api/SysRole/DoBatchDelete", { id: delidsStr }, function (e) {
                                 if (debug) { console.log(e); } //开启调试返回数据
-                                table.reload('LAY-app-SysRole-tableBox');
+                                table.reloadData('LAY-app-SysRole-tableBox');
                                 layer.msg(e.msg);
                             });
                         });
                 }
 
+                laydate.render({
+                    elem: '#searchTime-SysRole-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+                laydate.render({
+                    elem: '#searchTime-SysRole-updateTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+
+                //重载form
+                form.render();
             });
     };
 </script>
