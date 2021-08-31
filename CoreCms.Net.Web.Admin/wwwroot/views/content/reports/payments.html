@@ -1,0 +1,177 @@
+<script src="/lib/layuiAdmin/lib/extend/echarts.js"></script>
+<script src="/lib/layuiAdmin/lib/extend/echartsTheme.js"></script>
+<div class="layui-form coreshop-search-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">时间范围：</label>
+        <div class="layui-input-inline layui-inline-4">
+            <input type="text" name="date" value="" id="date" placeholder="请输入起止时间" autocomplete="off" class="layui-input">
+        </div>
+        <label class="layui-form-label">粒度：</label>
+        <div class="layui-input-inline layui-inline-2">
+            <select name="section" id="section">
+                <option value="1">小时</option>
+                <option value="2" selected="selected">天</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <div class="">
+                <button class="layui-btn layui-btn-sm" val="" lay-submit lay-filter="*"><i class="iconfont icon-chaxun"></i>确定</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="1" lay-submit lay-filter="*">今日</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="2" lay-submit lay-filter="*">昨日</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="3" lay-submit lay-filter="*">本周</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="4" lay-submit lay-filter="*">上周</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="5" lay-submit lay-filter="*">本月</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="6" lay-submit lay-filter="*">上月</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="7" lay-submit lay-filter="*">7日内</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="8" lay-submit lay-filter="*">一月内</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="9" lay-submit lay-filter="*">三月内</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="10" lay-submit lay-filter="*">半年内</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="11" lay-submit lay-filter="*">一年内</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="12" lay-submit lay-filter="*">本年度</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" val="13" lay-submit lay-filter="*">上年度</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-body">
+    <div id="main" style="height:400px;padding:10px;"></div>
+    <table id="LAY-app-Report-tableBox" lay-filter="LAY-app-Report-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-Report-toolbar">
+    <div class="report_table_bar"><span id="tableExport"><i class="layui-icon">&#xe601;</i>下载明细</span></div>
+</script>
+
+<script type="text/javascript">
+    var debug = layui.setter.debug;
+    layui.use(['index', 'element', 'laydate', 'form', 'table', 'coreHelper', 'util', 'table'], function () {
+        var $ = layui.$;
+        var form = layui.form;
+        var element = layui.element;
+        var coreHelper = layui.coreHelper;
+        var util = layui.util;
+        var table = layui.table;
+        var tableData = {};
+        //时间插件
+        var date = new Date();
+        layui.laydate.render({
+            elem: '#date',
+            range: '到',
+            type: 'date',
+            value: util.toDateString(date, 'yyyy-MM-dd') + ' 到 ' + util.toDateString(date, 'yyyy-MM-dd'),
+            trigger: 'click'
+        });
+
+        layui.form.on('submit(*)', function (data) {
+            type = data.elem.getAttribute('val');
+            if (type != "") {
+                getTime(type, function () {
+                    order_report();
+                });
+            } else {
+                order_report();
+            }
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+
+        //数据绑定
+        table.render({
+            elem: '#LAY-app-Report-tableBox',
+            method: 'POST',
+            toolbar: '#LAY-app-Report-toolbar',
+            defaultToolbar: ['filter', 'print', 'exports'],
+            //height: 'full-127',
+            page: false,
+            cellMinWidth: '80',
+            limit: 30,
+            limits: [10, 15, 20, 25, 30, 50, 100, 200],
+            text: { none: '暂无相关数据' },
+            totalRow: true,
+            cols: [
+                [
+                    { field: 'x', title: '日期', width: 150 }
+                    , { field: 'payments_all_val', title: '收款单金额', width: 100, totalRow: true }
+                    , { field: 'payments_all_num', title: '收款单笔数', width: 100, totalRow: true }
+                    , { field: 'payments_order_val', title: '订单收款金额', width: 100, totalRow: true }
+                    , { field: 'payments_order_num', title: '订单收款笔数', width: 100, totalRow: true }
+                    , { field: 'payments_order_refund_val', title: '订单退款金额', width: 100, totalRow: true }
+                    , { field: 'payments_order_refund_num', title: '订单退款笔数', width: 100, totalRow: true }
+                    , { field: 'payments_recharge_val', title: '充值金额', width: 100, totalRow: true }
+                    , { field: 'payments_recharge_num', title: '充值笔数', width: 100, totalRow: true }
+                    , { field: 'payments_tocash_val', title: '提现金额', width: 100, totalRow: true }
+                    , { field: 'payments_tocash_num', title: '提现笔数', width: 100, totalRow: true }
+                ]
+            ]
+        });
+
+
+        layui.table.render({
+            id: 'table'
+            , elem: '#table'
+            , page: false //开启分页
+            , limit: '1000'
+            , totalRow: true
+            , cols: [[ //表头
+
+            ]]
+        });
+
+        $('#tableExport').on('click', function () {
+            layui.table.exportFile('table', tableData);
+        });
+
+
+
+        //取值
+        function order_report() {
+            var data = {
+                date: $('#date').val(),
+                section: $('#section').val()
+            };
+
+            coreHelper.Post("Api/CoreCmsReports/GetPayments", data, function (res) {
+                if (debug) { console.log(res); } //开启调试返回数据
+                if (res.code == 0) {
+                    //刷新折线图
+                    var myChart = echarts.init(document.getElementById('main'));
+                    option = res.data.option;
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                    //刷新table
+                    layui.table.reloadData('LAY-app-Report-tableBox', {
+                        data: res.data.table
+                    });
+                    tableData = res.data.table;
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+        }
+        //解析时间按钮
+        function getTime(type, calback) {
+            var data = {
+                id: type
+            };
+            coreHelper.Post("Api/CoreCmsReports/GetDateType", data, function (res) {
+                if (debug) { console.log(res); } //开启调试返回数据
+                if (res.code == 0) {
+                    //设置时间，回调
+                    $('#date').val(res.data.start + " 到 " + res.data.end);
+                    calback();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+        }
+        function table_export() {
+            layui.table.exportFile('table', tableData);
+        }
+
+        order_report();
+
+        //重载form
+        form.render();
+    });
+</script>

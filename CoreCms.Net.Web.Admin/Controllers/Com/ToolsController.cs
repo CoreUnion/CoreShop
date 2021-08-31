@@ -29,7 +29,7 @@ using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Echarts;
 using CoreCms.Net.Model.ViewModels.Options;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using CoreCms.Net.WeChat.Service.HttpClients;

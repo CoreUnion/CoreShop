@@ -1,0 +1,130 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsNotice-createForm" id="LAY-app-CoreCmsNotice-createForm">
+
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">公告标题</label>
+            <div class="layui-input-inline layui-inline-12">
+                <input name="title" id="title" lay-verType="tips" lay-verify="required|verifytitle" class="layui-input" lay-reqText="请输入公告标题" placeholder="请输入公告标题" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过200个字符内容</div>
+        </div>
+        <!--<div class="layui-form-item">
+            <label for="contentBody" class="layui-form-label">公告内容</label>
+            <div class="layui-input-block">
+                <textarea name="contentBody" id="contentBody" lay-verType="tips" lay-verify="required" lay-reqText="请输入公告内容" placeholder="请输入公告内容" class="layui-textarea"></textarea>
+            </div>
+        </div>-->
+
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-block">
+                <div class="document-editor">
+                    <div class="toolbar-container" id="toolbar-container"></div>
+                    <div class="content-container">
+                        <div id="editor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verType="tips" lay-verify="required|number" class="layui-input" value="100" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+        <div class="layui-form-item core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsNotice-createForm-submit" id="LAY-app-CoreCmsNotice-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<style>
+    #editor { height: 100px; min-height: 200px; }
+</style>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+
+                var Authorization = layui.data(layui.setter.tableName)[layui.setter.request.tokenName];
+                //重点代码 适配器
+                class UploadAdapter {
+                    constructor(loader) {
+                        this.loader = loader;
+                    }
+                    upload() {
+                        return new Promise((resolve, reject) => {
+                            const data = new FormData();
+                            let file = [];
+                            this.loader.file.then(res => {
+                                file = res; //文件流
+                                data.append('upload', file);
+                                $.ajax({
+                                    url: "/Api/Tools/CkEditorUploadFiles",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: 'json',
+                                    headers: {
+                                        'Authorization': Authorization
+                                    },
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data) {
+                                            console.log(data)
+                                            resolve({
+                                                default: data.url //后端返回的参数 【注】返回参数格式是{uploaded:1,default:'http://xxx.com'}
+                                            });
+                                        } else {
+                                            reject(data.msg);
+                                        }
+
+                                    }
+                                });
+                            })
+                        });
+                    }
+                    abort() {
+                    }
+                }
+                DecoupledEditor
+                    .create(document.querySelector('#editor'),
+                        {
+                            language: 'zh-cn',
+                        })
+                    .then(editor => {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                            return new UploadAdapter(loader);
+                        };
+                        const toolbarContainer = document.querySelector('#toolbar-container');
+                        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+
+                laydate.render({
+                    elem: '#createTime-CoreCmsNotice-createTime',
+                    type: 'datetime'
+                });
+                form.verify({
+                    verifytitle: [/^[\S]{0,200}$/, '公告标题最大只允许输入200位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render();
+            })
+    };
+</script>

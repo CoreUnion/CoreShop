@@ -1,0 +1,260 @@
+
+<script type="text/html" template lay-done="layui.data.sendParams(d);">
+
+    <div class="layui-form coreshop-form  layui-form-pane myOrderDetails" lay-filter="LAY-app-CoreCmsOrder-TcOrderTcOrderDetailsForm" id="LAY-app-CoreCmsOrder-TcOrderDetailsForm">
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">订单信息</legend>
+        </fieldset>
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">交易平台订单</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.order_id}}</div>
+
+            <label class="layui-form-label">商家订单号</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.out_order_id}}</div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+
+            <label class="layui-form-label">订单状态</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                <!--{{d.params.data.order.status}}-->
+                {{# layui.each(d.params.data.orderStatus, function(index, item){ }}
+                {{d.params.data.order.status==item.value?item.description:''}}
+                {{# }); }}
+            </div>
+
+            <label class="layui-form-label">小程序路径</label>
+            <div class="layui-input-inline layui-inline-9 layui-form-mid">{{d.params.data.order.path}}</div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">货品信息</legend>
+        </fieldset>
+
+        <!--商品详情-->
+        <table class="layui-table" lay-size="sm">
+            <thead>
+                <tr>
+                    <th>交易组件平台内部商品ID</th>
+                    <th>商家自定义商品ID</th>
+                    <th>交易组件平台内部skuID</th>
+                    <th>商家自定义商品skuID</th>
+                    <th>购买的数量</th>
+                    <th>售卖价</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{# layui.each(d.params.data.order.order_detail.product_infos, function(index, item){ }}
+                <tr>
+                    <td>{{item.product_id}}</td>
+                    <td>{{item.out_product_id}}</td>
+                    <td>{{item.sku_id}}</td>
+                    <td>{{item.out_sku_id}}</td>
+                    <td>{{item.product_cnt}}</td>
+                    <td>¥ {{item.sale_price / 100}}</td>
+                </tr>
+                {{# }); }}
+
+                {{#  if(!!!d.params.data.order.order_detail.product_infos){ }}
+                <tr>
+                    <td colspan="6" class="text-center">暂无</td>
+                </tr>
+                {{#  } }}
+
+            </tbody>
+        </table>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">单支付详情</legend>
+        </fieldset>
+
+        {{#  if(d.params.data.order.order_detail.pay_info){ }}
+
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">支付方式</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.order_detail.pay_info.pay_method}}</div>
+
+            <label class="layui-form-label">预支付ID</label>
+            <div class="layui-input-inline layui-inline-9 layui-form-mid">{{d.params.data.order.order_detail.pay_info.prepay_id}}</div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+
+            <label class="layui-form-label">预付款时间</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.order_detail.pay_info.prepay_time}}</div>
+
+            <label class="layui-form-label">支付ID</label>
+            <div class="layui-input-inline layui-inline-6 layui-form-mid">{{d.params.data.order.order_detail.pay_info.transaction_id || ''}}</div>
+
+            <label class="layui-form-label">付款时间</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.order_detail.pay_info.pay_time || ''}}</div>
+        </div>
+
+        {{#  } }}
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">多支付单列表</legend>
+        </fieldset>
+
+        <table class="layui-table" lay-size="sm">
+            <thead>
+                <tr>
+                    <th>支付方式</th>
+                    <th>预支付ID</th>
+                    <th>预付款时间</th>
+                    <th>支付ID</th>
+                    <th>付款时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{# layui.each(d.params.data.order.order_detail.multi_pay_info, function(index, item){ }}
+                <tr>
+                    <td>{{item.pay_method}}</td>
+                    <td>{{item.prepay_id}}</td>
+                    <td>{{item.prepay_time}}</td>
+                    <td>{{item.transaction_id}}</td>
+                    <td>{{item.pay_time}}</td>
+                </tr>
+                {{# }); }}
+
+                {{#  if(!!!d.params.data.order.order_detail.multi_pay_info){ }}
+                <tr>
+                    <td colspan="5" class="text-center">暂无</td>
+                </tr>
+                {{#  } }}
+
+
+            </tbody>
+        </table>
+
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">付款金额</legend>
+        </fieldset>
+
+        {{#  if(d.params.data.order.order_detail.price_info){ }}
+
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">订单金额</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">¥{{d.params.data.order.order_detail.price_info.order_price / 100 }}</div>
+
+            <label class="layui-form-label">运费</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">¥{{d.params.data.order.order_detail.price_info.freight / 100}}</div>
+
+            <label class="layui-form-label">优惠金额</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">¥{{d.params.data.order.order_detail.price_info.discounted_price / 100}}</div>
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">附加金额</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">¥{{d.params.data.order.order_detail.price_info.additional_price / 100}}</div>
+
+            <label class="layui-form-label">附加金额备注</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.order_detail.price_info.additional_remarks}}</div>
+        </div>
+
+        {{#  } }}
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">收货人</legend>
+        </fieldset>
+
+        {{#  if(d.params.data.order.address_info){ }}
+
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.address_info.receiver_name }}</div>
+
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.address_info.detailed_address}}</div>
+
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-inline layui-inline-6 layui-form-mid">{{d.params.data.order.address_info.tel_number}}</div>
+        </div>
+
+        {{#  } }}
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend style="font-size:14px;">发货信息</legend>
+        </fieldset>
+
+
+        {{#  if(d.params.data.order.delivery_detail){ }}
+
+        <div class="layui-form-item" lay-size="sm">
+            <label class="layui-form-label">发货类型</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                <!--{{d.params.data.order.delivery_detail.delivery_type }}-->
+                {{# layui.each(d.params.data.deliveryTypeEnum, function(index, item){ }}
+                {{d.params.data.order.delivery_detail.delivery_type==item.value?item.title:''}}
+                {{# }); }}
+            </div>
+
+            <label class="layui-form-label">是否发货完成</label>
+            <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.order.delivery_detail.finish_all_delivery ==1 ?'已发完':'未发完' }}</div>
+
+        </div>
+        <div class="layui-form-item" lay-size="sm">
+
+            <label class="layui-form-label">发货单列表</label>
+            <div class="layui-input-block">
+
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                        <tr>
+                            <th>快递公司</th>
+                            <th>快递编号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{# layui.each(d.params.data.order.delivery_detail.delivery_list, function(index, item){ }}
+                        <tr>
+                            <td>{{item.delivery_id}}</td>
+                            <td>{{item.waybill_id}}</td>
+                        </tr>
+                        {{# }); }}
+
+                        {{#  if(!!!d.params.data.order.delivery_detail.delivery_list){ }}
+                        <tr>
+                            <td colspan="2" class="text-center">暂无</td>
+                        </tr>
+                        {{#  } }}
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+
+        {{#  } }}
+
+
+
+    </div>
+</script>
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.sendParams = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'cropperImg'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsOrder-TcOrderDetailsForm');
+            })
+    };
+</script>

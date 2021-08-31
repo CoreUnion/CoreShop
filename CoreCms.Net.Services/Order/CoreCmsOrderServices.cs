@@ -26,7 +26,7 @@ using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +67,6 @@ namespace CoreCms.Net.Services
         private readonly ICoreCmsUserServices _userServices;
         private readonly ICoreCmsBillPaymentsServices _billPaymentsServices;
         private readonly ICoreCmsPaymentsServices _paymentsServices;
-        private readonly ICoreCmsBillPaymentsRelServices _billPaymentsRelServices;
         private readonly ICoreCmsBillRefundServices _billRefundServices;
         private readonly ICoreCmsBillLadingServices _billLadingServices;
         private readonly ICoreCmsBillReshipServices _billReshipServices;
@@ -99,7 +98,6 @@ namespace CoreCms.Net.Services
             , ICoreCmsUserServices userServices
             , ICoreCmsBillPaymentsServices billPaymentsServices
             , ICoreCmsPaymentsServices paymentsServices
-            , ICoreCmsBillPaymentsRelServices billPaymentsRelServices
             , ICoreCmsBillRefundServices billRefundServices
             , ICoreCmsBillLadingServices billLadingServices
             , ICoreCmsBillReshipServices billReshipServices, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsGoodsCommentServices goodsCommentServices, ISysTaskLogServices taskLogServices, ICoreCmsPromotionRecordServices promotionRecordServices, IRedisOperationRepository redisOperationRepository)
@@ -128,7 +126,6 @@ namespace CoreCms.Net.Services
             _userServices = userServices;
             _billPaymentsServices = billPaymentsServices;
             _paymentsServices = paymentsServices;
-            _billPaymentsRelServices = billPaymentsRelServices;
             _billRefundServices = billRefundServices;
             _billLadingServices = billLadingServices;
             _billReshipServices = billReshipServices;
@@ -657,7 +654,7 @@ namespace CoreCms.Net.Services
                 order.user.passWord = "";
             }
             //支付单
-            order.paymentRelItem = await _billPaymentsRelServices.QueryListByClauseAsync(p => p.sourceId == order.orderId);
+            order.paymentItem = await _billPaymentsServices.QueryListByClauseAsync(p => p.sourceId == order.orderId);
             //退款单
             order.refundItem = await _billRefundServices.QueryListByClauseAsync(p => p.sourceId == order.orderId);
             //提货单
@@ -667,8 +664,7 @@ namespace CoreCms.Net.Services
             //售后单
             order.aftersalesItem = await _billAftersalesServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
             //发货单
-            var deliveryResult = await _billDeliveryServices.GetDeliveryList(order.orderId);
-            order.delivery = deliveryResult.data as List<CoreCmsBillDelivery>;
+            order.delivery = await _billDeliveryServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
             if (order.delivery != null && order.delivery.Any())
             {
                 foreach (var item in order.delivery)
@@ -741,13 +737,12 @@ namespace CoreCms.Net.Services
 
             }
             //支付单
-            if (order.paymentRelItem != null && order.paymentRelItem.Any())
+            if (order.paymentItem != null && order.paymentItem.Any())
             {
-                foreach (var item in order.paymentRelItem)
+                foreach (var item in order.paymentItem)
                 {
-                    item.bill = await _billPaymentsServices.QueryByIdAsync(item.paymentId);
-                    item.bill.paymentCodeName = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(item.bill.paymentCode);
-                    item.bill.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(item.bill.status);
+                    item.paymentCodeName = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(item.paymentCode);
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(item.status);
                 }
             }
             //退款单
@@ -1238,8 +1233,9 @@ namespace CoreCms.Net.Services
         /// </summary>
         /// <param name="orderId">订单编号</param>
         /// <param name="paymentCode">支付方式</param>
+        /// <param name="billPaymentInfo">支付单据</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> Pay(string orderId, string paymentCode)
+        public async Task<WebApiCallBack> Pay(string orderId, string paymentCode, CoreCmsBillPayments billPaymentInfo)
         {
             var jm = new WebApiCallBack() { msg = "订单支付失败" };
 
@@ -1431,8 +1427,10 @@ namespace CoreCms.Net.Services
         /// <param name="orderStatus">订单状态</param>
         /// <param name="payStatus">支付状态</param>
         /// <param name="shipStatus">发货状态</param>
+        /// <param name="receiptType">收货方式</param>
+        /// <param name="isDel">是否删除</param>
         /// <returns></returns>
-        public string GetOperating(string orderId, int orderStatus, int payStatus, int shipStatus)
+        public string GetOperating(string orderId, int orderStatus, int payStatus, int shipStatus, int receiptType, bool isDel)
         {
             StringBuilder html = new StringBuilder();
             html.Append("<button class='layui-btn layui-btn-primary layui-btn-xs view-order' lay-active='viewOrder' data-id='" + orderId + "'>查看</button><br>");
@@ -1451,6 +1449,11 @@ namespace CoreCms.Net.Services
                     {
                         html.Append("<a class='layui-btn layui-btn-xs edit-order' lay-active='editOrder' data-id='" + orderId + "'>编辑</a><br>");
                         html.Append("<a class='layui-btn layui-btn-xs ship-order' lay-active='shipOrder' data-id='" + orderId + "'>发货</a><br>");
+
+                        if (receiptType == (int)GlobalEnumVars.OrderReceiptType.IntraCityService || receiptType == (int)GlobalEnumVars.OrderReceiptType.SelfDelivery)
+                        {
+                            html.Append("<a class='layui-btn layui-btn-xs  layui-btn-normal seconds-ship-order' lay-active='secondsShipOrder' data-id='" + orderId + "'>秒发</a><br>");
+                        }
                     }
                     else
                     {
@@ -1459,10 +1462,17 @@ namespace CoreCms.Net.Services
                 }
             }
             //已取消的订单
-            if (orderStatus == (int)GlobalEnumVars.OrderStatus.Cancel)
+            if (orderStatus == (int)GlobalEnumVars.OrderStatus.Cancel && isDel == false)
             {
                 html.Append("<a class='layui-btn layui-btn-danger layui-btn-xs del-order' lay-active='delOrder' data-id='" + orderId + "'>删除</a><br>");
             }
+
+            //已取消的订单
+            if (isDel == true)
+            {
+                html.Append("<a class='layui-btn layui-btn-warm layui-btn-xs restore-order' lay-active='restoreOrder' data-id='" + orderId + "'>还原</a><br>");
+            }
+
             return html.ToString();
         }
         #endregion
@@ -1794,9 +1804,10 @@ namespace CoreCms.Net.Services
         /// <param name="memo">发货描述</param>
         /// <param name="storeId">店铺收货地址</param>
         /// <param name="shipAreaId">省市区id</param>
+        /// <param name="deliveryCompanyId">直播物流编码</param>
         /// <returns></returns>
         public async Task<WebApiCallBack> BatchShip(string[] ids, string logiCode, string logiNo,
-            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0)
+            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0, string deliveryCompanyId = "")
         {
 
             var result = await _billDeliveryServices.BatchShip(ids, logiCode, logiNo, items, storeId, shipName, shipMobile, shipAreaId, shipAddress, memo);
@@ -1823,7 +1834,7 @@ namespace CoreCms.Net.Services
         /// <param name="deliveryCompanyId">直播物流编码</param>
         /// <returns></returns>
         public async Task<WebApiCallBack> Ship(string orderId, string logiCode, string logiNo,
-            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0)
+            Dictionary<int, int> items, string shipName, string shipMobile, string shipAddress, string memo, int storeId = 0, int shipAreaId = 0, string deliveryCompanyId = "")
         {
             var result = await _billDeliveryServices.Ship(orderId, logiCode, logiNo, items, storeId, shipName, shipMobile, shipAreaId, shipAddress, memo);
             return result;
@@ -2005,6 +2016,23 @@ namespace CoreCms.Net.Services
 
             return jm;
         }
+        #endregion
+
+        #region 重写根据条件列表数据
+        /// <summary>
+        ///     重写根据条件列表数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="orderByExpression"></param>
+        /// <returns></returns>
+        public async Task<List<CoreCmsOrder>> QueryListAsync(Expression<Func<CoreCmsOrder, bool>> predicate,
+            Expression<Func<CoreCmsOrder, object>> orderByExpression, OrderByType orderByType)
+        {
+
+            return await _dal.QueryListAsync(predicate, orderByExpression, orderByType);
+        }
+
         #endregion
 
         #region 重写根据条件查询分页数据

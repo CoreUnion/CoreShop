@@ -380,6 +380,29 @@ namespace CoreCms.Net.Configuration
             [Description("<button type='button' class='layui-btn  layui-btn-primary layui-btn-disabled layui-btn-xs'>订单取消</button>")]
             Cancel = 3
         }
+
+        /// <summary>
+        /// 订单状态[对应CoreCmsOrder表status字段]
+        /// </summary>
+        public enum OrderStatusDescription
+        {
+            /// <summary>
+            /// 订单正常
+            /// </summary>
+            [Description("正常（-）")]
+            Normal = 1,
+            /// <summary>
+            /// 订单完成
+            /// </summary>
+            [Description("完成（√）")]
+            Complete = 2,
+            /// <summary>
+            /// 订单取消
+            /// </summary>
+            [Description("取消（×）")]
+            Cancel = 3
+        }
+
         /// <summary>
         /// 订单收货状态[对应CoreCmsOrder表confirmStatus字段]
         /// </summary>
@@ -665,6 +688,11 @@ namespace CoreCms.Net.Configuration
             /// </summary>
             [Description("已取消")]
             cancel = 7,
+            /// <summary>
+            /// 已删除
+            /// </summary>
+            [Description("已删除")]
+            delete = 999,
         }
 
         /// <summary>
@@ -2650,6 +2678,25 @@ namespace CoreCms.Net.Configuration
             CommissionTypeFixed = 2,
         }
 
+        #endregion
+
+
+        #region 接龙相关
+
+        public enum SolitaireStatus
+        {
+
+            /// <summary>
+            /// 开启
+            /// </summary>
+            [Description("开启")]
+            Open = 1,
+            /// <summary>
+            /// 关闭
+            /// </summary>
+            [Description("关闭")]
+            Close = 2,
+        }
         #endregion
 
         #region redis缓存类型

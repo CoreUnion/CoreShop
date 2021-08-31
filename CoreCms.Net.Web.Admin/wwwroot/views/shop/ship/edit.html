@@ -191,7 +191,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item core-hidden">
             <div class="layui-input-block">
                 <div class="layui-footer">
                     <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsShip-editForm-submit" id="LAY-app-CoreCmsShip-editForm-submit" value="确认编辑">
@@ -333,7 +333,7 @@
                                         html = html + obj.context + ',';
                                         areaParentName = obj.context;
                                     }
-                                    ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: obj.ischecked });
+                                    ids.push({ 'id': obj.nodeId, 'pid': obj.parentId, 'name': obj.context, ischecked: obj.checked });
                                 });
                                 html = html.substring(0, html.length - 1) + ' <a href="javascript:void(0);" class="selectArea">请选择地区</a>';
                                 html = html + "<input type='hidden' name='areaId[" + id + "]' value='" + JSON.stringify(ids) + "'>";

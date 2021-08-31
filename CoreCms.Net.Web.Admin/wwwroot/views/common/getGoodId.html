@@ -1,5 +1,9 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+
+<script type="text/html" id="LAY-app-getGoodId-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label" for="name">商品名称</label>
@@ -10,12 +14,11 @@
             <div class="layui-inline">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsGoods-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
             </div>
-
-            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsGoods-getData" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
+            <button class="layui-btn layui-btn-sm float-right" lay-submit lay-filter="LAY-app-CoreCmsGoods-getData" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
         </div>
     </div>
 </script>
-<div class="table-body">
+<div class="noDefaultToolbar">
     <table id="LAY-app-CoreCmsGoods-tableBox" lay-filter="LAY-app-CoreCmsGoods-tableBox"></table>
 </div>
 
@@ -53,14 +56,15 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsGoods-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsGoods-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsGoods-tableBox',
                     url: layui.setter.apiUrl + 'Api/Tools/GetGoods',
                     method: 'POST',
-                    defaultToolbar: ['filter', 'print', 'exports'],
+                    toolbar: '#LAY-app-getGoodId-toolbar',
+                    defaultToolbar: null,
                     height: '430',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View.Agent;
+using CoreCms.Net.Model.ViewModels.DTO.Agent;
 using SqlSugar;
 
 namespace CoreCms.Net.IServices

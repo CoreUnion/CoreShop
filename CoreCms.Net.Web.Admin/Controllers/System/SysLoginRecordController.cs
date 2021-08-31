@@ -430,5 +430,51 @@ namespace CoreCms.Net.Web.Admin.Controllers
         }
 
         #endregion
+
+        #region 批量删除============================================================
+
+        // POST: Api/SysNLogRecords/DoBatchDelete/10,11,20
+        /// <summary>
+        ///     批量删除
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("批量删除")]
+        public async Task<JsonResult> DoBatchDelete([FromBody] FMArrayIntIds entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            var bl = await _sysLoginRecordServices.DeleteByIdsAsync(entity.id);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
+
+            return Json(jm);
+        }
+
+        #endregion
+
+        #region 清空数据============================================================
+
+        // POST: Api/SysNLogRecords/DoBatchDelete/10,11,20
+        /// <summary>
+        ///     清空数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("清空数据")]
+        public async Task<JsonResult> DoWipeData()
+        {
+            var jm = new AdminUiCallBack();
+
+            var bl = await _sysLoginRecordServices.DeleteAsync(p => p.id > 0);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
+
+            return Json(jm);
+        }
+
+        #endregion
+
     }
 }

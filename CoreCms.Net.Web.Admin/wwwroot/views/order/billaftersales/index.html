@@ -11,7 +11,13 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsBillAftersales/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillAftersales-tableBox" lay-filter="LAY-app-CoreCmsBillAftersales-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBillAftersales-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -45,7 +51,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsBillAftersales-createTime" placeholder="请输入提交时间" class="layui-input">
                 </div>
             </div>
@@ -55,16 +61,13 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsBillAftersales-tableBox" lay-filter="LAY-app-CoreCmsBillAftersales-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsBillAftersales-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsBillAftersales-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
     </div>
 </script>
+
 <script type="text/html" id="LAY-app-CoreCmsBillAftersales-tableBox-bar">
     {{# if(d.status == 1) {}}
     <a class="layui-btn layui-btn-xs" lay-event="edit">操作</a>
@@ -92,16 +95,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillAftersales-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillAftersales-updateTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+
                 //重载form
                 form.render();
                 var searchwhere;
@@ -111,7 +105,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsBillAftersales-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsBillAftersales-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -119,8 +113,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsBillAftersales/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillAftersales-toolbar',
+                    pagebar: '#LAY-app-CoreCmsBillAftersales-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -156,7 +152,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsBillAftersales-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsBillAftersales-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -170,7 +166,7 @@
                     doDetails(obj);
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsBillAftersales-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.aftersalesId);
                     switch (obj.event) {
                         case 'selectExportExcel':
@@ -181,6 +177,14 @@
                             break;
                     };
                 });
+
+                
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillAftersales-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
+
                 //监听工具条
                 table.on('tool(LAY-app-CoreCmsBillAftersales-tableBox)',
                     function (obj) {
@@ -240,7 +244,7 @@
                                                 coreHelper.Post("Api/CoreCmsBillAftersales/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reload('LAY-app-CoreCmsBillAftersales-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-CoreCmsBillAftersales-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -249,6 +253,10 @@
                                                 });
                                             });
                                     })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsBillAftersales-editForm-submit").click();
                                 }
                             });
                         } else {

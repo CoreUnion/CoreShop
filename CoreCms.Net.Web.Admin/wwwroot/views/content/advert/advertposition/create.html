@@ -1,0 +1,66 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsAdvertPosition-createForm" id="LAY-app-CoreCmsAdvertPosition-createForm">
+
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input name="name" id="name" lay-verify="required|verifyname" class="layui-input" lay-reqText="请输入名称" placeholder="请输入名称" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入不超过120个字符内容</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="code" class="layui-form-label">位置编码</label>
+            <div class="layui-input-inline">
+                <select name="code" id="code" required lay-verify="required" lay-reqText="请输入位置编码" placeholder="请输入位置编码">
+                    <option value="">请选择</option>
+                    {{# layui.each(d.params.data, function(index, item){ }}
+                    <option value="{{ item.title }}">{{ item.description }}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label for="isEnable" class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="switch" name="isEnable" id="isEnable" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" min="0" max="999999" name="sort" id="sort" lay-verify="required|number" class="layui-input" value="1" placeholder="请输入排序" lay-reqText="请输入排序并为数字" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">请输入数字</div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsAdvertPosition-createForm-submit" id="LAY-app-CoreCmsAdvertPosition-createForm-submit" value="确认添加">
+        </div>
+    </div>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , coreHelper = layui.coreHelper;
+
+                form.verify({
+
+                    verifyname: [/^[\S]{0,120}$/, '名称最大只允许输入120位字符，且不能出现空格'],
+                    verifycode: [/^[\S]{0,32}$/, '位置编码最大只允许输入32位字符，且不能出现空格'],
+                });
+                //重载form
+                form.render(null, 'LAY-app-CoreCmsAdvertPosition-createForm');
+            })
+    };
+</script>

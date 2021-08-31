@@ -6,9 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
-    <PackageReference Include="InitQ" Version="1.0.0.6" />
+    <PackageReference Include="InitQ" Version="1.0.0.7" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
-    <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="1.3.1" />
+    <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>

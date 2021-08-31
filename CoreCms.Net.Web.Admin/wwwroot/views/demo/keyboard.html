@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>通用选择键组件 - layui</title>
+
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <div class="layui-container layui-inline-container" style="padding: 30px 0;">
+        <div class="layui-input-wrap layui-inline">
+            <input type="input" name="test" id="test1" class="layui-input test" placeholder="默认" lay-options="{}">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-keyboard"></i>
+            </div>
+        </div>
+
+        <div class="layui-input-wrap layui-inline">
+            <input type="input" name="test" id="test2" readonly class="layui-input test" placeholder="字母" lay-options="{
+      type: 'letter'
+      ,setData: {
+        'caps': {selected: true},
+        'q': {disabled: true},
+        'a': {disabled: true},
+        'b': {disabled: true},
+        'd': {style: 'background-color: #5FB878; border-width: 0; color: #fff;'}
+      }
+    }">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-keyboard"></i>
+            </div>
+        </div>
+
+        <div class="layui-input-wrap layui-inline">
+            <input type="input" name="test" id="test3" readonly class="layui-input test" placeholder="数字" lay-options="{
+      type: 'number'
+      ,setData: {
+        '.': {disabled: true}
+      }
+    }">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-keyboard"></i>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="layui-input-wrap layui-inline" style="width: 65px;">
+            <input type="input" name="test" id="test99" readonly class="layui-input test" placeholder="省" lay-options="{type: 'province'}">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-down"></i>
+            </div>
+        </div>
+
+        <div class="layui-input-wrap layui-inline">
+            <button class="layui-btn layui-btn-primary" id="test100">
+                <span>城市</span>
+                <i class="layui-icon layui-icon-down"></i>
+            </button>
+        </div>
+
+        <br>
+
+        <div class="layui-input-wrap layui-inline">
+            <input type="input" name="test" id="test101" class="layui-input" placeholder="表情">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-down"></i>
+            </div>
+        </div>
+
+        <div class="layui-input-wrap layui-inline">
+            <input type="input" name="test" id="test102" class="layui-input" placeholder="自定义">
+            <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-down"></i>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        layui.config({
+            version: new Date().getTime()
+        })
+        layui.use('keyboard', function () {
+            var keyboard = layui.keyboard;
+
+            //为了做到足够的通用，我们在 keyboard 组件中除了内置「常见的选择键」类型之外，
+            //还将在以下示例中为您演示各类其他场景的选择键配置
+            //你将体会这个组件的适用范围，是怎样的广袤无垠
+
+            keyboard.render({
+                elem: '.test'
+                //,style: 'background-color: #E7EAF7;'
+                //,isHeader: false
+                //,width: 320
+
+                , click: function (obj) {
+                    console.log(obj)
+                    //this.elem.val(obj.className)
+                }
+                , ready: function () {
+                    console.log(1)
+                }
+            });
+
+            //自定义
+            keyboard.render({
+                elem: '#test100'
+                , type: 'test123'
+                , title: '开通城市'
+                , style: 'width: 210px'
+                , keyStyle: 'width: 60px'
+                , single: true
+                , data: [
+                    { title: '北京' }
+                    , { title: '上海', disabled: true }
+                    , { title: '广州' }
+                    , { title: '深圳' }
+                    , { title: '杭州' }
+                    , { title: '成都' }
+                    , { type: 'br' }
+                    , { title: '其他城市', style: "width: 190px;" }
+                ]
+                , click: function (obj) {
+                    var keyData = obj.keyData;
+                    this.elem.find('span').html(keyData.value);
+                    keyboard.close(this.id);
+                }
+                , clear: function (obj) {
+                    this.elem.find('span').html('城市');
+                    keyboard.close(this.id);
+                    console.log(obj);
+                }
+                , done: function (obj) {
+                    console.log(obj);
+                }
+            });
+
+            keyboard.render({
+                elem: '#test101'
+                , type: 'testface'
+                , title: '表情'
+                , style: 'max-height: 215px; overflow: auto;'
+                , keyStyle: 'width: 45px; font-size: 16px;'
+                , data: [
+                    { title: '😁' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                    , { type: 'br' }
+                    , { title: '😂' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                    , { type: 'br' }
+                    , { title: '😂' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                    , { type: 'br' }
+                    , { title: '😂' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                    , { type: 'br' }
+                    , { title: '😂' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                    , { type: 'br' }
+                    , { title: '😂' }
+                    , { title: '😂' }
+                    , { title: '😃' }
+                    , { title: '😄' }
+                    , { title: '😅' }
+                    , { title: '😆' }
+                ]
+            });
+
+            //颜文字
+            keyboard.render({
+                elem: '#test102'
+                , type: 'testywz'
+            })
+
+            //快捷语
+
+            //符号
+
+            //图像验证码
+
+        });
+    </script>
+</body>
+</html>

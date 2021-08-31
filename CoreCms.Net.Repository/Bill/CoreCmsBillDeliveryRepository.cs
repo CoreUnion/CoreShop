@@ -17,7 +17,7 @@ using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,29 +34,6 @@ namespace CoreCms.Net.Repository
         public CoreCmsBillDeliveryRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
-
-        #region 获取发货单列表
-        /// <summary>
-        /// 获取发货单列表
-        /// </summary>
-        /// <param name="orderId">订单编号</param>
-        /// <returns></returns>
-        public async Task<WebApiCallBack> GetDeliveryList(string orderId)
-        {
-            var jm = new WebApiCallBack();
-
-            var list = await DbClient.Queryable<CoreCmsBillDelivery, CoreCmsBillDeliveryOrderRel>((d, dor) => new object[]
-             {
-                    JoinType.Inner, d.deliveryId == dor.deliveryId
-             }).Where((d, dor) => dor.orderId == orderId).ToListAsync();
-            jm.status = true;
-            jm.data = list;
-            jm.msg = jm.status ? GlobalConstVars.GetDataSuccess : GlobalConstVars.GetDataFailure;
-
-            return jm;
-        }
-
-        #endregion
 
         /// <summary>
         /// 发货单统计7天统计

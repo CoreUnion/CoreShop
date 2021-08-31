@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.1.457" />
+    <PackageReference Include="DotLiquid" Version="2.2.548" />
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
   </ItemGroup>
 

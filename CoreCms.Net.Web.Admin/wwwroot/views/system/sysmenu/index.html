@@ -14,20 +14,6 @@
     <div class="layui-form coreshop-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <div class="layui-input-inline">
-                    <input type="text" name="menuName" id="menuName" placeholder="请输入菜单名称" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <div class="layui-input-inline">
-                    <input type="text" name="authority" id="authority" placeholder="请输入权限标识" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-SysMenu-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
-            </div>
-
-            <div class="layui-inline" style="float: right">
                 <button class="layui-btn  layui-btn-sm mybtn  layuiadmin-btn-admin" data-type="add"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
             </div>
         </div>
@@ -96,7 +82,7 @@
                         },
                         height: 'full-250',
                         cols: [
-                            {field: 'id', title: '序列', width: 80},
+                            {field: 'id', title: '序列', width: 60},
                             {field: 'menuName', title: '菜单名称', minWidth: 110},
                             {
                                 title: '图标', templet: '<p><i class="layui-icon {{d.menuIcon}}"></i></p>',
@@ -127,14 +113,13 @@
                         reqData: function (data, callback) {
                             coreHelper.Post('Api/SysMenu/GetPageList',null, function (res) {
                                 tbDataList = res.data ? res.data : [];
-                                //for (var i = 0; i < tbDataList.length; i++) {
-                                //    if (tbDataList[i].parentId==0) {
-                                //        tbDataList[i].open = true;
-                                //    } else {
-                                //        tbDataList[i].open = false;
-                                //    }
-
-                                //}
+                                for (var i = 0; i < tbDataList.length; i++) {
+                                    if (tbDataList[i].parentId==0) {
+                                        tbDataList[i].open = true;
+                                    } else {
+                                        tbDataList[i].open = false;
+                                    }
+                                }
                                 callback(tbDataList);
                             });
                         }
@@ -170,7 +155,7 @@
                         if (e.code === 0) {
                             admin.popup({ shadeClose: false,
                                 title: '创建数据',
-                                area: ['600px', '400px'],
+                                area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-create',
                                 success: function (layero, index) {
                                     view(this.id).render('System/SysMenu/create', { data: e.data,treeData:insTb.options.data }).done(function () {
@@ -203,6 +188,10 @@
                                     // 弹窗不出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-SysMenu-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -215,7 +204,7 @@
                         if (e.code === 0) {
                             admin.popup({ shadeClose: false,
                                 title: '编辑数据',
-                                area: ['600px', '400px'],
+                                area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('System/SysMenu/edit', { data: e.data, treeData: insTb.options.data }).done(function() {
@@ -248,6 +237,10 @@
                                     });
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-SysMenu-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -324,7 +317,7 @@
                     console.log(obj);
                     coreHelper.Post("Api/SysMenu/DoDelete", { id: obj.data.id }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-SysMenu-tableBox');
+                        //table.reloadData('LAY-app-SysMenu-tableBox');
                         insTb.refresh();
                         layer.msg(e.msg);
                     });

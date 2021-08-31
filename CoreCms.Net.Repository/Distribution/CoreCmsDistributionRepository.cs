@@ -17,8 +17,8 @@ using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
-using CoreCms.Net.Model.ViewModels.View.Agent;
-using CoreCms.Net.Model.ViewModels.View.Distribution;
+using CoreCms.Net.Model.ViewModels.DTO.Agent;
+using CoreCms.Net.Model.ViewModels.DTO.Distribution;
 using SqlSugar;
 
 namespace CoreCms.Net.Repository

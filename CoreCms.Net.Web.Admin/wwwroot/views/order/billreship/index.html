@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsBillReship/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsBillReship-tableBox" lay-filter="LAY-app-CoreCmsBillReship-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsBillReship-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -45,7 +52,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-CoreCmsBillReship-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
             </div>
@@ -55,11 +62,7 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table id="LAY-app-CoreCmsBillReship-tableBox" lay-filter="LAY-app-CoreCmsBillReship-tableBox"></table>
-</div>
-
-<script type="text/html" id="LAY-app-CoreCmsBillReship-toolbar">
+<script type="text/html" id="LAY-app-CoreCmsBillReship-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="selectExportExcel"><i class="layui-icon layui-icon-add-circle"></i>选择导出</button>
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
@@ -92,16 +95,7 @@
                     , util = layui.util
                     , view = layui.view;
 
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillReship-createTime',
-                    type: 'datetime',
-                    range: '到',
-                });
-                laydate.render({
-                    elem: '#searchTime-CoreCmsBillReship-updateTime',
-                    type: 'datetime',
-                    range: '到',
-                });
+                
                 //重载form
                 form.render();
                 var searchwhere;
@@ -111,7 +105,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsBillReship-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsBillReship-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
@@ -119,8 +113,10 @@
                     url: layui.setter.apiUrl + 'Api/CoreCmsBillReship/GetPageList',
                     method: 'POST',
                     toolbar: '#LAY-app-CoreCmsBillReship-toolbar',
+                    pagebar: '#LAY-app-CoreCmsBillReship-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -157,7 +153,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-CoreCmsBillReship-tableBox)', function (obj) {
-                    table.reload('LAY-app-CoreCmsBillReship-tableBox', {
+                    table.reloadData('LAY-app-CoreCmsBillReship-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -171,7 +167,7 @@
                     doDetails(obj);
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-CoreCmsBillReship-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-CoreCmsBillReship-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.reshipId);
                     switch (obj.event) {
                         case 'selectExportExcel':
@@ -215,7 +211,7 @@
                     layer.confirm('确定收货吗？', function (index) {
                         coreHelper.Post("Api/CoreCmsBillReship/DoAudit", { id: obj.data.reshipId }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-CoreCmsBillReship-tableBox');
+                            table.reloadData('LAY-app-CoreCmsBillReship-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -235,7 +231,7 @@
                                 });
                             coreHelper.Post("Api/CoreCmsBillReship/DoBatchDelete", { id: delidsStr }, function (e) {
                                 if (debug) { console.log(e); } //开启调试返回数据
-                                table.reload('LAY-app-CoreCmsBillReship-tableBox');
+                                table.reloadData('LAY-app-CoreCmsBillReship-tableBox');
                                 layer.msg(e.msg);
                             });
                         });
@@ -280,7 +276,11 @@
                         });
                 }
                 //监听 表格复选框操作
-
+                laydate.render({
+                    elem: '#searchTime-CoreCmsBillReship-createTime',
+                    type: 'datetime',
+                    range: '到',
+                });
             });
     };
 </script>

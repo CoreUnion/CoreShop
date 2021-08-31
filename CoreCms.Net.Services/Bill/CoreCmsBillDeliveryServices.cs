@@ -21,7 +21,7 @@ using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Api;
 using CoreCms.Net.Model.ViewModels.UI;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Helper;
 using Flurl.Http;
 using Google.Protobuf.WellKnownTypes;
@@ -67,18 +67,6 @@ namespace CoreCms.Net.Services
             _orderLogServices = orderLogServices;
             _settingServices = settingServices;
             _redisOperationRepository = redisOperationRepository;
-        }
-
-
-        /// <summary>
-        /// 获取发货单列表
-        /// </summary>
-        /// <param name="orderId">订单编号</param>
-        /// <returns></returns>
-        public async Task<WebApiCallBack> GetDeliveryList(string orderId)
-        {
-
-            return await _dal.GetDeliveryList(orderId);
         }
 
         /// <summary>

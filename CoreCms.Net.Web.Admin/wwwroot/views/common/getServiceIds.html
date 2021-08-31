@@ -1,5 +1,9 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+
+<script type="text/html" id="LAY-app-getServiceIds-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label" for="name">服务名称</label>
@@ -11,11 +15,11 @@
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsService-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
             </div>
             <div class="layui-inline"><div class="layui-form-mid">您选择了:<span id="tagNum">0</span>个服务</div></div>
-            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsService-tableBox_submit" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
+            <button class="layui-btn layui-btn-sm float-right" lay-submit lay-filter="LAY-app-CoreCmsService-tableBox_submit" style="float: right"><i class="layui-icon layui-icon-add-1"></i>提交选项</button>
         </div>
     </div>
 </script>
-<div class="table-body">
+<div class="noDefaultToolbar">
     <table id="LAY-app-CoreCmsService-tableBox" lay-filter="LAY-app-CoreCmsService-tableBox"></table>
 </div>
 
@@ -55,14 +59,15 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-CoreCmsService-tableBox', { where: field });
+                        table.reloadData('LAY-app-CoreCmsService-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
                     elem: '#LAY-app-CoreCmsService-tableBox',
                     url: layui.setter.apiUrl + 'Api/Tools/tagServices',
                     method: 'POST',
-                    defaultToolbar: ['filter', 'print', 'exports'],
+                    toolbar: '#LAY-app-getServiceIds-toolbar',
+                    defaultToolbar: null,
                     height: '380px',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,

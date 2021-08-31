@@ -34,5 +34,9 @@
   {
     "outputFile": "wwwroot/lib/ckeditor5/documentEditor.css",
     "inputFile": "wwwroot/lib/ckeditor5/documentEditor.less"
+  },
+  {
+    "outputFile": "wwwroot/static/css/overWrite.css",
+    "inputFile": "wwwroot/static/css/overWrite.less"
   }
 ]

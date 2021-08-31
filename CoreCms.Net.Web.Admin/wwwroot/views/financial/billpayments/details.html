@@ -1,7 +1,7 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
     <table class="layui-table layui-form" lay-filter="LAY-app-CoreCmsBillPayments-detailsForm" id="LAY-app-CoreCmsBillPayments-detailsForm">
         <colgroup>
-            <col width="150">
+            <col width="180">
             <col>
         </colgroup>
         <tbody>
@@ -39,6 +39,14 @@
                 </td>
                 <td>
                     {{ d.params.data.paymentsResourceTypes || '' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="type">资源编号</label>
+                </td>
+                <td>
+                    {{ d.params.data.model.sourceId || '' }}
                 </td>
             </tr>
 
@@ -102,28 +110,6 @@
                 </td>
                 <td>
                     {{ d.params.data.model.updateTime || '' }}
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="updateTime">资源明细</label>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <th>编号</th>
-                            <th>金额</th>
-                        </tr>
-
-                        {{# layui.each(d.params.data.rel, function(index, item){ }}
-
-                        <tr>
-                            <td>{{ item.sourceId }}</td>
-                            <td>{{ item.money }}</td>
-                        </tr>
-                        {{# }); }}
-                    </table>
                 </td>
             </tr>
         </tbody>

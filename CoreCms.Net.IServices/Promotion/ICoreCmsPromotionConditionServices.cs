@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
-using CoreCms.Net.Model.ViewModels.View;
+using CoreCms.Net.Model.ViewModels.DTO;
 using Newtonsoft.Json.Linq;
 
 namespace CoreCms.Net.IServices

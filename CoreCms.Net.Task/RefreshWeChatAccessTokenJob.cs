@@ -18,6 +18,7 @@ using CoreCms.Net.WeChat.Service.HttpClients;
 using CoreCms.Net.WeChat.Service.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SKIT.FlurlHttpClient;
 using SKIT.FlurlHttpClient.Wechat;
 using SKIT.FlurlHttpClient.Wechat.Api;
 using SKIT.FlurlHttpClient.Wechat.Api.Models;

@@ -1,0 +1,423 @@
+<title>表单</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsForm/GetIndex" lay-done="layui.data.done(d);">
+    
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsForm-tableBox" lay-filter="LAY-app-CoreCmsForm-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsForm-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="name" placeholder="请输入表单名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="type">
+                        <option value="">请选择表单类型</option>
+                        {{# layui.each(indexData.formTypes, function(index, item){ }}
+                        <option value="{{ item.value }}">{{ item.description }}</option>
+                        {{# }); }}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsForm-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsForm-pagebar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
+    </div>
+</script>
+<script type="text/html" id="LAY-app-CoreCmsForm-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="qrcode">小程序码</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">报表</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , util = layui.util
+                    , view = layui.view;
+                //重载form
+                form.render();
+                var searchwhere;
+                //监听搜索
+                form.on('submit(LAY-app-CoreCmsForm-search)',
+                    function (data) {
+                        var field = data.field;
+                        searchwhere = field;
+                        //执行重载
+                        table.reloadData('LAY-app-CoreCmsForm-tableBox', { where: field });
+                    });
+                //数据绑定
+                table.render({
+                    elem: '#LAY-app-CoreCmsForm-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsForm/GetPageList',
+                    method: 'POST',
+                    toolbar: '#LAY-app-CoreCmsForm-toolbar',
+                    pagebar: '#LAY-app-CoreCmsForm-pagebar',
+                    className: 'pagebarbox',
+                    defaultToolbar: ['filter', 'print', 'exports'],
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    page: true,
+                    limit: 30,
+                    limits: [10, 15, 20, 25, 30, 50, 100, 200],
+                    text: { none: '暂无相关数据' },
+                    cols: [
+                        [
+                            //{ type: "checkbox", fixed: "left" },
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'name', title: '表单名称', sort: false },
+                            { field: 'description', title: '表单描述', sort: false },
+                            {
+                                field: 'type',
+                                title: '表单类型',
+                                width: 100,
+                                align: 'center',
+                                templet: function (data) {
+                                    for (var i = 0; i < d.data.formTypes.length; i++) {
+                                        if (data.type == d.data.formTypes[i].value) {
+                                            return d.data.formTypes[i].description;
+                                        }
+                                    }
+                                    return "";
+                                }
+                            },
+                            { field: 'isLogin', title: '需要登录', width: 95, templet: '#switch_isLogin', sort: false, unresize: true },
+                            { field: 'endDateTime', title: '提交截止时间', width: 130, sort: false },
+                            { field: 'createTime', title: '创建时间', width: 130, sort: false },
+                            { field: 'updateTime', title: '更新时间', width: 130, sort: false },
+                            { field: 'sort', title: '排序', width: 50, sort: false },
+
+                            { width: 222, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsForm-tableBox-bar' }
+                        ]
+                    ]
+                });
+                //监听排序事件
+                table.on('sort(LAY-app-CoreCmsForm-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-CoreCmsForm-tableBox', {
+                        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            orderField: obj.field, //排序字段
+                            orderDirection: obj.type //排序方式
+                        }
+                    });
+                });
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsForm-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
+                //头工具栏事件
+                table.on('pagebar(LAY-app-CoreCmsForm-tableBox)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'addData':
+                            doCreate();
+                            break;
+                    };
+                });
+                //监听工具条
+                table.on('tool(LAY-app-CoreCmsForm-tableBox)',
+                    function (obj) {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
+                            doDelete(obj);
+                        } else if (obj.event === 'edit') {
+                            doEdit(obj)
+                        } else if (obj.event === 'qrcode') {
+                            doQrCode(obj)
+                        }
+                    });
+                //执行创建操作
+                function doCreate() {
+                    coreHelper.Post("Api/CoreCmsForm/GetCreate", null, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '创建数据',
+                                area: ['1200px', '95%'],
+                                id: 'LAY-popup-CoreCmsForm-create',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/form/create', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsForm-createForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                var formModel = {};
+                                                //formModel.id = field.id;
+                                                formModel.name = field.name;
+                                                formModel.type = field.type;
+                                                formModel.sort = field.sort;
+
+                                                if (field.headType == '3') {
+                                                    formModel.headTypeValue = field.headTypeValue;
+                                                    formModel.headTypeVideo = field.headTypeVideo;
+                                                    formModel.images = '';
+                                                } else {
+                                                    formModel.images = field.images;
+                                                    formModel.headTypeValue = '';
+                                                    formModel.headTypeVideo = '';
+                                                }
+                                                formModel.videoPath = field.videoPath;
+                                                formModel.description = field.description;
+                                                formModel.headType = field.headType;
+
+                                                formModel.buttonName = field.buttonName;
+                                                formModel.buttonColor = field.buttonColor;
+                                                formModel.isLogin = field.isLogin == 'on';
+                                                formModel.times = field.times;
+                                                formModel.returnMsg = field.returnMsg;
+                                                formModel.endDateTime = field.endDateTime;
+
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('item.id') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                var items = [];
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var item = {};
+                                                        item.id = field['item.id[' + i + ']'];
+                                                        item.name = field['item.name[' + i + ']'];
+                                                        item.type = field['item.type[' + i + ']'];
+                                                        item.validationType = field['item.validationType[' + i + ']'];
+                                                        item.value = field['item.value[' + i + ']'];
+                                                        item.defaultValue = field['item.defaultValue[' + i + ']'];
+                                                        item.required = field['item.required[' + i + ']'] === '1' ? true : false;
+                                                        item.sort = field['item.sort[' + i + ']'];
+                                                        items.push(item);
+                                                    }
+                                                }
+
+                                                if (debug) { console.log(field); } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsForm/DoCreate", { model: formModel, items: items }, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsForm-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    });
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsForm-createForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行编辑操作
+                function doEdit(obj) {
+                    coreHelper.Post("Api/CoreCmsForm/GetEdit", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '编辑数据',
+                                area: ['1200px', '95%'],
+                                id: 'LAY-popup-CoreCmsForm-edit',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/form/edit', { data: e.data }).done(function () {
+                                        //监听提交
+                                        form.on('submit(LAY-app-CoreCmsForm-editForm-submit)',
+                                            function (data) {
+                                                var field = data.field; //获取提交的字段
+
+                                                var formModel = {};
+                                                formModel.id = field.id;
+                                                formModel.name = field.name;
+                                                formModel.type = field.type;
+                                                formModel.sort = field.sort;
+
+                                                if (field.headType == '3') {
+                                                    formModel.headTypeValue = field.headTypeValue;
+                                                    formModel.headTypeVideo = field.headTypeVideo;
+                                                    formModel.images = '';
+                                                } else {
+                                                    formModel.images = field.images;
+                                                    formModel.headTypeValue = '';
+                                                    formModel.headTypeVideo = '';
+                                                }
+                                                formModel.videoPath = field.videoPath;
+                                                formModel.description = field.description;
+                                                formModel.headType = field.headType;
+
+                                                formModel.buttonName = field.buttonName;
+                                                formModel.buttonColor = field.buttonColor;
+                                                formModel.isLogin = field.isLogin == 'on';
+                                                formModel.times = field.times;
+                                                formModel.returnMsg = field.returnMsg;
+                                                formModel.endDateTime = field.endDateTime;
+
+
+
+                                                var keys = Object.keys(field);
+                                                var keysCount = 0;
+                                                for (var i = 0; i < keys.length; i++) {
+                                                    if (keys[i].indexOf('item.id') != -1) {
+                                                        keysCount++;
+                                                    }
+                                                }
+                                                var items = [];
+                                                //console.log(item.length);
+                                                if (keysCount > 0) {
+                                                    for (var i = 0; i < keysCount; i++) {
+                                                        var item = {};
+                                                        item.id = field['item.id[' + i + ']'];
+                                                        item.name = field['item.name[' + i + ']'];
+                                                        item.type = field['item.type[' + i + ']'];
+                                                        item.validationType = field['item.validationType[' + i + ']'];
+                                                        item.value = field['item.value[' + i + ']'];
+                                                        item.defaultValue = field['item.defaultValue[' + i + ']'];
+                                                        item.required = field['item.required[' + i + ']'] === '1' ? true : false;
+                                                        item.sort = field['item.sort[' + i + ']'];
+                                                        items.push(item);
+                                                    }
+                                                }
+
+                                                if (debug) {
+                                                    console.log(field);
+                                                    console.log(items);
+                                                } //开启调试返回数据
+                                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                                coreHelper.Post("Api/CoreCmsForm/DoEdit", { model: formModel, items: items }, function (e) {
+                                                    console.log(e)
+                                                    if (e.code === 0) {
+                                                        layui.table.reloadData('LAY-app-CoreCmsForm-tableBox'); //重载表格
+                                                        layer.close(index); //再执行关闭
+                                                        layer.msg(e.msg);
+                                                    } else {
+                                                        layer.msg(e.msg);
+                                                    }
+                                                });
+                                            });
+                                    })
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsForm-editForm-submit").click();
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+                //执行预览操作
+                function doDetails(obj) {
+                    coreHelper.Post("Api/CoreCmsForm/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看报表',
+                                area: ['1000px', '500px'],
+                                id: 'LAY-popup-CoreCmsForm-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/form/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //获取小程序码
+                function doQrCode(obj) {
+                    coreHelper.Post("Api/Tools/GetFormWxCode", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看小程序码',
+                                area: ['380px', '480px'],
+                                id: 'LAY-popup-CoreCmsForm-QrCode',
+                                success: function (layero, index) {
+                                    view(this.id).render('content/customform/form/qrCode', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsForm/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reloadData('LAY-app-CoreCmsForm-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
+                //监听 表格复选框操作
+
+                layui.form.on('switch(switch_isLogin)', function (obj) {
+                    coreHelper.Post("Api/CoreCmsForm/DoSetisLogin", { id: this.value, data: obj.elem.checked }, function (e) {
+                        if (debug) { console.log(e); } //开启调试返回数据
+                        //table.reloadData('LAY-app-CoreCmsForm-tableBox');
+                        layer.msg(e.msg);
+                    });
+                });
+
+            });
+    };
+</script>
+
+<!--设置是否需要登录-->
+<script type="text/html" id="switch_isLogin">
+    <input type="checkbox" name="switch_isLogin" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="switch_isLogin" {{ d.isLogin ? 'checked' : '' }}>
+</script>

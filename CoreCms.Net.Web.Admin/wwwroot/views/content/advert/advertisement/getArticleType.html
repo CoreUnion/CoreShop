@@ -1,0 +1,66 @@
+<title>文章分类表</title>
+<!--当前位置开始-->
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <script type="text/html" template lay-done="layui.data.updateMainBreadcrumb();">
+        </script>
+    </div>
+</div>
+<!--当前位置结束-->
+<style>
+    /* 重写样式 */
+</style>
+<script type="text/html" template lay-done="layui.data.done(d);">
+</script>
+<div class="table-body">
+    <table id="LAY-app-CoreCmsArticleType-tableBox" lay-filter="LAY-app-CoreCmsArticleType-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-CoreCmsArticleType-tableBox-bar">
+    <a class="layui-btn layui-btn-xs" lay-event="selectType">选择</a>
+</script>
+
+<script>
+    var indexData;
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+        indexData = d.data;
+        layui.use(['index', 'table', 'laydate', 'util', 'coreHelper', 'treeTable'],
+            function () {
+                var $ = layui.$
+                    , coreHelper = layui.coreHelper
+                    , treeTable = layui.treeTable;
+
+                //数据绑定
+                var insTb = treeTable.render({
+                    elem: '#LAY-app-CoreCmsArticleType-tableBox',
+                    tree: {
+                        iconIndex: 1,
+                        idName: 'id',  // id的字段名
+                        pidName: 'parentId',  // pid的字段名
+                        openName: 'name',
+                        isPidData: true
+                    },
+                    height: 'full-262',//无面包屑127,搜索框189,1行62
+                    cols: [
+                        { field: 'id', title: '序列', width: 60, sort: false },
+                        { field: 'name', title: '分类名称', sort: false },
+                        { field: 'sort', title: '排序 ', sort: false, width: 105 },
+                        { width: 182, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsArticleType-tableBox-bar' }
+                    ],
+                    reqData: function (data, callback) {
+                        coreHelper.Post('Api/CoreCmsAdvertisement/GetArticleType', null, function (res) {
+                            if (res.code === 0) {
+                                callback(res.data);
+                            } else {
+                                layer.msg(res.msg, { icon: 5, time: 2000 });
+                            }
+                        })
+                    },
+                    style: 'margin-top:0;'
+                });
+            });
+    };
+</script>

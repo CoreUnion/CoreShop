@@ -514,5 +514,27 @@ namespace CoreCms.Net.Web.Admin.Controllers
         }
 
         #endregion
+
+        #region 清空数据============================================================
+
+        // POST: Api/SysTaskLog/DoBatchDelete/10,11,20
+        /// <summary>
+        ///     清空数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("清空数据")]
+        public async Task<JsonResult> DoWipeData()
+        {
+            var jm = new AdminUiCallBack();
+
+            var bl = await _sysTaskLogServices.DeleteAsync(p => p.id > 0);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
+
+            return Json(jm);
+        }
+
+        #endregion
     }
 }

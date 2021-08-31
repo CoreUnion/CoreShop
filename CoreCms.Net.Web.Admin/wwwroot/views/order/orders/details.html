@@ -1,6 +1,6 @@
 <style>
     .myOrderDetails .layui-form-label { width: 90px; padding: 8px 5px; height: 38px; line-height: 20px; border-width: 1px; border-style: solid; border-radius: 2px 0 0 2px; text-align: center; background-color: #FBFBFB; overflow: hidden; box-sizing: border-box; }
-   /* .myOrderDetails .layui-form-mid { float: left; display: block; padding: 8px 5px 8px 5px !important; line-height: 20px; margin-right: 10px; color: #999 !important; position: relative; border-width: 1px; border-style: solid; border-color: #e6e6e6; }*/
+    /* .myOrderDetails .layui-form-mid { float: left; display: block; padding: 8px 5px 8px 5px !important; line-height: 20px; margin-right: 10px; color: #999 !important; position: relative; border-width: 1px; border-style: solid; border-color: #e6e6e6; }*/
     .coreshop-form { overflow-y: auto; height: 100%; box-sizing: border-box; }
     .myOrderDetails .layui-input-inline { padding-left: 5px; }
 </style>
@@ -211,6 +211,7 @@
                                 <td>{{item.sn}}</td>
                                 <td>{{item.bn}}</td>
                                 <td>{{item.weight}}</td>
+                                <!--<td>{{#  if(item.sendnums == 2){ }}{{item.sendnums}}{{#  } else { }}0{{#  } }}    </td>-->
                                 <td>{{item.sendNums}}</td>
                                 <td>{{item.reshipNums}}</td>
                             </tr>
@@ -238,15 +239,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{# layui.each(d.params.data.paymentRelItem, function(index, item){ }}
+                            {{# layui.each(d.params.data.paymentItem, function(index, item){ }}
                             <tr>
-                                <td>{{item.bill.paymentId}}</td>
-                                <td>{{item.bill.paymentCodeName}}</td>
-                                <td>{{item.bill.tradeNo || ''}}</td>
-                                <td>{{item.bill.money}}</td>
-                                <td>{{item.bill.statusName}}</td>
-                                <td>{{item.bill.payedMsg || ''}}</td>
-                                <td>{{item.bill.updateTime || ''}}</td>
+                                <td>{{item.paymentId}}</td>
+                                <td>{{item.paymentCodeName}}</td>
+                                <td>{{item.tradeNo || ''}}</td>
+                                <td>{{item.money}}</td>
+                                <td>{{item.statusName}}</td>
+                                <td>{{item.payedMsg || ''}}</td>
+                                <td>{{item.updateTime || ''}}</td>
                             </tr>
                             {{# }); }}
                         </tbody>
@@ -339,7 +340,7 @@
                                 <td>{{item.name}}</td>
                                 <td>{{item.mobile}}</td>
                                 <td>{{item.statusName}}</td>
-                                <td>{{item.updateTime}}</td>
+                                <td>{{item.pickUpTime}}</td>
                                 <td>{{item.clerkIdName}}</td>
                             </tr>
                             {{# }); }}

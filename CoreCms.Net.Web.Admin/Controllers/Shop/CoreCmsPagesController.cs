@@ -456,7 +456,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             jm.code = 0;
-            var pageItems = await _pagesItemsServices.QueryListByClauseAsync(p => p.pageCode == model.code);
+            var pageItems = await _pagesItemsServices.QueryListByClauseAsync(p => p.pageCode == model.code, p => p.sort, OrderByType.Asc);
 
             var noObjArr = new string[] { "textarea" };
 

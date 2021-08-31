@@ -15,7 +15,7 @@
         </div>
         <div id="conditionBox"></div>
 
-        <div class="layui-form-item text-center">
+        <div class="layui-form-item text-center core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistributionCondition-editForm-submit" id="LAY-app-CoreCmsDistributionCondition-editForm-submit" value="提交升级条件">
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">满多少：</label>
         <div class="layui-input-inline layui-inline-2">
-            <input name="money" lay-verify="title" autocomplete="off" value="{{d.money}}" placeholder="金额" class="layui-input" type="text">
+            <input name="money" lay-verify="title" autocomplete="off" value="{{d.money || 1}}" placeholder="金额" class="layui-input" type="text">
         </div>
         <div class="layui-form-mid layui-word-aux">消费金额满多少的时候，升级</div>
     </div>
@@ -54,7 +54,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">订单量：</label>
         <div class="layui-input-inline layui-inline-2">
-            <input name="num" lay-verify="title" autocomplete="off" value="{{d.num}}" placeholder="数量" class="layui-input" type="text">
+            <input name="num" lay-verify="title" autocomplete="off" value="{{d.num || 1}}" placeholder="数量" class="layui-input" type="text">
         </div>
         <div class="layui-form-mid layui-word-aux">消费多少笔订单的时候，升级</div>
     </div>
@@ -120,7 +120,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">数量：</label>
         <div class="layui-input-inline layui-inline-2">
-            <input name="num" lay-verify="title" autocomplete="off" value="{{d.num}}" placeholder="数量" class="layui-input" type="text">
+            <input name="num" lay-verify="title" autocomplete="off" value="{{d.num || 1}}" placeholder="数量" class="layui-input" type="text">
         </div>
         <div class="layui-form-mid layui-word-aux">下线指定等级达到多少数量，升级</div>
     </div>
@@ -134,7 +134,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">满多少：</label>
         <div class="layui-input-inline layui-inline-2">
-            <input name="money" lay-verify="title" autocomplete="off" value="{{d.money}}" placeholder="金额" class="layui-input" type="text">
+            <input name="money" lay-verify="title" autocomplete="off" value="{{d.money || 1}}" placeholder="金额" class="layui-input" type="text">
         </div>
         <div class="layui-form-mid layui-word-aux">消费金额满多少的时候，升级</div>
     </div>
@@ -162,21 +162,21 @@
 
                 var code = d.params.data.model.code;
                 var obj = JSON.parse(d.params.data.model.parameters);
-                var view = document.getElementById('conditionBox');
+                var conditionBox = document.getElementById('conditionBox');
                 $("#conditionBox").empty();
 
                 if (code === 'USER_ORDERS') {//个人消费总额(已完成的订单)
                     var getTpl = user_orders_tpl.innerHTML;
-                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    laytpl(getTpl).render(obj, function (html) { conditionBox.innerHTML = html; });
                 } else if (code === 'USER_ORDERSNUM') { //个人订单数量(已完成的订单)
                     var getTpl = user_ordersnum_tpl.innerHTML;
-                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    laytpl(getTpl).render(obj, function (html) { conditionBox.innerHTML = html; });
                 } else if (code === 'GOODS_ALL') { //所有商品满足条件
                     var getTpl = goods_all_tpl.innerHTML;
-                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    laytpl(getTpl).render(obj, function (html) { conditionBox.innerHTML = html; });
                 } else if (code === 'GOODS_IDS') { //购买指定商品
                     var getTpl = goodsIds_tpl.innerHTML;
-                    laytpl(getTpl).render(obj, function (html) { view.innerHTML = html; });
+                    laytpl(getTpl).render(obj, function (html) { conditionBox.innerHTML = html; });
 
                     if (obj.goodsId) {
                         var goodsIds = obj.goodsId.split(',');
@@ -231,9 +231,10 @@
                 //处理属性 为 lay-active 的所有元素事件
                 util.event('lay-active', {
                     goods_show: function () {
-                        admin.popup({ shadeClose: false,
+                        admin.popup({
+                            shadeClose: false,
                             title: '选择商品',
-                            area: ['750px', '600px'],
+                            area: ['750px', '90%'],
                             id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
                             success: function (layero, index) {
                                 view(this.id).render('common/getGoodIds', null).done(function () {

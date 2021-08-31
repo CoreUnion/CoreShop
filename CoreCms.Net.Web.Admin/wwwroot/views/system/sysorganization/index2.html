@@ -11,7 +11,7 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/SysOrganization/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 
             <div class="layui-inline">
@@ -74,13 +74,13 @@
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="createTime">创建时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="createTime" id="searchTime-SysOrganization-createTime" placeholder="请输入创建时间" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label" for="updateTime">修改时间</label>
-                <div class="layui-input-inline" style="width: 260px;">
+                <div class="layui-input-inline core-time-input">
                     <input type="text" name="updateTime" id="searchTime-SysOrganization-updateTime" placeholder="请输入修改时间" class="layui-input">
                 </div>
             </div>
@@ -159,7 +159,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-SysOrganization-tableBox',{ where: field });
+                        table.reloadData('LAY-app-SysOrganization-tableBox',{ where: field });
                     });
                 //数据绑定
                 table.render({
@@ -168,7 +168,7 @@
                     method: 'POST',
 				    toolbar: '#LAY-app-SysOrganization-toolbar',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//无面包屑127,搜索框189,1行62
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -193,7 +193,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-SysOrganization-tableBox)', function(obj){
-                    table.reload('LAY-app-SysOrganization-tableBox', {
+                    table.reloadData('LAY-app-SysOrganization-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -257,7 +257,7 @@
                                                     coreHelper.Post("Api/SysOrganization/DoCreate", field, function (e) {
                                                             console.log(e)
                                                             if (e.code === 0) {
-                                                                layui.table.reload('LAY-app-SysOrganization-tableBox'); //重载表格
+                                                                layui.table.reloadData('LAY-app-SysOrganization-tableBox'); //重载表格
                                                                 layer.close(index); //再执行关闭
                                                                 layer.msg(e.msg);
                                                             } else {
@@ -295,7 +295,7 @@
                                                 coreHelper.Post("Api/SysOrganization/DoEdit", field, function (e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            layui.table.reload('LAY-app-SysOrganization-tableBox'); //重载表格
+                                                            layui.table.reloadData('LAY-app-SysOrganization-tableBox'); //重载表格
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -334,7 +334,7 @@
                 function doDelete(obj){
                     coreHelper.Post("Api/SysOrganization/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-SysOrganization-tableBox');
+                            table.reloadData('LAY-app-SysOrganization-tableBox');
                             layer.msg(e.msg);
                         });
 			    }
@@ -353,7 +353,7 @@
                                 });
                             coreHelper.Post("Api/SysOrganization/DoBatchDelete", { id: delidsStr }, function (e) {
                                     if (debug) { console.log(e); } //开启调试返回数据
-                                    table.reload('LAY-app-SysOrganization-tableBox');
+                                    table.reloadData('LAY-app-SysOrganization-tableBox');
                                     layer.msg(e.msg);
                                 });
                         });
@@ -402,7 +402,7 @@
                 layui.form.on('switch(switch_deleted)', function (obj) {
                     coreHelper.Post("Api/SysOrganization/DoSetdeleted", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-SysOrganization-tableBox');
+                        //table.reloadData('LAY-app-SysOrganization-tableBox');
                         layer.msg(e.msg);
                     });
                 });

@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item" pane>
+        <div class="layui-form-item">
             <label for="isDefault" class="layui-form-label">是否默认等级</label>
             <div class="layui-input-inline layui-inline-2">
                 <input type="checkbox" lay-filter="switch" name="isDefault" {{ d.params.data.model.isDefault ? 'checked' : '' }} lay-skin="switch" lay-text="是|否">
@@ -17,8 +17,7 @@
             <div class="layui-form-mid layui-word-aux">当前等级是否默认分销商等级</div>
         </div>
 
-
-        <div class="layui-form-item" pane>
+        <div class="layui-form-item">
             <label for="isAutoUpGrade" class="layui-form-label">自动升级</label>
             <div class="layui-input-inline layui-inline-2">
                 <input type="checkbox" lay-filter="switch" name="isAutoUpGrade" {{ d.params.data.model.isAutoUpGrade ? 'checked' : '' }} lay-skin="switch" lay-text="开启|关闭">
@@ -62,7 +61,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item text-center">
+        <div class="layui-form-item text-center core-hidden">
             <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsDistributionGrade-editForm-submit" id="LAY-app-CoreCmsDistributionGrade-editForm-submit" value="确认编辑">
         </div>
     </div>
@@ -127,7 +126,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '添加升级条件',
-                                area: ['800px', '600px'],
+                                area: ['800px', '400px'],
                                 id: 'LAY-popup-CoreCmsDistributionCondition-create',
                                 success: function (layero, index) {
                                     view(this.id).render('distribution/grade/conditionCreate', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
@@ -207,6 +206,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsDistributionCondition-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -222,7 +225,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '编辑升级条件',
-                                area: ['800px', '600px'],
+                                area: ['800px', '400px'],
                                 id: 'LAY-popup-CoreCmsDistributionCondition-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('distribution/grade/conditionEdit', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
@@ -299,6 +302,10 @@
                                     })
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsDistributionCondition-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -417,6 +424,10 @@
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                                 }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsDistributionResult-createForm-submit").click();
+                                }
                             });
                         } else {
                             layer.msg(e.msg);
@@ -431,7 +442,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '编辑佣金设置',
-                                area: ['800px', '550px'],
+                                area: ['800px', '350px'],
                                 id: 'LAY-popup-CoreCmsDistributionResult-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('distribution/grade/resultEdit', { data: e.data, gradeId: d.params.data.model.id }).done(function () {
@@ -487,6 +498,10 @@
                                     })
                                     // 禁止弹窗出现滚动条
                                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                                , btn: ['确定', '取消']
+                                , yes: function (index, layero) {
+                                    layero.contents().find("#LAY-app-CoreCmsDistributionResult-editForm-submit").click();
                                 }
                             });
                         } else {
