@@ -1,0 +1,152 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysNLogRecords-detailsForm" id="LAY-app-SysNLogRecords-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">序列</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="LogDate">时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.logDate || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="LogLevel">级别</label>
+                </td>
+                <td>
+                    {{ d.params.data.logLevel || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="LogType">事件日志上下文</label>
+                </td>
+                <td>
+                    {{ d.params.data.logType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="Logger">记录器名字</label>
+                </td>
+                <td>
+                    {{ d.params.data.logger || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="Message">消息</label>
+                </td>
+                <td>
+                    {{ d.params.data.message || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="MachineName">名称</label>
+                </td>
+                <td>
+                    {{ d.params.data.machineName || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="MachineIp">ip</label>
+                </td>
+                <td>
+                    {{ d.params.data.machineIp || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="NetRequestMethod">请求方式</label>
+                </td>
+                <td>
+                    {{ d.params.data.netRequestMethod || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="NetRequestUrl">请求地址</label>
+                </td>
+                <td>
+                    {{ d.params.data.netRequestUrl || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="NetUserIsauthenticated">是否授权</label>
+                </td>
+                <td>
+                    {{ d.params.data.netUserIsauthenticated || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="NetUserAuthtype">授权类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.netUserAuthtype || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="NetUserIdentity">身份认证</label>
+                </td>
+                <td>
+                    {{ d.params.data.netUserIdentity || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="Exception">异常信息</label>
+                </td>
+                <td>
+                    {{ d.params.data.exception || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysNLogRecords-detailsForm');
+        });
+    };
+</script>

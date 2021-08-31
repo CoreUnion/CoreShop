@@ -1,0 +1,116 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <table class="layui-table layui-form" lay-filter="LAY-app-SysLoginRecord-detailsForm" id="LAY-app-SysLoginRecord-detailsForm">
+        <colgroup>
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <td>
+                    <label for="id">主键</label>
+                </td>
+                <td>
+                    {{ d.params.data.id || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="username">用户账号</label>
+                </td>
+                <td>
+                    {{ d.params.data.username || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="os">操作系统</label>
+                </td>
+                <td>
+                    {{ d.params.data.os || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="device">设备名</label>
+                </td>
+                <td>
+                    {{ d.params.data.device || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="browser">浏览器类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.browser || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="ip">ip地址</label>
+                </td>
+                <td>
+                    {{ d.params.data.ip || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="operType">操作类型</label>
+                </td>
+                <td>
+                    {{ d.params.data.operType || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="comments">备注</label>
+                </td>
+                <td>
+                    {{ d.params.data.comments || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="createTime">登录时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.createTime || '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="updateTime">修改时间</label>
+                </td>
+                <td>
+                    {{ d.params.data.updateTime || '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.params.data); }
+
+        layui.use(['admin', 'form', 'coreHelper'], function () {
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , coreHelper = layui.coreHelper
+                , form = layui.form;
+            form.render(null, 'LAY-app-SysLoginRecord-detailsForm');
+        });
+    };
+</script>
