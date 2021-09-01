@@ -11,7 +11,14 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/{{ModelClassName}}/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+    
+</script>
+<div class="table-body">
+    <table  id="LAY-app-{{ModelClassName}}-tableBox" lay-filter="LAY-app-{{ModelClassName}}-tableBox"></table>
+</div>
+
+<script type="text/html" id="LAY-app-{{ModelClassName}}-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
 		    {% for field in ModelFields %}{% if field.DataType == 'bit' %}
 		    <div class="layui-inline">
@@ -42,11 +49,8 @@
         </div>
     </div>
 </script>
-<div class="table-body">
-    <table  id="LAY-app-{{ModelClassName}}-tableBox" lay-filter="LAY-app-{{ModelClassName}}-tableBox"></table>
-</div>
 
-<script type="text/html" id="LAY-app-{{ModelClassName}}-toolbar">
+<script type="text/html" id="LAY-app-{{ModelClassName}}-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
@@ -54,6 +58,7 @@
         <button class="layui-btn layui-btn-sm" lay-event="queryExportExcel"><i class="layui-icon layui-icon-download-circle"></i>查询导出</button>
     </div>
 </script>
+
 <script type="text/html" id="LAY-app-{{ModelClassName}}-tableBox-bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -70,8 +75,6 @@
             <a class="layui-btn layui-btn-normal cursor" lay-event="del">确定</a>
         </div>
     </div>
-
-
 </script>
 
 <script>
@@ -93,14 +96,7 @@
                     , coreHelper = layui.coreHelper
                     , util = layui.util
                     , view = layui.view;
-			    {% for field in ModelFields %}{% if field.DataType == 'datetime' %}
-                laydate.render({
-                    elem: '#searchTime-{{ModelClassName}}-{{field.DbColumnName}}',
-                    type: 'datetime',
-                    range: '到',
-                });{% endif %}{% endfor %}
-                //重载form
-                form.render();
+			    
                 var searchwhere;
                 //监听搜索
                 form.on('submit(LAY-app-{{ModelClassName}}-search)',
@@ -116,8 +112,10 @@
                     url: layui.setter.apiUrl + 'Api/{{ModelClassName}}/GetPageList',
                     method: 'POST',
 				    toolbar: '#LAY-app-{{ModelClassName}}-toolbar',
+				    pagebar: '#LAY-app-{{ModelClassName}}-pagebar',
+                    className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
-                    height: 'full-189',//面包屑142px,搜索框4行172,3行137,2行102,1行67
+                    height: 'full-127',//面包屑142px,搜索框4行172,3行137,2行102,1行67
                     page: true,
                     limit: 30,
                     limits: [10, 15, 20, 25, 30, 50, 100, 200],
@@ -158,7 +156,7 @@
                     doDetails(obj);
                 });
                 //头工具栏事件
-                table.on('toolbar(LAY-app-{{ModelClassName}}-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-{{ModelClassName}}-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                     case 'addData':
@@ -193,7 +191,7 @@
                                 admin.popup({
                                     shadeClose: false,
                                     title: '创建数据',
-                                    area: ['1000px', '500px'],
+                                    area: ['1200px', '90%'],
                                     id: 'LAY-popup-{{ModelClassName}}-create',
                                     success: function (layero, index) {
                                         view(this.id).render('base/{{ModelClassName}}/create', { data: e.data }).done(function () {
@@ -238,7 +236,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '编辑数据',
-                                area: ['1000px', '500px'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-{{ModelClassName}}-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('base/{{ModelClassName}}/edit', { data: e.data }).done(function () {
@@ -283,7 +281,7 @@
                             admin.popup({
                                 shadeClose: false,
                                 title: '查看详情',
-                                area: ['1000px', '500px'],
+                                area: ['1200px', '90%'],
                                 id: 'LAY-popup-{{ModelClassName}}-details',
                                 success: function (layero, index) {
                                     view(this.id).render('base/{{ModelClassName}}/details', { data: e.data }).done(function () {
@@ -365,6 +363,14 @@
                                 });
                         });
 			    }
+
+                {% for field in ModelFields %}{% if field.DataType == 'datetime' %}
+                laydate.render({
+                    elem: '#searchTime-{{ModelClassName}}-{{field.DbColumnName}}',
+                    type: 'datetime',
+                    range: '到',
+                });{% endif %}{% endfor %}
+
                 //监听 表格复选框操作
                 {% for field in ModelFields %}{% if field.DataType == 'bit' %}
                 layui.form.on('switch(switch_{{field.DbColumnName}})', function (obj) {
@@ -375,6 +381,9 @@
                     });
                 });
                 {% endif %}{% endfor %}
+
+                //重载form
+                form.render();
             });
     };
 </script>
