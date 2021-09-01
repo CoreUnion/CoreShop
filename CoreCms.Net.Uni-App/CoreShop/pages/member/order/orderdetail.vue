@@ -307,7 +307,7 @@
 
                 <view class="solid-line"></view>
 
-                <view class="text-center text-black">联系客服</view>
+                <button class="text-center text-black"  hover-class="none" open-type="contact" bindcontact="showChat" :session-from="kefupara">联系客服</button>
             </view>
         </view>
 
@@ -665,6 +665,50 @@
                         url: '/pages/member/invoice/index?id=' + this.orderInfo.invoice.id
                     });
                 }
+            },
+            //在线客服,只有手机号的，请自己替换为手机号
+            showChat() {
+                // #ifdef H5
+                let _this = this;
+                window._AIHECONG('ini', {
+                    entId: this.$store.state.config.entId,
+                    button: false,
+                    appearance: {
+                        panelMobile: {
+                            tone: '#FF7159',
+                            sideMargin: 30,
+                            ratio: 'part',
+                            headHeight: 50
+                        }
+                    }
+                });
+                //传递客户信息
+                window._AIHECONG('customer', {
+                    head: _this.userInfo.avatarImage,
+                    名称: _this.userInfo.nickName,
+                    手机: _this.userInfo.mobile
+                });
+                window._AIHECONG('showChat');
+                // #endif
+
+                // 客服页面
+                // #ifdef APP-PLUS || APP-PLUS-NVUE
+                this.$u.route('/pages/member/customerService/index');
+                // #endif
+
+                // 头条系客服
+                // #ifdef MP-TOUTIAO
+                if (this.shopMobile != 0) {
+                    let _this = this;
+                    tt.makePhoneCall({
+                        phoneNumber: this.shopMobile.toString(),
+                        success(res) { },
+                        fail(res) { }
+                    });
+                } else {
+                    _this.$u.toast('暂无设置客服电话');
+                }
+                // #endif
             }
         }
     }
