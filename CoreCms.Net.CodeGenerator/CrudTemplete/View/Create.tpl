@@ -3,17 +3,12 @@
 	{% for field in ModelFields %}{% if  field.DbColumnName contains 'Image' or field.DbColumnName contains 'image' or field.DbColumnName contains 'thumbnail'  or field.DbColumnName contains 'Thumbnail' %}
 	<div class="layui-form-item">
         <label for="{{field.DbColumnName}}" class="layui-form-label  layui-form-required">{{field.ColumnDescription}}</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input name="{{field.DbColumnName}}" id="{{field.DbColumnName}}Input" lay-verType="tips" lay-verify="required" class="layui-input" placeholder="请上传{{field.ColumnDescription}}" lay-reqText="请上传{{field.ColumnDescription}}"  />
         </div>
-		<div class="layui-input-block">
-            <div class="layui-upload">
-                <button type="button" class="layui-btn" id="upBtn{{field.DbColumnName}}" lay-active="doCropperImg">上传图片</button>
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="viewImgBox{{field.DbColumnName}}"  src="{% raw %}{{{% endraw %} layui.setter.noImagePicUrl {% raw %}}}{% endraw %}">
-                    <p id="viewTextBox{{field.DbColumnName}}"></p>
-                </div>
-            </div>
+		<div class="layui-input-inline">
+            <img class="coreshop-upload-img" id="viewImgBox{{field.DbColumnName}}"  src="{% raw %}{{{% endraw %} layui.setter.noImagePicUrl {% raw %}}}{% endraw %}">
+            <button type="button" class="layui-btn" id="upBtn{{field.DbColumnName}}" lay-active="doCropperImg">上传图片</button>
         </div>
     </div>{% elsif field.DataType == 'nvarchar' %}
 	<div class="layui-form-item">
