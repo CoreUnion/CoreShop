@@ -581,7 +581,7 @@ namespace CoreCms.Net.Services
             billPayments.type = type;
             billPayments.status = (int)GlobalEnumVars.BillPaymentsStatus.NoPay;
             billPayments.paymentCode = paymentCode;
-            billPayments.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+            billPayments.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
             billPayments.parameters = @params != null ? JsonConvert.SerializeObject(@params) : "";
             billPayments.createTime = DateTime.Now;
 
