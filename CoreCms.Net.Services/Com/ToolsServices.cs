@@ -60,7 +60,7 @@ namespace CoreCms.Net.Services
             }
 
             WordsMatch wordsSearch = new WordsMatch();
-            wordsSearch.SetKeywords(cache.Split("|"));
+            wordsSearch.SetKeywords(cache.Split('|',StringSplitOptions.RemoveEmptyEntries));
 
             var t = wordsSearch.Replace(oldString, symbol);
             return t;
@@ -90,7 +90,7 @@ namespace CoreCms.Net.Services
             }
 
             WordsMatch wordsSearch = new WordsMatch();
-            wordsSearch.SetKeywords(cache.Split("|"));
+            wordsSearch.SetKeywords(cache.Split('|', StringSplitOptions.RemoveEmptyEntries));
 
             var bl = wordsSearch.ContainsAny(oldString);
 
