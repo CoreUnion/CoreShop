@@ -225,7 +225,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                         var log = new CoreCmsUserLog();
                         log.userId = user.id;
                         log.state = (int)GlobalEnumVars.UserLogTypes.登录;
-                        log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                        log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                         log.createTime = DateTime.Now;
                         log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
                         await _userLogServices.InsertAsync(log);
@@ -313,7 +313,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                             var log = new CoreCmsUserLog();
                             log.userId = user.id;
                             log.state = (int)GlobalEnumVars.UserLogTypes.登录;
-                            log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                            log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                             log.createTime = DateTime.Now;
                             log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
                             await _userLogServices.InsertAsync(log);
@@ -522,7 +522,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 var log = new CoreCmsUserLog();
                 log.userId = id;
                 log.state = (int)GlobalEnumVars.UserLogTypes.注册;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString() : "127.0.0.1";
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? 
+                    _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                 log.createTime = DateTime.Now;
                 log.parameters = GlobalEnumVars.UserLogTypes.注册.ToString();
                 await _userLogServices.InsertAsync(log);
