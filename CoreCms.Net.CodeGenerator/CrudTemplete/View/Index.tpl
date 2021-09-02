@@ -104,7 +104,7 @@
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reload('LAY-app-{{ModelClassName}}-tableBox',{ where: field });
+                        table.reloadData('LAY-app-{{ModelClassName}}-tableBox',{ where: field });
                     });
                 //数据绑定
                 table.render({
@@ -142,7 +142,7 @@
                 });
                 //监听排序事件
                 table.on('sort(LAY-app-{{ModelClassName}}-tableBox)', function(obj){
-                    table.reload('LAY-app-{{ModelClassName}}-tableBox', {
+                    table.reloadData('LAY-app-{{ModelClassName}}-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -207,7 +207,7 @@
                                                     coreHelper.Post("Api/{{ModelClassName}}/DoCreate", field, function (e) {
                                                             console.log(e)
                                                             if (e.code === 0) {
-                                                                layui.table.reload('LAY-app-{{ModelClassName}}-tableBox'); //重载表格
+                                                                layui.table.reloadData('LAY-app-{{ModelClassName}}-tableBox'); //重载表格
                                                                 layer.close(index); //再执行关闭
                                                                 layer.msg(e.msg);
                                                             } else {
@@ -252,7 +252,7 @@
                                                 coreHelper.Post("Api/{{ModelClassName}}/DoEdit", field, function (e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            layui.table.reload('LAY-app-{{ModelClassName}}-tableBox'); //重载表格
+                                                            layui.table.reloadData('LAY-app-{{ModelClassName}}-tableBox'); //重载表格
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -300,7 +300,7 @@
                 function doDelete(obj){
                     coreHelper.Post("Api/{{ModelClassName}}/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reload('LAY-app-{{ModelClassName}}-tableBox');
+                            table.reloadData('LAY-app-{{ModelClassName}}-tableBox');
                             layer.msg(e.msg);
                         });
 			    }
@@ -319,7 +319,7 @@
                                 });
                             coreHelper.Post("Api/{{ModelClassName}}/DoBatchDelete", { id: delidsStr }, function (e) {
                                     if (debug) { console.log(e); } //开启调试返回数据
-                                    table.reload('LAY-app-{{ModelClassName}}-tableBox');
+                                    table.reloadData('LAY-app-{{ModelClassName}}-tableBox');
                                     layer.msg(e.msg);
                                 });
                         });
@@ -376,7 +376,7 @@
                 layui.form.on('switch(switch_{{field.DbColumnName}})', function (obj) {
                     coreHelper.Post("Api/{{ModelClassName}}/DoSet{{field.DbColumnName}}", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reload('LAY-app-{{ModelClassName}}-tableBox');
+                        //table.reloadData('LAY-app-{{ModelClassName}}-tableBox');
                         layer.msg(e.msg);
                     });
                 });
