@@ -7,8 +7,8 @@
                 <input name="{{field.DbColumnName}}" id="{{field.DbColumnName}}Input" lay-verType="tips" lay-verify="required" class="layui-input"  value="{% raw %}{{{% endraw %}d.params.data.{{field.DbColumnName}} || '' {% raw %}}}{% endraw %}" placeholder="请上传{{field.ColumnDescription}}" lay-reqText="请上传{{field.ColumnDescription}}"  />
             </div>
 		    <div class="layui-input-inline">
-                <button type="button" class="layui-btn" id="upBtn{{field.DbColumnName}}" lay-active="doCropperImg">上传图片</button>
                 <img class="coreshop-upload-img" id="viewImgBox{{field.DbColumnName}}" src="{% raw %}{{{% endraw %}d.params.data.{{field.DbColumnName}} || layui.setter.noImagePicUrl {% raw %}}}{% endraw %}">
+                <button type="button" class="layui-btn" id="upBtn{{field.DbColumnName}}" lay-active="doCropperImg">上传图片</button>
             </div>
         </div>{% elsif field.DataType == 'nvarchar' %}
 	    <div class="layui-form-item">
