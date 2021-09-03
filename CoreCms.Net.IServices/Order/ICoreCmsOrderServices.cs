@@ -206,14 +206,14 @@ namespace CoreCms.Net.IServices
             int storeId = 0, int shipAreaId = 0, string deliveryCompanyId = "");
 
 
-
         /// <summary>
         ///     后台完成订单
         /// </summary>
         /// <param name="orderId"></param>
+        /// <param name="score">有序队列积分</param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        Task<WebApiCallBack> CompleteOrder(string orderId, string remark = "后台订单完成操作");
+        Task<WebApiCallBack> CompleteOrder(string orderId, int score = 0, string remark = "后台订单完成操作");
 
         /// <summary>
         ///     确认签收订单
