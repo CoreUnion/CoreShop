@@ -1845,12 +1845,15 @@ namespace CoreCms.Net.Services
 
 
         #region 完成订单
+
         /// <summary>
         /// 完成订单
         /// </summary>
         /// <param name="orderId"></param>
+        /// <param name="score">有序队列积分</param>
+        /// <param name="remark"></param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> CompleteOrder(string orderId, string remark = "后台订单完成操作")
+        public async Task<WebApiCallBack> CompleteOrder(string orderId, int score = 0, string remark = "后台订单完成操作")
         {
             var jm = new WebApiCallBack();
 
@@ -1911,7 +1914,7 @@ namespace CoreCms.Net.Services
                 await _orderLogServices.InsertAsync(orderLog);
 
                 //订单完成结算订单
-                await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderFinishCommand, orderInfo.orderId);
+                await _redisOperationRepository.SortedSetAddAsync(RedisMessageQueueKey.OrderFinishCommand, orderInfo.orderId, score);
 
                 jm.status = true;
                 jm.msg = "订单完成";
@@ -2127,9 +2130,11 @@ namespace CoreCms.Net.Services
 
             if (orderInfos != null && orderInfos.Any())
             {
-                foreach (var item in orderInfos)
+                for (var i = 0; i < orderInfos.Count; i++)
                 {
-                    await CompleteOrder(item.orderId, "定时任务操作");
+                    var item = orderInfos[i];
+                    var score = 2 * (i + 1);
+                    await CompleteOrder(item.orderId, score, "定时任务操作");
                 }
             }
             //插入日志

@@ -226,5 +226,18 @@ namespace CoreCms.Net.Caching.AutoMate.RedisCache
         {
             await _database.ListTrimAsync(redisKey, 1, 0);
         }
+
+
+        /// <summary>
+        /// 有序集合/定时任务延迟队列用的多
+        /// </summary>
+        /// <param name="redisKey">key</param>
+        /// <param name="redisValue">元素</param>
+        /// <param name="score">分数</param>
+        public async Task SortedSetAddAsync(string redisKey, string redisValue, double score)
+        {
+            await _database.SortedSetAddAsync(redisKey, redisValue, score);
+        }
+
     }
 }

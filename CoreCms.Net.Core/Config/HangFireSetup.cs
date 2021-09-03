@@ -58,6 +58,16 @@ namespace CoreCms.Net.Core.Config
                     services.AddHangfire(x => x.UseSqlServerStorage(AppSettingsConstVars.DbSqlConnection));
                 }
             }
+
+            services.AddHangfireServer(options =>
+            {
+                options.Queues = new[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
+                options.ServerTimeout = TimeSpan.FromMinutes(4);
+                options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
+                options.ShutdownTimeout = TimeSpan.FromMinutes(30); //超时时间
+                options.WorkerCount = Math.Max(Environment.ProcessorCount, 20); //工作线程数，当前允许的最大线程，默认20
+            });
+
         }
     }
 }

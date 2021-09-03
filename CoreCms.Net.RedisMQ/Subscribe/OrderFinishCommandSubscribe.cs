@@ -40,11 +40,11 @@ namespace CoreCms.Net.RedisMQ.Subscribe
         }
 
         /// <summary>
-        /// 订单完成时，结算该订单
+        /// 订单完成时，结算该订单|延迟队列
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        [Subscribe(RedisMessageQueueKey.OrderFinishCommand)]
+        [SubscribeDelay(RedisMessageQueueKey.OrderFinishCommand)]
 
         private async Task OrderFinishCommand(string msg)
         {
@@ -57,11 +57,11 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                 }
                 else
                 {
+                    await _distributionOrderServices.FinishOrder(msg);
+                    await _agentOrderServices.FinishOrder(msg);
                     NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "订单完结结佣", "订单编号获取正常：" + msg);
                 }
-                await _distributionOrderServices.FinishOrder(msg);
-                await _agentOrderServices.FinishOrder(msg);
-
+                
             }
             catch (Exception ex)
             {

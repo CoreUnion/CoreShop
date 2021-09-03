@@ -205,16 +205,6 @@ namespace CoreCms.Net.Web.WebApi
 
             #region Hangfire定时任务
 
-            var queues = new string[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
-            app.UseHangfireServer(new BackgroundJobServerOptions
-            {
-                ServerTimeout = TimeSpan.FromMinutes(4),
-                SchedulePollingInterval = TimeSpan.FromSeconds(15),//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
-                ShutdownTimeout = TimeSpan.FromMinutes(30),//超时时间
-                Queues = queues,//队列
-                WorkerCount = Math.Max(Environment.ProcessorCount, 20)//工作线程数，当前允许的最大线程，默认20
-            });
-
             //授权
             var filter = new BasicAuthAuthorizationFilter(
                 new BasicAuthAuthorizationFilterOptions
