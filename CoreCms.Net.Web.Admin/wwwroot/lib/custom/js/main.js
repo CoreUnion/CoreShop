@@ -915,7 +915,7 @@ Vue.component('layout-config', {
                 area: ['800px', '550px'],
                 id: 'LAY-app-CoreCmsCommon-GetGood',
                 success: function (layero, index) {
-                    layui.view(this.id).render('common/getGood', null).done(function () { });
+                    layui.view(this.id).render('common/getGoodList', null).done(function () { });
                 }
             });
         },
