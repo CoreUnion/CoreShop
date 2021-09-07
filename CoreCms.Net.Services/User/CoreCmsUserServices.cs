@@ -98,7 +98,7 @@ namespace CoreCms.Net.Services
                 var balance = new CoreCmsUserBalance();
                 balance.type = (int)GlobalEnumVars.UserBalanceSourceTypes.Admin;
                 balance.userId = model.id;
-                balance.balance = model.balance;
+                balance.balance = newMoney;
                 balance.createTime = DateTime.Now;
                 balance.memo = UserHelper.GetMemo(balance.type, money);
                 balance.money = money;

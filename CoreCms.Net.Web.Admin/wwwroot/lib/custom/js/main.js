@@ -1173,13 +1173,20 @@ Vue.component('layout-config', {
         },
         selectGoods: function () {
             var that = this;
+            var objData = {};
+            var list = that.selectWg.value.list;
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id) {
+                    objData[list[i].id] = list[i];
+                }
+            }
             layui.use(['form', 'table'], function () {
                 layui.admin.popup({
                     title: '商品列表',
                     area: ['1200px', '90%'],
                     id: 'LAY-app-CoreCmsCommon-getGoodIds',
                     success: function (layero, index) {
-                        layui.view(this.id).render('common/getGoodIds', null).done(function () {
+                        layui.view(this.id).render('common/getGoodIds', { data: objData }).done(function () {
                             layui.form.on('submit(LAY-app-CoreCmsGoods-getData)',
                                 function (data) {
                                     //判断个数是否满足

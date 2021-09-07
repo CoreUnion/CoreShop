@@ -151,10 +151,11 @@
 
 <script>
     var debug = layui.setter.debug;
+    var objData = {};
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d.params.data); }
-        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'dtree', 'util', 'table','xmSelect'],
+        layui.use(['admin', 'form', 'coreHelper', 'laytpl', 'view', 'dtree', 'util', 'table', 'xmSelect'],
             function () {
                 var $ = layui.$
                     , form = layui.form
@@ -183,6 +184,8 @@
                             $("#goods_list").empty();
                             var the_val = "";
                             for (var i = 0; i < e.data.length; i++) {
+                                objData[e.data[i].id] = e.data[i];
+
                                 $("#goods_list").append('<li><span id="' + e.data[i].id + '"  lay-active="goodsDelete">×</span>' + e.data[i].name + '</li>');
                                 the_val += "," + e.data[i].id;
                             }
@@ -227,12 +230,13 @@
                 //处理属性 为 lay-active 的所有元素事件
                 util.event('lay-active', {
                     goodsShow: function () {
-                        admin.popup({ shadeClose: false,
+                        admin.popup({
+                            shadeClose: false,
                             title: '选择商品',
                             area: ['750px', '90%'],
                             id: 'LAY-app-CoreCmsPinTuanRule-editForm-GetGoodsList',
                             success: function (layero, index) {
-                                layui.view(this.id).render('common/getGoodIds', null).done(function () {
+                                layui.view(this.id).render('common/getGoodIds', { data: objData }).done(function () {
                                     form.render();
                                     //监听商品列表页工具条
 
@@ -258,6 +262,9 @@
                                                 layer.msg("最多只能选择" + 10 + "个");
                                                 return false;
                                             }
+
+                                            objData = ids;
+
                                             $("#goods_list").empty();
                                             var the_val = "";
                                             for (var key in ids) {

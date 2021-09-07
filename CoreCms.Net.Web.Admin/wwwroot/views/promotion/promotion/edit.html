@@ -222,7 +222,7 @@
                                                         console.log(e)
                                                         if (e.code === 0) {
                                                             //table刷新即可
-                                                            conditionTables.reloadData();
+                                                            conditionTables.reload();
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
