@@ -150,6 +150,7 @@
 
 <script>
     var debug = layui.setter.debug;
+    var objData = {};
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d.params.data); }
@@ -212,7 +213,7 @@
                             area: ['750px', '90%'],
                             id: 'LAY-app-CoreCmsPinTuanRule-createForm-GetGoodsList',
                             success: function (layero, index) {
-                                view(this.id).render('common/getGoodIds', null).done(function () {
+                                view(this.id).render('common/getGoodIds', { data: objData }).done(function () {
                                     form.render();
                                     //监听商品列表页工具条
 
@@ -237,6 +238,9 @@
                                                 layer.msg("最多只能选择" + 10 + "个");
                                                 return false;
                                             }
+
+                                            objData = ids;
+
                                             $("#goods_list").empty();
                                             var the_val = "";
                                             for (var key in ids) {

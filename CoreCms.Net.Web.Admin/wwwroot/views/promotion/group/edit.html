@@ -364,6 +364,8 @@
                                     form.on('submit(LAY-app-CoreCmsGoods-getData)',
                                         function (data) {
                                             console.log(ids);
+                                            objData = ids;
+
                                             if (!!!ids.id) {
                                                 layer.msg("请先选择商品");
                                                 return;

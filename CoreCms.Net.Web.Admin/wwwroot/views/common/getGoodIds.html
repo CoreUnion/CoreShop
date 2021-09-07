@@ -45,7 +45,10 @@
                     , util = layui.util
                     , table = layui.table
                     , view = layui.view;
-
+                if (d.params.data) {
+                    ids = d.params.data;
+                    console.log(ids);
+                }
                 //重载form
                 form.render();
                 var searchwhere;
