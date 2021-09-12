@@ -81,7 +81,7 @@
                     , setter = layui.setter
                     , coreHelper = layui.coreHelper
                     , util = layui.util
-\                    , tableX = layui.tableX
+                    , tableX = layui.tableX
                     , view = layui.view;
                 var tree = layui.tree;
                 var selObj, treeData;  // 左树选中数据
@@ -97,7 +97,7 @@
                                         checkId = treeNode.id;
                                         insTb.reload({
                                             where: { parentId: treeNode.id },
-                                            url: layui.setter.apiUrl + 'Api/UMallArea/GetPageList',
+                                            url: layui.setter.apiUrl + 'Api/CoreCmsArea/GetPageList',
                                             method: 'post'
                                         });
                                     },
