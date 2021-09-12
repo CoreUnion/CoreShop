@@ -28,7 +28,7 @@
                 <div class="layui-card">
                     <div class="layui-card-body" style="padding: 10px;">
                         <!-- 左树 -->
-                        <div id="areaTree"></div>
+                        <div id="areaTree" class="ztree"></div>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
         if (debug) { console.log(d); }
 
         indexData = d.data;
-        layui.use(['index', 'table', 'laydate', 'util', 'tree', 'dropdown', 'tableX', 'coreHelper', 'treeTable'],
+        layui.use(['index', 'table', 'laydate', 'util', 'tree', 'dropdown', 'tableX', 'coreHelper', 'zTree'],
             function () {
                 var $ = layui.$
                     , admin = layui.admin
@@ -81,9 +81,7 @@
                     , setter = layui.setter
                     , coreHelper = layui.coreHelper
                     , util = layui.util
-                    , ztree = layui.ztree
-                    , treeTable = layui.treeTable
-                    , tableX = layui.tableX
+\                    , tableX = layui.tableX
                     , view = layui.view;
                 var tree = layui.tree;
                 var selObj, treeData;  // 左树选中数据
@@ -91,42 +89,34 @@
                 /* 渲染树形 */
                 function renderTree() {
                     coreHelper.Post('Api/CoreCmsArea/GetAllList', null, function (res) {
-                        if (res.code !== 0) {
+                        if (res.code === 0) {
+                            $.fn.zTree.init($('#areaTree'), {
+                                check: { enable: false },
+                                callback: {
+                                    onClick: function (event, treeId, treeNode) {
+                                        checkId = treeNode.id;
+                                        insTb.reload({
+                                            where: { parentId: treeNode.id },
+                                            url: layui.setter.apiUrl + 'Api/UMallArea/GetPageList',
+                                            method: 'post'
+                                        });
+                                    },
+                                },
+                                data: {
+                                    key: { name: "name" },
+                                    simpleData: {
+                                        enable: true,
+                                        idKey: "id",
+                                        pIdKey: "parentId",
+                                        rootPId: 0
+                                    }
+                                }
+                            }, res.data);
+                        }
+                        else {
                             return layer.msg(res.msg, { icon: 2 });
                         }
-                        for (var i = 0; i < res.data.length; i++) {
-                            res.data[i].title = res.data[i].name;
-                            res.data[i].id = res.data[i].id;
-                            res.data[i].spread = false;
-                        }
-                        treeData = layui.treeTable.pidToChildren(res.data, 'id', 'parentId');
-                        tree.render({
-                            elem: '#areaTree',
-                            onlyIconControl: false,
-                            data: treeData,
-                            click: function (obj) {
-                                selObj = obj;
-                                $('#areaTree').find('.ew-tree-click').removeClass('ew-tree-click');
-                                $(obj.elem).children('.layui-tree-entry').addClass('ew-tree-click');
-                                checkId = obj.data.id;
-                                insTb.reload({
-                                    where: { parentId: obj.data.id },
-                                    url: layui.setter.apiUrl + 'Api/CoreCmsArea/GetPageList',
-                                    method: 'post'
-                                });
-
-                                //if (obj.data.depth < 3) {
-                                //    checkId = obj.data.id;
-                                //    console.log(checkId);
-                                //    insTb.reload({
-                                //        where: { parentId: obj.data.id },
-                                //        url: layui.setter.apiUrl + 'Api/CoreCmsArea/GetPageList',
-                                //        method: 'post'
-                                //    });
-                                //}
-                            }
-                        });
-                        $('#areaTree').find('.layui-tree-entry:first>.layui-tree-main>.layui-tree-txt').trigger('click');
+                        //$('#areaTree').find('.layui-tree-entry:first>.layui-tree-main>.layui-tree-txt').trigger('click');
                     });
                 }
                 renderTree();
@@ -138,7 +128,8 @@
                     data: [],
                     toolbar: '#LAY-app-CoreCmsArea-toolbar',
                     height: 'full-135',
-                    page: false,
+                    page: true,
+                    limit: 20,
                     cellMinWidth: 100,
                     cols: [[
                         { type: 'numbers', fixed: 'left' },
