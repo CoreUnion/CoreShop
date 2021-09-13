@@ -285,28 +285,31 @@ namespace CoreCms.Net.Services
                 request.LineColor = new WxaGetWxaCodeUnlimitRequest.Types.Color() { Red = 221, Blue = 51, Green = 238 };
 
                 var response = await client.ExecuteWxaGetWxaCodeUnlimitAsync(request);
-                if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.page不正确)
+                if (response.IsSuccessful())
                 {
-                    jm.msg = "后台小程序配置的APPID和APPSECRET对应的小程序未发布上线,或者page没有发布，无法生成海报";
-                    return jm;
-                }
-                else if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.获取access_token时AppSecret错误或者access_token无效)
-                {
-                    jm.msg = "微信小程序access_token已过期，无法为你生成海报";
-                    return jm;
-                }
-                else if (response.IsSuccessful() && response.ErrorCode > 0)
-                {
-                    var enumType = EnumHelper.GetEnumberEntity<WeChatReturnCode.ReturnCode>(response.ErrorCode);
-                    if (enumType != null)
-                    {
-                        jm.msg = response.ErrorCode + enumType.title;
-                    }
-                    return jm;
+                    ms = new MemoryStream(response.RawBytes);
                 }
                 else
                 {
-                    ms = new MemoryStream(response.RawBytes);
+                    if (response.ErrorCode == (int)WeChatReturnCode.ReturnCode.page不正确)
+                    {
+                        jm.msg = "后台小程序配置的APPID和APPSECRET对应的小程序未发布上线,或者page没有发布，无法生成海报";
+                        return jm;
+                    }
+                    else if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.获取access_token时AppSecret错误或者access_token无效)
+                    {
+                        jm.msg = "微信小程序access_token已过期，无法为你生成海报";
+                        return jm;
+                    }
+                    else
+                    {
+                        var enumType = EnumHelper.GetEnumberEntity<WeChatReturnCode.ReturnCode>(response.ErrorCode);
+                        if (enumType != null)
+                        {
+                            jm.msg = response.ErrorCode + enumType.title;
+                        }
+                        return jm;
+                    }
                 }
 
                 //QrCode 根目录
