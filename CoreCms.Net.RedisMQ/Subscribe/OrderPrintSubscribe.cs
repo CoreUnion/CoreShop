@@ -51,17 +51,16 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                 if (_enabled == false)
                 {
                     NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "订单打印队列", "打印机未开启");
-                    await Task.CompletedTask;
+                    return;
                 }
                 var order = JsonConvert.DeserializeObject<CoreCmsOrder>(msg);
                 if (order == null)
                 {
                     NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "订单打印队列", "订单获取失败");
-                    await Task.CompletedTask;
+                    return;
                 }
 
-                var accessModel = await _accessTokenServices.QueryByClauseAsync(p =>
-                    p.code == GlobalEnumVars.ThirdPartyEquipment.YiLianYun.ToString() && p.machineCode == _machineCode);
+                var accessModel = await _accessTokenServices.QueryByClauseAsync(p => p.code == GlobalEnumVars.ThirdPartyEquipment.YiLianYun.ToString() && p.machineCode == _machineCode);
                 string accessToken = string.Empty;
                 if (accessModel == null)
                 {
@@ -86,7 +85,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                     else
                     {
                         NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.RedisMessageQueue, "易联云重新获取Token失败", JsonConvert.SerializeObject(onPostAuthTerminal));
-                        await Task.CompletedTask;
+                        return;
                     }
                 }
                 else
@@ -109,7 +108,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                         else
                         {
                             NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.RedisMessageQueue, "易联云更新Token失败", JsonConvert.SerializeObject(result));
-                            await Task.CompletedTask;
+                            return;
                         }
                     }
                     else
