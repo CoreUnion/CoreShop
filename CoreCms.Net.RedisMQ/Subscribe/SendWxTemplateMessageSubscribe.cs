@@ -237,7 +237,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
             request.Data = tmpData;
 
             var response = await client.ExecuteCgibinMessageSubscribeBusinessSendAsync(request);
-            if (response.IsSuccessful() && response.ErrorCode == (int)WeChatReturnCode.ReturnCode.请求成功)
+            if (response.IsSuccessful())
             {
                 jm.status = true;
                 jm.msg = "消息已发送，请注意查收";

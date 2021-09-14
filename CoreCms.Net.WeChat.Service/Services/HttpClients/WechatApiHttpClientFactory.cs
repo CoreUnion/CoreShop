@@ -6,6 +6,7 @@ using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
+using SKIT.FlurlHttpClient;
 using SKIT.FlurlHttpClient.Wechat.Api;
 
 namespace CoreCms.Net.WeChat.Service.HttpClients
@@ -21,6 +22,8 @@ namespace CoreCms.Net.WeChat.Service.HttpClients
         {
             _httpClientFactory = httpClientFactory;
             _weChatOptions = weChatOptions.Value;
+
+            FlurlHttp.GlobalSettings.FlurlClientFactory = new DelegatingFlurlClientFactory(_httpClientFactory);
         }
 
         /// <summary>
@@ -32,13 +35,18 @@ namespace CoreCms.Net.WeChat.Service.HttpClients
             if (string.IsNullOrEmpty(_weChatOptions.WeiXinAppId) || string.IsNullOrEmpty(_weChatOptions.WeiXinAppSecret))
                 throw new Exception("未在配置项中找到微信公众号配置讯息。");
 
-            FlurlHttp.GlobalSettings.FlurlClientFactory = new DelegatingFlurlClientFactory(_httpClientFactory);
-
-            return new WechatApiClient(new WechatApiClientOptions()
+            var wechatApiClient = new WechatApiClient(new WechatApiClientOptions()
             {
                 AppId = _weChatOptions.WeiXinAppId,
-                AppSecret = _weChatOptions.WeiXinAppSecret
+                AppSecret = _weChatOptions.WeiXinAppSecret,
             });
+
+            wechatApiClient.Configure(settings =>
+            {
+                settings.JsonSerializer = new FlurlNewtonsoftJsonSerializer();
+            });
+
+            return wechatApiClient;
         }
 
         /// <summary>
@@ -50,16 +58,19 @@ namespace CoreCms.Net.WeChat.Service.HttpClients
             if (string.IsNullOrEmpty(_weChatOptions.WxOpenAppId) || string.IsNullOrEmpty(_weChatOptions.WxOpenAppSecret))
                 throw new Exception("未在配置项中找到微信小程序配置讯息。");
 
-            FlurlHttp.GlobalSettings.FlurlClientFactory = new DelegatingFlurlClientFactory(_httpClientFactory);
-
-            return new WechatApiClient(new WechatApiClientOptions()
+            var WechatApiClient = new WechatApiClient(new WechatApiClientOptions()
             {
                 AppId = _weChatOptions.WxOpenAppId,
                 AppSecret = _weChatOptions.WxOpenAppSecret
             });
+
+            WechatApiClient.Configure(settings =>
+            {
+                settings.JsonSerializer = new FlurlNewtonsoftJsonSerializer();
+            });
+
+            return WechatApiClient;
         }
-
-
     }
 
     public partial class WeChatApiHttpClientFactory

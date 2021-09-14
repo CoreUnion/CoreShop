@@ -76,7 +76,7 @@
                     value: _this.lvalue,
                 };
                 uni.request({
-                    url: apiBaseUrl + 'Api/Page/GetRecod',
+                    url: apiBaseUrl + '/Api/Page/GetRecod',
                     data: data,
                     header: {
                         'Accept': 'application/json',

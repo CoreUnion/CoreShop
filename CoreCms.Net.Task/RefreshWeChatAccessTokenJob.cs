@@ -60,10 +60,6 @@ namespace CoreCms.Net.Task
                     if (entity == null || entity.expireTimestamp <= DateTimeOffset.Now.ToUnixTimeSeconds())
                     {
                         var client = _weChatApiHttpClientFactory.CreateWeXinClient();
-                        client.Configure(settings =>
-                        {
-                            settings.JsonSerializer = new FlurlNewtonsoftJsonSerializer();
-                        });
                         var request = new CgibinTokenRequest();
                         var response = await client.ExecuteCgibinTokenAsync(request);
                         if (!response.IsSuccessful())
@@ -137,10 +133,6 @@ namespace CoreCms.Net.Task
                     if (entity == null || entity.expireTimestamp <= DateTimeOffset.Now.ToUnixTimeSeconds())
                     {
                         var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
-                        client.Configure(settings =>
-                        {
-                            settings.JsonSerializer = new FlurlNewtonsoftJsonSerializer();
-                        });
 
                         var request = new CgibinTokenRequest();
                         var response = await client.ExecuteCgibinTokenAsync(request);

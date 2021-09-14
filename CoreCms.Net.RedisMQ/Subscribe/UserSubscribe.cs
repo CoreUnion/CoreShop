@@ -57,14 +57,14 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                 if (orderModel == null)
                 {
                     NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "订单完成-用户升级处理", "订单数据获取失败");
-                    await Task.CompletedTask;
+                    return;
                 }
 
                 var userInfo = await _userServices.QueryPageAsync(p => p.id == orderModel.userId);
                 if (userInfo == null)
                 {
                     NLogUtil.WriteAll(NLog.LogLevel.Info, LogType.RedisMessageQueue, "订单完成-用户升级处理", "用户数据获取失败");
-                    await Task.CompletedTask;
+                    return;
                 }
 
                 //订单支付的金额
