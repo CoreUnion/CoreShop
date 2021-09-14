@@ -69,22 +69,14 @@
                 this.$u.api.paymentInfo(data).then(res => {
                     if (res.status) {
                         let info = res.data;
-                        if (info.payment_code === 'alipay') {
-                            info.payment_name = '支付宝支付';
-                        } else if (info.payment_code === 'wechatpay') {
-                            info.payment_name = '微信支付';
-                        } else if (info.payment_code === 'balancepay') {
-                            info.payment_name = '余额支付';
+                        if (info.paymentCode === 'alipay') {
+                            info.paymentCodeName = '支付宝支付';
+                        } else if (info.paymentCode === 'wechatpay') {
+                            info.paymentCodeName = '微信支付';
+                        } else if (info.paymentCode === 'balancepay') {
+                            info.paymentCodeName = '余额支付';
                         }
-                        // 获取订单号
-                        if (info.rel.length) {
-                            for (let i = 0; i < info.rel.length; i++) {
-                                if (info.rel[i].sourceId) {
-                                    this.orderId = info.rel[i].sourceId;
-                                    break;
-                                }
-                            }
-                        }
+                        this.orderId = info.sourceId;
                         this.status = true;
                         this.paymentInfo = info;
                     } else {
