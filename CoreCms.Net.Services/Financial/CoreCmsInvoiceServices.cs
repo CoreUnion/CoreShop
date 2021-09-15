@@ -50,6 +50,7 @@ namespace CoreCms.Net.Services
 
             var model = await base.QueryByClauseAsync(p => p.sourceId == orderId && p.category == (int)GlobalEnumVars.OrderTaxCategory.Order);
             jm.status = model != null;
+            jm.data = model;
             jm.msg = jm.status ? GlobalConstVars.GetDataSuccess : GlobalConstVars.GetDataFailure;
 
             return jm;
