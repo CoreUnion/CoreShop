@@ -492,6 +492,11 @@
                         var id = $(this).attr('data-id');
                         delOrder(id);
                     },
+                    //还原订单
+                    restoreOrder: function () {
+                        var id = $(this).attr('data-id');
+                        restoreOrder(id);
+                    },
                     //打印购物订单
                     shoppingPrint: function () {
                         var id = $(this).attr('data-id');
@@ -564,6 +569,21 @@
                             $('#countDelete').html(e.data.delete);
                         }
                     });
+                }
+                
+                //还原订单
+                function restoreOrder(id) {
+                    layer.confirm('确认还原：' + id + ' 的订单吗？', {
+                        title: '提示', btn: ['确认', '取消'] //按钮
+                    }, function () {
+                        coreHelper.Post("Api/CoreCmsOrder/DoRestore", { id: id }, function (e) {
+                            layer.msg(e.msg, { time: 1300 }, function () {
+                                layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
+                                doreLoadOrderCount();
+                            });
+                        });
+                    });
+                    return false;
                 }
 
                 //秒发货

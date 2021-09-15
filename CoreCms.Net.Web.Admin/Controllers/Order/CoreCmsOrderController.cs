@@ -696,6 +696,34 @@ namespace CoreCms.Net.Web.Admin.Controllers
         }
         #endregion
 
+        #region 还原订单============================================================
+        // POST: Api/CoreCmsOrder/DoRestore/10
+        /// <summary>
+        /// 还原订单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("还原订单")]
+        public async Task<JsonResult> DoRestore([FromBody] FMStringId entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            var model = await _coreCmsOrderServices.QueryByIdAsync(entity.id);
+            if (model == null)
+            {
+                jm.msg = GlobalConstVars.DataisNo;
+                return Json(jm);
+            }
+            //还原
+            var bl = await _coreCmsOrderServices.UpdateAsync(p => new CoreCmsOrder() { isdel = false }, p => p.orderId == model.orderId);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
+            return Json(jm);
+
+        }
+        #endregion
+
         #region 判断是否存在售后============================================================
         // POST: Api/CoreCmsOrder/GetDoHaveAfterSale/10
         /// <summary>

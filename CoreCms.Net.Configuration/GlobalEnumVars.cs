@@ -1641,7 +1641,7 @@ namespace CoreCms.Net.Configuration
             /// 智能表单
             /// </summary>
             [Description("智能表单")]
-            IntelligenceForm = 4
+            IntelligenceForm = 5
         }
 
         /// <summary>
