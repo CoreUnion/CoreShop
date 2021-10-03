@@ -1,15 +1,14 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <u-navbar title="已核销提货单"></u-navbar>
+        <u-navbar title="提货单列表"></u-navbar>
         <view v-if="ladingList.length>0">
-            <view class="order" :class="item.status?' grayscale':''" v-for="(item, orderIndex) in ladingList" :key="orderIndex">
+            <view class="orderList" :class="item.status?' grayscale':''" v-for="(item, orderIndex) in ladingList" :key="orderIndex">
                 <view class="top">
                     <view class="left" @click="doCopyData(item.id)">
                         <u-icon name="tags" :size="30" color="rgb(94,94,94)"></u-icon>
-                        <view class="store">提货码：{{item.id}}</view>
-                        <button class="cu-btn sm line-black">复制</button>
-                        <u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
+                        <view class="u-margin-left-20 u-margin-right-20 u-font-md ">提货码：{{item.id}}</view>
+                        <u-tag text="复制" type="success" size="mini" />
                     </view>
                     <view class="right">{{item.statusName}}</view>
                 </view>
@@ -18,19 +17,19 @@
                     <view class="content">
                         <view class="title u-line-2">{{v.name}}</view>
                         <view class="type u-line-2">{{v.addon}}</view>
-                        <view class="delivery-time">订单号：{{v.orderId}}</view>
+                        <view class="success u-font-24 u-margin-top-10  u-margin-bottom-10 coreshop-text-yellow">订单号：{{v.orderId}}</view>
                     </view>
                     <view class="right">
                         <view class="price">￥{{ v.price }}</view>
                         <view class="number">x{{ v.nums }}</view>
                     </view>
                 </view>
-                <view class="bottom">
+                <view class="bottom u-margin-0">
                     <view class="more">
                         下单时间：{{ $u.timeFormat(item.createTime, 'mm-dd hh:MM:ss') }}
                     </view>
-                    <view class='logistics coreshop-btn' hover-class="btn-hover" v-if="item.status == true" @click="ladingDel(item.id)">删除</view>
-                    <view class='evaluate coreshop-btn' hover-class="btn-hover" v-if="item.status == false" @click="ladingWrite(item.id)">提货单核销</view>
+                    <view class='logistics coreshop-btn' v-if="item.status == true" @click="ladingDel(item.id)">删除</view>
+                    <view class='evaluate coreshop-btn' v-if="item.status == false" @click="ladingWrite(item.id)">提货单核销</view>
                 </view>
             </view>
             <!-- 更多 -->
@@ -38,7 +37,7 @@
         </view>
         <!-- 无数据时默认显示 -->
         <view class="coreshop-emptybox" v-else>
-            <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无已核销提货单记录" mode="list"></u-empty>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无已核销提货单记录" mode="list"></u-empty>
         </view>
 
     </view>
@@ -95,18 +94,20 @@
             },
             //提货单核销
             ladingWrite(id) {
-                this.$u.route('/pages/member/takeDelivery/index?id=' + id);
+                this.$u.route('/pages/member/merchant/takeDelivery/index?id=' + id);
             },
             //删除
             ladingDel(id) {
                 let _this = this
-                this.$common.modelShow('提示', '删除提货单后将无法找回！').then(res => {
+                this.$common.modelShow('提示', '删除提货单后将无法找回！', res => {
                     let data = {
                         'id': id
                     }
                     _this.$u.api.ladingDel(data).then(res => {
                         _this.$refs.uToast.show({
                             title: res.msg, type: 'success', callback: function () {
+                                _this.page = 1;
+                                _this.ladingList = [];
                                 _this.getLadingList();
                             }
                         })
@@ -125,8 +126,4 @@
 </script>
 
 <style lang="scss" scoped>
-    .cu-btn.sm { padding: 0 10rpx; font-size: 20rpx; height: 38rpx; }
-    .order .top .left .store { margin: 0 10rpx; font-size: 28rpx; font-weight: bold; }
-    .order .item .content .delivery-time { color: #e5d001; font-size: 24rpx; margin: 10rpx 0; }
-    .order .bottom { margin-top: 0; }
 </style>

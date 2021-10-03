@@ -2,7 +2,7 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="设置密码"></u-navbar>
-        <view class="wrap bg-white">
+        <view class="u-padding-30 coreshop-bg-white">
             <u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
                 <u-form-item label="旧密码" label-width="150" prop="password" v-if="oldpassWord">
                     <u-input :password-icon="true" type="password" v-model="model.pwd" placeholder="请输入密码"></u-input>
@@ -15,18 +15,22 @@
                 </u-form-item>
             </u-form>
         </view>
-        <view class="coreshop-bottomBox">
-            <button class="coreshop-btn coreshop-btn-square coreshop-btn-b" hover-class="btn-hover2" @tap="$u.throttle(submitHandler, 500)" :disabled='submitStatus' :loading='submitStatus'>
-                保存
-            </button>
+
+        <!--按钮-->
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
+            <view class="flex u-padding-20 flex-direction">
+                <u-button :custom-style="customStyle" type="error" size="medium" @click="submitHandler" :disabled='submitStatus' :loading='submitStatus'>保存</u-button>
+            </view>
         </view>
     </view>
-
 </template>
 <script>
     export default {
         data() {
             return {
+                customStyle: {
+                    width: '100%',
+                },
                 model: {
                     pwd: '',
                     newPwd: '',
@@ -136,6 +140,4 @@
 </script>
 
 <style lang="scss">
-    page { background: #fff; }
-    .wrap { padding: 30rpx; }
 </style>

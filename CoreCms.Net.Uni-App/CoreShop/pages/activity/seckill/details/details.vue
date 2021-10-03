@@ -1,13 +1,13 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <view class="nav-back">
+        <view class="coreshop-full-screen-nav-back">
             <view class="back-btn" @click="toBackBtn()">
-                <image class="icon" src="/static/images/common/back-black.png" mode=""></image>
+                <u-icon name="arrow-left" size="40" top="12"></u-icon>
             </view>
         </view>
         <!--幻灯片-->
-        <view class="coreshop-banner-swiper-box">
+        <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
                 <swiper-item v-for="(item,index) in goodsInfo.album" :key="index" @click="clickImg(item)">
                     <u-image width="100%" height="750rpx" :src="item">
@@ -16,78 +16,54 @@
                 </swiper-item>
             </swiper>
             <!--页码-->
-            <text class="tag bg-grey round sm coreshop-page">{{bannerCur + 1}} / {{goodsInfo.album.length}}</text>
+            <text class="coreshop-bg-grey tag round coreshop-page">{{bannerCur + 1}} / {{goodsInfo.album.length}}</text>
         </view>
 
 
         <!--限时秒杀-->
-        <view class="coreshop-limited-seckill-box  bg-mauve">
-            <text class="text-price text-xxl">{{ product.price || '0.00' }}</text>
-            <view class="text-xs coreshop-cost-price-num price-4">
+        <view class="coreshop-limited-seckill-box  coreshop-bg-mauve">
+            <text class="coreshop-text-price u-font-40">{{ product.price || '0.00' }}</text>
+            <view class="u-font-xs coreshop-cost-price-num price-4">
                 <view>已售{{ goodsInfo.buyCount || '0' }}件/剩余{{ product.stock || '0' }}件</view>
                 <view>累计销售{{ goodsInfo.buyCount || '0' }}件</view>
             </view>
-            <view class="text-right coreshop-time-right">
+            <view class="u-text-right coreshop-time-right">
                 <view>距结束仅剩</view>
-                <view class="text-xs u-margin-top-10">
+                <view class="u-font-xs u-margin-top-10">
                     <u-count-down :timestamp="goodsInfo.groupTimestamp" separator="zh" :show-days="true" :show-hours="true" :show-minutes="true" :show-seconds="true" font-size="24" separator-size="24"></u-count-down>
                 </view>
             </view>
-            <view class="text-right coreshop-share-right">
+            <view class="u-text-right coreshop-share-right">
                 <u-icon name="share" @click="goShare()" label="分享" size="40" label-size="22" label-color="#fff" label-pos="bottom"></u-icon>
             </view>
         </view>
 
 
         <!--标题-->
-        <view class="bg-white coreshop-view-box coreshop-title-view-box">
+        <view class="coreshop-bg-white coreshop-common-view-box coreshop-good-title-view-box">
             <view class="title-view">
-                <text class="cu-tag bg-red radius sm" v-if="goodsInfo.brand">{{goodsInfo.brand.name}}</text>
-                <text class="text-black text-lg text-bold">{{ goodsInfo.name || '' }}</text>
+                <u-tag :text="goodsInfo.brand.name" type="error"  mode="dark" v-if="goodsInfo.brand" size="mini"/>
+                <text class="coreshop-text-black u-font-lg coreshop-text-bold">{{ goodsInfo.name || '' }}</text>
             </view>
-            <view class="light bg-mauve radius margin-top-sm coreshop-title-tip-box">
-                <view>
-                    <text class="text-sm">{{ goodsInfo.brief || '' }}</text>
-                </view>
+            <view class="light coreshop-bg-red radius u-margin-top-20 coreshop-title-tip-box">
+                <text class="u-font-sm">{{ goodsInfo.brief || '' }}</text>
             </view>
         </view>
 
-        <!--促销（团购秒杀本就是促销的一种，所以没必要显示）-->
-        <!--<view class="margin-top bg-white coreshop-view-box coreshop-promotion-view-box" v-if="promotion.length > 0" @tap="promotionTap">
-            <view class="flex flex-wrap text-sm" @tap="promotionTap">
-                <view class="basis-1">
-                    <text class="text-gray">促销</text>
-                </view>
-                <view class="basis-7">
-                    <view v-for="(item, index) in promotion" :key="index" :class="index> 1 ? 'u-margin-top-10':''">
-                        <text class="cu-tag line-orange sm radius">{{item.name}}</text>
-                    </view>
-                </view>
-                <view class="basis-2">
-                    <view class="text-gray text-right icon-view">
-                        <text class="cuIcon-right icon" />
-                    </view>
-                </view>
-            </view>
-        </view>-->
         <!--服务-->
-        <!--服务-->
-        <view class="margin-top bg-white coreshop-view-box coreshop-service-view-box" @tap="serviceTap" v-if="serviceDescription.service.length>0">
-            <view class="flex flex-wrap text-sm">
-                <view class="basis-1">
-                    <text class="text-gray">服务</text>
+        <view class="u-margin-top-20 coreshop-bg-white coreshop-common-view-box" @tap="serviceTap" v-if="serviceDescription.service.length>0">
+            <view class="coreshop-flex coreshop-flex-wrap u-font-sm">
+                <view class="coreshop-basis-1">
+                    <text class="coreshop-text-gray">服务</text>
                 </view>
-                <view class="basis-7">
+                <view class="coreshop-basis-7">
                     <view class="tag-view-box">
-                        <text class="cu-tag bg-white tag-view" v-for="(item, index) in serviceDescription.service" :key="index">
-                            <text class="cuIcon-roundcheck text-red" />
-                            <text class="margin-left-xs">{{item.title}}</text>
-                        </text>
+                        <u-icon name="checkmark-circle" size="20" label-size="24" color="#e54d42" :label="item.title"  v-for="(item, index) in serviceDescription.service" :key="index" class="u-margin-right-10"></u-icon>
                     </view>
                 </view>
-                <view class="basis-2">
-                    <view class="text-gray text-right icon-view">
-                        <text class="cuIcon-right icon" />
+                <view class="coreshop-basis-2">
+                     <view class="coreshop-text-gray u-text-right coreshop-justify-end">
+                        <u-icon name="arrow-right-double"></u-icon>
                     </view>
                 </view>
             </view>
@@ -95,94 +71,86 @@
 
 
         <!--发货/规格-->
-        <view class="margin-top bg-white coreshop-view-box coreshop-select-view-box">
-            <view class="flex flex-wrap text-sm" v-if="serviceDescription.delivery.length>0">
-                <view class="basis-1">
-                    <text class="text-gray">发货</text>
+        <view class="u-margin-top-20 coreshop-bg-white coreshop-common-view-box ">
+            <view class="coreshop-flex coreshop-flex-wrap u-font-sm" v-if="serviceDescription.delivery.length>0">
+                <view class="coreshop-basis-1">
+                    <text class="coreshop-text-gray">发货</text>
                 </view>
-                <view class="basis-9" v-for="(item, index) in serviceDescription.delivery" :key="index">
-                    <text class="text-sm">{{item.description}}</text>
+                <view class="coreshop-coreshop-basis-9" v-for="(item, index) in serviceDescription.delivery" :key="index">
+                    <text class="u-font-sm">{{item.description}}</text>
                 </view>
             </view>
-
-            <view class="coreshop-border-view" v-if="serviceDescription.delivery.length>0" />
-
-            <view class="flex flex-wrap text-sm" @tap="selectTap()" v-if="isSpes">
-                <view class="basis-1">
-                    <text class="text-gray">规格</text>
+            <view class="coreshop-solid-bottom u-margin-top-20 u-margin-bottom-20" v-if="serviceDescription.delivery.length>0" />
+            <view class="coreshop-flex coreshop-flex-wrap u-font-sm u-padding-top-20" @tap="selectTap()" v-if="isSpes">
+                <view class="coreshop-basis-1">
+                    <text class="coreshop-text-gray">规格</text>
                 </view>
-                <view class="basis-8">
-                    <text class="text-sm">{{ product.spesDesc || ''}}</text>
+                <view class="coreshop-basis-8">
+                    <text class="u-font-sm">{{ product.spesDesc || ''}}</text>
                 </view>
-                <view class="basis-1">
-                    <view class="text-gray text-right">
-                        <text class="cuIcon-right icon" />
+                <view class="coreshop-basis-1">
+                    <view class="coreshop-text-gray u-text-right coreshop-justify-end">
+                        <u-icon name="arrow-right-double"></u-icon>
                     </view>
                 </view>
             </view>
         </view>
-
-        <!--评论-->
-        <view class="margin-top bg-white coreshop-comment-view-box" v-if="goodsComments.length">
-            <view class="cu-bar bg-white">
-                <view class="action">
-                    <text class="text-black text-df">评价（{{goodsComments.length}}）</text>
+ <!--评论-->
+        <view class="u-margin-top-20 coreshop-bg-white  u-padding-left-20 u-padding-right-20 u-padding-bottom-20" v-if="goodsComments.length">
+            <view class="coreshop-flex coreshop-flex-wrap u-font-sm u-padding-top-20">
+                <view class="coreshop-basis-2">
+                    <text class="coreshop-text-black u-font-md">评价（{{goodsComments.length}}）</text>
                 </view>
-                <view class="action">
-                    <view class="text-sm">
-                        <text class="cuIcon-right icon margin-left-xs" @tap="goGoodComments(goodsInfo.id)" />
+                <view class="coreshop-basis-7"></view>
+                <view class="coreshop-basis-1">
+                    <view class="coreshop-text-gray u-text-right coreshop-justify-end">
+                        <u-icon name="arrow-right"  @tap="goGoodComments(goodsInfo.id)"></u-icon>
                     </view>
                 </view>
             </view>
             <view v-for="(item, index) in goodsComments" :key="index">
-                <view class="coreshop-border-view" />
-                <view class="coreshop-view-box">
-                    <view class="flex flex-wrap text-sm">
-                        <view class="basis-1">
-                            <view class="cu-avatar sm round" :style="[{backgroundImage:'url('+ item.avatarImage +')'}]" />
+                <view class="coreshop-solid-bottom u-margin-top-20 u-margin-bottom-20" />
+                <view class="coreshop-flex coreshop-flex-wrap u-font-sm u-padding-20">
+                    <view class="coreshop-basis-1">
+                        <view class="coreshop-avatar sm round" :style="[{backgroundImage:'url('+ item.avatarImage +')'}]" />
+                    </view>
+                    <view class="coreshop-basis-9 u-font-sm">
+                        <view>{{ (item.nickName && item.nickName != '')?item.nickName:item.mobile }}</view>
+                        <view class="u-margin-top-20">{{ item.contentBody || ''}}</view>
+                        <view class="coreshop-text-gray u-margin-top-10">
+                            <u-rate :current="item.score" :disabled="true" size="26"></u-rate>
                         </view>
-                        <view class="basis-9 text-sm">
-                            <view>{{ (item.nickName && item.nickName != '')?item.nickName:item.mobile }}</view>
-                            <view class="margin-top-xs">{{ item.contentBody || ''}}</view>
-                            <view class="text-gray margin-top-sm">
-                                <u-rate :current="item.score" :disabled="true" size="26"></u-rate>
-                            </view>
-                            <view class="text-gray margin-top-sm">{{ item.createTime || ''}} {{ item.addon || ''}}</view>
-                        </view>
+                        <view class="coreshop-text-gray u-margin-top-10">{{ item.createTime || ''}} {{ item.addon || ''}}</view>
                     </view>
                 </view>
             </view>
         </view>
 
         <!--内容区-->
-        <view class="margin-top bg-white coreshop-details-view-box">
-            <view class="text-df title-view">
-                <text class="cuIcon-titles text-red" />
-                <text class="text-black">商品详情</text>
+         <view class="u-margin-top-20 u-padding-top-10 coreshop-bg-white">
+            <view class="u-font-md u-padding-top-10 u-padding-bottom-10 u-padding-left-20 u-padding-right-10">
+                <u-icon name="more-circle" color="#e54d42"></u-icon>
+                <text class="u-margin-left-10 coreshop-text-black">商品详情</text>
             </view>
             <!--参数-->
             <view class="grid col-2">
                 <view class="col-item" v-for="(item, index) in goodsParams" :key="index">
-                    <text class="text-gray">{{ item.name || ''}}：</text>
-                    <text class="text-black">{{ item.value || ''}}</text>
+                    <text class="coreshop-text-gray">{{ item.name || ''}}：</text>
+                    <text class="coreshop-text-black">{{ item.value || ''}}</text>
                 </view>
             </view>
-            <!--<view class="text-cut col-item">
-                <text class="text-gray">详细信息：</text>
-                <text class="text-black">有发票，有配件，有包装</text>
-            </view>-->
             <view class="u-padding-top-10">
                 <u-parse :html="goodsInfo.intro" :selectable="true" v-if="goodsInfo.intro"></u-parse>
                 <!-- 无数据时默认显示 -->
                 <view class="coreshop-emptybox" v-else>
-                    <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="详情为空" mode="list"></u-empty>
+                    <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="详情为空" mode="list"></u-empty>
                 </view>
             </view>
         </view>
 
         <!-- 分享弹窗 -->
         <view class="u-padding-10">
-            <lvv-popup position="bottom" ref="share">
+            <u-popup  mode="bottom" v-model="shareBox" ref="share">
                 <!-- #ifdef H5 -->
                 <shareByH5 :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByH5>
                 <!-- #endif -->
@@ -198,63 +166,61 @@
                 <!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
                 <shareByApp :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByApp>
                 <!-- #endif -->
-            </lvv-popup>
+            </u-popup>
         </view>
 
-
-        <!--常见问题-->
-        <view class="margin-top bg-white margin-bottom coreshop-view-box coreshop-goods-help-view-box">
-            <view class="text-black text-lg margin-bottom-sm">常见说明</view>
-
-            <view class="flex flex-wrap margin-bottom" v-for="(item, index) in serviceDescription.commonQuestion" :key="index">
-                <view class="basis-2">
-                    <text class="cu-tag bg-grey radius sm">{{item.title}}</text>
+         <!--常见问题-->
+        <view class="u-margin-top-20 coreshop-bg-white u-margin-bottom-30 coreshop-common-view-box">
+            <view class="u-font-md u-padding-bottom-20">
+                <u-icon name="question-circle" color="#e54d42"></u-icon>
+                <text class="u-margin-left-10 coreshop-text-black">常见说明</text>
+            </view>
+            <view class="coreshop-flex coreshop-flex-wrap u-margin-bottom-20" v-for="(item, index) in serviceDescription.commonQuestion" :key="index">
+                <view class="coreshop-basis-2">
+                    <u-tag :text="item.title" type="info" size="mini" />
                 </view>
-                <view class="basis-8">
-                    <view class="text-sm">{{item.description}}</view>
+                <view class="coreshop-basis-8">
+                    <view class="u-font-sm">{{item.description}}</view>
                 </view>
             </view>
-
-            <view class="coreshop-border-view" />
-            <view class="text-center text-blue" @tap="goArticleList()">查看更多问题</view>
+            <view class="coreshop-solid-bottom u-margin-top-20 u-margin-bottom-20" />
+            <view class="u-text-center coreshop-text-blue  u-padding-top-20" @tap="goArticleList()">查看更多问题</view>
         </view>
-
 
         <!--商家及推荐-->
-        <view class="margin-top bg-white coreshop-view-box coreshop-goods-info-view-box">
+        <view class="u-margin-top-20 coreshop-bg-white coreshop-common-view-box coreshop-goods-shop-info-view-box">
             <view class="coreshop-shop-view">
-                <view class="cu-avatar lg round" :style="[{backgroundImage:'url('+ shopLogo +')'}]" />
-                <view class="text-view">
-                    <view class="margin-bottom-xs">{{shopName}}</view>
-                    <view class="text-sm text-cut">{{shareTitle}}</view>
+                <view class="u-absolute">
+                     <u-avatar :src="shopLogo"></u-avatar>
                 </view>
-                <button class="cu-btn radius sm line-red" @tap="doPhoneCall">联系商家</button>
+                <view class="u-margin-left-20 u-padding-left-80 u-padding-right-80">
+                    <view class="u-margin-bottom-10">{{shopName}}</view>
+                    <view class="u-font-sm u-line-1">{{shareTitle}}</view>
+                </view>
+                <u-button type="error" size="mini" :plain="true" @click="doPhoneCall">联系商家</u-button>
             </view>
-            <view class="coreshop-border-view" />
-            <view class="live-tag-view">
+            <view class="coreshop-solid-bottom u-padding-top-10 u-padding-bottom-20" />
+            <view class="live-tag-view u-margin-top-20 u-margin-bottom-20">
                 <view class="text-view">
-                    <text class="cu-tag bg-mauve radius sm">
-                        <text class="cuIcon-title" />
-                        <text>已定位</text>
-                    </text>
-                    <text class="margin-left-xs text-cut">可直接获取商家地理位置信息</text>
+                    <u-tag text="已定位" mode="plain" size="mini" type="warning" />
+                    <text class="u-margin-left-10 u-line-1">可直接获取商家地理位置信息</text>
                 </view>
-                <view class="text-sm text-red text-right-view" @tap="goShopMap">
-                    <text class="margin-right-xs">去地图</text>
-                    <text class="cuIcon-right" />
+                <view class="u-font-sm coreshop-text-red go-map-box" @tap="goShopMap">
+                    <text class="u-margin-right-10">去地图</text>
+                    <u-icon name="arrow-right"></u-icon>
                 </view>
             </view>
-            <view class="coreshop-border-view" />
-            <view class="coreshop-recommend-list-box">
-                <view class="text-sm">本店推荐</view>
+            <view class="coreshop-solid-bottom u-margin-top-20 u-margin-bottom-20" />
+            <view class="coreshop-good-shop-recommend-list-box">
+                <view class="u-font-sm u-padding-top-20 ">本店推荐</view>
                 <!--滑动列表-->
                 <view class="recommend-scroll-box">
                     <scroll-view class="recommend-scroll" scroll-x>
                         <block v-for="(items,indexs) in shopRecommendData" :key="indexs">
                             <view :id="['scroll' + (indexs + 1 )]" class="recommend-scroll-item" @tap="goGoodsDetail(items.id)">
-                                <view class="cu-avatar xl radius" :style="[{backgroundImage:'url('+ items.image +')'}]" />
-                                <view class="text-cut-2 text-sm text-black margin-tb-sm u-line-2" style="height:64rpx;">{{items.name}}</view>
-                                <view class="text-red text-price margin-tb-sm text-df">
+                                <view class="coreshop-avatar xl radius" :style="[{backgroundImage:'url('+ items.image +')'}]" />
+                                <view class="u-line-1-2 u-font-sm coreshop-text-black u-margin-top-20 u-margin-bottom-20 u-line-2" style="height: 64rpx;">{{items.name}}</view>
+                                <view class="coreshop-text-red coreshop-text-price u-margin-top-20 u-margin-bottom-20 u-font-md">
                                     {{items.price}}元
                                 </view>
                             </view>
@@ -264,97 +230,92 @@
             </view>
         </view>
 
-
-        <!--其他推荐-->
-        <view class="margin-top coreshop-view-box coreshop-recommend-list-view-box">
-            <view class="flex flex-wrap">
-                <view class="basis-sm text-right">
-                    <image class="img-aau" src="/static/images/common/aau.png" lazy-load mode="widthFix" />
+        <!--为您推荐-->
+        <view class="coreshop-recommended-title-view">
+            <view class="u-flex u-flex-wrap">
+                <view class="u-flex-4 u-text-right">
+                    <image class="img-anc" src="/static/images/common/anc.png" mode="widthFix" />
                 </view>
-                <view class="basis-xs text-center">
-                    <text class="text-black text-lg">其他推荐</text>
+                <view class="u-flex-4 u-text-center">
+                    <text class="coreshop-text-black u-font-lg">为您推荐</text>
                 </view>
-                <view class="basis-sm text-left">
-                    <image class="img-aau" src="/static/images/common/aau.png" lazy-load mode="widthFix" />
-                </view>
-            </view>
-
-            <view class="margin-bottom coreshop-goods-list-box">
-                <view class="grid col-2">
-                    <block v-for="(items,indexs) in otherRecommendData" :key="indexs">
-                        <view class="list-itme" @click="goGoodsDetail(items.id)">
-                            <view class="bg-white list-radius">
-                                <view class="goods-img">
-                                    <view class="cu-avatar" :style="[{backgroundImage:'url('+ items.image +')'}]" />
-                                    <view class="mold-view" v-if="items.mold">
-                                        <text class="cu-tag radius sm bg-mauve">自营</text>
-                                    </view>
-                                </view>
-                                <view class="view-goods-info">
-                                    <view class="text-cut text-black text-sm margin-bottom-sm">{{items.name}}</view>
-                                    <view class="text-price text-red text-lg">
-                                        {{items.price}}元  <span class="u-font-xs color-9 linethrough u-margin-left-15 text-gray">{{items.mktprice}}元</span>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </block>
+                <view class="u-flex-4 u-text-left">
+                    <image class="img-anc" src="/static/images/common/anc.png" mode="widthFix" />
                 </view>
             </view>
         </view>
 
+         <!--推荐列表-->
+        <view class="coreshop-goods-group" v-if="otherRecommendData.length>0">
+            <u-grid col="2" :border="false" :align="center">
+                <u-grid-item bg-color="transparent" :custom-style="{padding: '0rpx'}" v-for="(item, index) in otherRecommendData" :key="index" @click="goGoodsDetail(item.id)">
+                    <view class="good_box">
+                        <!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
+                        <u-lazy-load threshold="-150" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
+                        <view class="good_title u-line-2">
+                            {{item.name}}
+                        </view>
+                        <view class="good-price">
+                            {{item.price}}元 <span class="u-font-xs  coreshop-text-through u-margin-left-15 coreshop-text-gray">{{item.mktprice}}元</span>
+                        </view>
+                        <view class="good-tag-recommend" v-if="item.isRecommend">
+                            推荐
+                        </view>
+                        <view class="good-tag-hot" v-if="item.isHot">
+                            热门
+                        </view>
+                    </view>
+                </u-grid-item>
+            </u-grid>
+        </view>
 
 
 
-        <view class="cu-modal bottom-modal coreshop-bottom-modal-box" :class="bottomModal?'show':''">
-            <view class="cu-dialog bg-white">
+        <!--弹出框-->
+        <u-popup class="coreshop-bottom-popup-box"  v-model="bottomModal" mode="bottom">
+            <view class="radius coreshop-bg-white">
                 <!--标题-->
-                <view class="text-black text-center margin-tb text-lg coreshop-title-bar">
+                <view class="coreshop-text-black u-text-center u-margin-top-30 u-margin-bottom-30 u-font-lg coreshop-title-bar">
                     <text>{{modalTitle}}</text>
-                    <text class="cuIcon-close close-icon" @tap="hideModal"></text>
+                    <u-icon name="close"  @tap="hideModal" class="close-icon"></u-icon>
                 </view>
-
                 <!--内容区域-->
                 <view class="coreshop-modal-content">
-
                     <!--服务区域-->
-                    <view class="coreshop-view-box service" v-if="modalType=='service'">
+                    <view class="coreshop-common-view-box service" v-if="modalType=='service'">
                         <view v-for="(item, index) in serviceDescription.service" :key="index">
                             <view class="text-view">
-                                <text class="cuIcon-title text-red" />
-                                <text class="text-cut text-black">{{item.title}}</text>
+                                <text class="cuIcon-title coreshop-text-red" />
+                                <text class="u-line-1 coreshop-text-black">{{item.title}}</text>
                             </view>
-                            <view class="text-sm text-list-view">
-                                <view class="margin-left text-cut text-gray">{{item.description}}</view>
+                            <view class="u-font-sm text-list-view">
+                                <view class="margin-left u-line-1 coreshop-text-gray">{{item.description}}</view>
                             </view>
                         </view>
                     </view>
 
                     <!--促销区域-->
-                    <view class="coreshop-view-box promotion" v-if="modalType=='promotion'">
+                    <view class="coreshop-common-view-box promotion" v-if="modalType=='promotion'">
                         <view class="text-view" v-for="(item, index) in promotion" :key="index">
                             <text class="cu-tag line-orange radius sm">{{item.name}}</text>
-                            <text class="margin-left-xs text-cut text-black">{{item.name}}</text>
+                            <text class="u-margin-left-20 u-line-1 coreshop-text-black">{{item.name}}</text>
                         </view>
                     </view>
 
                     <!--选择规格-->
-                    <view class="coreshop-view-box select hide" :class="modalType=='select' ?'show':''">
+                    <view class="coreshop-common-view-box select hide" :class="modalType=='select' ?'show':''">
                         <!--商品信息-->
-                        <view class="cu-list menu-avatar">
-                            <view class="cu-item">
-                                <view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ product.images +')'}] " />
+                        <view class="coreshop-list menu-avatar">
+                            <view class="coreshop-list-item">
+                                <view class="coreshop-avatar radius lg" :style="[{backgroundImage:'url('+ product.images +')'}] " />
                                 <view class="content">
-                                    <view class="text-price-view">
-                                        <text class="text-price text-red margin-right-xs">{{ product.price || ''}}</text>
-                                        <text class="text-sm text-gray text-through">￥{{ product.mktprice || ''}}</text>
-                                        <text class="cu-tag bg-gradual-red radius sm">
-                                            <text class="cuIcon-hotfill" />
-                                            <text>秒杀中</text>
-                                        </text>
+                                    <view class="coreshop-text-price-view">
+                                        <text class="coreshop-text-price coreshop-text-red u-margin-right-20">{{ product.price || ''}}</text>
+                                        <text class="u-font-sm coreshop-text-gray coreshop-text-through u-margin-right-20">￥{{ product.mktprice || ''}}</text>
+                                        <u-tag text="秒杀中" mode="plain" type="error" shape="circle" size="mini"/>
                                     </view>
-                                    <view class="text-black text-sm flex">
-                                        <view class="text-cut">已选: {{ product.spesDesc || '无'}}</view>
+                                    <view class="coreshop-text-black u-font-sm flex">
+                                        <view class="u-line-1">已选: {{ product.spesDesc || '无'}}</view>
                                     </view>
                                 </view>
                             </view>
@@ -363,7 +324,7 @@
                         <view class="coreshop-select-btn-list-box">
                             <spec :spesData="defaultSpesDesc" ref="spec" @changeSpes="changeSpes"></spec>
                             <view class="select-item">
-                                <view class="text-black">数量</view>
+                                <view class="coreshop-text-black">数量</view>
                                 <view class="select-btn">
                                     <u-number-box v-model="buyNum" :min="minNums" :max="product.stock"></u-number-box>
                                 </view>
@@ -372,96 +333,75 @@
                     </view>
 
                     <!--公共按钮-->
-                    <view class="coreshop-modal-footer-fixed" v-if="modalType=='select'">
-                        <view class="flex flex-direction">
-                            <u-button type="error" size="medium" hover-class="btn-hover2" @click="clickHandle()" :disabled='submitStatus' :loading='submitStatus' v-if="product.stock>0">确定</u-button>
-                            <u-button type="default" size="medium" v-else>已售罄</u-button>
-                        </view>
+                    <view class="u-padding-30 u-text-center" v-if="modalType=='select'">
+                        <u-button type="error" :custom-style="customStyle" size="medium"  @click="clickHandle()" :disabled='submitStatus' :loading='submitStatus' v-if="product.stock>0">确定</u-button>
+                        <u-button type="default" size="medium" v-else>已售罄</u-button>
                     </view>
                 </view>
             </view>
-        </view>
+        </u-popup>
         <!--占位底部距离-->
-        <view class="cu-tabbar-height" />
+        <view class="coreshop-tabbar-height" />
+
         <!--底部操作-->
-        <view class="coreshop-footer-fixed">
-            <view class="cu-bar bg-white tabbar border shop">
-                <!-- 客服按钮 -->
+        <view class="coreshop-good-footer-fixed">
+            <view class="tabbar">
+                 <!-- 客服按钮 -->
                 <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-                <view class="action" @click="showChat()">
-                    <view class="cuIcon-service" />
-                    <view>客服</view>
+                <view class="action"  @click="showChat()">
+                    <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom"></u-icon>
                 </view>
                 <!-- #endif -->
                 <!-- #ifdef MP-WEIXIN -->
-                <button class="action" hover-class="none" open-type="contact" bindcontact="showChat" :session-from="kefupara">
-                    <view class="cuIcon-service" />
-                    <view>客服</view>
-                </button>
-                <!-- #endif -->
-                <!-- #ifdef MP-ALIPAY -->
-                <view class="action">
-                    <contact-button class="goods-bottom-ic icon" icon="/static/images/customerservice.png" size="80rpx*80rpx" tnt-inst-id="WKPKUZXG" scene="SCE00040186" hover-class="none" />
+                <view class="action" >
+                    <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom" open-type="contact" bindcontact="showChat"></u-icon>
                 </view>
                 <!-- #endif -->
-                <!-- #ifdef MP-TOUTIAO -->
-                <view class="action" @click="showChat()">
-                    <view class="cuIcon-service" />
-                    <view>客服</view>
+                <view class="action"  @click="collection">
+                    <u-icon :name="[isfav?'star-fill':'star']" :size="40" :label="isfav?'已收藏':'收藏'" :label-size="22" label-pos="bottom" open-type="contact" bindcontact="showChat"></u-icon>
                 </view>
-                <!-- #endif -->
-                <button class="action" @click="collection">
-                    <view :class="isfav ? 'cuIcon-favorfill':'cuIcon-favor'" />
-                    <view v-if="!isfav">收藏</view>
-                    <view v-if="isfav">已收藏</view>
-                </button>
+
                 <view class="action" @click="redirectCart">
-                    <view class="cuIcon-cart">
-                        <view class="cu-tag badge" v-if="cartNums">{{cartNums}}</view>
-                    </view>
-                    <text>购物车</text>
+                    <u-badge class="car-num" :count="cartNums?cartNums:0" type="error" :offset="[-3, -6]"></u-badge>
+				    <u-icon name="shopping-cart" :size="40"  label="购物车" :label-size="22" label-pos="bottom"></u-icon>
                 </view>
-                <view class="btn-group">
-                    <button class="cu-btn bg-mauve radius shadow-blur  y-f buyBtn" @tap="selectTap()">立即{{ typeName || '' }}</button>
+                <view class="btn-box">
+                    <u-button type="error" :custom-style="customStyle" size="medium" @click="selectTap()" shape="circle">立即{{ typeName || '' }}</u-button>
                 </view>
             </view>
         </view>
 
         <!-- 右边浮动球 -->
-        <corecms-fab horizontal="right" vertical="bottom" direction="vertical"></corecms-fab>
+        <coreshop-fab horizontal="right" vertical="bottom" direction="vertical"></coreshop-fab>
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
 
     </view>
 </template>
 <script>
     import { mapMutations, mapActions, mapState } from 'vuex';
-    import lvvPopup from '@/components/corecms-lvv-popup/corecms-lvv-popup.vue';
-    import corecmsFab from '@/components/corecms-fab/corecms-fab.vue';
-    import { get } from '@/common/utils/dbHelper.js';
-    import { apiBaseUrl } from '@/common/setting/constVarsHelper.js';
+    import coreshopFab from '@/components/coreshop-fab/coreshop-fab.vue';
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
-    import spec from '@/components/corecms-spec/corecms-spec.vue';
+    import spec from '@/components/coreshop-spec/coreshop-spec.vue';
     // #ifdef H5
-    import shareByH5 from '@/components/corecms-share/shareByh5.vue';
+    import shareByH5 from '@/components/coreshop-share/shareByh5.vue';
     // #endif
     // #ifdef MP-WEIXIN
-    import shareByWx from '@/components/corecms-share/shareByWx.vue';
+    import shareByWx from '@/components/coreshop-share/shareByWx.vue';
     // #endif
     // #ifdef MP-TOUTIAO
-    import shareByTt from '@/components/corecms-share/shareByTt.vue';
+    import shareByTt from '@/components/coreshop-share/shareByTt.vue';
     // #endif
     // #ifdef MP-ALIPAY
-    import shareByAli from '@/components/corecms-share/shareByAli.vue';
+    import shareByAli from '@/components/coreshop-share/shareByAli.vue';
     // #endif
     // #ifdef APP-PLUS || APP-PLUS-NVUE
-    import shareByApp from '@/components/corecms-share/shareByApp.vue';
+    import shareByApp from '@/components/coreshop-share/shareByApp.vue';
     // #endif
     export default {
         mixins: [goods, articles, commonUse, tools],
         components: {
-            lvvPopup,
-            corecmsFab,
+            coreshopFab,
             spec,
             // #ifdef H5
             shareByH5,
@@ -481,6 +421,9 @@
         },
         data() {
             return {
+                customStyle: {
+                    width: '100%',
+                },
                 bannerCur: 0,
                 current: 0, // init tab位
                 goodsId: 0, // 商品id
@@ -509,6 +452,7 @@
                 modalType: 'promotion',
                 selectType: '',
                 shareUrl: '/pages/share/jump/jump',
+                shareBox: false,
                 serviceDescription: {
                     commonQuestion: [],
                     delivery: [],
@@ -592,10 +536,10 @@
                 let pages = getCurrentPages();
                 let page = pages[pages.length - 1];
                 // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE
-                return apiBaseUrl + 'wap/' + page.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
+                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
                 // #endif
                 // #ifdef MP-ALIPAY
-                return apiBaseUrl + 'wap/' + page.__proto__.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
+                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.__proto__.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
                 // #endif
             },
             defaultSpesDesc() {
@@ -626,7 +570,7 @@
                     groupId: this.groupId
                 };
                 // 如果用户已经登录 要传用户token
-                let userToken = get('userToken');
+                let userToken = this.$db.get('userToken');
                 if (userToken) {
                     data['token'] = userToken;
                 }
@@ -852,10 +796,10 @@
             },
             // 跳转到h5分享页面
             goShare() {
-                this.$refs.share.show();
+                this.shareBox = true;
             },
             closeShare() {
-                this.$refs.share.close();
+                this.shareBox = false;
             },
             // 图片点击放大
             clickImg(imgs) {
@@ -977,6 +921,5 @@
     };
 </script>
 <style lang="scss">
-    @import '../../../../static/style/goodDetails.scss';
     .buyBtn { height: 74rpx; width: 90%; }
 </style>

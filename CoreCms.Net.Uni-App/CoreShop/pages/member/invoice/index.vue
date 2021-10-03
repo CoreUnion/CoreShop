@@ -2,27 +2,25 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="我的发票"></u-navbar>
-        <view class="content">
-            <view v-if="listData.length > 0">
-                <view class="invoiceBox" v-for="(item, index) in listData" :key="index">
-                    <view class="invoiceLeft">
-                        <image src="/static/images/common/invoice.png" class="leftIco"></image>
-                    </view>
-                    <view class="invoiceRight">
-                        <view class="invoiceAmount x-bc"><text class="text-price text-red">{{item.amount}}</text> <text :class="item.status == 1?'status_no':'status_yes'">{{item.statusName || ''}}</text></view>
-                        <view class="invoiceTitle">发票抬头：{{item.title || ''}}</view>
-                        <view class="invoiceTaxNumber" v-if="item.taxNumber">发票税号：{{item.taxNumber}}</view>
-                        <view class="invoiceTitle">开票备注：{{item.remarks || ''}}</view>
-
-                        <view class="invoiceTime  x-bc">{{item.createTime}} <text class="text-grey">{{item.typeName || ''}}</text></view>
-                    </view>
+        <view v-if="listData.length > 0">
+            <view class="invoiceBox" v-for="(item, index) in listData" :key="index">
+                <view class="invoiceLeft">
+                    <image src="/static/images/common/invoice.png" class="leftIco"></image>
                 </view>
-                <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
+                <view class="invoiceRight">
+                    <view class="invoiceAmount u-flex u-row-between"><text class="coreshop-text-price coreshop-text-red">{{item.amount}}</text> <text :class="item.status == 1?'status_no':'status_yes'">{{item.statusName || ''}}</text></view>
+                    <view class="invoiceTitle">发票抬头：{{item.title || ''}}</view>
+                    <view class="invoiceTaxNumber" v-if="item.taxNumber">发票税号：{{item.taxNumber}}</view>
+                    <view class="invoiceTitle">开票备注：{{item.remarks || ''}}</view>
+
+                    <view class="invoiceTime  u-flex u-row-between">{{item.createTime}} <text class="coreshop-text-grey">{{item.typeName || ''}}</text></view>
+                </view>
             </view>
-            <!-- 无数据时默认显示 -->
-            <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" text="暂无发票明细" mode="list"></u-empty>
-            </view>
+            <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
+        </view>
+        <!-- 无数据时默认显示 -->
+        <view class="coreshop-emptybox" v-else>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" text="暂无发票明细" mode="list"></u-empty>
         </view>
     </view>
 
@@ -88,16 +86,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .invoiceBox { margin: 30rpx 20rpx; margin-bottom: 20rpx; background-color: #ffffff; padding: 30rpx; border-radius: 10rpx; box-shadow: 0 0 10rpx #eeeeee; overflow: auto; }
-    .invoiceLeft { height: 90rpx; width: 90rpx; overflow: hidden; float: left; }
-    .leftIco { height: 100%; width: 100%; }
-    .invoiceRight { width: calc(100% - 120rpx); float: right; }
-    .invoiceAmount { font-size: 32rpx; margin-bottom: 20rpx; }
-    .invoiceTitle { font-size: 24rpx; color: #888888; }
-    .invoiceTaxNumber { font-size: 24rpx; color: #888888; }
-    .invoiceTime { border-top: 2rpx #eeeeee dashed; margin-top: 20rpx; padding-top: 20rpx; font-size: 24rpx; color: #F44336; }
-    .status_no { margin-left: 20rpx; font-size: 24rpx; color: #F44336; }
-    .status_yes { margin-left: 20rpx; font-size: 24rpx; color: #0d9e13; }
-    .invoice-none { text-align: center; padding: 200rpx 0; }
-    .invoice-none-img { width: 274rpx; height: 274rpx; }
+    @import "index.scss";
 </style>

@@ -1,0 +1,45 @@
+﻿.cart-checkbox-item { position: relative; }
+.invoice-type .uni-list-cell { display: inline-block; font-size: 26rpx; color: #333; position: relative; margin-left: 50rpx; }
+    .invoice-type .uni-list-cell > view { display: inline-block; }
+.invoice-type-icon { position: absolute; top: 50%; transform: translateY(-50%); }
+.invoice-type-c { margin-left: 60rpx; line-height: 2; }
+.coreshop-cell-item-ft .coreshop-cell-bd-input { text-align: right; width: 500rpx; font-size: 28rpx; }
+.right-img { border-bottom: 0; }
+.cell-textarea { padding: 0 26rpx 20rpx; }
+    .cell-textarea textarea { width: 100%; height: 200rpx; font-size: 26rpx; color: #333; }
+.evaluate-c-b { overflow: hidden; padding: 0 20rpx; }
+.upload-img { width: 146rpx; height: 146rpx; margin: 14rpx; text-align: center; color: #999999; font-size: 22rpx; border: 2rpx solid #E1E1E1; border-radius: 4rpx; display: inline-block; float: left; padding: 24rpx 0; }
+.goods-img-item { width: 174rpx; height: 174rpx; padding: 14rpx; float: left; position: relative; }
+    .goods-img-item:nth-child(4n) { margin-right: 0; }
+    .goods-img-item image { width: 100%; height: 100%; }
+.del { width: 30rpx !important; height: 30rpx !important; position: absolute; right: 0; top: 0; z-index: 999; }
+.cell-header { padding: 10rpxpx 0; margin: 0; margin-left: 20rpx; font-size: 28rpx; font-weight: 550; }
+.mr5 { margin-right: 10rpx; }
+.inputStyle { display: inline-block; border: 2rpx solid #ccc; height: 13rpx; line-height: 13rpx; width: 60rpx; text-align: center; font-size: 24rpx; vertical-align: middle; }
+/* #ifdef MP-ALIPAY */
+
+/* #endif */
+/* #ifdef MP-TOUTIAO */
+.goods-item-c { height: 1.5rem; }
+.goods-buy { height: 100%; }
+/* #endif */
+.refund-price { border-bottom: none; }
+.refund-tip { padding: 0 26rpx 10rpx; text-align: right; }
+
+
+.img-list-item { padding: 10rpx 15rpx; background-color: #fff; overflow: hidden; padding-left: 90rpx; }
+.img-list-item-l { display: inline-block; float: left; }
+.img-list-item-r { width: calc(100% - 190rpx); display: inline-block; margin-left: 26rpx; float: left; position: relative; }
+.list-goods-name { font-size: 28rpx; width: 100% !important; }
+.img-list-item .goods-item-c { width: 100%; margin-top: 0; }
+
+
+.cart-checkbox { position: relative; height: 100%; }
+.cart-checkbox-c { display: inline-block; position: absolute; top: 50%; left: 26rpx; transform: translateY(-50%); z-index: 99; }
+
+
+.goods-salesvolume { min-width: 100rpx; height: 30rpx; font-size: 24rpx; color: #999; display: inline-block; }
+
+uni-checkbox.checkboxNo .uni-checkbox-input { background-color: #e1e1e1 !important; border-color: #e1e1e1 !important; }
+
+.icon { width: 50upx; height: 50upx; /* #ifdef MP-ALIPAY */ background-size: 100% 100%; /* #endif */ }

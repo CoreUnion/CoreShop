@@ -192,14 +192,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-
-            var pagesType = EnumHelper.EnumToList<GlobalEnumVars.PagesType>();
             var pagesLayout = EnumHelper.EnumToList<GlobalEnumVars.PagesLayout>();
-
             jm.data = new
             {
                 pagesLayout,
-                pagesType
             };
 
             return Json(jm);
@@ -219,23 +215,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         [Description("创建提交")]
         public async Task<JsonResult> DoCreate([FromBody] CoreCmsPages entity)
         {
-            var jm = new AdminUiCallBack();
-            entity.code = entity.code.Trim();
-            var synonym = await _coreCmsPagesServices.ExistsAsync(p => p.code == entity.code);
-            if (synonym)
-            {
-                jm.msg = "存在相同【区域编码】请更正";
-                return Json(jm);
-            }
-
-
-            entity.layout = 1;
-            entity.type = 1;
-
-            var bl = await _coreCmsPagesServices.InsertAsync(entity) > 0;
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
-
+            var jm = await _coreCmsPagesServices.InsertAsync(entity);
             return Json(jm);
         }
 
@@ -262,14 +242,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
             jm.code = 0;
 
-            var pagesType = EnumHelper.EnumToList<GlobalEnumVars.PagesType>();
             var pagesLayout = EnumHelper.EnumToList<GlobalEnumVars.PagesLayout>();
 
             jm.data = new
             {
                 model,
                 pagesLayout,
-                pagesType
             };
 
             return Json(jm);
@@ -287,49 +265,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         [Description("编辑提交")]
         public async Task<JsonResult> DoEdit([FromBody] CoreCmsPages entity)
         {
-            var jm = new AdminUiCallBack();
-            entity.code = entity.code.Trim();
-            var newCode = entity.code;
-            var oldCode = string.Empty;
-            var synonym = await _coreCmsPagesServices.ExistsAsync(p => p.code == entity.code && p.id != entity.id);
-            if (synonym)
-            {
-                jm.msg = "存在相同【区域编码】请更正";
-                return Json(jm);
-            }
-
-            var oldModel = await _coreCmsPagesServices.QueryByIdAsync(entity.id, false);
-            if (oldModel == null)
-            {
-                jm.msg = "不存在此信息";
-                return Json(jm);
-            }
-            oldCode = oldModel.code;
-
-            //事物处理过程开始
-            //oldModel.id = entity.id;
-            oldModel.code = entity.code;
-            oldModel.name = entity.name;
-            oldModel.description = entity.description;
-            oldModel.layout = entity.layout;
-            oldModel.type = entity.type;
-
-            //事物处理过程结束
-            var bl = await _coreCmsPagesServices.UpdateAsync(oldModel);
-
-            if (bl && newCode != oldCode)
-            {
-                await _pagesItemsServices.UpdateAsync(p => new CoreCmsPagesItems() { pageCode = oldModel.code },
-                    p => p.pageCode == oldCode);
-            }
-
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
+            var jm = await _coreCmsPagesServices.UpdateAsync(entity);
 
             return Json(jm);
         }
         #endregion
-
 
         #region 删除数据============================================================
 
@@ -343,33 +283,32 @@ namespace CoreCms.Net.Web.Admin.Controllers
         [Description("单选删除")]
         public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
         {
-            var jm = new AdminUiCallBack();
-
-            var model = await _coreCmsPagesServices.QueryByIdAsync(entity.id);
-            if (model == null)
-            {
-                jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
-            }
-
-            if (model.id == 1)
-            {
-                jm.msg = "初始化数据禁止删除";
-                return Json(jm);
-            }
-
-            var bl = await _coreCmsPagesServices.DeleteByIdAsync(model.id);
-            if (bl)
-            {
-                await _pagesItemsServices.DeleteAsync(p => p.pageCode == model.code);
-            }
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
+            var jm = await _coreCmsPagesServices.DeleteByIdAsync(entity.id);
             return Json(jm);
 
         }
 
         #endregion
+
+        #region 复制数据============================================================
+
+        // POST: Api/CoreCmsPages/Copy/10
+        /// <summary>
+        ///     复制数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("复制数据")]
+        public async Task<JsonResult> DoCopy([FromBody] FMIntId entity)
+        {
+            var jm = await _coreCmsPagesServices.CopyByIdAsync(entity.id);
+            return Json(jm);
+
+        }
+
+        #endregion
+
 
         #region 版面设计============================================================
 
@@ -428,7 +367,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         [Description("版面设计提交")]
         public async Task<JsonResult> DoDesign([FromBody] FmPagesUpdate entity)
         {
-            var jm = await _coreCmsPagesServices.UpdateAsync(entity);
+            var jm = await _coreCmsPagesServices.UpdateDesignAsync(entity);
             return Json(jm);
         }
 
@@ -508,7 +447,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
         }
 
         #endregion
-
 
     }
 }

@@ -1,25 +1,18 @@
 ﻿<template>
     <!-- 页面主体 -->
     <view>
-        <u-toast ref="uToast" /><u-no-network></u-no-network>
-         <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS ||  MP-ALIPAY || MP-TOUTIAO -->
-        <u-navbar :is-back="true" back-icon-name="scan" back-icon-color="#fff" :title="appTitle" :background="background" title-color="#fff" :custom-back="about"></u-navbar>
-        <!-- #endif -->
-        <!-- #ifdef MP-WEIXIN -->
-        <view class="swiper-background-box">
-            <view class="swiper-background"></view>
-        </view>
-        <view class="head-bg-box" :style="[{backgroundColor:'rgba(229, 77, 66,'+ opacity +')'}]">
-            <view class="indexHeaderLogoBox">
-                <u-image src="/static/images/logo/logo2.png" width="65%" mode="widthFix" :lazy-load="false" :show-loading="false"></u-image>
-            </view>
-        </view>
-        <view class="view-content"></view>
-        <!-- #endif -->
+        <!--提示框组件-->
+        <u-toast ref="uToast" />
+        <!--无网络组件-->
+        <u-no-network></u-no-network>
+        <!--头部组件-->
+        <u-navbar :is-back="false" :title="appTitle" :background="background" :title-color="titleColor" :custom-back="about"></u-navbar>
 
-        <!--调用组件-->
-        <corecmsPage :corecmsdata="pageData"></corecmsPage>
+        <!--首页模块化组合组件-->
+        <coreshopPage :coreshopdata="pageData"></coreshopPage>
+        <!--版权组件-->
         <copyright v-if="copy"></copyright>
+        <!--客服组件-->
         <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
         <view class="floatingButton" @click="showChat()">
             <u-icon name="server-man" color="#e54d42" size="60"></u-icon>
@@ -36,32 +29,33 @@
         <!-- #ifdef MP-TOUTIAO -->
         <!-- 头条客服 -->
         <!-- #endif -->
+        <!--返回顶部组件-->
         <u-back-top :scroll-top="scrollTop" :duration="500"></u-back-top>
 
         <!--弹出框-->
-        <!--<corecms-modal-img :show="modalShow"  :src="$apiFilesUrl+'/static/images/empty/reward.png'" @imgTap="imgTap" @closeTap="closeTap" />-->
+        <!--<coreshop-modal-img :show="modalShow"  :src="$globalConstVars.apiFilesUrl+'/static/images/empty/reward.png'" @imgTap="imgTap" @closeTap="closeTap" />-->
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
     import { mapMutations, mapActions, mapState } from 'vuex';
-    import corecmsPage from '@/components/corecms-page/corecms.vue';
-    import copyright from '@/components/corecms-copyright/corecms-copyright.vue';
-    import modalImg from '@/components/corecms-modal-img/corecms-modal-img.vue';
+    import coreshopPage from '@/components/coreshop-page/coreshop.vue';
+    import copyright from '@/components/coreshop-copyright/coreshop-copyright.vue';
+    import modalImg from '@/components/coreshop-modal-img/coreshop-modal-img.vue';
     import { goods } from '@/common/mixins/mixinsHelper.js';
     export default {
         mixins: [goods],
         components: {
             copyright,
-            corecmsPage,
+            coreshopPage,
             modalImg
         },
         data() {
             return {
-                background: {
-                    backgroundColor: '#e54d42',
-                },
+                background: this.$coreTheme.mainNabBar.background,
+                titleColor: this.$coreTheme.mainNabBar.titleColor,
+
                 swiperItems: [],
                 currentIndex: 0,
                 opacity: 0,
@@ -110,6 +104,7 @@
         },
         onLoad(e) {
             this.initData();
+            console.log("数据：" + this.$globalConstVars.apiFilesUrl);
         },
         methods: {
             about() {
@@ -337,13 +332,4 @@
 </script>
 
 <style lang="scss">
-    .indexHeaderLogoBox { width: 100%; height: 120rpx; }
-    .swiper-background-box { position: absolute; height: 348rpx; width: 100%; top: 0; display: block; transition: 0s; z-index: -1 }
-        .swiper-background-box .swiper-background { position: absolute; height: 100%; width: 100%; top: 0; background-size: cover; opacity: 1; transition: opacity 0.25s; background-image: url($apiFilesUrl+'/static/images/default/swiper-background-2.png'); }
-        .swiper-background-box.welcome { top: calc(var(--status-bar-height) + 101rpx); transition: top 0.25s; }
-
-    .head-bg-box { position: fixed; width: 100%; top: 0; z-index: 9999; background-color: rgba(229, 77, 66,0); padding-top: calc(var(--status-bar-height) + 15rpx); transition: top .25s; }
-
-    /*占位*/
-    .view-content { width: 100%; /* #ifdef APP-PLUS */ margin-top: calc(var(--status-bar-height) + 70rpx); /* #endif */ /* #ifdef H5 */ margin-top: calc(var(--status-bar-height) + 110rpx); /* #endif */ /* #ifdef MP */ margin-top: calc(var(--status-bar-height) + 135rpx); /* #endif */ }
 </style>

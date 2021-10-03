@@ -3,7 +3,6 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar :custom-back="goHome" back-icon-name="home" :title="form.name"></u-navbar>
         <form @submit="formSubmit" bindreset="formReset">
-            <view class="formContent">
                 <view v-if="form.headType==1">
                     <view class="banner">
                         <image :src='slideImg[0]' mode='widthFix'></image>
@@ -32,271 +31,255 @@
                         <text>{{form.description}}</text>
                     </view>
                 </view>
-                <view class="input-box">
-                    <view v-for="(item,index) in form.items" :key="index">
-                        <view class='goods-box-item' v-if="item.type=='goods'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
+            <view class="u-margin-bottom-20 u-margin-top-20 u-padding-10 coreshop-bg-white">
+                <view v-for="(item,index) in form.items" :key="index">
+                    <view class='goods-box-item' v-if="item.type=='goods'">
+                        <view class='input-box-item-left u-padding-bottom-20'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
+                        </view>
+                        <image class='goods-img' :src='item.good.image' mode='aspectFit'></image>
+                        <view class='goods-right'>
+                            <view class='goods-name'>{{item.good.name}}</view>
+                            <view class='goods-mid'>
+                                <text>已售{{item.good.buyCount}}</text>
                             </view>
-                            <image class='goods-img' :src='item.good.image' mode='aspectFit'></image>
-                            <view class='goods-right'>
-                                <view class='goods-name'>{{item.good.name}}</view>
-                                <view class='goods-mid'>
-                                    <text>已售{{item.good.buyCount}}</text>
+                            <view class='goods-buttom'>
+                                <view class="goods-price">￥{{item.good.price}}</view>
+                                <view class='choose-specs' @click="specifications($event,item)" data-type='1' :data-goods="item.good.id" :data-id="item.id" data-statu="openspecs">
+                                    选规格
                                 </view>
-                                <view class='goods-buttom'>
-                                    <view class="goods-price">￥{{item.good.price}}</view>
-                                    <view class='choose-specs' @click="specifications($event,item)" data-type='1' :data-goods="item.good.id" :data-id="item.id" data-statu="openspecs">
-                                        选规格
-                                    </view>
-                                    <text class='order-num' v-if="item.cartCount> 0">{{item.cartCount || 0}}</text>
-                                </view>
+                                <text class='order-num' v-if="item.cartCount> 0">{{item.cartCount || 0}}</text>
                             </view>
                         </view>
-                        <!-- 文本框 -->
-                        <view class='form-input-box-item' v-if="item.type=='text'">
-                            <view class='ib-item-left'>
-
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必填）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <input class='ib-item-input' type="text" :name="'objName'+item.id" :data-id="item.id" v-model="item.defaultValue" placeholder-class='ib-item-input-c' :placeholder="'请输入'+item.name"></input>
+                    </view>
+                    <!-- 文本框 -->
+                    <view class='form-input-box-item' v-if="item.type=='text'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必填）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <input class='ib-item-input' type="text" :name="'objName'+item.id" :data-id="item.id" v-model="item.defaultValue" :placeholder="'请输入'+item.name"></input>
+                        </view>
+                    </view>
+                    <!-- 日期 -->
+                    <view class='form-input-box-item' v-if="item.type=='date'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid">
+                                <picker mode="date" :name="'objName'+item.id" :value="item.defaultValue" @change="bindDateChange($event,item)" :data-id='item.id'>
+                                    <view>{{item.defaultValue}}</view>
+                                </picker>
+                                <image class='icon-img-right' :src="$globalConstVars.apiFilesUrl+'/static/images/common/ic-unfold.png'"></image>
                             </view>
                         </view>
-                        <!-- 日期 -->
-                        <view class='form-input-box-item' v-if="item.type=='date'">
-                            <view class='ib-item-left'>
-
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid">
-                                    <picker mode="date" :name="'objName'+item.id" :value="item.defaultValue" @change="bindDateChange($event,item)" :data-id='item.id'>
-                                        <view>{{item.defaultValue}}</view>
-                                    </picker>
-                                    <image class='icon-img-right' :src="$apiFilesUrl+'/static/images/common/ic-unfold.png'"></image>
-                                </view>
+                    </view>
+                    <!-- 时间 -->
+                    <view class='form-input-box-item' v-if="item.type=='time'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid">
+                                <picker class="weui-btn" :name="'objName'+item.id" mode="time" :value="item.defaultValue" @change="bindTimeChange($event,item)" :data-id='item.id'>
+                                    <view>{{item.defaultValue}}</view>
+                                </picker>
+                                <image class='icon-img-right' :src="$globalConstVars.apiFilesUrl+'/static/images/common/ic-unfold.png'"></image>
                             </view>
                         </view>
-                        <!-- 时间 -->
-                        <view class='form-input-box-item' v-if="item.type=='time'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid">
-                                    <picker class="weui-btn" :name="'objName'+item.id" mode="time" :value="item.defaultValue" @change="bindTimeChange($event,item)" :data-id='item.id'>
-                                        <view>{{item.defaultValue}}</view>
-                                    </picker>
-                                    <image class='icon-img-right' :src="$apiFilesUrl+'/static/images/common/ic-unfold.png'"></image>
-                                </view>
-                            </view>
+                    </view>
+                    <!-- 范围选择 -->
+                    <!-- 多选 -->
+                    <view class='form-input-box-item' v-if="item.type=='checbox'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
                         </view>
-                        <!-- 范围选择 -->
-                        <!-- 多选 -->
-                        <view class='form-input-box-item' v-if="item.type=='checbox'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class='checkout-list'>
-                                    <checkbox-group @change="checkboxChange($event,item)" :data-value="item.id" :name="'objName'+item.id">
-                                        <label class="checkout-item" v-for="(checkboxItem,itemIndex) in item.checkboxValue" :key="itemIndex">
-                                            <view class="checkout-item-c" :class="checkboxItem.checked?'black':''">
-                                                <checkbox class="" :value="checkboxItem.value" :checked="checkboxItem.checked" /> {{checkboxItem.value}}
-                                            </view>
-                                        </label>
-                                    </checkbox-group>
-                                </view>
-                            </view>
-                        </view>
-                        <!-- radio时处理 -->
-                        <view class='form-input-box-item' v-if="item.type=='radio'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>:</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <radio-group class="uni-list" @change="radioChange($event,item)" :data-value="item.id" :name="'objName'+item.id">
-                                    <label class=" uni-list-cell uni-list-cell-pd " v-for="(radioItem, itemIndex) in  item.radioValue" :key="itemIndex">
-                                        <view class="invoice-type-icon">
-                                            <radio class="a-radio" :id="radioItem" :value="radioItem" checked=true v-if="radioItem==item.defaultValue"></radio>
-                                            <radio class="a-radio" :id="radioItem" :value="radioItem" v-if="radioItem!=item.defaultValue"></radio>
-                                        </view>
-                                        <view class="invoice-type-c">
-                                            <label class="label-2-text" :for="radioItem">
-                                                <text>{{radioItem}}</text>
-                                            </label>
+                        <view class='input-box-item-right'>
+                            <view class='checkout-list'>
+                                <checkbox-group @change="checkboxChange($event,item)" :data-value="item.id" :name="'objName'+item.id">
+                                    <label class="checkout-item" v-for="(checkboxItem,itemIndex) in item.checkboxValue" :key="itemIndex">
+                                        <view class="checkout-item-c">
+                                            <checkbox class="" :value="checkboxItem.value" :checked="checkboxItem.checked" /> {{checkboxItem.value}}
                                         </view>
                                     </label>
-                                </radio-group>
+                                </checkbox-group>
                             </view>
                         </view>
-                        <!-- 省市区选择 -->
-                        <view class='form-input-box-item' v-if="item.type=='area'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid">
-                                    <input class="ib-item-input" :value="pickerValue" @focus="showThreePicker" :name="'objName'+item.id" style="width: 100%;" />
-                                    <u-select v-model="show" mode="mutil-column-auto" :list="pickerList" :default-value="pickerIndex" @confirm="onConfirm"></u-select>
-                                </view>
+                    </view>
+                    <!-- radio时处理 -->
+                    <view class='form-input-box-item' v-if="item.type=='radio'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>:</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <radio-group class="uni-list" @change="radioChange($event,item)" :data-value="item.id" :name="'objName'+item.id">
+                                <label class="u-margin-right-40" v-for="(radioItem, itemIndex) in  item.radioValue" :key="itemIndex">
+                                    <view class="coreshop-display-inline-block">
+                                        <radio class="a-radio" :id="radioItem" :value="radioItem" checked=true v-if="radioItem==item.defaultValue"></radio>
+                                        <radio class="a-radio" :id="radioItem" :value="radioItem" v-if="radioItem!=item.defaultValue"></radio>
+                                    </view>
+                                    <view class="coreshop-display-inline-block">
+                                        <label class="label-2-text" :for="radioItem">
+                                            <text>{{radioItem}}</text>
+                                        </label>
+                                    </view>
+                                </label>
+                            </radio-group>
+                        </view>
+                    </view>
+                    <!-- 省市区选择 -->
+                    <view class='form-input-box-item' v-if="item.type=='area'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid">
+                                <input class="ib-item-input" :value="pickerValue" @focus="showThreePicker" :name="'objName'+item.id" style="width: 100%;" />
+                                <u-select v-model="show" mode="mutil-column-auto" :list="pickerList" :default-value="pickerIndex" @confirm="onConfirm"></u-select>
                             </view>
                         </view>
-                        <!-- 金额 -->
-                        <view class='form-input-box-item' v-if="item.type=='money'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必填）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid">
-                                    <input class='ib-item-input' type="digit" :name="'objName'+item.id" v-model="item.defaultValue" placeholder-class='ib-item-input-c'
-                                           :placeholder="'请输入'+item.name"></input>
-                                </view>
+                    </view>
+                    <!-- 金额 -->
+                    <view class='form-input-box-item' v-if="item.type=='money'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必填）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid">
+                                <input class='ib-item-input' type="digit" :name="'objName'+item.id" v-model="item.defaultValue" 
+                                        :placeholder="'请输入'+item.name"></input>
                             </view>
                         </view>
-                        <!-- 密码 -->
-                        <view class='form-input-box-item' v-if="item.type=='password'">
-                            <view class='ib-item-left'>
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必填）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid">
-                                    <input class='ib-item-input' type='password' :name="'objName'+item.id" v-model="item.defaultValue" placeholder-class='ib-item-input-c'
-                                           :placeholder="'请输入'+item.name"></input>
-                                </view>
+                    </view>
+                    <!-- 密码 -->
+                    <view class='form-input-box-item' v-if="item.type=='password'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必填）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid">
+                                <input class='ib-item-input' type='password' :name="'objName'+item.id" v-model="item.defaultValue" 
+                                        :placeholder="'请输入'+item.name"></input>
                             </view>
                         </view>
-                        <!-- 图片 -->
-                        <view class='form-input-box-item' v-if="item.type=='image'">
-                            <view class='form-input-box-title'>上传{{item.name}}<text v-if="item.required" class="red">（必传）</text>（限制3张）</view>
-                            <view class='form-multiple-rows'>
-                                <view class='f-m-r-item'>
-                                    <view class='upload-img-list'>
-                                        <view class='upload-img-bd'>
-                                            <view class='upload-img' v-for="(picItem, i) in item.pics" :key="i">
-                                                <image @click='picDel(item,index,i)' :data-index="i" class='del-img' :src="$apiFilesUrl+'/static/images/common/del.png'"></image>
-                                                <image class='upload-camera' :src="picItem" mode='aspectFit'></image>
-                                                <input type='text' hidden='hidden' :name="'objName'+item.id" v-model="item.pics" />
-                                            </view>
-                                        </view>
-                                        <view class='upload-img-hd'>
-                                            <image class='upload-camera' :src="$apiFilesUrl+'/static/images/common/camera.png'" @click="picChoose($event,item,index)"
-                                                   :data-id="item.id"></image>
-                                        </view>
+                    </view>
+                    <!-- 图片 -->
+                    <view class='form-input-box-item' v-if="item.type=='image'">
+                        <view class='u-font-28'>上传{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必传）</text>（限制3张）</view>
+                        <view class='u-margin-top-15'>
+                            <view class='upload-img-list'>
+                                <view class='upload-img-bd'>
+                                    <view class='upload-img' v-for="(picItem, i) in item.pics" :key="i">
+                                        <image @click='picDel(item,index,i)' :data-index="i" class='del-img' :src="$globalConstVars.apiFilesUrl+'/static/images/common/del.png'"></image>
+                                        <image class='upload-camera' :src="picItem" mode='aspectFit'></image>
+                                        <input type='text' hidden='hidden' :name="'objName'+item.id" v-model="item.pics" />
                                     </view>
                                 </view>
-                            </view>
-                        </view>
-                        <!-- 文本域 -->
-                        <view class='form-input-box-item' v-if="item.type=='textarea'">
-                            <view class='form-input-box-title'>{{item.name}}<text v-if="item.required" class="red">（必填）</text>：</view>
-                            <view class='form-multiple-rows'>
-                                <view class='f-m-r-item form-input-box-item'>
-                                    <textarea :name="'objName'+item.id" class='ib-item-textarea' :placeholder="'请输入'+item.name" placeholder-class="ib-item-input-c"></textarea>
-                                </view>
-                            </view>
-                        </view>
-                        <!-- 定位 -->
-                        <view class='form-input-box-item' v-if="item.type=='coordinate'">
-                            <view class='ib-item-left'>
-
-                                <text>{{item.name}}<text v-if="item.required" class="red">（必选）</text>：</text>
-                            </view>
-                            <view class='ib-item-right'>
-                                <view class="ib-item-mid ib-item-start">
-                                    <image class='icon-img' :src="$apiFilesUrl+'/static/images/common/ic-location.png'"></image>
-                                    <input class='ib-item-input margin-r' placeholder-class='ib-item-input-c' :name="'objName'+item.id" :value="item.defaultValue"
-                                           disabled='disabled' placeholder="点击获取位置信息" @click="chooseLocation($event,item,index)" :data-id='item.id' />
+                                <view class='upload-img-hd'>
+                                    <image class='upload-camera' :src="$globalConstVars.apiFilesUrl+'/static/images/common/camera.png'" @click="picChoose($event,item,index)"
+                                            :data-id="item.id"></image>
                                 </view>
                             </view>
                         </view>
                     </view>
-                </view>
-                <view class='goods-bottom' v-if="form.type==1">
-                    <text class='goods-total'>
-                        合计
-                        <text class='goods-total-r'>￥{{goodsTotalMoney}}</text>
-                    </text>
+                    <!-- 文本域 -->
+                    <view class='form-input-box-item' v-if="item.type=='textarea'">
+                        <view class='u-font-28'>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必填）</text>：</view>
+                        <view class='u-margin-top-15'>
+                            <textarea :name="'objName'+item.id" class='ib-item-textarea' :placeholder="'请输入'+item.name" ></textarea>
+                        </view>
+                    </view>
+                    <!-- 定位 -->
+                    <view class='form-input-box-item' v-if="item.type=='coordinate'">
+                        <view class='input-box-item-left'>
+                            <text>{{item.name}}<text v-if="item.required" class="coreshop-bg-red u-font-22">（必选）</text>：</text>
+                        </view>
+                        <view class='input-box-item-right'>
+                            <view class="ib-item-mid coreshop-justify-start">
+                                <image class='icon-img' :src="$globalConstVars.apiFilesUrl+'/static/images/common/ic-location.png'"></image>
+                                <input class='ib-item-input u-margin-right-40' :name="'objName'+item.id" :value="item.defaultValue"
+                                        disabled='disabled' placeholder="点击获取位置信息" @click="chooseLocation($event,item,index)" :data-id='item.id' />
+                            </view>
+                        </view> 
+                    </view>
                 </view>
             </view>
+            <view class='goods-bottom' v-if="form.type==1">
+                <text class='coreshop-float-right u-font-28 coreshop-text-black'>
+                    合计
+                    <text class='coreshop-text-red u-font-30'>￥{{goodsTotalMoney}}</text>
+                </text>
+            </view>
+            <view class="coreshop-tabbar-height"></view>
             <!-- 底部按钮 -->
-            <view class='bottom-btn'>
-                <button :style='{backgroundColor:form.button_color}' data-statu="open" form-type="submit" :disabled='submitStatus' :loading='submitStatus'>
+            <view class='coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom'>
+                <view class="u-padding-10">
+                    <button :style='{backgroundColor:form.buttonColor}' class="bottom-btn" data-statu="open" form-type="submit" :disabled='submitStatus' :loading='submitStatus'>
                     {{buttonName}}
-                </button>
+                    </button>
+                </view>
             </view>
         </form>
 
-
         <!--弹出框-->
-        <view class="cu-modal bottom-modal coreshop-bottom-modal-box" :class="bottomModal?'show':''">
+        <u-popup class="coreshop-bottom-popup-box" v-model="bottomModal" mode="bottom"  border-radius="14" closeable="true">
             <!-- 多规格商品弹出 -->
             <block v-if="showSpecs">
-                <view class="cu-dialog bg-white">
+                <view class="coreshop-bg-white">
                     <!--标题-->
-                    <view class="text-black text-center margin-tb text-lg coreshop-title-bar">
+                    <view class="coreshop-text-black u-text-center u-margin-top-30 u-margin-bottom-30 u-font-lg coreshop-title-bar">
                         <text>选择商品</text>
-                        <text class="cuIcon-close close-icon" @tap="closeModal"></text>
                     </view>
                     <!--内容区域-->
                     <view class="coreshop-modal-content">
                         <!--选择规格-->
-                        <view class="coreshop-view-box select show">
+                        <view class="coreshop-common-view-box select">
                             <!--商品信息-->
-                            <view class="cu-list menu-avatar">
-                                <view class="cu-item">
-                                    <view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ goodsInfoImage +')'}] " />
+                            <view class="coreshop-list menu-avatar">
+                                <view class="coreshop-list-item">
+                                    <view class="coreshop-avatar radius lg" :style="[{backgroundImage:'url('+ goodsInfoImage +')'}] " />
                                     <view class="content">
-                                        <view class="text-price-view">
-                                            <text class="text-price text-red margin-right-xs">{{goodsInfoName}}</text>
-                                            <text class="text-sm text-gray">￥{{goodsInfoPrint}}</text>
+                                        <view class="coreshop-text-price-view">
+                                            <text class="coreshop-text-price coreshop-text-red u-margin-right-20">{{goodsInfoName}}</text>
+                                            <text class="u-font-sm coreshop-text-gray">￥{{goodsInfoPrint}}</text>
                                         </view>
-
-                                        <!--<view class="text-black text-sm flex">
-                                            <view class="text-cut">已选: {{ product.spesDesc || product.name}}  库存：{{product.stock > 0 ? product.stock :0 }}</view>
-                                        </view>-->
                                     </view>
                                 </view>
                             </view>
                             <!--规格数据-->
                             <view class="coreshop-select-btn-list-box">
-                                <view class="color" v-for="(value,key) in goodsSpesDesc" :key="key">
-                                    <text class='salespromotion-service-name'>{{key}}</text>
-                                    <view class='salespromotion-service-b'>
-                                        <block v-for="(i,itemIndex) in value" :key="itemIndex">
-                                            <view v-if="i.isDefault" class='pitch-on'>{{i.name}}</view>
-                                            <view v-else-if="i.productId != 0" :class='i.isDefault ? "pitch-on" : ""' :data-key="i.productId" :data-id="i.name"
-                                                  @click="selectSku">{{i.name}}</view>
-                                            <view v-else class='nothing'>{{i.name}}</view>
-                                        </block>
+                                <view class="select-item" v-for="(value,key) in goodsSpesDesc" :key="key">
+                                    <text class='coreshop-text-black u-margin-10  coreshop-solid-bottom u-padding-bottom-20'>{{key}}</text>
+                                    <view class='select-btn'>
+                                        <button class="sku-btn u-margin-10"  :class='i.isDefault ? "selected" : "not-selected"' v-for="(i,itemIndex) in value" :key="itemIndex"  :data-key="i.productId" :data-id="i.name"  @click="selectSku">
+                                            <u-avatar :src="i.image" size="50" class="u-margin-right-10 u-margin-top-10" style="margin-left: -20rpx;"></u-avatar>
+                                            {{ i.name }}
+                                        </button>
                                     </view>
                                 </view>
                                 <!-- 库存 -->
-                                <view class='number'>
-                                    <text class='salespromotion-service-name'>数量</text>
-                                    <view class="stepper">
-                                        <u-number-box v-model="goodsNums" :min="0" :max="goodsInfoNumber" @change="valChange"></u-number-box>
+                                <view class="select-item">
+                                    <view class="coreshop-text-black">数量</view>
+                                    <view class="select-btn">
+                                        <u-number-box v-model="goodsNums" :min="0"  :max="goodsInfoNumber" @change="valChange"></u-number-box>
                                     </view>
                                 </view>
                             </view>
                         </view>
-
                         <!--公共按钮-->
-                        <view class="coreshop-modal-footer-fixed">
-                            <view class="flex flex-direction">
-                                <u-button type="error" size="medium" @click='goodsAddCart' v-if="status">确定</u-button>
-                                <u-button type="default" size="medium" v-else>已售罄</u-button>
-                            </view>
+                        <view class="u-padding-30 u-text-center">
+                            <u-button type="error" size="medium" @click='goodsAddCart' v-if="status">确定</u-button>
+                            <u-button type="default" size="medium" v-else>已售罄</u-button>
                         </view>
                     </view>
                 </view>
             </block>
-        </view>
+        </u-popup>
 
 
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
@@ -474,10 +457,10 @@
                         if (res.data.type == '1' || res.data.type == '2') {
                             if (res.data.type == '1') {
                                 //订单
-                                that.paymentType = this.$config.paymentType.formPay
+                                that.paymentType = this.$globalConstVars.paymentType.formPay
                             } else if (res.data.type == '2') {
                                 //付款码
-                                that.paymentType = this.$config.paymentType.formOrder
+                                that.paymentType = this.$globalConstVars.paymentType.formOrder
                             }
                         }
 
@@ -891,6 +874,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../../static/style/goodDetails.scss';
-    @import '../../../static/style/formDetails.scss';
+    @import 'details.scss';
 </style>

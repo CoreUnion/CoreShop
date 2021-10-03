@@ -20,9 +20,8 @@ using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
-using CoreCms.Net.Model.ViewModels.Basics;
-using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.DTO;
+using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Utility.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -71,16 +70,58 @@ namespace CoreCms.Net.Services
 
 
         /// <summary>
+        /// 重写异步插入方法
+        /// </summary>
+        /// <param name="entity">实体数据</param>
+        /// <returns></returns>
+        public new async Task<AdminUiCallBack> InsertAsync(CoreCmsPages entity)
+        {
+            return await _dal.InsertAsync(entity);
+        }
+
+        /// <summary>
         /// 重写异步更新方法方法
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<AdminUiCallBack> UpdateAsync(FmPagesUpdate entity)
+        public new async Task<AdminUiCallBack> UpdateAsync(CoreCmsPages entity)
         {
             return await _dal.UpdateAsync(entity);
         }
 
+        /// <summary>
+        /// 重写删除指定ID的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<AdminUiCallBack> DeleteByIdAsync(int id)
+        {
+            return await _dal.DeleteByIdAsync(id);
+        }
 
+        /// <summary>
+        /// 更新设计
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<AdminUiCallBack> UpdateDesignAsync(FmPagesUpdate entity)
+        {
+            return await _dal.UpdateDesignAsync(entity);
+        }
+
+
+        /// <summary>
+        /// 复制一个同样的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<AdminUiCallBack> CopyByIdAsync(int id)
+        {
+            return await _dal.CopyByIdAsync(id);
+        }
+
+
+        #region 获取首页数据
         /// <summary>
         /// 获取首页数据
         /// </summary>
@@ -91,13 +132,17 @@ namespace CoreCms.Net.Services
 
             var jm = new WebApiCallBack();
 
-            var model = await _dal.QueryByClauseAsync(p => p.code == code);
+            var wherePage = PredicateBuilder.True<CoreCmsPages>();
+
+            wherePage = code == "mobile_home" ? wherePage.And(p => p.type == 1) : wherePage.And(p => p.code == code);
+
+            var model = await _dal.QueryByClauseAsync(wherePage);
             if (model == null)
             {
                 return jm;
             }
             jm.status = true;
-            var items = await _pagesItemsRepository.QueryListByClauseAsync(p => p.pageCode == code, p => p.sort, OrderByType.Asc);
+            var items = await _pagesItemsRepository.QueryListByClauseAsync(p => p.pageCode == model.code, p => p.sort, OrderByType.Asc);
 
             var itemsDto = new List<PagesItemsDto>();
             foreach (var item in items)
@@ -610,5 +655,11 @@ namespace CoreCms.Net.Services
 
             return jm;
         }
+
+        #endregion
+
+
+
+
     }
 }

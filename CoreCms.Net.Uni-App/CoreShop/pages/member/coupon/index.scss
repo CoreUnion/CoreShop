@@ -1,0 +1,10 @@
+﻿page { background: #fff; }
+.coreshop-coupon {
+    .coreshop-coupon-card-view { position: relative; position: relative; margin: 27.27rpx 27.27rpx 0;
+        .card-num-view { position: relative; background: #FFECED; border-radius: 0 0 14.54rpx 14.54rpx; border-top: 2rpx dashed #dedbdb; padding: 10.9rpx 27.27rpx; color: #999898;
+            .btnUnfold { position: absolute; right: 27.27rpx; top: 14.54rpx; }
+        }
+        .card-num-view::before { content: ''; position: absolute; width: 36.36rpx; height: 36.36rpx; background: #ffffff; border-radius: 50%; top: -18.18rpx; left: -18.18rpx; }
+        .card-num-view::after { content: ''; position: absolute; width: 36.36rpx; height: 36.36rpx; background: #ffffff; border-radius: 50%; top: -18.18rpx; right: -18.18rpx; }
+    }
+}

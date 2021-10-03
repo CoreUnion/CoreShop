@@ -5,11 +5,11 @@
         <view class="content">
             <view class="content-c">
                 <image class="load-img" src="/static/images/loading.gif" mode=""></image>
-                <view class="load-text color-9">信息加载中.....</view>
+                <view class="load-text ">信息加载中.....</view>
             </view>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -131,8 +131,4 @@
 </script>
 
 <style scoped lang="scss">
-    .content { position: relative; height: 80vh; }
-    .content-c { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-    .load-img { width: 100upx; height: 100upx; }
-    .load-text { font-size: 26upx; }
 </style>

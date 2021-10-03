@@ -1,0 +1,103 @@
+﻿.coreshop-common-view-box { position: relative; padding: 0 18.18rpx;
+    .coreshop-card { position: relative; padding: 18.18rpx; border-radius: 9.09rpx; box-shadow: 0 0 10.9rpx #f7f7f7; }
+}
+.address-view {
+    .coreshop-list.menu-avatar > .coreshop-list-item { height: 55px;
+        &:after { width: 0; height: 0; border-bottom: 0; }
+        .icon-view { position: absolute; border-radius: 100%; text-align: center; line-height: 45.45rpx; height: 45.45rpx; width: 45.45rpx; left: 9.09rpx; top: 20rpx; }
+        .content { left: 72.72rpx; width: calc(100% - 94.54rpx - 27.27rpx); }
+        .action { text-align: right; width: 36.36rpx; }
+    }
+    .address-line { position: absolute; background-image: url('/static/images/common/address-line.png'); background-repeat: no-repeat; background-size: 100%; border-radius: 0 0 9.09rpx; height: 9.09rpx; width: 100%; bottom: 0; right: 0; left: 0; }
+}
+.goods-view {
+    .title-view { position: relative; line-height: 49.09rpx; height: 47.27rpx;
+        .coreshop-avatar { position: absolute; }
+        .title-box { position: relative; padding-left: 63.63rpx;
+            .cu-tag { position: relative; top: -3.63rpx; }
+        }
+    }
+    .goods-info-view-box { position: relative; padding: 27.27rpx 18.18rpx;
+        .coreshop-avatar { position: absolute; height: 163.63rpx; width: 163.63rpx; left: 18.18rpx; }
+        .goods-info-view { position: relative; padding-left: 181.81rpx; min-height: 163.63rpx; line-height: 1.4;
+            .coreshop-tag-view { position: relative; }
+            .goods-price-view { position: relative; line-height: 1.7; top: 9.09rpx;
+                .goods-num { width: 50rpx; position: absolute; right: 5rpx; top: 5rpx; }
+            }
+        }
+    }
+    .coreshop-solid-bottom::after { border-bottom: 2rpx solid rgba(0, 0, 0, 0.1); }
+    .coreshop-gift-list { position: relative;
+        .title { padding-right: 181.81rpx; }
+        .u-text-right { position: absolute; right: 0; top: 0; }
+    }
+    .coreshop-gift-list + .coreshop-gift-list { margin-top: 10px; }
+    .checked-view { position: relative;
+        .coreshop-checked { position: absolute; transform: scale(0.7); }
+        .coreshop-text-black-view { padding-left: 63.63rpx; line-height: 47.27rpx; }
+    }
+    .coreshop-service-view {
+        .flex-sub { position: relative; text-align: center; line-height: 1.8; border: 2rpx solid #f7f5f5;
+            .coreshop-corner-mark { position: absolute; right: 0; bottom: 0; width: 0; height: 0; border-bottom: 36.36rpx solid #eaeaea; border-left: 45.45rpx solid transparent; }
+            .check-icon { position: absolute; font-size: 20rpx; bottom: 0px; color: #FAFAFA; right: 2rpx; }
+            .coreshop-corner-mark.check { border-bottom: 36.36rpx solid #e54d42; }
+            .check-icon.check { color: #fff; }
+        }
+    }
+}
+
+.coreshop-card.pay-view { position: relative; padding: 10px 10px 0;
+    .title-view { position: relative;
+        .u-text-right { position: absolute; right: 0; }
+    }
+    .tag-view-box { position: relative; padding: 0 0 27.27rpx; border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
+        .cu-tag { margin-top: 18.18rpx; margin-right: 9.09rpx; }
+        .cu-tag + .cu-tag { margin-left: 0; }
+    }
+    .coreshop-list.menu > .coreshop-list-item { padding: 0; min-height: 90.9rpx;
+        .content { font-size: 27.27rpx; }
+        .action .cu-tag { position: relative; top: -3.63rpx; right: 9.09rpx; }
+    }
+    .coreshop-list.menu > .coreshop-list-item.arrow { padding-right: 29.09rpx;
+        &:before { right: 0; color: #aaaaaa; }
+    }
+}
+
+.coreshop-price-view { position: relative;
+    .item-view { position: relative;
+        .title { padding-right: 181.81rpx; }
+        .u-text-right { position: absolute; right: 0; top: 0; }
+    }
+    .item-view + .item-view { margin-top: 18.18rpx; }
+}
+
+.agreement-checked-view { position: relative; padding: 18.18rpx 27.27rpx; display: flex; align-items: center; margin: 40rpx 0;
+    .coreshop-checked { transform: scale(0.7); }
+    .coreshop-text-black-view { line-height: 47.27rpx; }
+}
+
+.coreshop-footer-fixed { box-shadow: 0 -2rpx 9.09rpx 0 #ececec; z-index: 99999; display: flex; position: fixed; bottom: 0; margin-top: 120rpx; width: 100%; z-index: 99; border-top: solid 2rpx #f2f2f2; background-color: #ffffff;
+    .cu-bar { width: 100%;
+        .price-view { width: 100%; padding-right: 254.54rpx; }
+        .btn-view { position: absolute; float: right; right: 29.09rpx; }
+    }
+}
+.coreshop-form-group { background-color: #ffffff; padding: 1upx 20upx; display: flex; align-items: center; min-height: 100upx; justify-content: space-between;
+    .title { text-align: justify; padding-right: 30rpx; font-size: 28rpx; position: relative; height: 40rpx; line-height: 40rpx; }
+    input { flex: 1; font-size: 30upx; color: #555; padding-right: 20upx; }
+}
+    .coreshop-form-group + .coreshop-form-group { border-top: 1upx solid #eee; }
+
+.couponBox { width: 400rpx; }
+
+
+.coupon-scroll-box { position: relative; width: 100%;
+    .coupon-scroll { position: relative; white-space: nowrap; width: 100%;
+        .coupon-scroll-item { display: inline-block; white-space: initial; }
+    }
+}
+
+.memoBox { height: 4em; padding: 10px; }
+
+
+.coreshop-cell-item { width: auto; }

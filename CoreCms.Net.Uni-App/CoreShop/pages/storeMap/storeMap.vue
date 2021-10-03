@@ -16,42 +16,39 @@
                 </map>
             </view>
             <scroll-view class="store-list" scroll-y>
-
                 <view class="u-margin-top-30" v-if="storeList.length>0">
-                    <view class="cu-list menu-avatar" v-for="(item, key) in storeList" :key="key">
-                        <view class="cu-item  u-padding-top-20  u-padding-bottom-20">
-                            <view class="cu-avatar lg radius" :style="[{backgroundImage:'url('+ item.logoImage +')'}]" />
+                    <view class="coreshop-list menu-avatar" v-for="(item, key) in storeList" :key="key">
+                        <view class="coreshop-list-item">
+                            <image class="coreshop-avatar lg radius" :src="item.logoImage" mode="aspectFill"></image>
                             <view class="content">
-                                <view class="text-grey">{{item.storeName|| ''}}</view>
-                                <view class="text-gray text-sm flex">
-                                    <u-icon name="phone" size="28"></u-icon>
-                                    <view class="text-cut" @tap="doPhoneCall(item.mobile)">
-                                        电话：{{item.mobile|| ''}}
+                                <view class="coreshop-text-grey u-margin-bottom-10">{{item.storeName|| ''}}</view>
+                                <view class="coreshop-text-gray u-font-sm flex u-margin-bottom-10">
+                                    <view class="u-line-2" @tap="doPhoneCall(item.mobile)">
+                                        <u-icon name="phone" size="24" :label="item.mobile"></u-icon>
                                     </view>
                                 </view>
-                                <view class="text-gray text-sm flex">
-                                    <u-icon name="map" size="28"></u-icon>
-                                    <view class="text-cut">
-                                        地址：{{item.address|| ''}}
+                                <view class="coreshop-text-gray u-font-sm flex u-margin-bottom-10">
+                                    <view class="u-line-2 u-font-xs">
+                                       地址：{{item.address}}
                                     </view>
                                 </view>
                             </view>
                             <view class="action" @click="goMarkers(item.latitude,item.longitude)">
-                                <view class="text-grey text-xs u-margin-bottom-20">{{item.distanceStr|| ''}}</view>
-                                <view class="cu-tag round bg-grey sm">点击查看</view>
+                                <view class="coreshop-text-grey u-font-xs u-margin-bottom-20">{{item.distanceStr|| ''}}</view>
+                                <u-tag text="点击查看" type="success" size="mini"/>
                             </view>
                         </view>
                     </view>
                 </view>
                 <!-- 无数据时默认显示 -->
                 <view class="coreshop-emptybox" v-else>
-                    <u-empty :src="$apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无门店列表" mode="list"></u-empty>
+                    <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无门店列表" mode="list"></u-empty>
                 </view>
 
             </scroll-view>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -137,13 +134,5 @@
 </script>
 
 <style scoped lang="scss">
-    view { box-sizing: border-box; }
-    .content { width: 100%; /* #ifdef H5 */ height: calc(100vh - 44px); /* #endif */ }
-    .map-body { width: 100%; height: 700rpx; position: relative; }
-    .store-list { background-color: #fff; height: calc(100vh - 44px - 700rpx); }
-
-    /*    .cu-list { margin: 20rpx; }
-        .cu-list.menu-avatar > .cu-item { height: auto; }
-            .cu-list.menu-avatar > .cu-item > .cu-avatar { position: absolute; left: 15rpx; }
-            .cu-list.menu-avatar > .cu-item .content { position: initial; width: calc(100% - 96rpx - 120rpx - 20rpx); }*/
+    @import "storeMap.scss";
 </style>

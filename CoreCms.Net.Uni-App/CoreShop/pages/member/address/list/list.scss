@@ -1,0 +1,10 @@
+﻿.item { padding: 40rpx 20rpx; background: #fff; margin-bottom: 10rpx;
+    .top { display: flex; font-weight: bold; font-size: 34rpx;
+        .phone { margin-left: 60rpx; }
+        .tag { display: flex; font-weight: normal; align-items: center;
+            text { display: block; width: 60rpx; height: 34rpx; line-height: 34rpx; color: #ffffff; font-size: 20rpx; border-radius: 6rpx; text-align: center; margin-left: 30rpx; background-color: #3191fd; }
+            .red { background-color: red; }
+        }
+    }
+    .bottom { display: flex; margin-top: 20rpx; font-size: 28rpx; justify-content: space-between; color: #999999; }
+}

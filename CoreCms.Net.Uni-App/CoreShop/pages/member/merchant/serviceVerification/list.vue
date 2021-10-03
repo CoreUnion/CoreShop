@@ -3,14 +3,14 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="已核销服务码"></u-navbar>
         <view v-if="logs.length>0">
-            <view class="order" v-for="(item, key) in logs" :key="key">
+            <view class="orderList" v-for="(item, key) in logs" :key="key">
                 <view class="top">
                     <view class="left">
                         <u-icon name="order" :size="30" color="rgb(94,94,94)"></u-icon>
-                        <view class="store">订单编号：{{item.ticket.serviceOrderId}}</view>
+                        <view class="u-margin-left-20 u-margin-right-20 u-font-md">订单编号：{{item.ticket.serviceOrderId}}</view>
                     </view>
                     <view class="right">
-                        <button class="cu-btn sm line-black" @click="doCopyData(item.ticket.redeemCode)">复制核销码</button>
+                        <u-tag text="复制核销码" type="success" size="mini" @click="doCopyData(item.ticket.redeemCode)" />
                     </view>
                 </view>
                 <view class="item" v-if="item.service">
@@ -18,15 +18,15 @@
                     <view class="content">
                         <view class="title u-line-2">{{item.service.title}}</view>
                         <view class="type u-line-2">{{item.service.description}}</view>
-                        <view class="delivery-time">核销时间：{{item.ticket.verificationTime}}</view>
-                        <view class="delivery-time">核销码：{{item.ticket.redeemCode}}</view>
+                        <view class="success u-font-24 u-margin-top-10  u-margin-bottom-10 coreshop-text-yellow">核销时间：{{item.ticket.verificationTime}}</view>
+                        <view class="success u-font-24 u-margin-top-10  u-margin-bottom-10 coreshop-text-yellow">核销码：{{item.ticket.redeemCode}}</view>
                     </view>
                 </view>
-                <view class="bottom">
+                <view class="bottom u-margin-0">
                     <view class="more">
                         下单时间：{{ $u.timeFormat(item.ticket.createTime, 'mm-dd hh:MM:ss') }}
                     </view>
-                    <view class='logistics coreshop-btn' hover-class="btn-hover" @click="logsDel(item.id)">删除</view>
+                    <view class='logistics coreshop-btn' @click="logsDel(item.id)">删除</view>
                 </view>
             </view>
             <!-- 更多 -->
@@ -34,7 +34,7 @@
         </view>
         <!-- 无数据时默认显示 -->
         <view class="coreshop-emptybox" v-else>
-            <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无已核销服务码记录" mode="list"></u-empty>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无已核销服务码记录" mode="list"></u-empty>
         </view>
 
     </view>
@@ -90,7 +90,7 @@
             //删除
             logsDel(id) {
                 let _this = this
-                _this.$common.modelShow('提示', '删除核验单后将无法找回！').then(res => {
+                _this.$common.modelShow('提示', '删除核验单后将无法找回！', res => {
                     let data = {
                         'id': id
                     }
@@ -115,7 +115,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .order .top .left .store { margin: 0 10rpx; font-size: 28rpx; font-weight: bold; }
-    .order .item .content .delivery-time { color: #e5d001; font-size: 24rpx; margin: 10rpx 0; }
-    .order .bottom { margin-top: 0; }
+
 </style>

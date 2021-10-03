@@ -4,7 +4,7 @@
         <u-navbar title="服务商品"></u-navbar>
         <view class="content">
             <view v-if="list.length">
-                <view class="order" v-for="(item, index) in list" :key="index" @click="goServicesDetail(item.id)">
+                <view class="orderList" v-for="(item, index) in list" :key="index" @click="goServicesDetail(item.id)">
                     <view class="top">
                         <view class="left">
                             <u-icon name="clock" :size="28" color="rgb(94,94,94)"></u-icon>
@@ -18,32 +18,33 @@
                             仅剩{{item.amount}}
                         </view>
                     </view>
-                    <view class="item">
+                    <view class="item u-padding-20 coreshop-solid-bottom">
                         <view class="left"><image :src="item.thumbnail && item.thumbnail!='null' ?  item.thumbnail : '/static/images/common/empty-banner.png'" mode="aspectFill"></image></view>
                         <view class="content">
                             <view class="title u-line-2">{{item.title}}</view>
                             <view class="type u-line-2">{{item.description}}</view>
-                            <view class="text-price text-red u-margin-bottom-10">{{ item.money }}</view>
+                            <view class="coreshop-text-price coreshop-text-red u-margin-bottom-10">{{ item.money }}</view>
                             <view class="delivery-time">最大购买限制：{{item.maxBuyNumber== 0 ? '不限' : item.maxBuyNumber}}</view>
                         </view>
                     </view>
-                    <view class="bottom cell u-border-bottom text-sm">
+
+                    <view class="coreshop-text-gray u-font-xs u-flex u-flex-nowrap u-padding-20 coreshop-solid-bottom">
                         兑换级别：
                         <view v-if="item.allowedMemberships && item.allowedMemberships.length>0">
-                            <view class="cu-tag bg-olive light sm" v-for="(item, index) in item.allowedMemberships" :key="index">{{item}}</view>
+                            <u-tag :text="item" mode="light" size="mini" class="u-margin-right-5" v-for="(item, indexChild) in item.allowedMemberships" :key="indexChild" />
                         </view>
                     </view>
-                    <view class="bottom cell u-border-bottom text-sm">
+                    <view class="coreshop-text-gray u-font-xs u-flex u-flex-nowrap u-padding-20 coreshop-solid-bottom">
                         兑换门店：
                         <view v-if="item.consumableStores && item.consumableStores.length>0">
-                            <view class="cu-tag bg-orange light sm" v-for="(item, index) in item.consumableStores" :key="index">{{item}}</view>
+                            <view class="coreshop-bg-orange light sm  u-padding-4 u-margin-right-5" v-for="(item, indexChild) in item.consumableStores" :key="indexChild">{{item}}</view>
                         </view>
                     </view>
-                    <view class="bottom2">
-                        <view class="more text-sm">
+                    <view class="u-flex u-flex-nowrap u-row-between u-padding-10">
+                        <view class="u-font-xs">
                             购买截止：{{ item.endTime }}
                         </view>
-                        <view class='evaluate coreshop-btn' hover-class="btn-hover">立刻抢购</view>
+                        <u-button type="warning" shape="square"  size="mini" :plain="true">立刻抢购</u-button>
                     </view>
                 </view>
                 <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
@@ -51,16 +52,19 @@
 
             <!-- 无数据时默认显示 -->
             <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无服务列表" mode="list"></u-empty>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无服务列表" mode="list"></u-empty>
             </view>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 
 </template>
 
 <script>
+
+    
+
     import { services } from '@/common/mixins/mixinsHelper.js'
     export default {
         mixins: [services],

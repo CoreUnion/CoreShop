@@ -2521,20 +2521,20 @@ namespace CoreCms.Net.Configuration
         #region 页面设计相关
 
         /// <summary>
-        /// 页面类型
+        /// 是否默认
         /// </summary>
         public enum PagesType
         {
             /// <summary>
-            /// 移动端
+            /// 是
             /// </summary>
-            [Description("移动端")]
+            [Description("是")]
             Mobile = 1,
             /// <summary>
-            /// PC端
+            /// 否
             /// </summary>
-            [Description("PC")]
-            PC = 2,
+            [Description("否")]
+            否 = 2,
         }
 
         /// <summary>

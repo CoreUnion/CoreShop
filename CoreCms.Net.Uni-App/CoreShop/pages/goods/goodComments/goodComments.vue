@@ -4,30 +4,30 @@
         <u-navbar title="评论列表"></u-navbar>
         <view class="u-padding-10">
             <!--评论-->
-            <view class="bg-white coreshop-comment-view-box">
+            <view class="coreshop-bg-white">
                 <view v-for="(item, index) in goodsComments" :key="index">
-                    <view class="coreshop-border-view" v-if="index > 0" />
-                    <view class="coreshop-view-box">
-                        <view class="flex flex-wrap text-sm">
-                            <view class="basis-1">
-                                <view class="cu-avatar sm round" :style="[{backgroundImage:'url('+ item.avatarImage +')'}]" />
+                    <view class="coreshop-solid-bottom u-margin-top-20 u-margin-bottom-20" v-if="index > 0" />
+                    <view class="coreshop-common-view-box">
+                        <view class="coreshop-flex coreshop-flex-wrap u-font-sm">
+                            <view class="coreshop-basis-1">
+                                <view class="coreshop-avatar sm round" :style="[{backgroundImage:'url('+ item.avatarImage +')'}]" />
                             </view>
-                            <view class="basis-9 text-sm">
+                            <view class="coreshop-basis-9 u-font-sm">
                                 <view>{{ (item.nickName && item.nickName != '')?item.nickName:item.mobile }}</view>
-                                <view class="margin-top-xs">{{ item.contentBody || ''}}</view>
-                                <view class="text-gray margin-top-sm">
+                                <view class="u-margin-top-20">{{ item.contentBody || ''}}</view>
+                                <view class="coreshop-text-gray u-margin-top-10">
                                     <u-rate :current="item.score" :disabled="true" size="26"></u-rate>
                                 </view>
-                                <view class="text-gray margin-top-sm">{{ item.createTime || ''}} {{ item.addon || ''}}</view>
+                                <view class="coreshop-text-gray u-margin-top-10">{{ item.createTime || ''}} {{ item.addon || ''}}</view>
                             </view>
                         </view>
                     </view>
                 </view>
-                <u-loadmore :status="loadStatus" class="margin-top" :icon-type="iconType" :load-text="loadText" />
+                <u-loadmore :status="loadStatus" class="u-margin-top-20" :icon-type="iconType" :load-text="loadText" />
             </view>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -97,8 +97,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .coreshop-comment-view-box .coreshop-view-box { position: relative; padding: 18.18rpx 27.27rpx; }
-    .coreshop-comment-view-box .coreshop-border-view { position: relative; background: #efebeb; margin: 0 27.27rpx; height: 2rpx; }
-    .coreshop-comment-view-box .coreshop-view-box .flex .basis-1 { flex-basis: 10%; }
-    .coreshop-comment-view-box .coreshop-view-box .flex .basis-9 { flex-basis: 90%; }
+
 </style>

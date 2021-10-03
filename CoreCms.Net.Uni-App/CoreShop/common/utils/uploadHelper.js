@@ -1,5 +1,4 @@
 import { apiBaseUrl } from '@/common/setting/constVarsHelper.js';
-import * as common from './commonHelper.js' //引入common
 import * as db from './dbHelper.js' //引入common
 
 const showError = error => {

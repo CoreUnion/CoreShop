@@ -233,7 +233,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Order\" />
-    <Folder Include="wwwroot\views\" />
   </ItemGroup>
 
   <ItemGroup>

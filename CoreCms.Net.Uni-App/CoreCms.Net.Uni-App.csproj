@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CoreShop\.hbuilderx\**" />
     <Compile Remove="CoreShop\unpackage\**" />
+    <EmbeddedResource Remove="CoreShop\.hbuilderx\**" />
     <EmbeddedResource Remove="CoreShop\unpackage\**" />
+    <None Remove="CoreShop\.hbuilderx\**" />
     <None Remove="CoreShop\unpackage\**" />
   </ItemGroup>
 

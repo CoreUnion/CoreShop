@@ -2,25 +2,25 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="收藏商品"></u-navbar>
-        <view class="content">
-            <view v-if="list.length">
-                <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id" @click="collect" @open="open" :options="options">
-                    <view class="item u-border-bottom" @click="goGoodsDetail(item.goodsId)">
-                        <image mode="aspectFill" :src="item.goods.image" />
-                        <!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
-                        <view class="title-wrap">
-                            <text class="title u-line-2">{{ item.goods.name }}</text>
-                            <text class="title u-line-1">{{ item.createTime }}</text>
 
+        <view v-if="list.length">
+            <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id" @click="collect" @open="open" :options="options">
+                <view class="u-padding-20 u-padding-bottom-0 u-border-bottom coreshop-display-flex" @click="goGoodsDetail(item.goodsId)">
+                    <u-avatar :src="item.goods.image" mode="square" size="120" class="u-margin-10"></u-avatar>
+                    <!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
+                    <view class="title-wrap">
+                        <text class="u-text-left title u-line-2">{{ item.goods.name }}</text>
+                        <view class="u-margin-top-10">
+                            <u-icon name="clock" class="u-margin-right-6"></u-icon><text class="u-text-left desc u-line-1">{{ item.createTime }}</text>
                         </view>
                     </view>
-                </u-swipe-action>
-                <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
-            </view>
-            <!-- 无数据时默认显示 -->
-            <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/collect.png'" icon-size="300" text="暂无收藏" mode="list"></u-empty>
-            </view>
+                </view>
+            </u-swipe-action>
+            <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
+        </view>
+        <!-- 无数据时默认显示 -->
+        <view class="coreshop-emptybox" v-else>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/collect.png'" icon-size="300" text="暂无收藏" mode="list"></u-empty>
         </view>
     </view>
 
@@ -124,7 +124,5 @@
 
 
 <style lang="scss" scoped>
-    .item { display: flex; padding: 20rpx; }
-    image { width: 120rpx; flex: 0 0 120rpx; height: 120rpx; margin-right: 20rpx; border-radius: 12rpx; }
-    .title { text-align: left; font-size: 28rpx; color: $u-content-color; margin-top: 10rpx; }
+    @import "index.scss";
 </style>

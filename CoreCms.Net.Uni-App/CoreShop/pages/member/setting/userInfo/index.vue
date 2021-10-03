@@ -3,17 +3,16 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="个人信息"></u-navbar>
 
-
-        <view class="bg-white solid-top zaiui-head-box  margin-bottom">
-            <view class="text-center margin-bottom-sm">
-                <text class="text-black">完成</text>
-                <text class="text-orange text-xxl">100%</text>
-                <text class="text-black">，太棒啦！</text>
+        <view class="coreshop-bg-white coreshop-solid-top u-padding-left-80 u-padding-right-80 u-padding-top-45 u-padding-bottom-45 u-margin-bottom-20">
+            <view class="u-text-center u-margin-bottom-20">
+                <text class="coreshop-text-black">完成</text>
+                <text class="coreshop-text-orange u-font-40">100%</text>
+                <text class="coreshop-text-black">，太棒啦！</text>
             </view>
-            <progress class="zaiui-progress-radius" percent="100" active stroke-width="10" activeColor="#f37b1d" />
+            <progress percent="100" active stroke-width="10" activeColor="#f37b1d" />
         </view>
 
-        <view class="cu-list menu sm-border margin-top bg-white u-padding-30">
+        <view class="coreshop-list menu coreshop-bg-white u-padding-30">
             <u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
                 <u-form-item label="头像：" label-width="150">
                     <u-avatar :src="model.avatar" @click="uploadAvatar" size="large"></u-avatar>
@@ -30,9 +29,9 @@
         </view>
         <u-calendar v-model="showCalendar" :mode="calendarMode" @change="calendarChange" safe-area-inset-bottom="true"></u-calendar>
         <!--按钮-->
-        <view class="bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
-            <view class="flex padding-sm flex-direction">
-                <button class="cu-btn bg-red" @tap="$u.debounce(submitHandler, 500)" :disabled='submitStatus' :loading='submitStatus'>保存</button>
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
+            <view class="u-padding-20 flex-direction">
+                <u-button :custom-style="customStyle" type="error" size="medium" @click="submitHandler()" :disabled='submitStatus' :loading='submitStatus'>保存</u-button>
             </view>
         </view>
         <u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
@@ -43,6 +42,9 @@
     export default {
         data() {
             return {
+                customStyle: {
+                    width: '100%',
+                },
                 model: {
                     birthday: '',
                     nickname: '',
@@ -219,10 +221,5 @@
     }
 </script>
 
-
 <style scoped lang="scss">
-    .agreement { display: flex; align-items: center; margin: 40rpx 0; }
-        .agreement .agreement-text { padding-left: 8rpx; color: $u-tips-color; }
-
-    .zaiui-head-box { position: relative; padding: 45.45rpx 90.9rpx; }
 </style>

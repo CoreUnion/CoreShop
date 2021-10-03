@@ -3,20 +3,16 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="核销服务码"></u-navbar>
         <view class="content">
-
-            <view class="u-padding-15 u-margin-bottom-15 bg-white u-border-bottom">
+            <view class="u-padding-15 u-margin-bottom-15 coreshop-bg-white u-border-bottom">
                 <u-search placeholder="请输入完整服务券核销码" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="search" @custom="search"></u-search>
             </view>
-
             <button class="floatingButton" hover-class="none" @click="Qrcode">
                 <u-icon name="scan" color="#e54d42" size="60"></u-icon>
             </button>
-
             <view v-if="isShow">
                 <checkbox-group @change="checkboxChange">
 
-
-                    <view class="order" :class="ticket.status>0?' grayscale':''">
+                    <view class="orderList" :class="ticket.status>0?' grayscale':''">
                         <view class="top">
                             <view class="left">
                                 <u-icon name="order" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -39,12 +35,12 @@
                                 <view class="delivery-time">服务券状态：{{ ticket.statusStr }}</view>
                             </view>
                         </view>
-                        <view class="bottom" v-if="ticket.validityStartTime && ticket.validityEndTime">
+                        <view class="bottom u-margin-0" v-if="ticket.validityStartTime && ticket.validityEndTime">
                             <view class="u-font-xs">
                                 可核销时间：{{ticket.validityStartTime}} 至 {{ticket.validityEndTime}}
                             </view>
                         </view>
-                        <view class="bottom">
+                        <view class="bottom u-margin-0">
                             <view class="more u-font-xs" v-if="ticket.createTime && ticket.status>0">
                                 下单时间：{{ $u.timeFormat(ticket.createTime, 'mm-dd hh:MM:ss') }}
                             </view>
@@ -65,7 +61,7 @@
             </view>
             <!-- 无数据时默认显示 -->
             <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="未查询到数据" mode="list"></u-empty>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="未查询到数据" mode="list"></u-empty>
             </view>
 
             <view class="coreshop-bottomBox" v-if="isShow">
@@ -179,7 +175,7 @@
             //去核销
             write() {
                 let _this = this;
-                this.$common.modelShow('提示', '您确认核销吗？', function (res) {
+                this.$common.modelShow('提示', '您确认核销吗？', res => {
                     //去核销
                     let data = {
                         id: _this.checkedIds.join()
@@ -214,5 +210,4 @@
 
 
 <style scoped lang="scss">
-    .order .bottom { margin-top: 20rpx; }
 </style>

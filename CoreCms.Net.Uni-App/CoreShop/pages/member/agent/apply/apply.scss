@@ -1,0 +1,18 @@
+﻿page { background: #fff; }
+.head-box { width: 100%; position: relative;
+    .head-img-wrap { width: 750rpx; height: 400rpx; overflow: hidden;
+        .head-img { width: 100%; }
+    }
+}
+
+
+// 表单
+.apply-form { width: 730rpx; background: #ffffff; border-radius: 20rpx; padding: 30rpx; margin: 10rpx;
+    .apply-tip { margin: 50rpx 0rpx; }
+    .agreement { margin-top: 20rpx;
+        .agreement-text { font-size: 24rpx; font-weight: 500; color: #b095ff;
+            .text-underline { text-decoration: underline; }
+        }
+    }
+    .save-btn { width: 690rpx; height: 86rpx; background: linear-gradient(45deg, #0081ff, #1cbbb4); box-shadow: 0px 7rpx 11rpx 2rpx rgba(124, 103, 214, 0.34); border-radius: 43rpx; font-weight: 500; color: #ffffff; margin: 30rpx auto; }
+}

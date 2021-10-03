@@ -7,7 +7,31 @@
             </view>
         </u-navbar>
 
-        <view class="u-menu-wrap">
+        <view class="u-padding-20" v-if="CateStyle==1">
+            <u-row gutter="16">
+                <u-col span="12" v-for="(item,index) in tabbar" :key="index" @click="goClass(item.id)">
+                    <u-image width="100%" height="300rpx" :src="item.imageUrl">
+                        <u-loading slot="loading"></u-loading>
+                    </u-image>
+                    <view class="u-text-center u-padding-top-30 u-padding-bottom-30">
+                        {{item.name}}
+                    </view>
+                </u-col>
+            </u-row>
+        </view>
+        <view class="u-padding-top-20 u-padding-bottom-20" v-if="CateStyle==2">
+            <u-row gutter="16">
+                <u-col span="4" v-for="(item,index) in tabbar" :key="index" @click="goClass(item.id)">
+                    <u-image width="100%" height="210rpx" :src="item.imageUrl">
+                        <u-loading slot="loading"></u-loading>
+                    </u-image>
+                    <view class="u-text-center u-padding-top-30 u-padding-bottom-30">
+                        {{item.name}}
+                    </view>
+                </u-col>
+            </u-row>
+        </view>
+        <view class="u-menu-wrap" v-if="CateStyle==3">
             <scroll-view scroll-y scroll-with-animation class="u-tab-view menu-scroll-view" :scroll-top="scrollTop">
                 <view v-for="(item,index) in tabbar" :key="index" class="u-tab-item" :class="[current==index ? 'u-tab-item-active' : '']"
                       :data-current="index" @tap.stop="swichMenu(index)">
@@ -34,8 +58,9 @@
                 </scroll-view>
             </block>
         </view>
+
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
@@ -169,24 +194,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    page { background: #fff; }
-    .u-wrap { height: calc(100vh); /* #ifdef H5 */ height: calc(100vh - var(--window-top)); /* #endif */ display: flex; flex-direction: column; }
-    .u-search-box { padding: 18rpx 30rpx; background: #fff; }
-    .u-menu-wrap { flex: 1; display: flex; overflow: hidden; }
-    .u-search-inner { background-color: rgb(234, 234, 234); border-radius: 100rpx; display: flex; align-items: center; padding: 10rpx 16rpx; }
-    .u-search-text { font-size: 26rpx; color: $u-tips-color; margin-left: 10rpx; }
-    .u-tab-view { width: 250rpx; height: 100%; background: #f6f6f6; }
-    .u-tab-item { height: 110rpx; background: #f6f6f6; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 26rpx; color: #444; font-weight: 400; line-height: 1; }
-    .u-tab-item-active { position: relative; color: #000; font-weight: 600; background: #fff; }
-        .u-tab-item-active::before { content: ""; position: absolute; border-left: 4px solid #e02e24; height: 32rpx; left: 0; top: 39rpx; }
-    .right-box { background-color: rgb(250, 250, 250); }
-    .page-view { padding: 16rpx; }
-    .class-item { margin-bottom: 30rpx; background-color: #fff; padding: 16rpx; border-radius: 8rpx; }
-    .item-title { font-size: 26rpx; color: $u-main-color; font-weight: bold; }
-    .item-menu-name { font-weight: normal; font-size: 24rpx; color: $u-main-color; margin-top: 15rpx; }
-    .item-container { display: flex; flex-wrap: wrap; }
-    .thumb-box { width: 33.333333%; display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 20rpx; }
-    .item-menu-image { width: 120rpx; height: 120rpx; }
-
-    .slot-wrap { display: flex; align-items: center; padding: 0 20rpx; }
+    @import "index.scss";
 </style>

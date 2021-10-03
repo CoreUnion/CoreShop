@@ -22,11 +22,13 @@
     </div>
 </script>
 <script type="text/html" id="LAY-app-CoreCmsPages-tableBox-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="qrcode">预览</a>
+    <a class="layui-btn  layui-btn-warm layui-btn-xs" lay-event="copy">复制</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs" lay-event="design">版面设计</a>
-    {{#  if(d.id > 1){ }}
+    {{# if(d.type != 1){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    {{#  } }}
+    {{# } }}
 </script>
 
 <script>
@@ -80,8 +82,16 @@
                             { field: 'name', title: '可编辑区域名称', sort: false, width: 205 },
                             { field: 'description', title: '描述', sort: false },
                             //{ field: 'layout', title: '布局样式编码，1，手机端', sort: false, width: 105 },
-                            //{ field: 'type', title: '1手机端，2PC端', sort: false, width: 105 },
-                            { width: 182, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsPages-tableBox-bar' }
+                            {
+                                field: 'type', title: '是否默认', sort: false, width: 105, templet: function (data) {
+                                    if (data.type == 1) {
+                                        return "<button type='button' class='layui-btn  layui-btn-normal  layui-btn-xs'>是</button>";
+                                    } else if (data.type == 2) {
+                                        return "<button type='button' class='layui-btn  layui-btn-primary layui-btn-xs'>否</button>";
+                                    }
+                                }
+                            },
+                            { width: 260, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsPages-tableBox-bar' }
                         ]
                     ]
                 });
@@ -118,6 +128,10 @@
                             doEdit(obj)
                         } else if (obj.event === 'design') {
                             doDesign(obj)
+                        } else if (obj.event === 'qrcode') {
+                            doQrCode(obj)
+                        } else if (obj.event === 'copy') {
+                            doCopy(obj)
                         }
                     });
                 //执行创建操作
@@ -212,6 +226,39 @@
                 //执行设计操作
                 function doDesign(obj) {
                     location.hash = '/shop/pages/design.html?id=' + obj.data.id;
+                }
+
+
+                //获取小程序码
+                function doQrCode(obj) {
+                    coreHelper.Post("Api/Tools/GetPageWxCode", { id: obj.data.code }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看小程序码',
+                                area: ['380px', '480px'],
+                                id: 'LAY-popup-CoreCmsPages-QrCode',
+                                success: function (layero, index) {
+                                    view(this.id).render('shop/pages/qrCode', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+                //执行复制操作
+                function doCopy(obj) {
+                    layer.confirm('确定复制吗？', function (index) {
+                        coreHelper.Post("Api/CoreCmsPages/DoCopy", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reloadData('LAY-app-CoreCmsPages-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
                 }
 
                 //执行单个删除

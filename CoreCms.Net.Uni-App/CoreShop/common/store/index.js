@@ -6,9 +6,10 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         config: {
-            shopLogo:"/static/images/common/tab-ic-me-selected.png"
+            shopLogo: "/static/images/logo/logo.png"
         }, // 店铺配置信息 //添加一个前端项目中的图片地址
         orderTab: 0, // 选中的订单tab页
+        scene: 0, // 选中的订单tab页
         redirectPage: '',
         uuid: '',//当前客户端
         searchStyle: '',
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
         },
         orderTab(state, tab) {
             state.orderTab = tab
+        },
+        scene(state, tab) {
+            state.scene = tab
         },
         redirect(state, payload) {
             state.redirectPage = payload.page
@@ -60,6 +64,7 @@ const store = new Vuex.Store({
     },
     getters: {
         shopConfig: state => state.config,
+        scene: state => state.scene,
         userInfo: state => state.userInfo,
         uuid: state => state.uuid,
         hasLogin: state => state.hasLogin,

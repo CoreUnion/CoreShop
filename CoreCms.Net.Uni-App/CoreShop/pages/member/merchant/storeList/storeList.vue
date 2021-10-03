@@ -1,24 +1,30 @@
 <!-- 门店列表 -->
 <template>
-    <view class="page_box store-list-wrap">
+    <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="选择门店"></u-navbar>
-        <view class="content_box">
-            <label v-for="store in storeList" :key="store.id" @tap="selStore(store.id)">
-                <view class="store-item x-bc">
-                    <view class="x-f">
-                        <view class="img-box"><image class="store-img" :src="store.logoImage" mode="aspectFill" lazy-load></image></view>
-                        <view class="item-left y-start">
-                            <text class="store-title">{{ store.storeName }}</text>
-                            <text class="store-content">{{ store.address }}</text>
-                        </view>
+        <label v-for="store in storeList" :key="store.id" @tap="selStore(store.id)">
+            <view class="store-item u-flex u-row-between">
+                <view class="coreshop-flex coreshop-align-center">
+                    <view class="img-box"><image class="store-img" :src="store.logoImage" mode="aspectFill" lazy-load></image></view>
+                    <view class="item-left coreshop-flex coreshop-flex-direction coreshop-align-start">
+                        <text class="store-title">{{ store.storeName }}</text>
+                        <text class="store-content">{{ store.address }}</text>
                     </view>
-
-                    <radio style="transform: scale(0.7);" class="orange" :checked="storeId == store.id" :class="{ checked: storeId == store.id }"></radio>
                 </view>
-            </label>
+
+                <radio style="transform: scale(0.7);" class="orange" :checked="storeId == store.id" :class="{ checked: storeId == store.id }"></radio>
+            </view>
+        </label>
+
+        <view class="coreshop-bg-white coreshop-card-hight-box" />
+
+        <!--底部-->
+        <view class="coreshop-foot-hight-view" />
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom u-text-center u-padding-20">
+            <u-button class='coreshop-bg-red' type="success" size="default"  @click="saveStore">确认</u-button>
         </view>
-        <view class="foot_box x-c"><button class="cu-btn save-btn" @tap="saveStore">确认</button></view>
+
     </view>
 </template>
 
@@ -81,5 +87,5 @@
 
 
 <style lang="scss" scoped>
-    @import '../../../../static/style/merchant.scss';
+    @import "storeList.scss";
 </style>

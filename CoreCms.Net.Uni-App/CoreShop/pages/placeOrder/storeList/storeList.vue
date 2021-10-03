@@ -2,42 +2,42 @@
     <view>
         <u-navbar title="门店列表"></u-navbar>
         <view class="content">
-            <view class="u-padding-15 bg-white u-border-bottom">
-                <u-search placeholder="请输入门店名" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="storeSearch" @custom="storeSearch"></u-search>
+            <view class="u-padding-15 coreshop-bg-white u-border-bottom">
+                <u-search placeholder="请输入门店名" v-model="key" :show-action="true" action-text="搜索" :animation="false" @clear="clear" @search="storeSearch" @custom="storeSearch"></u-search>
             </view>
 
             <view v-if="storeList.length>0">
-                <view class="cu-list menu-avatar" v-for="(item, key) in storeList" :key="key" @click="selectStore(item.id, item.storeName, item.mobile, item.address)">
-                    <view class="cu-item  u-padding-top-20  u-padding-bottom-20">
-                        <view class="cu-avatar lg radius" :style="[{backgroundImage:'url('+ item.logoImage +')'}]" />
+                <view class="coreshop-list menu-avatar" v-for="(item, key) in storeList" :key="key" @click="selectStore(item.id, item.storeName, item.mobile, item.address)">
+                    <view class="coreshop-list-item  u-padding-top-20  u-padding-bottom-20">
+                        <view class="coreshop-avatar lg radius" :style="[{backgroundImage:'url('+ item.logoImage +')'}]" />
                         <view class="content">
-                            <view class="text-grey">{{item.storeName|| ''}}</view>
-                            <view class="text-gray text-sm flex">
-                                <view class="text-cut">
+                            <view class="coreshop-text-grey">{{item.storeName|| ''}}</view>
+                            <view class="coreshop-text-gray u-font-sm">
+                                <view class="u-line-1">
                                     电话：{{item.mobile|| ''}}
                                 </view>
                             </view>
-                            <view class="text-gray text-sm flex">
+                            <view class="coreshop-text-gray u-font-sm">
                                 <view class="u-line-2">
                                     地址：{{item.address|| ''}}
                                 </view>
                             </view>
                         </view>
                         <view class="action">
-                            <view class="text-grey text-xs u-margin-bottom-20">{{item.distanceStr|| ''}}</view>
-                            <view class="cu-tag round bg-grey sm">点击选择</view>
+                            <view class="coreshop-text-grey u-font-xs u-margin-bottom-20">{{item.distanceStr|| ''}}</view>
+                            <u-button type="success" size="mini">选择</u-button>
                         </view>
                     </view>
                 </view>
             </view>
             <!-- 无数据时默认显示 -->
             <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无门店列表" mode="list"></u-empty>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无门店列表" mode="list"></u-empty>
             </view>
         </view>
 
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 
 </template>
@@ -60,6 +60,17 @@
         methods: {
             //门店搜索
             storeSearch() {
+                console.log('storeSearch');
+                this.page = 1;
+                this.limit = 30;
+                this.storeList = [];
+                this.getStoreList();
+            },
+            clear() {
+                console.log('clear');
+                this.page = 1;
+                this.limit = 30;
+                this.storeList = [];
                 this.getStoreList();
             },
             //获取门店列表
@@ -121,8 +132,5 @@
 </script>
 
 <style lang="scss">
-    .cu-list { margin: 20rpx; }
-        .cu-list.menu-avatar > .cu-item { height: auto; }
-            .cu-list.menu-avatar > .cu-item > .cu-avatar { position: absolute; left: 15rpx; }
-            .cu-list.menu-avatar > .cu-item .content { position: initial; width: calc(100% - 96rpx - 120rpx - 20rpx); }
+    @import "storeList.scss";
 </style>

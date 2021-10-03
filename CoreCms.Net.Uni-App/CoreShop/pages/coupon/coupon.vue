@@ -2,31 +2,31 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="优惠券"></u-navbar>
-        <view class="content">
+        <view class="coreshop-coupon">
             <view v-if="list.length">
                 <view v-for="(item, key) in list" :key="key">
-                    <view class="coreshop-sponsored-card-view" :class="item.maxRecevieNums > 0 && item.getNumber >= item.maxRecevieNums ?'coreshop-lower-shelf':''">
+                    <view class="coreshop-coupon-card-view" :class="item.maxRecevieNums > 0 && item.getNumber >= item.maxRecevieNums ?'coreshop-lower-shelf':''">
                         <view class="img-lower-box" v-if="item.maxRecevieNums > 0 && item.getNumber >= item.maxRecevieNums ">已领完</view>
                         <view class="card-price-view">
-                            <view class="text-red price-left-view">
+                            <view class="coreshop-text-red price-left-view">
                                 <image class="icon" src="/static/images/coupon/coupon-element.png" mode=""></image>
                             </view>
                             <view class="name-content-view">
-                                <view class="text-cut text-red"> {{item.name}}</view>
-                                <view class="text-xs">
+                                <view class="u-line-1 coreshop-text-red"> {{item.name}}</view>
+                                <view class="u-font-xs">
                                     优惠方式：<text v-for="(itemResult, index) in item.results" :key="index">{{itemResult}}</text>
                                 </view>
-                                <view class="text-xs">领取时间：{{$u.timeFormat(item.startTime, 'yyyy-mm-dd')}} - {{$u.timeFormat(item.endTime, 'yyyy-mm-dd')}}</view>
+                                <view class="u-font-xs">领取时间：{{$u.timeFormat(item.startTime, 'yyyy-mm-dd')}} - {{$u.timeFormat(item.endTime, 'yyyy-mm-dd')}}</view>
                             </view>
                             <view class="btn-right-view">
-                                <button class="cu-btn bg-red round sm" @click="receiveCoupon(item.id)">立即领取</button>
+                                <u-button type="success" shape="circle" size="mini" @click="receiveCoupon(item.id)">立即领取</u-button>
                             </view>
                         </view>
                         <view class="card-num-view">
-                            <view class="text-xs">
+                            <view class="u-font-xs">
                                 <text v-for="(itemCondition, index) in item.conditions" :key="index">【{{itemCondition}}】</text>
                             </view>
-                            <text class="cuIcon-unfold btnUnfold" />
+                            <u-icon name="arrow-down-fill" class="btnUnfold" size="28"></u-icon>
                         </view>
                     </view>
                 </view>
@@ -36,15 +36,15 @@
                 <view class="page-box">
                     <view>
                         <view class="coreshop-emptybox">
-                            <u-empty :src="$apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" mode="order" text="暂无优惠券可领取"></u-empty>
-                            <navigator class="coreshop-btn" url="/pages/category/index/index" hover-class="btn-hover" open-type="switchTab">随便逛逛</navigator>
+                            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" mode="order" text="暂无优惠券可领取"></u-empty>
+                            <navigator class="coreshop-btn" url="/pages/category/index/index"  open-type="switchTab">随便逛逛</navigator>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -106,10 +106,10 @@
             // 用户领取优惠券
             receiveCoupon(couponId) {
                 let _this = this;
-                let corecmsdata = {
+                let coreshopdata = {
                     id: couponId
                 }
-                this.$u.api.getCoupon(corecmsdata).then(res => {
+                this.$u.api.getCoupon(coreshopdata).then(res => {
                     if (res.status) {
                         _this.$refs.uToast.show({ title: res.msg, type: 'success' })
                     } else {
@@ -122,5 +122,5 @@
 </script>
 
 <style lang="scss">
-    @import '../../static/style/coupon.scss';
+    @import 'coupon.scss';
 </style>

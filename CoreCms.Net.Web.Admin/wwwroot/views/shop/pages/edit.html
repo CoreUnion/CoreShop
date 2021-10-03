@@ -38,14 +38,10 @@
         </div>
 
         <div class="layui-form-item">
-            <label for="type" class="layui-form-label  layui-form-required">类型</label>
+            <label for="type" class="layui-form-label  layui-form-required">是否默认</label>
             <div class="layui-input-block">
-                <select name="type" required lay-verType="tips" lay-verify="required" lay-reqText="请选择类型" placeholder="请选择类型">
-                    <option value="">请选择</option>
-                    {{# layui.each(d.params.data.pagesType, function(index, item){ }}
-                    <option value="{{ item.value }}" {{d.params.data.model.type==item.value?'selected="selected"':''}}>{{ item.description }}</option>
-                    {{# }); }}
-                </select>
+                <input type="radio" name="type" value="1" title="是" {{ d.params.data.model.type==1 ? 'checked' : '' }}>
+                <input type="radio" name="type" value="2" title="否" {{ d.params.data.model.type==2 ? 'checked' : '' }}>
             </div>
         </div>
 

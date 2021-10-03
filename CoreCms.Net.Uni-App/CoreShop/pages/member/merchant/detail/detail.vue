@@ -4,45 +4,32 @@
         <u-navbar title="订单详情"></u-navbar>
 
         <!--步骤条区域-->
-        <view class="bg-white padding solid-top" v-if="basics < 9">
+        <view class="coreshop-bg-white u-padding-right-20 u-padding-left-20 u-padding-top-30 coreshop-solid-top" v-if="basics < 9">
             <!--步骤条-->
-            <view class="cu-steps" v-if="basics < 5">
-                <block v-for="(item,index) in basicsList" :key="index">
-                    <view class="cu-item" :class="index>basics?'':'select'">
-                        <view class="icon-view" v-if="index>basics">
-                            <text class="coreshop-text-green" :class="'cuIcon-' + item.cuIcon"></text>
-                        </view>
-                        <view class="coreshop-bg-green icon-view" v-else>
-                            <text :class="'cuIcon-' + item.cuIcon"></text>
-                        </view>
-                        <view class="text-sm text-black" v-if="index>basics">{{item.name}}</view>
-                        <view class="text-sm text-black" v-else>{{item.name_s}}</view>
-                    </view>
-                </block>
-            </view>
+            <u-steps :list="basicsList" :current="basics+1"  mode="number" v-if="basics < 5"></u-steps>
             <!--状态图标-->
-            <view class="bg-white padding solid-top text-center coreshop-status-img-view u-margin-top-20" v-if="basics == 7">
+            <view class="coreshop-bg-white padding coreshop-solid-top u-text-center coreshop-status-img-view u-margin-top-20" v-if="basics == 7">
                 <view class="are-img-view">
                     <image class="are-img" src="/static/images/common/arg.png" mode="widthFix" />
                 </view>
-                <view class="text-sm text-black">订单已取消</view>
+                <view class="u-font-sm coreshop-text-black">订单已取消</view>
             </view>
         </view>
 
         <!-- 团购分享拼单 -->
-        <view class="bg-white coreshop-card-box" v-if="orderInfo.orderType==2 && orderInfo.status != 3 && orderInfo.payStatus!=1">
+        <view class="coreshop-bg-white coreshop-card-box" v-if="orderInfo.orderType==2 && orderInfo.status != 3 && orderInfo.payStatus!=1">
             <view class="coreshop-card-view coreshop-address-view">
-                <view v-if="teamInfo.status==1" class="text-lg text-bold text-black">待拼团，还差{{ teamInfo.teamNums || ''}}人</view>
-                <view v-else-if="teamInfo.status==2" class="text-lg text-bold text-black">拼团成功，待发货</view>
-                <view v-else-if="teamInfo.status==3" class="text-lg text-bold text-black">拼团失败</view>
-                <view class="solid-line"></view>
-                <view class="cell-group margin-cell-group">
+                <view v-if="teamInfo.status==1" class="u-font-lg coreshop-text-bold coreshop-text-black">待拼团，还差{{ teamInfo.teamNums || ''}}人</view>
+                <view v-else-if="teamInfo.status==2" class="u-font-lg coreshop-text-bold coreshop-text-black">拼团成功，待发货</view>
+                <view v-else-if="teamInfo.status==3" class="u-font-lg coreshop-text-bold coreshop-text-black">拼团失败</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
+                <view class="coreshop-cell-group u-margin-top-20 u-margin-bottom-20">
                     <view class="group-swiper">
-                        <view class='cell-item' v-if="teamInfo.currentCount">
-                            <view class='cell-item-hd'>
+                        <view class='coreshop-cell-item' v-if="teamInfo.currentCount">
+                            <view class='coreshop-cell-item-hd'>
                                 <view class="user-head-img-c" v-for="(item, index) in teamInfo.list" :key="index">
                                     <view class="user-head-img-tip" v-if="item.recordId == teamInfo.teamId">拼主</view>
-                                    <image class="user-head-img cell-hd-icon have-none" :src='item.userAvatar' mode=""></image>
+                                    <image class="user-head-img coreshop-head-icon " :src='item.userAvatar' mode=""></image>
                                 </view>
                                 <view v-if="teamInfo.teamNums > 3">
                                     <view class="uhihn" v-for="n in 3" :key="n">?</view>
@@ -59,39 +46,43 @@
         </view>
 
         <!--物流信息-->
-        <view class="bg-white coreshop-card-box" v-if="basics != 0 && !orderInfo.store">
+        <view class="coreshop-bg-white coreshop-card-box" v-if="basics != 0 && !orderInfo.store">
             <view class="coreshop-card-view coreshop-address-view">
-                <view class="text-lg text-bold text-black">物流信息</view>
-                <view class="solid-line"></view>
-                <view class="cu-list menu-avatar">
-                    <view class="cu-item">
-                        <view class="bg-grey icon-view">
-                            <text class="cuIcon-locationfill" />
-                        </view>
-                        <view class="content">
-                            <view class="text-black">
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black flex justify-between">
+                    物流信息
+                    <text class="u-font-sm">已发货，请注意查收</text>
+                </view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
+                <view class="wrap">
+                    <u-row gutter="16">
+                        <u-col span="1">
+                            <u-icon name="map-fill" size="38"></u-icon>
+                        </u-col>
+                        <u-col span="11">
+                            <view class="coreshop-text-black">
                                 <text>收货人：</text>
                                 <text>{{ orderInfo.shipName || ''}}</text>
-                                <text class="margin-left">{{ orderInfo.shipMobile || ''}}</text>
+                                <text class="u-margin-left-10 u-margin-right-10">{{  orderInfo.shipMobile || '' }}</text>
+                                <u-tag text="复制" type="success" mode="dark" @click="doCopyData(orderInfo.shipName + ' - ' + orderInfo.shipMobile + ' - ' + orderInfo.shipAreaName + orderInfo.shipAddress)"  />
                             </view>
-                            <view class="text-gray text-sm flex">
-                                <view class="text-cut">{{ orderInfo.shipAreaName|| ''}} {{orderInfo.shipAddress || ''}}</view>
+                            <view class="coreshop-text-gray u-font-sm flex">
+                                <view class="u-line-2">{{ orderInfo.shipAreaName|| ''}} {{orderInfo.shipAddress || ''}}</view>
                             </view>
-                        </view>
-                    </view>
+                        </u-col>
+                    </u-row>
                 </view>
                 <view class="solid-line" v-if="isDelivery"></view>
                 <view class="delivery" v-if="isDelivery">
-                    <view class='cell-item add-title-item' v-for="(v, k) in orderInfo.delivery" :key="k" @click="logistics(k)">
-                        <view class='cell-item-bd'>
-                            <view class="cell-bd-view">
-                                <text class="cell-bd-text">{{v.logiName|| ''}} : {{v.logiNo|| ''}}</text>
+                    <view class='coreshop-cell-item add-title-item' v-for="(v, k) in orderInfo.delivery" :key="k" @click="logistics(k)">
+                        <view class='coreshop-cell-item-bd'>
+                            <view class="coreshop-cell-bd-view">
+                                <text class="coreshop-cell-bd-text">{{v.logiName|| ''}} : {{v.logiNo|| ''}}</text>
                             </view>
 
                         </view>
-                        <view class="cell-item-ft">
-                            <view class="cell-ft-view"> {{ v.createTime || ''}}</view>
-                            <text class="cuIcon-right icon" />
+                        <view class="coreshop-cell-item-ft">
+                            <view class="coreshop-cell-ft-view"> {{ v.createTime || ''}}</view>
+                            <u-icon name="arrow-right-double"></u-icon>
                         </view>
                     </view>
                 </view>
@@ -101,34 +92,34 @@
 
 
         <!--提货信息-->
-        <view class="bg-white coreshop-card-box" v-if="orderInfo.store">
+        <view class="coreshop-bg-white coreshop-card-box" v-if="orderInfo.store">
             <view class="coreshop-card-view coreshop-order-view">
-                <view class="text-lg text-bold text-black">提货信息</view>
-                <view class="solid-line"></view>
-                <view class="text-black text-bold title-left-view u-margin-buttom-20">
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black">提货信息</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
+                <view class="coreshop-text-black coreshop-text-bold title-left-view u-margin-bottom-20">
                     <text>{{orderInfo.store.storeName|| ''}}</text>
                 </view>
 
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">门店电话</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{orderInfo.store.mobile|| '无'}}</text>
                     </view>
-                </view> <view class="text-black title-view">
+                </view> <view class="coreshop-text-black title-view">
                     <view class="title">门店地址</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text> {{orderInfo.store.address|| '无'}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">提货人信息</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{orderInfo.shipName|| ''}} - {{orderInfo.shipMobile|| ''}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="lading.status">
+                <view class="coreshop-text-black title-view" v-if="lading.status">
                     <view class="title">提货码：</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text class="red-price">{{lading.code|| ''}}</text>
                     </view>
                 </view>
@@ -137,21 +128,24 @@
         </view>
 
         <!--商品信息-->
-        <view class="bg-white coreshop-card-box">
+        <!--商品信息-->
+        <view class="coreshop-bg-white coreshop-card-box">
             <view class="coreshop-card-view coreshop-shop-view">
-
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black">商品信息</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0" />
                 <view class="goods-list-view" v-for="item in orderInfo.items" :key="item.id">
-                    <view class="cu-avatar radius" :style="[{backgroundImage:'url('+ item.imageUrl +')'}]" />
+                    <image class="coreshop-avatar radius" :src="item.imageUrl" mode="aspectFill"></image>
                     <view class="goods-info-view">
-                        <view class="text-black u-line-2" @click="goGoodsDetail(item.goodsId)" v-if="orderInfo.orderType == 1">{{ item.name }}</view>
-                        <view class="text-black u-line-2" @click="goPinTuanDetail(item.goodsId)" v-else-if="orderInfo.orderType == 2">{{ item.name }}</view>
-                        <view class="text-gray text-sm text-cut introduce" v-if="item.addon !== null">{{ item.addon || ''}}</view>
-                        <view class="text-cut tag-view">
-                            <!--<text class="cu-tag sm line-blue radius" v-if="item.promotionObj">{{ item.promotionObj.name}}</text>-->
-                            <text class="cu-tag line-blue sm radius" v-for="(v, k) in item.promotionList" :key="k"> {{ v.name || ''}}</text>
+                        <view class="coreshop-text-black u-line-2" @click="goGoodsDetail(item.goodsId)" v-if="orderInfo.orderType == 1">{{ item.name }}</view>
+                        <view class="coreshop-text-black u-line-2" @click="goPinTuanDetail(item.goodsId)" v-else-if="orderInfo.orderType == 2">{{ item.name }}</view>
+                        <view class="coreshop-text-gray u-font-sm u-line-1 introduce" v-if="item.addon">{{ item.addon}}</view>
+                        <view class="u-line-1 tag-view">
+                            <u-tag :text="v.name" type="success" shape="circle" v-for="(v, k) in item.promotionList" :key="k" />
                         </view>
-                        <view class="text-price text-red text-lg priceBox">{{ item.price }} <view class="text-black text-sm nums">× {{ item.nums }}</view></view>
-
+                        <view class="u-flex u-row-between coreshop-order-priceBox">
+                            <view class="coreshop-text-red coreshop-text-price u-font-lg">{{ item.price }}</view>
+                            <view class="coreshop-text-black u-font-sm coreshop-order-nums">数量：{{ item.nums }}</view>
+                        </view>
                     </view>
                 </view>
 
@@ -159,22 +153,21 @@
         </view>
 
 
-
         <!--发票信息-->
-        <view class="bg-white coreshop-card-box" v-if="orderInfo.invoice && orderInfo.invoice.type != 1">
+        <view class="coreshop-bg-white coreshop-card-box" v-if="orderInfo.invoice && orderInfo.invoice.type != 1">
             <view class="coreshop-card-view coreshop-order-view">
-                <view class="text-lg text-bold text-black">发票信息</view>
-                <view class="solid-line"></view>
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black">发票信息</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
 
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">发票抬头</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text> {{orderInfo.invoice.title|| '无'}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">发票税号</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{orderInfo.invoice.taxNumber|| '无'}}</text>
                     </view>
                 </view>
@@ -184,161 +177,145 @@
 
 
         <!--商品金额-->
-        <view class="bg-white coreshop-card-box">
+        <view class="coreshop-bg-white coreshop-card-box">
             <view class="coreshop-card-view coreshop-price-view">
-                <view class="text-lg text-bold text-black">费用信息</view>
-                <view class="solid-line"></view>
-                <view class="text-black title-view" v-if="orderInfo.promotionObj && orderInfo.promotionObj.length > 0">
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black">费用信息</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
+                <view class="coreshop-text-black title-view" v-if="orderInfo.promotionObj && orderInfo.promotionObj.length > 0">
                     <view class="title">订单优惠</view>
-                    <view class="text-right">
-                        <text class="text-price" v-for="(item, key) in orderInfo.promotionObj" :key="key" v-show="item.type == 2">{{ item.name}}</text>
+                    <view class="u-text-right">
+                        <text class="coreshop-text-price" v-for="(item, key) in orderInfo.promotionObj" :key="key" v-show="item.type == 2">{{ item.name}}</text>
                     </view>
                 </view>
 
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">商品总额</view>
-                    <view class="text-right">
-                        <text class="text-price">{{ orderInfo.goodsAmount}}</text>
+                    <view class="u-text-right">
+                        <text class="coreshop-text-price">{{ orderInfo.goodsAmount}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">运费</view>
-                    <view class="text-right">
-                        <text class="margin-right-xs">+</text>
-                        <text class="text-price">{{ orderInfo.costFreight}}</text>
+                    <view class="u-text-right">
+                        <text class="u-margin-right-20">+</text>
+                        <text class="coreshop-text-price">{{ orderInfo.costFreight}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.goodsDiscountAmount > 0">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.goodsDiscountAmount > 0">
                     <view class="title">商品优惠</view>
-                    <view class="text-right">
-                        <text class="margin-right-xs">-</text>
-                        <text class="text-price">{{ orderInfo.goodsDiscountAmount }}</text>
+                    <view class="u-text-right">
+                        <text class="u-margin-right-20">-</text>
+                        <text class="coreshop-text-price">{{ orderInfo.goodsDiscountAmount }}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.pointMoney > 0">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.pointMoney > 0">
                     <view class="title">积分优惠</view>
-                    <view class="text-right">
-                        <text class="margin-right-xs">-</text>
-                        <text class="text-price">{{ orderInfo.pointMoney }}</text>
+                    <view class="u-text-right">
+                        <text class="u-margin-right-20">-</text>
+                        <text class="coreshop-text-price">{{ orderInfo.pointMoney }}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.orderDiscountAmount > 0">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.orderDiscountAmount > 0">
                     <view class="title">订单优惠</view>
-                    <view class="text-right">
-                        <text class="margin-right-xs">-</text>
-                        <text class="text-price">{{ orderInfo.orderDiscountAmount }}</text>
+                    <view class="u-text-right">
+                        <text class="u-margin-right-20">-</text>
+                        <text class="coreshop-text-price">{{ orderInfo.orderDiscountAmount }}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.couponDiscountAmount > 0">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.couponDiscountAmount > 0">
                     <view class="title">优惠券优惠</view>
-                    <view class="text-right">
-                        <text class="margin-right-xs">-</text>
-                        <text class="text-price">{{ orderInfo.couponDiscountAmount }}</text>
+                    <view class="u-text-right">
+                        <text class="u-margin-right-20">-</text>
+                        <text class="coreshop-text-price">{{ orderInfo.couponDiscountAmount }}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.payStatus > 1">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.payStatus > 1">
                     <view class="title">支付方式</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.paymentName }}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.payStatus > 1">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.payStatus > 1">
                     <view class="title">支付时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.paymentTime}}</text>
                     </view>
                 </view>
-                <view class="text-black text-bold title-right-view">
-                    <text class="margin-right-xs">应付款：</text>
-                    <text class="text-price">{{ orderInfo.orderAmount}}</text>
+                <view class="coreshop-text-black coreshop-text-bold title-right-view">
+                    <text class="u-margin-right-20">应付款：</text>
+                    <text class="coreshop-text-price">{{ orderInfo.orderAmount}}</text>
                 </view>
             </view>
         </view>
 
         <!--订单信息-->
-        <view class="bg-white coreshop-card-box">
+        <view class="coreshop-bg-white coreshop-card-box">
             <view class="coreshop-card-view coreshop-order-view">
-                <view class="text-lg text-bold text-black">订单信息（{{ orderInfo.globalStatusText || ''}}）</view>
-                <view class="solid-line"></view>
-                <view class="text-black title-view">
+                <view class="u-font-lg coreshop-text-bold coreshop-text-black">订单信息（{{ orderInfo.globalStatusText || ''}}）</view>
+                <u-line color="#eee" border-style="dashed" margin="20rpx 0"/>
+                <view class="coreshop-text-black title-view">
                     <view class="title">订单编号</view>
-                    <view class="text-right" hover-class="btn-hover" @click="doCopyData(orderInfo.orderId)">
-                        <text class="margin-right-xs">{{ orderInfo.orderId || ''}}</text>
-                        <button class="cu-btn sm line-black">复制</button>
+                    <view class="u-text-right"  @click="doCopyData(orderInfo.orderId)">
+                        <text class="u-margin-right-20">{{ orderInfo.orderId || ''}}</text>
+                        <u-tag text="复制" type="success" mode="dark" @click="doCopyData(orderInfo.orderId)" />
                     </view>
                 </view>
-                <view class="text-black title-view">
+                <view class="coreshop-text-black title-view">
                     <view class="title">订单类型</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>
                             {{ orderInfo.typeText || ''}}
                         </text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.paymentName && orderInfo.payStatus > 1">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.paymentName && orderInfo.payStatus > 1">
                     <view class="title">支付方式</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.paymentName || ''}} </text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="orderInfo.createTime">
+                <view class="coreshop-text-black title-view" v-if="orderInfo.createTime">
                     <view class="title">下单时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.createTime || ''}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="basics > 0 && orderInfo.paymentTime">
+                <view class="coreshop-text-black title-view" v-if="basics > 0 && orderInfo.paymentTime">
                     <view class="title">支付时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.paymentTime || ''}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="basics > 1 && delivery && delivery.createTime">
+                <view class="coreshop-text-black title-view" v-if="basics > 1 && delivery && delivery.createTime">
                     <view class="title">发货时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ delivery.createTime || ''}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="basics > 2 && orderInfo.confirmTime">
+                <view class="coreshop-text-black title-view" v-if="basics > 2 && orderInfo.confirmTime">
                     <view class="title">确认时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.confirmTime || ''}}</text>
                     </view>
                 </view>
-                <view class="text-black title-view" v-if="basics > 3 && orderInfo.updateTime">
+                <view class="coreshop-text-black title-view" v-if="basics > 3 && orderInfo.updateTime">
                     <view class="title" v-if="basics >= 7">取消时间</view>
                     <view class="title" v-else>完成时间</view>
-                    <view class="text-right">
+                    <view class="u-text-right">
                         <text>{{ orderInfo.updateTime || ''}}</text>
                     </view>
                 </view>
             </view>
         </view>
 
-        <view class="bg-white coreshop-card-hight-box" />
+        <view class="coreshop-bg-white coreshop-card-hight-box" />
 
-        <!--为您推荐-->
-        <view class="coreshop-title-view" v-if="otherData.length>0">
-            <view class="flex flex-wrap">
-                <view class="basis-sm text-right">
-                    <image class="img-anc" src="/static/images/common/anc.png" mode="widthFix" />
-                </view>
-                <view class="basis-xs text-center">
-                    <text class="text-black text-lg">为您推荐</text>
-                </view>
-                <view class="basis-sm text-left">
-                    <image class="img-anc" src="/static/images/common/anc.png" mode="widthFix" />
-                </view>
-            </view>
-        </view>
-
-       
-
+        
         <!--底部-->
-        <!--<view class="foot-hight-view" />
-        <view class="bg-white coreshop-footer-fixed coreshop-foot-padding-bottom" v-if="orderInfo.status == 1 && !isDelivery">
-            <button class='cu-btn coreshop-bg-green' style="width: inherit;" hover-class="btn-hover" @click="tackDeliery(orderInfo.orderId)">立即发货</button>
-        </view>-->
+        <view class="coreshop-foot-hight-view" />
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom u-text-center u-padding-20" v-if="orderInfo.status == 1 && !isDelivery">
+            <u-button class='coreshop-bg-red' type="success" size="default"  @click="tackDeliery(orderInfo.orderId)">立即发货</u-button>
+        </view>
 
     </view>
 </template>
@@ -350,11 +327,11 @@
             return {
                 basics: 0,
                 basicsList: [
-                    { cuIcon: 'cartfill', name: '未拍下', name_s: '已拍下', nameId: 0 },
-                    { cuIcon: 'card', name: '待付款', name_s: '已付款', nameId: 1 },
-                    { cuIcon: 'deliver_fill', name: '待发货', name_s: '已发货', nameId: 2 },
-                    { cuIcon: 'formfill', name: '待收货', name_s: '已收货', nameId: 3 },
-                    { cuIcon: 'presentfill', name: '待评价', name_s: '已评价', nameId: 4 }
+                    { name: '下单' },
+                    { name: '付款' },
+                    { name: '发货' },
+                    { name: '收货' },
+                    { name: '评价' }
                 ],
                 delivery: {},//发货信息
                 orderId: 0,
@@ -493,8 +470,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../../../static/style/orderDetails.scss';
-
-    .cu-steps .cu-item.select .icon-view { border: 7.27rpx solid #19be6b; }
-    .cu-steps .cu-item.select:before { border-color: #19be6b; }
+    @import "detail.scss";
 </style>

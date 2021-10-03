@@ -1,4 +1,3 @@
-import * as common from './commonHelper.js' //引入common
 
 //取值
 function get(key, sync = true) {

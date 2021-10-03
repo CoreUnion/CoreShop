@@ -1,0 +1,18 @@
+﻿.card-item { position: relative; background-color: #fff; margin: 26rpx; border-radius: 10rpx; box-shadow: 0 0 20rpx #ccc; padding: 60rpx 40rpx 80rpx 40rpx;
+    .card-item-tip { position: absolute; top: 0rpx; left: 0rpx; z-index: 10; border-top-left-radius: 10rpx; overflow: hidden; width: 100rpx; height: 100rpx;
+        .cit-bg { position: absolute; top: 0; left: 0; z-index: 11; color: #ffffff; width: 0rpx; height: 0rpx; border-bottom: solid 100rpx transparent; border-right: solid 100rpx transparent; border-top: solid 100rpx #ff7159; }
+        .cit-text { position: absolute; top: 0; left: 0; z-index: 12; color: #ffffff; margin-top: 4rpx; margin-left: 14rpx; font-size: 30rpx; }
+    }
+    .card-item-body {
+        .cib-left { position: absolute; top: 60%; transform: translateY(-50%); width: 250rpx;
+            .bank-logo { width: 240rpx; height: 70rpx; }
+        }
+        .cib-right { margin-left: 250rpx;
+            .cibr-t { font-size: 30rpx; margin-bottom: 10rpx; text-align: center; }
+            .cibr-b { font-size: 26rpx; text-align: center; }
+        }
+    }
+
+    .mr-card { position: absolute; right: 140rpx; bottom: 12rpx; position: absolute; right: 140rpx; }
+    .del-card { position: absolute; right: 30rpx; bottom: 12rpx; position: absolute; right: 30rpx; }
+}

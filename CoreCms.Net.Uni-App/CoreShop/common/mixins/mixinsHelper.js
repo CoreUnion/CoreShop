@@ -84,7 +84,7 @@ export const orders = {
     methods: {
         // 查看订单详情
         goOrderDetail(orderId) {
-            this.$u.route('/pages/member/order/orderdetail', { orderId: orderId });
+            this.$u.route('/pages/member/order/detail/detail', { orderId: orderId });
         },
         // 取消订单
 
@@ -96,7 +96,7 @@ export const orders = {
 
         // 去评价
         toEvaluate(orderId) {
-            this.$u.route('/pages/member/order/evaluate', { orderId: orderId });
+            this.$u.route('/pages/member/order/evaluate/evaluate', { orderId: orderId });
         },
         // 申请售后
 
@@ -105,7 +105,7 @@ export const orders = {
             let params = encodeURIComponent(
                 'code=' + code + '&no=' + no + '&add=' + address + '&mobile=' + mobile
             )
-            this.$u.route('/pages/member/order/expressDelivery', { params: params });
+            this.$u.route('/pages/member/order/expressDelivery/expressDelivery', { params: params });
         }
     }
 }
@@ -208,7 +208,7 @@ export const services = {
         },
         // 查看个人详情
         goServicesUserDetail(serviceId) {
-            this.$u.route('/pages/member/serviceOrder/details', { id: serviceId });
+            this.$u.route('/pages/member/serviceOrder/details/details', { id: serviceId });
         },
     }
 }
@@ -242,6 +242,23 @@ export const tools = {
             if (phome != 0) {
                 uni.makePhoneCall({
                     phoneNumber: phome
+                });
+            }
+        },
+        goBack() {
+            //处理兼容，如果没有上一级界面则返回首页
+            const pages = getCurrentPages();
+            if (pages.length === 2) {
+                uni.navigateBack({
+                    delta: 1
+                });
+            } else if (pages.length === 1) {
+                uni.switchTab({
+                    url: '/pages/index/default/default',
+                })
+            } else {
+                uni.navigateBack({
+                    delta: 1
                 });
             }
         },

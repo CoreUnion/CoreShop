@@ -2,26 +2,27 @@
     <!-- 页面主体 -->
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <u-navbar :title="title"></u-navbar>
-        <view class="page-body">
+        <u-navbar :custom-back="goBack" :title="title"></u-navbar>
+        <view class="coreshop-bg-white u-padding-20 u-margin-20">
             <u-image width="100%" height="300rpx" v-if="info.coverImage" :src="info.coverImage && info.coverImage!='null' ?  info.coverImage+'?x-oss-process=image/resize,m_lfit,h_320,w_240' : '/static/images/common/empty-banner.png'"></u-image>
             <view class="article-title">
                 {{ info.title }}
             </view>
             <view class="article-time" v-if="info.createTime">{{ info.createTime }}</view>
+            <u-line color="info" border-style="dashed" margin="20rpx 0" />
             <view class="u-content">
                 <u-parse :html="contentBody" :selectable="true"></u-parse>
             </view>
         </view>
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
 <script>
+    import { tools } from '@/common/mixins/mixinsHelper.js';
     export default {
-        components: {
-        },
+        mixins: [tools],
         data() {
             return {
                 idType: 1, //1文章 2公告 3微信图文消息
@@ -35,10 +36,6 @@
         onLoad(e) {
             this.idType = e.idType;
             this.id = e.id;
-
-            console.log(e.idType);
-            console.log(e.id);
-
             if (!this.idType && !this.id) {
                 this.$refs.uToast.show({ title: '获取失败', type: 'error', isTab: true, url: '/pages/index/default/default' });
             } else if (this.idType == 1) {
@@ -150,11 +147,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .page-body { background: #FFFFFF; border-top-left-radius: 38rpx; border-top-right-radius: 38rpx; margin: 25rpx; padding: 25rpx; }
-
-    .article-title { font-size: 32upx; color: #333; margin: 20upx 0upx; position: relative; text-align: center; }
-    .article-time { margin-top: 10rpx; font-size: 22rpx; text-align: center; }
-
-    .u-content { margin-top: 20rpx; color: $u-content-color; font-size: 28rpx; line-height: 1.8; }
-        .u-content p { color: $u-tips-color; }
+    @import "details.scss";
 </style>

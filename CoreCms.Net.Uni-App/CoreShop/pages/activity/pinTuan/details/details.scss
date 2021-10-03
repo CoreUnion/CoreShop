@@ -1,0 +1,36 @@
+﻿
+.groupHeight { height: 122rpx !important; }
+
+.group-swiper-c { height: 242rpx; }
+    .group-swiper-c .swiper-item .coreshop-cell-item { height: 50%; }
+        .group-swiper-c .swiper-item .coreshop-cell-item .user-head-img { width: 80rpx; height: 80rpx; border-radius: 50%; }
+        .group-swiper-c .swiper-item .coreshop-cell-item .coreshop-cell-hd-title { max-width: 200rpx; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+        .group-swiper-c .swiper-item .coreshop-cell-item .coreshop-cell-item-bd { min-width: 150rpx; text-align: center; display: block; }
+            .group-swiper-c .swiper-item .coreshop-cell-item .coreshop-cell-item-bd .coreshop-cell-bd-view { margin-bottom: 0; }
+            .group-swiper-c .swiper-item .coreshop-cell-item .coreshop-cell-item-bd .coreshop-cell-bd-text { float: none; }
+    .group-swiper-c .commodity-day > text { background: none !important; padding: 0; }
+    .group-swiper-c .swiper-item .coreshop-cell-item .coreshop-cell-item-ft .btn { font-size: 26rpx; color: #fff; background-color: #ff7159; text-align: center; }
+
+
+.ig-top { text-align: center; background-color: #fff; padding: 20upx 26upx; width: 100%; height: 350rpx; background: #FFFFFF; position: absolute; left: 0; bottom: 0; }
+.ig-top-t,
+.ig-top-m { margin-bottom: 20upx; }
+    .ig-top-t > view { display: inline-block; padding: 0 10upx; color: #999; }
+.user-head-img-c { position: relative; width: 80upx; height: 80upx; border-radius: 50%; margin-right: 20upx; box-sizing: border-box; display: inline-block; border: 1px solid #f3f3f3; }
+.user-head-img-tip { position: absolute; top: -6upx; left: -10upx; display: inline-block; background-color: #FF7159; color: #fff; font-size: 22upx; z-index: 98; padding: 0 10upx; border-radius: 10upx; transform: scale(.8); }
+.user-head-img-c .user-head-img { width: 100%; height: 100%; border-radius: 50%; }
+.user-head-img-c:first-child { border: 1px solid #FF7159; }
+.uhihn { width: 80upx; height: 80upx; border-radius: 50%; display: inline-block; border: 2upx dashed #e1e1e1; text-align: center; color: #d1d1d1; font-size: 40upx; box-sizing: border-box; position: relative; }
+    .uhihn > text { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.igtb-top { font-size: 32upx; color: #333; margin-bottom: 16upx; }
+.igtb-mid { margin-bottom: 16upx; }
+    .igtb-mid .coreshop-btn { width: 100%; background-color: #FF7159; color: #fff; }
+.igtb-bot { font-size: 24upx; color: #666; }
+.coreshop-cell-ft-text { max-width: 520upx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.group-notice .coreshop-cell-ft-text { color: #999; margin-left: 20upx; font-size: 26upx; }
+
+.coreshop-lower-shelf { }
+    .coreshop-lower-shelf .coreshop-cell-item-hd { opacity: 0.4; }
+    .coreshop-lower-shelf .coreshop-cell-item-bd { opacity: 0.4; }
+    .coreshop-lower-shelf .coreshop-cell-item-ft { opacity: 0.4; }
+    .coreshop-lower-shelf .coreshop-lower-box { position: absolute; height: calc(100% - 40rpx); width: calc(100% - 20rpx); background-color: rgba(0, 0, 0, 0.6); text-align: center; font-size: 28rpx; color: #dedede; -webkit-transition: left .15s; transition: left .15s; z-index: 999; -webkit-transition: all .15s; transition: all .15s; line-height: 80rpx; }

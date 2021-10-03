@@ -2,60 +2,58 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="发票设置"></u-navbar>
-        <view class="content">
-            <view class="content-top">
-                <u-radio-group v-model="typeName">
-                    <view class="cu-form-group">
-                        <view class="title">发票类型：</view>
-                        <view>
+
+        <view class="coreshop-bg-white">
+            <u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
+                <view class="u-padding-20">
+                    <u-form-item label="发票类型" label-width="150" prop="typeName">
+                        <u-radio-group v-model="model.typeName">
                             <u-radio @change="radioChange" v-for="(item, index) in radioItems" :key="index" :name="item.name">
                                 {{item.name}}
                             </u-radio>
-                        </view>
-                    </view>
-                </u-radio-group>
+                        </u-radio-group>
+                    </u-form-item>
 
-
-                <view class="cu-form-group cheque">
-                    <view class="title">发票抬头：</view>
-                    <input v-model="name" placeholder='抬头名称' @input="getCheque"></input>
-                    <view class="cheque-content" v-show="isShow">
-                        <view class="tips-item" v-for="(item,index) in chequeLisit" :key="index" @click="chooseCheque(item)">
-                            <view class="tips-name">
-                                {{item.name|| ''}}
-                            </view>
-                            <view class="sub-div">
-                                <view class="tax-no">
-                                    {{item.code|| ''}}
+                    <u-form-item label="发票抬头" label-width="150" class="cheque" prop="name">
+                        <u-input v-model="model.name" placeholder='抬头名称' @input="getCheque" />
+                        <view class="cheque-content" v-show="isShow">
+                            <view class="tips-item" v-for="(item,index) in chequeLisit" :key="index" @click="chooseCheque(item)">
+                                <view class="tips-name">
+                                    {{item.name|| ''}}
                                 </view>
-                                <view class="tips-num">
-                                    <view class="num">
-                                        {{item.frequency|| ''}}
+                                <view class="sub-div">
+                                    <view class="tax-no">
+                                        {{item.code|| ''}}
                                     </view>
-                                    人使用过
+                                    <view class="tips-num">
+                                        <view class="num">
+                                            {{item.frequency|| ''}}
+                                        </view>
+                                        人使用过
+                                    </view>
                                 </view>
                             </view>
                         </view>
-                    </view>
-                </view>
-                <view class="cu-form-group" v-show="type === '3'">
-                    <view class="title">税务编号：</view>
-                    <input v-model="code" placeholder='纳税人识别号'></input>
+                    </u-form-item>
+                    <u-form-item label="税务编号" label-width="150" prop="code" v-show="type === '3'">
+                        <u-input v-model="model.code" placeholder='纳税人识别号' />
+                    </u-form-item>
+                    <u-form-item label="发票内容" label-width="150" v-show="type === '3'">
+                        <view>明细</view>
+                    </u-form-item>
+
                 </view>
 
-                <view class="cu-form-group">
-                    <view class="title">发票内容：</view>
-                    <view>明细</view>
+                <view class="coreshop-bottomBox">
+                    <button class="coreshop-btn coreshop-btn-square coreshop-btn-w" @click="saveInvoice">保存发票</button>
+                    <button class="coreshop-btn coreshop-btn-square coreshop-btn-b" @click="notNeedInvoice">本次不开具发票</button>
                 </view>
-            </view>
-            <view class="coreshop-bottomBox">
-                <button class="coreshop-btn coreshop-btn-square coreshop-btn-w" @click="saveInvoice" hover-class="btn-hover2">保存发票</button>
-                <button class="coreshop-btn coreshop-btn-square coreshop-btn-b" @click="notNeedInvoice" hover-class="btn-hover2">本次不开具发票</button>
-            </view>
+
+            </u-form>
         </view>
 
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
@@ -63,20 +61,53 @@
         data() {
             return {
                 radioItems: [{
-                    name: '个人或事业单位',
+                    name: '个人发票',
                     value: '2'
                 },
                 {
-                    name: '企业',
+                    name: '企业发票',
                     value: '3'
                 }],
-                type: '1', // 发票类型 2个人 3企业
-                typeName: '', // 发票类型 2个人 3企业
-                name: '', // 抬头名称
-                code: '', // 税号
+                type: '1', // 发票类型 1不开发票、2个人发票、3公司发票
+                model: {
+                    typeName: '', // 发票类型 2个人 3企业
+                    name: '', // 抬头名称
+                    code: '', // 税号
+                },
+                errorType: ['message'],
                 isShow: false,
-                chequeLisit: []
+                chequeLisit: [],
+                rules: {
+                    typeName: [
+                        {
+                            required: true,
+                            message: '请选择发票类型或点击不开具',
+                            trigger: ['change', 'blur'],
+                        }
+                    ],
+                    name: [
+                        {
+                            required: true,
+                            message: '请输入发票抬头',
+                            trigger: ['change', 'blur'],
+                        }
+                    ],
+                    code: [
+                        {
+                            validator: (rule, value, callback) => {
+                                if (this.type === '3' && !this.model.code) {
+                                    return false;
+                                }
+                                return true;
+                            },
+                            message: '请输入发票税务编号'
+                        }
+                    ],
+                },
             }
+        },
+        onReady() {
+            this.$refs.uForm.setRules(this.rules);
         },
         onLoad() {
             let invoice
@@ -95,13 +126,13 @@
                 // #endif
                 if (invoice && invoice.hasOwnProperty('type') && invoice.type !== '1') {
                     // 发票不是未使用, 展示发票信息
-                    this.name = invoice.name;
-                    this.code = invoice.code;
+                    this.model.name = invoice.name;
+                    this.model.code = invoice.code;
                     this.type = invoice.type;
                     if (invoice.type == 2) {
-                        this.typeName = this.radioItems[0].name;
+                        this.model.typeName = this.radioItems[0].name;
                     } else if (invoice.type == 3) {
-                        this.typeName = this.radioItems[1].name;
+                        this.model.typeName = this.radioItems[1].name;
                     }
                 }
             }
@@ -126,31 +157,39 @@
             },
             // 保存发票信息
             saveInvoice() {
-                if (this.type === '1' || this.type === 1) {
-                    this.$u.toast('请选择发票类型')
-                    return false
-                }
-                if (!this.name) {
-                    this.$u.toast('请输入发票抬头')
-                    return false
-                }
-                // 个人需要输入昵称
-                if (this.type === '3' && !this.code) {
-                    this.$u.toast('请输入发票税号信息')
-                    return false
-                }
-                // 企业类型需要输入税号
-                if (this.type === '3' && !this.code) {
-                    this.$u.toast('请输入发票税号信息')
-                    return false
-                }
-                let data = {
-                    type: this.type,
-                    name: this.name
-                }
-                // 不是企业类型不需要税号
-                data['code'] = this.type === '3' ? this.code : ''
-                this.setPageData(data)
+                //if (this.type === '1' || this.type === 1) {
+                //    this.$u.toast('请选择发票类型')
+                //    return false
+                //}
+                //if (!this.model.name) {
+                //    this.$u.toast('请输入发票抬头')
+                //    return false
+                //}
+                //// 企业类型需要输入税号
+                //if (this.type === '3' && !this.model.code) {
+                //    this.$u.toast('请输入发票税号信息')
+                //    return false
+                //}
+
+                this.$refs.uForm.validate(valid => {
+                    if (valid) {
+                        console.log('验证通过');
+
+                        let data = {
+                            type: this.type,
+                            name: this.model.name
+                        }
+                        // 不是企业类型不需要税号
+                        data['code'] = this.type === '3' ? this.model.code : ''
+
+                        this.setPageData(data)
+
+                    } else {
+                        console.log('验证失败');
+                    }
+                });
+
+
             },
             // 向上个页面赋值并返回
             setPageData(data) {
@@ -173,7 +212,7 @@
                 }
             },
             getCheque(event) {
-                let name = event.detail.value
+                let name = event;
                 if (name != '') {
                     let data = {
                         name: name
@@ -195,23 +234,15 @@
                 }
             },
             chooseCheque(item) {
-                this.name = item.name;
-                this.code = item.code;
+                this.model.name = item.name;
+                this.model.code = item.code;
                 this.isShow = false;
                 this.type = '3';
-                this.typeName = this.radioItems[1].name;
+                this.model.typeName = this.radioItems[1].name;
             }
         }
     }
 </script>
 <style scoped lang="scss">
-    .cu-form-group .title { min-width: calc(4em + 15px); }
-
-    .coreshop-bottomBox .coreshop-btn { width: 100%; }
-    .cheque { position: relative; }
-    .cheque-content { position: absolute; left: 15rpx; top: 90rpx; z-index: 10; width: calc(100% - 30rpx);; background-color: #fff; box-shadow: 0 0 0.666667vw 0.4vw rgba(0, 0, 0, .13); border-radius: 10rpx; padding: 20rpx; }
-    .tips-item { margin-bottom: 20rpx; }
-    .tips-name { font-size: 32rpx; line-height: 35rpx; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 10rpx; }
-    .sub-div { display: flex; width: 100%; justify-content: space-between; height: 30rpx; font-size: 24rpx; line-height: 30rpx; color: #999; }
-    .num { display: inline-block; }
+    @import "invoice.scss";
 </style>

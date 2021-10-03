@@ -1,5 +1,4 @@
 ﻿import { apiBaseUrl } from '@/common/setting/constVarsHelper.js';
-import * as common from '@/common/utils/commonHelper.js' //引入common
 import * as db from '@/common/utils/dbHelper.js' //引入common
 
 
@@ -53,7 +52,7 @@ const install = (Vue, vm) => {
             // 登录信息过期或者未登录
             if (result.data === 14007 || result.data === 14006) {
                 // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                if (page.route.indexOf('pages/login/loginByAccount/loginByAccount') < 0) {
+                if (page.route.indexOf('pages/login/loginBySMS/loginBySMS') < 0) {
                     db.del("userToken");
                     uni.showToast({
                         title: result.msg,
@@ -63,7 +62,7 @@ const install = (Vue, vm) => {
                             setTimeout(function () {
                                 uni.hideToast();
                                 uni.navigateTo({
-                                    url: '/pages/login/loginByAccount/loginByAccount'
+                                    url: '/pages/login/loginBySMS/loginBySMS'
                                 });
                             },
                                 1000);

@@ -2,16 +2,22 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="分享"></u-navbar>
-        <view class="content">
-            <view class="share-top"><img class="share-img" :src="poster" mode="widthFix" /></view>
-            <view class="share-bot flex flex-direction">
-                <button class="cu-btn bg-grey lg u-margin-bottom-40" v-if="weiXinBrowser">长按图片保存到手机</button>
-                <button class="cu-btn bg-grey lg u-margin-bottom-40" @click="savePoster()" v-else>保存到本地</button>
-                <button class="cu-btn line-black lg" @click="goBack()">返回</button>
+        <view class="share-top"><img class="share-img" :src="poster" mode="widthFix" /></view>
+        <view class="share-bot flex flex-direction">
+            <view class="u-margin-bottom-40">
+                <u-button shape="square" type="primary" v-if="weiXinBrowser">
+                    <u-icon name="download" :margin-right="20" label="长按图片保存到手机" label-color="#fff"></u-icon>
+                </u-button>
+                <u-button shape="square" type="primary" @click="savePoster()" v-else>
+                    <u-icon name="download" :margin-right="20" label="保存到本地" label-color="#fff"></u-icon>
+                </u-button>
             </view>
+            <u-button shape="square" @click="goBack()">
+                <u-icon name="arrow-leftward" :margin-right="20" label="返回" label-color="#333"></u-icon>
+            </u-button>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
@@ -122,9 +128,5 @@
     };
 </script>
 <style scoped lang="scss">
-    view { box-sizing: border-box; }
-    .share-top { margin-bottom: 50upx; padding-top: 50upx; text-align: center; }
-    .share-img { box-shadow: 0 0 20upx #ccc; width: 80%; }
-    .share-bot { width: 80%; margin: 0 auto; }
-        .share-bot .coreshop-btn { width: 100%; margin: 20upx 0; }
+    @import "sharePoster.scss";
 </style>

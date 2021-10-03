@@ -60,8 +60,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsArticleServices _coreCmsArticleServices;
         private readonly ICoreCmsArticleTypeServices _coreCmsArticleTypeServices;
         private readonly ICoreCmsFormServices _coreCmsFormServices;
-
-
         private readonly ICoreCmsGoodsServices _coreCmsGoodsServices;
         private readonly ICoreCmsNoticeServices _coreCmsNoticeServices;
         private readonly ICoreCmsPinTuanRuleServices _coreCmsPinTuanRuleServices;
@@ -72,10 +70,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ISysOrganizationServices _sysOrganizationServices;
         private readonly ISysRoleServices _sysRoleServices;
         private readonly ISysUserRoleServices _sysUserRoleServices;
-
         private readonly ISysRoleMenuServices _sysRoleMenuServices;
-
-
         private readonly ISysUserServices _sysUserServices;
         private readonly IHttpContextUser _user;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -89,6 +84,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsSettingServices _settingServices;
         private readonly ICoreCmsProductsServices _productsServices;
         private readonly ICoreCmsServicesServices _servicesServices;
+        private readonly ICoreCmsPagesServices _pagesServices;
+
 
         private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
 
@@ -114,7 +111,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ISysMenuServices sysMenuServices
             , ISysUserRoleServices sysUserRoleServices
             , ISysOrganizationServices sysOrganizationServices, ICodeGeneratorServices codeGeneratorServices,
-            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory)
+            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsPagesServices pagesServices)
         {
             _user = user;
             _webHostEnvironment = webHostEnvironment;
@@ -147,6 +144,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _servicesServices = servicesServices;
             _sysRoleMenuServices = sysRoleMenuServices;
             _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
+            _pagesServices = pagesServices;
         }
 
         #region 获取登录用户用户信息(用于面板展示)====================================================
@@ -792,11 +790,158 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var formModel = await _coreCmsFormServices.QueryByIdAsync(entity.id);
             if (formModel == null)
             {
+                jm.code = 1;
                 jm.msg = "不存在此信息";
                 return Json(jm);
             }
 
             var path = "pages/form/details/details?id=" + entity.id;
+
+            var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
+            var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
+            var request = new CgibinWxaappCreateWxaQrcodeRequest();
+            request.AccessToken = accessToken;
+            request.Path = path;
+
+            var response = await client.ExecuteCgibinWxaappCreateWxaQrcodeAsync(request);
+            if (response.IsSuccessful())
+            {
+                var memStream = new MemoryStream(response.RawBytes);
+
+                var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + ".jpg";
+                var today = DateTime.Now.ToString("yyyyMMdd");
+
+                if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
+                {
+                    var saveUrl = "/Upload/QrCode/" + today + "/";
+                    var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
+                    string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+
+                    if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
+                    var filePath = dirPath + newFileName;
+                    var fileUrl = saveUrl + newFileName;
+
+                    //储存图片
+                    System.IO.File.Delete(filePath);
+                    await using (var fs = new FileStream(filePath, FileMode.CreateNew))
+                    {
+                        await memStream.CopyToAsync(fs).ConfigureAwait(false);
+                        await fs.FlushAsync().ConfigureAwait(false);
+                    }
+
+                    jm.code = 0;
+                    jm.msg = "上传成功!";
+                    jm.data = new
+                    {
+                        fileUrl,
+                        src = bucketBindDomain + fileUrl
+                    };
+                }
+                else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
+                {
+                    //上传到阿里云
+
+                    // 设置当前流的位置为流的开始
+                    memStream.Seek(0, SeekOrigin.Begin);
+
+                    await using var fileStream = memStream;
+
+                    var md5 = OssUtils.ComputeContentMd5(fileStream, memStream.Length);
+
+                    var filePath = "Upload/QrCode/" + today + "/" + newFileName; //云文件保存路径
+                                                                                 //初始化阿里云配置--外网Endpoint、访问ID、访问password
+                    var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
+                    //将文件md5值赋值给meat头信息，服务器验证文件MD5
+                    var objectMeta = new ObjectMetadata
+                    {
+                        ContentMd5 = md5
+                    };
+                    //文件上传--空间名、文件保存路径、文件流、meta头信息(文件md5) //返回meta头信息(文件md5)
+                    aliyun.PutObject(_filesStorageOptions.BucketName, filePath, fileStream, objectMeta);
+                    //返回给UEditor的插入编辑器的图片的src
+                    jm.code = 0;
+                    jm.msg = "上传成功";
+                    jm.data = new
+                    {
+                        fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
+                        src = _filesStorageOptions.BucketBindUrl + filePath
+                    };
+                }
+                else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
+                {
+                    //上传到腾讯云OSS
+                    //初始化 CosXmlConfig
+                    string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
+                    string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
+                    CosXmlConfig config = new CosXmlConfig.Builder()
+                        //.SetAppid(appid)
+                        .IsHttps(true)  //设置默认 HTTPS 请求
+                        .SetRegion(region)  //设置一个默认的存储桶地域
+                        .SetDebugLog(true)  //显示日志
+                        .Build();  //创建 CosXmlConfig 对象
+
+                    long durationSecond = 600;  //每次请求签名有效时长，单位为秒
+                    QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider(
+                        _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret, durationSecond);
+
+
+                    var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
+
+                    byte[] bytes = memStream.ToArray();
+
+                    var filePath = "Upload/QrCode/" + today + "/" + newFileName; //云文件保存路径
+                    COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
+
+                    cosXml.PutObject(putObjectRequest);
+
+                    jm.code = 0;
+                    jm.msg = "上传成功";
+                    jm.data = new
+                    {
+                        fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
+                        src = _filesStorageOptions.BucketBindUrl + filePath
+                    };
+                }
+            }
+            else
+            {
+                jm.code = 1;
+                jm.msg = response.ErrorMessage;
+            }
+            jm.otherData = response;
+
+
+            return Json(jm);
+        }
+
+        #endregion
+
+        #region 后台生成预览页面设计小程序码============================================================
+
+        // POST: Api/Tools/GetPageWxCode
+        /// <summary>
+        ///     后台生成预览页面设计小程序码
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("后台生成小程序码")]
+        public async Task<JsonResult> GetPageWxCode([FromBody] FMStringId entity)
+        {
+            //返回数据
+            var jm = new AdminUiCallBack { code = 0 };
+
+            var _filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
+
+
+            var pageModel = await _pagesServices.QueryByClauseAsync(p => p.code == entity.id);
+            if (pageModel == null)
+            {
+                jm.code = 1;
+                jm.msg = "不存在此信息";
+                return Json(jm);
+            }
+
+            var path = "pages/index/custom/custom?pageCode=" + entity.id;
 
             var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
             var client = _weChatApiHttpClientFactory.CreateWxOpenClient();

@@ -1,0 +1,786 @@
+﻿/*page { background: #f6f7f9; }*/
+page, .bg-page { background: #f7f7f7; }
+
+
+//圆形
+.round { border-radius: 5000upx; }
+//半圆
+.radius { border-radius: 6rpx; }
+//下划线
+.coreshop-underline { text-decoration: underline; }
+//顶划线
+.coreshop-text-overline { text-decoration: overline; }
+//删除线
+.coreshop-text-through { text-decoration: line-through; }
+/*隐藏*/
+.hide { display: none; }
+/*显示*/
+.show { display: block; }
+
+.w100 { width: 100%; }
+
+.coreshop-float-left { float: left; }
+.coreshop-float-right { float: right; }
+
+/* -- 实线 -- */
+.coreshop-solid, .coreshop-solid-top,
+.coreshop-solid-right,
+.coreshop-solid-bottom,
+.coreshop-solid-left { position: relative; }
+
+    .coreshop-solid::after,
+    .coreshop-solid-top::after,
+    .coreshop-solid-right::after,
+    .coreshop-solid-bottom::after,
+    .coreshop-solid-left::after { content: " "; width: 200%; height: 200%; position: absolute; top: 0; left: 0; border-radius: inherit; transform: scale(0.5); transform-origin: 0 0; pointer-events: none; box-sizing: border-box; }
+
+    .coreshop-solid::after { border: 1upx solid rgba(0, 0, 0, 0.1); }
+    .coreshop-solid-top::after { border-top: 1upx solid rgba(0, 0, 0, 0.1); }
+    .coreshop-solid-right::after { border-right: 1upx solid rgba(0, 0, 0, 0.1); }
+    .coreshop-solid-bottom::after { border-bottom: 1upx solid rgba(0, 0, 0, 0.1); }
+    .coreshop-solid-left::after { border-left: 1upx solid rgba(0, 0, 0, 0.1); }
+
+/* flex弹性布局 */
+.coreshop-flex { display: flex; }
+.coreshop-flex-sub { flex: 1; }
+.coreshop-flex-twice { flex: 2; }
+.coreshop-flex-treble { flex: 3; }
+.coreshop-flex-direction { flex-direction: column; }
+.coreshop-flex-wrap { flex-wrap: wrap; }
+
+.coreshop-align-start { align-items: flex-start; }
+.coreshop-align-end { align-items: flex-end; }
+.coreshop-align-center { align-items: center; }
+.coreshop-align-stretch { align-items: stretch; }
+.coreshop-self-start { align-self: flex-start; }
+.coreshop-self-center { align-self: flex-center; }
+.coreshop-self-end { align-self: flex-end; }
+.coreshop-self-stretch { align-self: stretch; }
+
+.coreshop-justify-start { justify-content: flex-start; }
+.coreshop-justify-end { justify-content: flex-end; }
+.coreshop-justify-center { justify-content: center; }
+.coreshop-justify-between { justify-content: space-between; }
+.coreshop-justify-around { justify-content: space-around; }
+
+.coreshop-basis-1 { flex-basis: 10%; }
+.coreshop-basis-2 { flex-basis: 20%; }
+.coreshop-basis-3 { flex-basis: 30%; }
+.coreshop-basis-4 { flex-basis: 40%; }
+.coreshop-basis-5 { flex-basis: 50%; }
+.coreshop-basis-6 { flex-basis: 60%; }
+.coreshop-basis-7 { flex-basis: 70%; }
+.coreshop-basis-8 { flex-basis: 80%; }
+.coreshop-basis-9 { flex-basis: 90%; }
+
+/*通用样式*/
+.coreshop-display-block { display: block !important; }
+.coreshop-display-flex { display: flex; }
+.coreshop-display-inline-block { display: inline-block; }
+
+/*位置信息*/
+.coreshop-vertical-align-sub { vertical-align: sub }
+
+/*背景颜色*/
+
+.coreshop-bg-red { background-color: #e54d42; color: #ffffff; }
+.coreshop-bg-orange { background-color: #f37b1d; color: #ffffff; }
+.coreshop-bg-yellow { background-color: #fbbd08; color: #333333; }
+.coreshop-bg-olive { background-color: #8dc63f; color: #ffffff; }
+.coreshop-bg-green { background-color: #39b54a; color: #ffffff; }
+.coreshop-bg-cyan { background-color: #1cbbb4; color: #ffffff; }
+.coreshop-bg-blue { background-color: #0081ff; color: #ffffff; }
+.coreshop-bg-purple { background-color: #6739b6; color: #ffffff; }
+.coreshop-bg-mauve { background-color: #9c26b0; color: #ffffff; }
+.coreshop-bg-pink { background-color: #e03997; color: #ffffff; }
+.coreshop-bg-brown { background-color: #a5673f; color: #ffffff; }
+.coreshop-bg-grey { background-color: #8799a3; color: #ffffff; }
+.coreshop-bg-gray { background-color: #f0f0f0; color: #333333; }
+.coreshop-bg-black { background-color: #333333; color: #ffffff; }
+.coreshop-bg-white { background-color: #ffffff; color: #666666; }
+.coreshop-bg-shadeTop { background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.01)); color: #ffffff; }
+.coreshop-bg-shadeBottom { background-image: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)); color: #ffffff; }
+
+.coreshop-bg-red.light { color: #e54d42; background-color: #fadbd9; }
+.coreshop-bg-orange.light { color: #f37b1d; background-color: #fde6d2; }
+.coreshop-bg-yellow.light { color: #fbbd08; background-color: #fef2ced2; }
+.coreshop-bg-olive.light { color: #8dc63f; background-color: #e8f4d9; }
+.coreshop-bg-green.light { color: #39b54a; background-color: #d7f0dbff; }
+.coreshop-bg-cyan.light { color: #1cbbb4; background-color: #d2f1f0; }
+.coreshop-bg-blue.light { color: #0081ff; background-color: #cce6ff; }
+.coreshop-bg-purple.light { color: #6739b6; background-color: #e1d7f0; }
+.coreshop-bg-mauve.light { color: #9c26b0; background-color: #ebd4ef; }
+.coreshop-bg-pink.light { color: #e03997; background-color: #f9d7ea; }
+.coreshop-bg-brown.light { color: #a5673f; background-color: #ede1d9; }
+.coreshop-bg-grey.light { color: #8799a3; background-color: #e7ebed; }
+
+
+/*字体颜色*/
+.coreshop-text-green { background-color: #19be6b; color: #fff; }
+.coreshop-text-red, .line-red, .lines-red { color: #e54d42; }
+.coreshop-text-orange, .line-orange, .lines-orange { color: #f37b1d; }
+.coreshop-text-yellow, .line-yellow, .lines-yellow { color: #fbbd08; }
+.coreshop-text-olive, .line-olive, .lines-olive { color: #8dc63f; }
+.coreshop-text-green, .line-green, .lines-green { color: #39b54a; }
+.coreshop-text-cyan, .line-cyan, .lines-cyan { color: #1cbbb4; }
+.coreshop-text-blue, .line-blue, .lines-blue { color: #0081ff; }
+.coreshop-text-purple, .line-purple, .lines-purple { color: #6739b6; }
+.coreshop-text-mauve, .line-mauve, .lines-mauve { color: #9c26b0; }
+.coreshop-text-pink, .line-pink, .lines-pink { color: #e03997; }
+.coreshop-text-brown, .line-brown, .lines-brown { color: #a5673f; }
+.coreshop-text-grey, .line-grey, .lines-grey { color: #8799a3; }
+.coreshop-text-gray, .line-gray, .lines-gray { color: #aaaaaa; }
+.coreshop-text-black, .line-black, .lines-black { color: #333333; }
+.coreshop-text-white, .line-white, .lines-white { color: #ffffff; }
+
+/*字体高度*/
+.coreshop-line-height-initial { line-height: initial }
+
+/*人民币符号*/
+.coreshop-text-price::before { content: "¥"; font-size: 80%; margin-right: 4upx; }
+
+/*字体格式*/
+.coreshop-text-bold { font-weight: bold; }
+
+/*empty外部盒子用于空数据下整体外包*/
+.coreshop-emptybox { text-align: center; margin: 200rpx auto; font-size: 32rpx;
+    .coreshop-btn { margin: 80rpx auto; width: 200rpx; border-radius: 32rpx; line-height: 64rpx; color: #ffffff; font-size: 26rpx; background: linear-gradient(270deg, rgba(249, 116, 90, 1) 0%, rgba(255, 158, 1, 1) 100%); }
+}
+
+/*用于增加底部距离*/
+.coreshop-content-top { margin-bottom: 116rpx; }
+/*底部tab切换区域占高*/
+.coreshop-tabbar-height { min-height: 100upx; height: calc(100upx + env(safe-area-inset-bottom) / 2); margin-top: 10rpx; }
+
+
+/*宽屏按钮*/
+.coreshop-btn { display: inline-block; box-sizing: border-box; border-radius: 0; font-size: 28rpx; transform: scale(1); transition: all .5s; }
+.coreshop-btn-hover { transform: scale(.90); transition: all .5s; opacity: .8; }
+.coreshop-btn-hover2 { transition: all .1s; opacity: .6; }
+.coreshop-btn::after { border: none; }
+.coreshop-btn-circle { padding: 0rpx 20rpx; height: 60rpx; line-height: 60rpx; min-width: 140rpx; font-size: 22rpx; }
+.coreshop-btn-square { padding: 0rpx 40rpx; height: 90rpx; line-height: 90rpx; min-width: 150rpx; border: none !important; }
+.coreshop-btn-fillet { border-radius: 50rpx; }
+.coreshop-btn-c { background-color: #f7f7f7; }
+.coreshop-btn-w { border: 2rpx solid #333; color: #333; background-color: #fff; }
+.coreshop-btn-g { border: 2rpx solid #E0E0E0; color: #999; background-color: #fff; }
+.coreshop-btn-b { border: 2rpx solid #333; background-color: #333; color: #fff; }
+.coreshop-btn-o { border: 2rpx solid #FF7159; background-color: #FF7159; color: #fff; }
+.coreshop-btn-half { width: 50%; }
+.coreshop-btn-all { width: 100%; }
+
+.coreshop-bottomBox { background-color: #fff; position: fixed; bottom: 0; height: 90rpx; width: 100%; display: flex; z-index: 66; box-shadow: 0 0 10px #ccc;
+    .coreshop-btn { flex: 1; }
+}
+
+
+/*分享浮层*/
+.coreshop-share-Box { width: 100%; height: 300rpx; background: #FFFFFF; }
+.coreshop-share-pop { height: 300rpx; width: 100%; display: flex; }
+.coreshop-share-item { flex: 1; text-align: center; font-size: 26rpx; color: #333; padding: 20rpx 0;
+    image { width: 80rpx; height: 80rpx; margin: 20rpx; }
+    .coreshop-btn { line-height: 1; display: block; font-size: 26rpx; background-color: #fff; }
+}
+
+
+//顶部通用标题
+.coreshop-bar-view-box { position: fixed; top: 0; width: 100%; z-index: 10000; background: #FAFAFA; /* #ifndef MP */ height: calc(var(--status-bar-height) + 99.99rpx); /* #endif */ /* #ifdef MP */ height: calc(var(--status-bar-height) + 129.99rpx); /* #endif */ padding: var(--status-bar-height) 27.27rpx 0 27.27rpx; align-items: center;
+    .coreshop-bar-box { position: relative; width: 100%; align-items: center; line-height: 99.99rpx;
+        .close { position: absolute; right: 27.27rpx; font-size: 40rpx; bottom: 9.09rpx; }
+    }
+    .coreshop-small-routine-title { padding: 18.18rpx 0; }
+}
+
+//占位使用,结合顶部通用标题
+.coreshop-seat-height { width: 100%; /* #ifndef MP */ height: calc(var(--status-bar-height) + 99.99rpx); /* #endif */ /* #ifdef MP */ height: calc(var(--status-bar-height) + 139.99rpx); /* #endif */ }
+
+//顶部搜索框导航条设置
+.coreshop-bar-search-title-box {
+    .cu-bar .action > text[class*="cuIcon-"] { font-size: 36.36rpx; }
+}
+
+//滚动商品图标颜色
+.coreshop-goods-swiper-view {
+    swiper.screen-swiper .uni-swiper-dot { background: #f0f0f0; }
+    swiper.screen-swiper.square-dot .uni-swiper-dot { background-color: #aaaaaa; }
+}
+
+//占位线
+.coreshop-solid-line { width: 100%; height: 2rpx; background: #f9f9f9; }
+.coreshop-coreshop-solid-top::after { border-top: 2rpx solid rgba(0, 0, 0, 0.1); }
+
+//底部多按钮区
+.coreshop-add-btn-view-box { position: fixed; z-index: 10000; bottom: 181.81rpx; right: 27.27rpx;
+    .cu-btn { margin: auto; width: 81.81rpx; height: 81.81rpx; font-weight: 800; border-radius: 50%; font-size: 36.36rpx; border: 9.09rpx solid #fff; box-shadow: 0 0 14.54rpx 7.27rpx #d0d0d0; }
+}
+
+//底部浮动区域，用于放置按钮内容
+.coreshop-footer-fixed { position: fixed; z-index: 10000; width: 100%; bottom: 0; left: 0; }
+.coreshop-foot-padding-bottom { padding-bottom: calc(env(safe-area-inset-bottom) / 2); }
+.coreshop-tip-view { position: relative; padding: 10.9rpx 21.81rpx;
+    .coreshop-content { position: relative; padding-right: 54.54rpx; }
+    .coreshop-icon { position: absolute; font-size: 32.72rpx; right: 27.27rpx; color: #8799a3; top: 9.09rpx; }
+}
+
+/*底部*/
+.wecanui-footer-fixed { position: fixed; z-index: 10000; width: 100%; bottom: 0; left: 0; }
+    .wecanui-footer-fixed.foot-pb { padding-bottom: calc(env(safe-area-inset-bottom) / 2); }
+.wecanui-footer-tabbar-hight-view { position: relative; width: 100%; height: calc((env(safe-area-inset-bottom) / 2) + 136.36rpx); }
+.cu-form-group picker .picker { text-align: left; }
+
+/*浮动按钮*/
+.floatingButton { width: 80rpx; height: 80rpx; background-color: #fff; border-radius: 50%; position: fixed; right: 40rpx; bottom: 60rpx; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10rpx #ccc; padding: 0; z-index: 996; }
+    .floatingButton .icon { width: 60rpx; height: 60rpx; }
+
+// 格式化页面
+.coreshop-pageBox { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; overflow-x: hidden; background: #f6f6f6; }
+.coreshop-scroll-box { flex: 1; height: 100%; position: relative; }
+.coreshop-content-box { flex: 1; overflow-y: auto; }
+
+
+/*通用列表*/
+.coreshop-cell-group { background-color: #fff;
+    .coreshop-cell-item { padding: 20rpx 26rpx 20rpx 20rpx; border-bottom: 2rpx solid #f3f3f3; position: relative; background-color: #fff; color: #333; display: flex; min-height: 90rpx; align-items: center; justify-content: space-between;
+        .coreshop-cell-item-hd { display: flex; align-items: center; font-size: 28rpx; position: relative;
+            .coreshop-cell-hd-title { display: inline-block; position: relative; /* #ifdef MP-ALIPAY */ top: 4rpx; /* #endif */ }
+            .coreshop-cell-bd-input { display: inline-block; float: left; font-size: 26rpx; }
+        }
+        .coreshop-cell-item-bd { display: flex; min-height: 30rpx; overflow: hidden; align-items: center; padding-right: 30rpx;
+            .coreshop-cell-bd-view { position: relative; display: flex;
+                .coreshop-cell-bd-text { position: relative; font-size: 24rpx; }
+            }
+        }
+        .coreshop-cell-item-ft { display: flex; align-items: center;
+            .coreshop-cell-ft-view { position: relative; overflow: hidden; color: #666; font-size: 24rpx; text-align: right; }
+            .coreshop-cell-ft-text { font-size: 28rpx; float: right; position: relative; line-height: 50rpx; }
+        }
+    }
+    .coreshop-cell-item:last-child { border: none; }
+    .coreshop-cell-textarea { }
+    .right-img {
+        .coreshop-cell-item-ft { right: 8rpx; height: 50rpx; position: absolute; }
+    }
+}
+
+
+/*二列商品列表展示*/
+.coreshop-goods-group { border-radius: 16rpx; color: #333333 !important; margin: 0 10rpx;
+    .good_box { border-radius: 8px; margin: 3px; background-color: #ffffff; padding: 5px; position: relative; width: calc(100% - 6px);
+        .good_title { font-size: 26rpx; margin-top: 5px; color: $u-main-color; }
+        .good_title-xl { font-size: 28rpx; margin-top: 5px; color: $u-main-color; }
+        .good_image { width: 100%; border-radius: 4px; }
+        .good-tag-hot { display: flex; margin-top: 5px; position: absolute; top: 15rpx; left: 15rpx; background-color: $u-type-error; color: #ffffff; display: flex; align-items: center; padding: 4rpx 14rpx; border-radius: 50rpx; font-size: 20rpx; line-height: 1; }
+        .good-tag-recommend { display: flex; margin-top: 5px; position: absolute; top: 15rpx; right: 15rpx; background-color: $u-type-primary; color: #ffffff; margin-left: 10px; border-radius: 50rpx; line-height: 1; padding: 4rpx 14rpx; display: flex; align-items: center; border-radius: 50rpx; font-size: 20rpx; }
+        .good-tag-recommend2 { display: flex; margin-top: 5px; position: absolute; bottom: 15rpx; left: 15rpx; background-color: $u-type-primary; color: #ffffff; border-radius: 50rpx; line-height: 1; padding: 4rpx 14rpx; display: flex; align-items: center; border-radius: 50rpx; font-size: 20rpx; }
+        .good-price { font-size: 30rpx; color: $u-type-error; margin-top: 5px; }
+        .good-des { font-size: 20rpx; color: $u-tips-color; margin-top: 5px; }
+        .grid-text { font-size: 28rpx; margin-top: 4rpx; color: $u-type-info; }
+    }
+}
+
+
+
+
+/*头像大小自定义*/
+.coreshop-head-icon { width: 40rpx; height: 40rpx; display: inline-block; margin-right: 8rpx; }
+
+/*优惠券列表*/
+.coreshop-coupon {
+    .coreshop-coupon-card-view { position: relative;
+        .card-price-view { position: relative; background: #FFF5F5; border-radius: 14.54rpx 14.54rpx 0 0; padding: 18.18rpx;
+            .price-left-view { position: absolute; height: 125.45rpx; width: 135.45rpx; text-align: center; line-height: 125.45rpx;
+                .price { font-size: 45.45rpx; font-weight: 400; }
+                .icon { width: 130rpx; height: 100rpx; margin-top: 50%; transform: translateY(-50%); }
+            }
+            .name-content-view { position: relative; padding-left: 163.63rpx; padding-right: 105.45rpx; height: 125.45rpx; line-height: 1.8; color: #999898; }
+            .name-content-view::before { content: ''; position: absolute; top: -18.18rpx; bottom: -18.18rpx; margin-left: -18.18rpx; border-left: 2rpx dashed #fdbabc; }
+            .btn-right-view { position: absolute; right: 20rpx; top: 30rpx;
+                .u-size-medium { padding: 0; }
+            }
+        }
+        .card-num-view { position: relative; background: #FFECED; border-radius: 0 0 14.54rpx 14.54rpx; border-top: 2rpx dashed #dedbdb; padding: 10.9rpx 27.27rpx; color: #999898;
+            .conditions { position: relative; }
+            .btnUnfold { position: absolute; right: 27.27rpx; top: 14.54rpx; }
+        }
+        /* .card-num-view::before { content: ''; position: absolute; width: 36.36rpx; height: 36.36rpx; background: #ffffff; border-radius: 50%; top: -18.18rpx; left: -18.18rpx; }
+        .card-num-view::after { content: ''; position: absolute; width: 36.36rpx; height: 36.36rpx; background: #ffffff; border-radius: 50%; top: -18.18rpx; right: -18.18rpx; }*/ }
+
+    .coreshop-lower-shelf {
+        .card-price-view { opacity: 0.5; }
+        .card-num-view { opacity: 0.5; }
+        .img-lower-box { position: absolute; height: 100.9rpx; width: 100.9rpx; background-color: rgba(0, 0, 0, 0.6); border-radius: 181.81rpx; text-align: center; line-height: 100.9rpx; font-size: 24rpx; color: #fff; top: 25.45rpx; left: 35rpx; -webkit-transition: left .15s; transition: left .15s; }
+    }
+}
+
+
+
+/*订单列表*/
+.orderWrap { display: flex; flex-direction: column; height: calc(100vh - var(--window-top)); width: 100%; }
+.orderList { width: 710rpx; background-color: #ffffff; margin: 20rpx auto; border-radius: 20rpx; box-sizing: border-box; padding: 20rpx; font-size: 28rpx;
+    .top { display: flex; justify-content: space-between;
+        .left { display: flex; align-items: center;
+            .store { margin: 0 10rpx; font-size: 32rpx; font-weight: bold; }
+        }
+        .right { color: $core-type-warning-dark; }
+    }
+    .item { display: flex; margin: 20rpx 0 0;
+        .left { margin-right: 20rpx;
+            image { width: 200rpx; height: 200rpx; border-radius: 10rpx; }
+        }
+        .content {
+            .title { font-size: 28rpx; line-height: 50rpx; }
+            .type { margin: 10rpx 0; font-size: 24rpx; color: $core-tips-color; }
+            .delivery-time { color: #e5d001; font-size: 24rpx; }
+        }
+        .right { margin-left: 10rpx; padding-top: 20rpx; text-align: right;
+            .decimal { font-size: 24rpx; margin-top: 4rpx; }
+            .number { color: $core-tips-color; font-size: 24rpx; }
+        }
+    }
+    .total { margin-top: 20rpx; text-align: right; font-size: 24rpx;
+        .total-price { font-size: 32rpx; }
+    }
+    .bottom { display: flex; margin-top: 40rpx; padding: 0 10rpx; justify-content: space-between; align-items: center;
+        .coreshop-btn { line-height: 52rpx; width: 160rpx; border-radius: 26rpx; border: 2rpx solid $core-border-color; font-size: 26rpx; text-align: center; color: $core-type-info-dark; margin-left: 20rpx; }
+        .evaluate { color: $core-type-warning-dark; border-color: $core-type-warning-dark; }
+        .logistics { border-color: #e4e7ed; color: #82848a; }
+        .exchange { color: #8dc63f; border-color: #8dc63f; }
+    }
+}
+
+/*订单详情*/
+.coreshop-solid-top::after { border-top: 2rpx solid rgba(0, 0, 0, 0.1); }
+.coreshop-order-priceBox { position: relative; }
+.coreshop-order-nums { position: absolute; top: 0; right: 0; }
+
+/*步进器*/
+.coreshop-status-img-view { position: relative;
+    .are-img-view { position: relative; margin-bottom: 18.18rpx;
+        .are-img { width: 327.27rpx; }
+    }
+}
+/*拼团区域*/
+.user-head-img-c { position: relative; width: 80upx; height: 80upx; border-radius: 50%; margin-right: 20upx; box-sizing: border-box; display: inline-block; float: left; border: 1px solid #f3f3f3; margin-bottom: 20rpx; margin-top: 20rpx; }
+.user-head-img-tip { position: absolute; top: -6upx; left: -10upx; display: inline-block; background-color: #FF7159; color: #fff; font-size: 22upx; z-index: 99; padding: 0 10upx; border-radius: 10upx; transform: scale(.8); }
+.group-swiper .coreshop-cell-item .user-head-img { width: 100%; height: 100%; border-radius: 50%; }
+.group-swiper .coreshop-cell-item .user-head-img-c:first-child { border: 1px solid #FF7159; }
+.uhihn { width: 80upx; height: 80upx; border-radius: 50%; margin-right: 20upx; display: inline-block; border: 2upx dashed #e1e1e1; text-align: center; line-height: 80upx; color: #d1d1d1; font-size: 40upx; box-sizing: border-box; }
+
+
+/*订单卡片*/
+.coreshop-card-box { padding: 27.27rpx 27.27rpx 0; }
+.coreshop-card-view { position: relative; border-radius: 9.09rpx; padding: 18.18rpx; box-shadow: 0 0 14.54rpx #f1f1f1; }
+.coreshop-price-view { position: relative;
+    .title-view { position: relative; margin-bottom: 18.18rpx;
+        .title { position: relative; padding-right: 181.81rpx; }
+        .u-text-right { position: absolute; top: 3.63rpx; right: 0; }
+    }
+    .title-right-view { position: relative; margin-top: 27.27rpx; text-align: right; }
+    .title-left-view { position: relative; margin-top: 27.27rpx; text-align: left; }
+    .solid-line { margin: 27.27rpx 0; }
+}
+
+/*卡片-商品信息*/
+.coreshop-shop-view { position: relative;
+    .shop-info-view { position: relative; margin-bottom: 27.27rpx; line-height: 47.27rpx; height: 47.27rpx;
+        .coreshop-avatar { position: absolute; }
+        .title-view { position: relative; padding-left: 63.63rpx; }
+    }
+    .goods-list-view { position: relative; margin: 18.18rpx 0;
+        .coreshop-avatar { position: absolute; height: 154.54rpx; width: 154.54rpx; }
+        .goods-info-view { position: relative; padding-left: 172.72rpx; min-height: 154.54rpx;
+            .name { position: relative; height: 38.18rpx; width: 100%; }
+            .introduce { position: relative; height: 32.72rpx; width: 100%; }
+            .tag-view { position: relative; margin-bottom: 9.09rpx; margin-top: 7.27rpx; width: 100%;
+                .cu-tag { position: relative; top: -2rpx; }
+            }
+            .coreshop-text-price { position: relative; height: 36.36rpx; width: 100%; }
+        }
+    }
+    .coreshop-foot-view { position: relative; background: #FFFCFC; margin: 0 -18.18rpx -18.18rpx -18.18rpx; border-radius: 0 0 9.09rpx 9.09rpx; padding: 18.18rpx;
+        .left-view { position: relative; padding-right: 181.81rpx;
+            .af5-img { position: relative; margin-right: 9.09rpx; width: 36.36rpx; top: 3.63rpx; }
+        }
+        .u-text-right { position: absolute; right: 18.18rpx; top: 18.18rpx; }
+    }
+}
+
+/*卡片-订单内容区域*/
+.coreshop-order-view { position: relative;
+    .solid-line { margin: 27.27rpx 0; }
+    .title-view { position: relative; margin-bottom: 18.18rpx;
+        &:last-child { margin-bottom: 12.72rpx; }
+        .title { position: absolute; top: 3.63rpx; left: 0; }
+        .u-text-right { position: relative; padding-left: 181.81rpx;
+            .cu-btn { padding: 0 10.9rpx; height: 30.9rpx; top: -3.63rpx; }
+        }
+    }
+}
+
+
+/*卡片-物流信息*/
+.coreshop-address-view { position: relative;
+    .solid-line { margin: 18.18rpx 0; }
+    .coreshop-list.menu-avatar > .coreshop-list-item { height: 55px;
+        &:after { width: 0; height: 0; border-bottom: 0; }
+        .icon-view { position: absolute; border-radius: 100%; text-align: center; line-height: 45.45rpx; height: 45.45rpx; width: 45.45rpx; left: 9.09rpx; top: 25.45rpx; }
+        .content { left: 72.72rpx; width: calc(100% - 94.54rpx); }
+    }
+}
+
+/*推荐商品列表*/
+.coreshop-recommend-goods-list-view { position: relative;
+    .coreshop-flex-wrap { padding: 9.09rpx; }
+    .list-item { text-align: center; margin-bottom: 18.18rpx;
+        .coreshop-avatar { width: 347.27rpx; height: 347.27rpx; }
+        .goods-info-view { position: relative; padding: 14.54rpx; text-align: left;
+            .coreshop-text-price { margin: 9.09rpx 0; }
+            .foot-box { position: relative;
+                .cu-tag { position: absolute; right: 0; top: 0; }
+            }
+        }
+    }
+}
+
+/*团队列表样式*/
+.coreshop-team-box { margin-top: 20rpx; background: #fff;
+    .coreshop-team-list {
+        .coreshop-team-children { margin-left: 30rpx; margin-right: 30rpx; height: 132rpx; border-bottom: 1rpx solid #eee;
+            .head-img { width: 60rpx; height: 60rpx; border-radius: 50%; margin-right: 38rpx; }
+            .head-info { width: calc( 100% - 100rpx);
+                .head-time { font-size: 24rpx; font-weight: 400; color: #999999; }
+                .child-num { font-size: 24rpx; font-weight: 400; color: #999999; }
+                .name-box { margin-bottom: 12rpx;
+                    .name-text { font-size: 24rpx; font-weight: 500; color: #666; }
+                    .tag-box { background: rgba(0, 0, 0, 0.2); border-radius: 21rpx; line-height: 30rpx; padding-right: 10rpx; margin-left: 10rpx;
+                        .tag-img { width: 34rpx; height: 34rpx; margin-right: 6rpx; border-radius: 50%; }
+                        .tag-title { font-size: 18rpx; font-family: PingFang SC; font-weight: 500; color: white; line-height: 20rpx; }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* 头像*/
+.coreshop-avatar { font-variant: small-caps; margin: 0; padding: 0; display: inline-flex; text-align: center; justify-content: center; align-items: center; background-color: #ccc; color: #ffffff; white-space: nowrap; position: relative; width: 64upx; height: 64upx; background-size: cover; background-position: center; vertical-align: middle; font-size: 1.5em;
+    &.sm { width: 48upx; height: 48upx; font-size: 1em; }
+    &.lg { width: 96upx; height: 96upx; font-size: 2em; }
+    &.xl { width: 128upx; height: 128upx; font-size: 2.5em; }
+    .avatar-text { font-size: 0.4em; }
+}
+.coreshop-avatar-group { direction: rtl; unicode-bidi: bidi-override; padding: 0 10upx 0 40upx; display: inline-block;
+    .coreshop-avatar { margin-left: -30upx; border: 4upx solid #f1f1f1; vertical-align: middle;
+        &.sm { margin-left: -20upx; border: 1upx solid #f1f1f1; }
+    }
+}
+
+/*通用列表样式*/
+.coreshop-list {
+    & + .coreshop-list { margin-top: 30upx; }
+    & > .coreshop-list-item { transition: all .6s ease-in-out 0s; transform: translateX(0upx);
+        &.move-cur { transform: translateX(-260upx); }
+        .move { position: absolute; right: 0; display: flex; width: 260upx; height: 100%; transform: translateX(100%);
+            view { display: flex; flex: 1; justify-content: center; align-items: center; }
+        }
+    }
+    &.menu-avatar { overflow: hidden;
+        & > .coreshop-list-item { position: relative; display: flex; padding-right: 10upx; height: 140upx; background-color: #ffffff; justify-content: flex-end; align-items: center;
+            & > .coreshop-avatar { position: absolute; left: 30upx; }
+            .flex {
+                .text-cut { max-width: 510upx; }
+            }
+            .content { position: absolute; left: 146upx; width: calc(100% - 96upx - 60upx - 120upx - 20upx); line-height: 1.6em;
+                &.flex-sub { width: calc(100% - 96upx - 60upx - 20upx); }
+                & > view {
+                    &:first-child { font-size: 30upx; display: flex; align-items: center; }
+                }
+                .coreshop-tag {
+                    &.sm { display: inline-block; margin-left: 10upx; height: 28upx; font-size: 16upx; line-height: 32upx; }
+                }
+            }
+            .action { width: 100upx; text-align: center;
+                view {
+                    & + view { margin-top: 10upx; }
+                }
+            }
+        }
+        &.comment {
+            & > .coreshop-list-item { padding: 30upx 30upx 30upx 120upx; height: auto;
+                .content { position: relative; left: 0; width: auto; flex: 1; }
+            }
+            .coreshop-avatar { align-self: flex-start; }
+        }
+    }
+    &.menu { display: block; overflow: hidden;
+        & > .coreshop-list-item { position: relative; display: flex; padding: 0 30upx; min-height: 100upx; background-color: #ffffff; justify-content: space-between; align-items: center;
+            &:last-child {
+                &:after { border: none; }
+            }
+            &.grayscale { background-color: #f5f5f5; }
+            &.cur { background-color: #fcf7e9; }
+            &.arrow { padding-right: 90upx;
+                &:before { position: absolute; top: 0; right: 30upx; bottom: 0; display: block; margin: auto; width: 20upx; height: 20upx; color: #8799a3; content: "\e605"; text-align: center; font-size: 34upx; font-family: "uicon-iconfont"; line-height: 20upx; }
+            }
+            button {
+                &.content { padding: 0; background-color: transparent; justify-content: flex-start;
+                    &:after { display: none; }
+                }
+            }
+            .coreshop-avatar-group {
+                .coreshop-avatar { border-color: #ffffff; }
+            }
+            .content { font-size: 30upx; line-height: 1.6em; flex: 1;
+                & > view {
+                    &:first-child { display: flex; align-items: center; }
+                }
+                & > text[class*=cuIcon] { display: inline-block; margin-right: 10upx; width: 1.6em; text-align: center; }
+                & > image { display: inline-block; margin-right: 10upx; width: 1.6em; height: 1.6em; vertical-align: middle; }
+                .coreshop-tag {
+                    &.sm { display: inline-block; margin-left: 10upx; height: 28upx; font-size: 16upx; line-height: 32upx; }
+                }
+            }
+            .action {
+                .coreshop-tag {
+                    &:empty { right: 10upx; }
+                }
+            }
+        }
+        &.sm-border {
+            & > .coreshop-list-item {
+                &:after { left: 30upx; width: calc(200% - 120upx); }
+            }
+        }
+    }
+    &.grid { background-color: #ffffff; text-align: center;
+        & > .coreshop-list-item { position: relative; display: flex; padding: 20upx 0 30upx; transition-duration: 0s; flex-direction: column;
+            &:after { position: absolute; top: 0; left: 0; box-sizing: border-box; width: 200%; height: 200%; border-right: 1px solid rgba(0, 0, 0, .1); border-bottom: 1px solid rgba(0, 0, 0, .1); border-radius: inherit; content: " "; transform: scale(.5); transform-origin: 0 0; pointer-events: none; }
+            text { display: block; margin-top: 10upx; color: #888; font-size: 26upx; line-height: 40upx; }
+            [class*=cuIcon] { position: relative; display: block; margin-top: 20upx; width: 100%; font-size: 48upx; }
+            .coreshop-tag { right: auto; left: 50%; margin-left: 20upx; }
+        }
+        &.no-border { padding: 20upx 10upx;
+            & > .coreshop-list-item { padding-top: 10upx; padding-bottom: 20upx;
+                &:after { border: none; }
+            }
+        }
+    }
+    &.card-menu { overflow: hidden; margin-right: 30upx; margin-left: 30upx; border-radius: 20upx; }
+}
+    .coreshop-list.menu-avatar > .coreshop-list-item:after,
+    .coreshop-list.menu > .coreshop-list-item:after { position: absolute; top: 0; left: 0; box-sizing: border-box; width: 200%; height: 200%; border-bottom: 1upx solid #ddd; border-radius: inherit; content: " "; transform: scale(.5); transform-origin: 0 0; pointer-events: none; }
+    .coreshop-list.grid.col-3 > .coreshop-list-item:nth-child(3n):after,
+    .coreshop-list.grid.col-4 > .coreshop-list-item:nth-child(4n):after,
+    .coreshop-list.grid.col-5 > .coreshop-list-item:nth-child(5n):after { border-right-width: 0; }
+
+
+/*常用日志数据多列列表三联*/
+.coreshop-log-item { height: 142rpx; background-color: #fff; padding: 0 30rpx; border-bottom: 1rpx solid #eee;
+    .item-left {
+        .log-img { width: 50rpx; height: 50rpx; border-radius: 50%; margin-right: 24rpx; }
+        .log-name { font-size: 28rpx; font-weight: 500; margin-bottom: 12rpx; }
+        .log-notice { font-size: 22rpx; font-weight: 500; }
+    }
+    .item-right {
+        .log-num { font-size: 28rpx; font-weight: 500; margin-bottom: 12rpx; }
+        .log-date { font-size: 22rpx; font-weight: 400; }
+    }
+}
+
+
+/*占高区*/
+.coreshop-card-hight-box { height: 45.45rpx; }
+
+/*底部高度区域*/
+.coreshop-foot-hight-view { width: 100%; height: calc((env(safe-area-inset-bottom) / 2) + 109.09rpx); }
+
+
+/*为您推荐头部效果*/
+.coreshop-recommended-title-view { position: relative; margin: 36.36rpx;
+    .img-anc { position: relative; width: 36.36rpx; top: 3.63rpx; }
+}
+
+/*支付界面效果*/
+.payment-wx {
+    .coreshop-btn { background-color: #fff; line-height: 1.7; padding: 0; width: 724upx; position: relative; display: flex; align-items: center; }
+}
+.payment-pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400rpx; height: 272rpx; background-color: #fff; text-align: center; box-shadow: 0 0 20rpx #ccc;
+    .text { font-size: 24upx; }
+}
+.payment-pop-c { padding: 50rpx 30rpx; font-size: 32rpx; color: #999;
+    image { width: 60upx; height: 60upx; }
+}
+.payment-pop-b { position: absolute; bottom: 0; display: flex; width: 100%; justify-content: space-between;
+    .coreshop-btn { flex: 1; justify-content: center; }
+    .coreshop-btn-o { background-color: #ff7159; }
+}
+
+
+/*全屏下头部透明效果*/
+.coreshop-full-screen-nav-back { width: 100%; height: 44px; /* #ifndef MP-WEIXIN */ padding: 12px 12px 0; /* #endif */ /* #ifdef MP-WEIXIN */ padding: 26px 12px 0; /* #endif */ position: fixed; top: 20rpx; background-color: rgba(255, 255, 255, 0); z-index: 98;
+    .back-btn { height: 32px; width: 32px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.8); text-align: center;
+        .icon { height: 20px; width: 20px; position: relative; top: 50%; left: 46%; transform: translate(-50%, -50%); }
+    }
+}
+
+/*全屏下顶部满屏占位幻灯片效果*/
+.coreshop-full-screen-banner-swiper-box { position: relative; width: 100%;
+    .screen-swiper { min-height: 750rpx; }
+    .tag { font-size: 24upx; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 0upx 16upx; font-family: Helvetica Neue, Helvetica, sans-serif; white-space: nowrap; position: absolute; bottom: 27.27rpx; right: 27.27rpx; font-size: 20upx; padding: 0upx 12upx; height: 32upx; }
+}
+
+/*商品内限时秒杀区域效果*/
+.coreshop-limited-seckill-box { position: relative; background-image: url('/static/images/good/titlebg.png'); background-repeat: no-repeat; background-size: 100% 100%; padding: 25rpx 28rpx; color: #ffffff; width: 100%;
+    .coreshop-cost-price-num { position: absolute; font-weight: 200; left: 200rpx; top: 22rpx; }
+    .coreshop-cost-price-num.price-6 { left: 254.54rpx; }
+    .coreshop-cost-price-num.price-5 { left: 227.27rpx; }
+    .coreshop-cost-price-num.price-4 { left: 199.99rpx; }
+    .coreshop-cost-price-num.price-3 { left: 163.63rpx; }
+    .coreshop-cost-price-num.price-2 { left: 136.36rpx; }
+    .coreshop-cost-price-num.price-1 { left: 99.99rpx; }
+    .coreshop-time-right { position: absolute; right: 100rpx; top: 10rpx; }
+    .coreshop-share-right { position: absolute; right: 27.27rpx; top: 16.36rpx; }
+}
+    .coreshop-limited-seckill-box::after { content: ""; position: absolute; z-index: -1; background-color: inherit; width: 100%; height: 100%; left: 0; bottom: -10%; border-radius: 10upx; opacity: 0.2; transform: scale(0.9, 0.9); }
+
+/*通用空白区域*/
+.coreshop-common-view-box { position: relative; padding: 20rpx 30rpx; }
+
+
+/*商品标题区域效果*/
+.coreshop-good-title-view-box { position: relative; position: relative;
+    .title-view { display: inline-block; flex-direction: row; align-items: center; }
+    .cu-tag { margin-top: -9.09rpx; margin-right: 9.09rpx; }
+    .coreshop-title-tip-box { position: relative; padding: 9.09rpx 18.18rpx; width: 100%;
+        .u-line-1 { padding-right: 27.27rpx; }
+        .icon { position: absolute; right: 18.18rpx; top: 12rpx; }
+    }
+}
+
+/*商品页面底部浮层*/
+.coreshop-good-footer-fixed { display: flex; position: fixed; bottom: 0; margin-top: 120rpx; width: 100%; z-index: 1; border-top: solid 2rpx #f2f2f2; background-color: #ffffff;
+    .tabbar { display: flex; position: relative; align-items: center; min-height: 100upx; justify-content: space-between; padding: 0; height: calc(100upx + env(safe-area-inset-bottom) / 2); padding-bottom: calc(env(safe-area-inset-bottom) / 2); width: 100%;
+        .action { display: flex; align-items: center; height: 100%; justify-content: center; max-width: 100%; color: #333333; width: 90rpx; position: relative; text-align: center;
+            .car-num { position: absolute; top: 10rpx; right: 15rpx; }
+        }
+        .btn-group { justify-content: space-around;
+            button { padding: 20upx 32upx; flex: 1; margin: 0 10upx; max-width: 50%; }
+        }
+        .btn-box { justify-content: space-around; width: 50%; padding: 10rpx; padding-left: 0rpx; }
+    }
+}
+
+/*商品页面商家面板展示*/
+.coreshop-goods-shop-info-view-box {
+    .coreshop-shop-view { position: relative; width: 100%;
+        .coreshop-avatar { position: absolute; height: 80rpx; width: 80rpx; }
+        button { position: absolute; top: 21.81rpx; right: 0; }
+    }
+    .coreshop-border-view { position: relative; background: #efebeb; margin: 21.81rpx 0; height: 2rpx; width: 100%; }
+    .live-tag-view { position: relative; width: 100%;
+        .text-view { padding-right: 127.27rpx;
+            .cu-tag { position: relative; top: -3.63rpx; }
+        }
+        .go-map-box { position: absolute; right: 0; top: 3.63rpx; }
+    }
+    .coreshop-good-shop-recommend-list-box {
+        .recommend-scroll-box { position: relative; width: 100%;
+            .recommend-scroll { position: relative; height: 320rpx; white-space: nowrap; width: 100%;
+                .recommend-scroll-item { display: inline-block; padding-top: 28rpx; width: 200rpx; padding-right: 18rpx; white-space: initial;
+                    .coreshop-avatar { width: 180rpx; height: 180rpx; }
+                }
+            }
+        }
+    }
+}
+
+
+
+/*商品页面底部弹出层效果*/
+.coreshop-bottom-popup-box { border-radius: 36.36rpx 36.36rpx 0 0;
+    .cu-dialog { border-radius: 36.36rpx 36.36rpx 0 0; }
+    .coreshop-title-bar { position: relative; width: 100%;
+        .close-icon { position: absolute; right: 36.36rpx; }
+    }
+    .coreshop-modal-content { position: relative; width: 100%; overflow-y: auto; height: calc(100vh - 654.54rpx); padding: 0 29.09rpx 29.09rpx; margin-bottom: 118.18rpx;
+        .coreshop-common-view-box { position: relative; width: 100%; padding: 0; text-align: left; }
+        .coreshop-common-view-box.service {
+            .text-view { margin-bottom: 18.18rpx; }
+            .text-list-view { position: relative; width: 100%; margin-bottom: 18.18rpx;
+                .u-line-1 { padding-right: 21rpx; }
+            }
+            .text-list-view + .text-view { margin-top: 36.36rpx; }
+        }
+        .coreshop-common-view-box.promotion {
+            .text-view { margin-bottom: 18.18rpx;
+                .cu-tag { position: relative; top: -3.63rpx; }
+            }
+            .text-list-view { position: relative; width: 100%; margin-bottom: 18.18rpx;
+                .u-line-1 { padding-right: 218.18rpx; }
+                .go-map-box { position: absolute; right: 0; top: 2rpx; }
+            }
+            .text-list-view + .text-view { margin-top: 36.36rpx; }
+        }
+        .coreshop-common-view-box.select {
+            .coreshop-list.menu-avatar > .coreshop-list-item {
+                .content { width: calc(100% - 94.54rpx - 59.99rpx); }
+            }
+            .coreshop-select-btn-list-box {
+                .select-item { padding: 18.18rpx 0; border-bottom: 2rpx solid #f3f3f3;
+                    .select-btn { position: relative; margin-top: 16rpx; width: 100%; overflow: auto;
+                        .sku-btn { font-size: 24rpx; /*height: 44rpx;*/ border-radius: 60rpx; float: left;
+                            .u-avatar { top: 10rpx; }
+                        }
+                        .sku-btn.light { border: 1rpx dashed; }
+                        .sku-btn[disabled] { color: #aaaaaa; }
+                    }
+                }
+            }
+        }
+    }
+}
+/*商品详情区域初始高度*/
+.coreshop-good-rich-text-view { min-height: 500rpx; }
+
+
+/*团购/秒杀相关*/
+.group-box { width: 710rpx; background: linear-gradient(#fff, #f5f5f5); border-radius: 20rpx; margin: 0 auto; min-height: 1000rpx;
+    .goods-item { border-radius: 20rpx; overflow: hidden; position: relative; margin-bottom: 20rpx;
+        .tag { position: absolute; left: 0; top: 10rpx; z-index: 2; line-height: 35rpx; background: linear-gradient(132deg, rgba(255, 153, 93, 1), rgba(255, 99, 97, 1)); border-radius: 0px 18rpx 18rpx 0px; padding: 0 10rpx; font-size: 24rpx; font-family: PingFang SC; font-weight: bold; color: rgba(255, 255, 255, 0.8); }
+        .goods-right { width: 460rpx;
+            .title { width: 460rpx; color: $u-main-color }
+            .tip { width: 460rpx; }
+        }
+        .buy-btn { position: absolute; right: 0; bottom: -10rpx; width: 160rpx; height: 60rpx; background: linear-gradient(90deg, rgba(254, 131, 42, 1), rgba(255, 102, 0, 1)); box-shadow: 0px 7rpx 6rpx 0px rgba(255, 104, 4, 0.22); border-radius: 30rpx; font-size: 28rpx; font-family: PingFang SC; font-weight: 500; color: #fff; padding: 0; }
+        .group-num { font-size: 20rpx; font-family: PingFang SC; font-weight: 500; color: rgba(153, 153, 153, 1); margin-left: 20rpx; }
+        .sell-box { background: rgba(255, 224, 226, 0.3); border-radius: 16rpx; line-height: 32rpx; padding: 0 10rpx;
+            .sell-num { font-size: 20rpx; font-family: PingFang SC; font-weight: 400; color: rgba(247, 151, 156, 1); }
+
+            .cuIcon-hotfill { font-size: 26rpx; color: #e1212b; margin-right: 8rpx; }
+        }
+    }
+}
+.group-boxComponents.group-box { min-height: 50rpx; }
+
+.activity-goods-box { padding: 40rpx 20rpx; background: #fff;
+    .img-box { margin-right: 20rpx; width: 200rpx; height: 200rpx; overflow: hidden; position: relative;
+        .img { width: 200rpx; height: 200rpx; background-color: #ccc; }
+    }
+    .goods-right { width: 450rpx; min-height: 200rpx; align-items: flex-start; position: relative;
+        .title { font-size: 28rpx; line-height: 28rpx; width: 450rpx; }
+        .tip { font-size: 22rpx; color: #a8700d; width: 500rpx; }
+        .price-box {
+            .current { font-size: 28rpx; font-weight: 500; color: rgba(225, 33, 43, 1); }
+            .original { font-size: 22rpx; font-weight: 400; text-decoration: line-through; color: rgba(153, 153, 153, 1); margin-left: 14rpx; }
+        }
+    }
+}
+
+
+/*版权信息*/
+.coreshop-copyright { text-align: center; margin: 20rpx 0; width: 100%; overflow: hidden;
+    .beian {
+        a { text-decoration: none; color: #999 !important; }
+    }
+}

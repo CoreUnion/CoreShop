@@ -1,0 +1,31 @@
+﻿.user-card { width: 690rpx; min-height: 350rpx; border-radius: 14rpx; margin: 30rpx; background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center; padding-top: 10rpx; position: relative;
+    &::after { content: ""; position: absolute; z-index: -1; background-color: inherit; width: 100%; height: 100%; left: 0; bottom: -10%; border-radius: 10upx; opacity: 0.2; transform: scale(0.9, 0.9); }
+    .card-top { padding: 40rpx 40rpx 30rpx; margin-bottom: 30rpx; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        .user-name { font-size: 26rpx; font-weight: 500; color: #ffffff; line-height: 30rpx; margin-bottom: 20rpx; }
+        .cu-btn { padding: 0; background: none; }
+        .log-btn { width: 83rpx; height: 41rpx; border: 1rpx solid rgba(255, 255, 255, 0.33); border-radius: 21rpx; font-size: 22rpx; font-weight: 400; color: #ffffff; line-height: 41rpx; text-align: center; }
+        .look-btn { color: #fff; font-size: 40rpx;
+            .eye { line-height: 50rpx; margin-top: 20rpx; }
+        }
+    }
+    .head-img-box { margin-right: 26rpx; width: 76rpx; height: 76rpx; border-radius: 50px; position: relative; background: #fff; padding: 10rpx; background-clip: padding-box;
+        .head-img { width: 66rpx; height: 66rpx; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    }
+    .user-info-box {
+        .tag-box { background: rgba(0, 0, 0, 0.2); border-radius: 21rpx; line-height: 38rpx; padding-right: 10rpx;
+            .tag-img { width: 36rpx; height: 36rpx; margin-right: 6rpx; border-radius: 50%; }
+            .tag-title { font-size: 20rpx; font-family: PingFang SC; font-weight: 500; color: white; line-height: 20rpx; }
+        }
+    }
+    .card-bottom { margin: 0 40rpx 40rpx;
+        .item-title { font-size: 24rpx; font-family: PingFang SC; font-weight: 400; color: #ffffff; line-height: 30rpx; }
+        .item-detail { font-size: 40rpx; font-family: DIN; font-weight: 500; color: #fefefe; line-height: 30rpx; margin-top: 30rpx; }
+    }
+}
+
+.menu-box { flex-wrap: wrap; margin: 30rpx; position: fixed; width: 750rpx; bottom: 0; z-index: 10;
+    .menu-item { width: 172.5rpx; margin-bottom: 50rpx;
+        .item-img { width: 68rpx; height: 68rpx; }
+        .item-title { font-size: 24rpx; font-weight: 600; color: #fff; line-height: 30rpx; margin-top: 16rpx; }
+    }
+}

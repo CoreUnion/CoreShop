@@ -1,46 +1,40 @@
 ﻿<template>
     <view class="pageBox">
         <u-navbar title="团购"></u-navbar>
-        <view class="content-box">
-            <view class="goods-item" v-for="item in goodsList" :key="item.id" v-if="goodsList.length>0">
-                <view class="activity-goods-box x-bc">
-                    <view class="img-box">
-                        <slot name="tag"></slot>
-                        <image class="img" :src="item.image" mode="aspectFill"></image>
-                    </view>
-                    <view class="goods-right y-bc">
-                        <view class="title u-line-1">{{ item.name }}</view>
-                        <view class="tip u-line-1">{{ item.brief }}</view>
-                        <view class="slod-end">
-
-                            <view class="x-f">
-                                <view class="cu-progress round sm">
-                                    <view class="progress--color" :style="[{ width: loading ? getProgress(item.buyPromotionCount, item.stock) : '' }]"></view>
-                                </view>
-                                <view class="progress-text">已抢{{ getProgress(item.buyPromotionCount, item.stock) }}</view>
-                            </view>
-
+        <view class="goods-item" v-for="item in goodsList" :key="item.id" v-if="goodsList.length>0">
+            <view class="activity-goods-box u-flex u-row-between">
+                <view class="img-box">
+                    <slot name="tag"></slot>
+                    <image class="img" :src="item.image" mode="aspectFill"></image>
+                </view>
+                <view class="goods-right u-flex u-row-between coreshop-flex-direction">
+                    <view class="title u-line-1">{{ item.name }}</view>
+                    <view class="tip u-line-1">{{ item.brief }}</view>
+                    <view class="slod-end">
+                        <view class="coreshop-flex coreshop-align-center">
+                            <u-line-progress :striped="true" :percent="getPercent(item.buyPromotionCount, item.stock)" :striped-active="true" :show-percent="true" class="cu-progress"></u-line-progress>
+                            <view class="progress-text">已抢{{ getProgress(item.buyPromotionCount, item.stock) }}</view>
                         </view>
-                        <view class=" price-box">
-                            <view class="x-f">
-                                <view class="current">￥{{ item.price }}</view>
-                                <view class="original">￥{{ item.mktprice }}</view>
-                            </view>
-                        </view>
-                        <button class="cu-btn buy-btn" :class="btnType[tabCurrent].color" v-if="tabCurrent=='ing'" @click="goGroupBuyingDetail(item.id, item.groupId)">{{ btnType[tabCurrent].name }}</button>
-                        <button class="cu-btn buy-btn" :class="btnType[tabCurrent].color" v-else>{{ btnType[tabCurrent].name }}</button>
                     </view>
+                    <view class="price-box">
+                        <view class="coreshop-flex coreshop-align-center">
+                            <view class="current">￥{{ item.price }}</view>
+                            <view class="original">￥{{ item.mktprice }}</view>
+                        </view>
+                    </view>
+                    <u-button type="error" class="buy-btn" size="mini" v-if="tabCurrent=='ing'" @click="goGroupBuyingDetail(item.id, item.groupId)">{{ btnType[tabCurrent].name }}</u-button>
+                    <u-button type="error" class="buy-btn" size="mini" v-else>{{ btnType[tabCurrent].name }}</u-button>
                 </view>
             </view>
-            <!-- 无数据时默认显示 -->
-            <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无团购信息" mode="list"></u-empty>
-            </view>
-            <!-- 加载更多 -->
-            <u-loadmore :status="loadStatus" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
         </view>
+        <!-- 无数据时默认显示 -->
+        <view class="coreshop-emptybox" v-else>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="暂无团购信息" mode="list"></u-empty>
+        </view>
+        <!-- 加载更多 -->
+        <u-loadmore :status="loadStatus" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -77,7 +71,7 @@
                         name: '已结束',
                         color: 'btn-end',
                     },
-                }
+                },
             };
         },
         onLoad() {
@@ -98,6 +92,16 @@
                     unit = num.toFixed(2) + '%';
                 } else {
                     unit = '0%';
+                }
+                return unit;
+            },
+            // 进度数
+            getPercent(sales, stock) {
+                let unit = 0;
+                if (stock + sales > 0) {
+                    let num = (sales / (sales + stock)) * 100;
+                } else {
+                    unit = 30;
                 }
                 return unit;
             },
@@ -135,20 +139,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../../static/style/pinTuan.scss';
-    .tab-box .tab-item { flex: 1; line-height: 84rpx; text-align: center; background: #636363; color: #fff; font-size: 28rpx; font-family: PingFang SC; font-weight: 500; color: #ffffff; position: relative; border-right: 1rpx solid #fff; }
-        .tab-box .tab-item .tab-triangle { position: absolute; z-index: 2; bottom: -14rpx; left: 50%; transform: translateX(-50%); width: 28rpx; height: 28rpx; background: #e54d42; transform: rotate(45deg); transform-origin: center; }
-    .tab-box .tab-active { background: #e54d42; }
-    .goods-item { margin-bottom: 2rpx; }
-        .goods-item .cu-progress { width: 225rpx; height: 16rpx; }
-            .goods-item .cu-progress .progress--color { background: #e54d42; }
-        .goods-item .progress-text { color: #999999; font-size: 20rpx; margin-left: 25rpx; }
-        .goods-item .buy-btn { position: absolute; right: 0; bottom: -20rpx; width: 140rpx; height: 60rpx; border-radius: 30rpx; font-size: 26rpx; font-family: PingFang SC; font-weight: 400; padding: 0; }
-        .goods-item .btn-end,
-        .goods-item .btn-nostart { background: #eeeeee; color: #999999; }
-        .goods-item .btn-ing { background: linear-gradient(45deg,#f43f3b,#ed1c24); box-shadow: 0px 7rpx 6rpx 0px rgba(229, 138, 0, 0.22); color: #ffffff; }
-
-
-
-    .activity-goods-box .goods-right { width: 480rpx; }
+    @import "list.scss";
 </style>

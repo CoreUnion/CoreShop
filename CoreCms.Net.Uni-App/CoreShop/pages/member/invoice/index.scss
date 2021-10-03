@@ -1,0 +1,15 @@
+﻿.invoiceBox { margin: 30rpx 20rpx; margin-bottom: 20rpx; background-color: #ffffff; padding: 30rpx; border-radius: 10rpx; box-shadow: 0 0 10rpx #eeeeee; overflow: auto;
+    .invoiceLeft { height: 90rpx; width: 90rpx; overflow: hidden; float: left;
+        .leftIco { height: 100%; width: 100%; }
+    }
+    .invoiceRight { width: calc(100% - 120rpx); float: right;
+        .invoiceAmount { font-size: 32rpx; margin-bottom: 20rpx;
+            .status_no { margin-left: 20rpx; font-size: 24rpx; color: #F44336; }
+            .status_yes { margin-left: 20rpx; font-size: 24rpx; color: #0d9e13; }
+        }
+        .invoiceTitle { font-size: 24rpx; color: #888888; }
+        .invoiceTaxNumber { font-size: 24rpx; color: #888888; }
+        .invoiceTime { border-top: 2rpx #eeeeee dashed; margin-top: 20rpx; padding-top: 20rpx; font-size: 24rpx; color: #F44336; }
+    }
+}
+
