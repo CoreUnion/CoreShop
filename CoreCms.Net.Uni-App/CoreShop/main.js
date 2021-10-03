@@ -1,37 +1,35 @@
-import Vue from 'vue'
+ï»¿import Vue from 'vue'
 import App from './App'
-
+//ä¸Šä¼ æ–¹æ³•
 import * as Upload from '@/common/utils/uploadHelper.js'
-
+//å¸¸ç”¨æ–¹æ³•åº“
 import * as Common from '@/common/utils/commonHelper.js'
+//æœ¬åœ°å­˜å‚¨å°è£…
 import * as Db from '@/common/utils/dbHelper.js'
-import * as Config from '@/common/setting/constVarsHelper.js'
+//å…¨å±€å¸¸é‡é…ç½®
+import * as GlobalConstVars from '@/common/setting/constVarsHelper.js'
+
+//å…¨å±€å¸¸é‡é…ç½®
+import * as CoreTheme from '@/common/setting/coreThemeHelper.js'
+
 import store from '@/common/store'
 
-//ÒıÈëÈ«¾ÖuView
+//å¼•å…¥å…¨å±€uView
 import uView from 'uview-ui';
 Vue.use(uView);
 
 
-// ÒıÈëuView¶ÔĞ¡³ÌĞò·ÖÏíµÄmixin·â×°
+// å¼•å…¥uViewå¯¹å°ç¨‹åºåˆ†äº«çš„mixinå°è£…
 let mpShare = require('@/uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare)
-
-//ÒıÈëÈ«¾ÖcolorUIÍ·²¿
-import cuCustom from '@/static/colorui/components/cu-custom.vue'
-Vue.component('cu-custom', cuCustom)
-
-import { apiFilesUrl } from '@/common/setting/constVarsHelper.js'
-
 
 Vue.config.productionTip = false
 Vue.prototype.$upload = Upload;
 Vue.prototype.$common = Common;
 Vue.prototype.$db = Db;
-Vue.prototype.$config = Config;
+Vue.prototype.$globalConstVars = GlobalConstVars;
+Vue.prototype.$coreTheme = CoreTheme;
 Vue.prototype.$store = store;
-
-Vue.prototype.$apiFilesUrl = apiFilesUrl;
 
 App.mpType = 'app'
 
@@ -39,12 +37,12 @@ const app = new Vue({
     ...App
 })
 
-// httpÀ¹½ØÆ÷
+// httpæ‹¦æˆªå™¨
 import httpInterceptor from '@/common/request/http.interceptor.js'
-// ÕâÀïĞèÒªĞ´ÔÚ×îºó£¬ÊÇÎªÁËµÈVue´´½¨¶ÔÏóÍê³É£¬ÒıÈë"app"¶ÔÏó(Ò²¼´Ò³ÃæµÄ"this"ÊµÀı)
+// è¿™é‡Œéœ€è¦å†™åœ¨æœ€åï¼Œæ˜¯ä¸ºäº†ç­‰Vueåˆ›å»ºå¯¹è±¡å®Œæˆï¼Œå¼•å…¥"app"å¯¹è±¡(ä¹Ÿå³é¡µé¢çš„"this"å®ä¾‹)
 Vue.use(httpInterceptor, app)
 
-// http½Ó¿ÚAPI¼¯ÖĞ¹ÜÀíÒıÈë²¿·Ö
+// httpæ¥å£APIé›†ä¸­ç®¡ç†å¼•å…¥éƒ¨åˆ†
 import httpApi from '@/common/request/http.api.js'
 Vue.use(httpApi, app)
 

@@ -1,0 +1,18 @@
+﻿.tab-box {
+    .tab-item { flex: 1; line-height: 84rpx; text-align: center; background: #636363; color: #fff; font-size: 28rpx; font-family: PingFang SC; font-weight: 500; color: #ffffff; position: relative; border-right: 1rpx solid #fff;
+        .tab-triangle { position: absolute; z-index: 2; bottom: -14rpx; left: 50%; transform: translateX(-50%); width: 28rpx; height: 28rpx; background: #e54d42; transform: rotate(45deg); transform-origin: center; }
+    }
+    .tab-active { background: #e54d42; }
+}
+
+.goods-item { margin-bottom: 2rpx;
+    .cu-progress { width: 225rpx; }
+    .progress-text { color: #999999; font-size: 20rpx; margin-left: 25rpx; }
+    .buy-btn { position: absolute; right: 0; bottom: -20rpx; width: 140rpx; height: 60rpx; border-radius: 30rpx; font-size: 26rpx; font-family: PingFang SC; font-weight: 400; padding: 0; }
+    .btn-ing { background: linear-gradient(45deg,#f43f3b,#ed1c24); box-shadow: 0px 7rpx 6rpx 0px rgba(229, 138, 0, 0.22); color: #ffffff; }
+}
+    .goods-item .btn-end,
+    .goods-item .btn-nostart { background: #eeeeee; color: #999999; }
+.activity-goods-box {
+    .goods-right { width: 480rpx; }
+}

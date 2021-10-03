@@ -4,14 +4,14 @@
         <u-navbar :title="title"></u-navbar>
 
         <!-- 条件筛选 -->
-        <view class="u-row-center bg-white">
+        <view class="u-row-center coreshop-bg-white">
             <u-dropdown ref="uDropdown">
                 <u-dropdown-item v-model="comprehensiveDataValue" title="综合" :options="comprehensiveData" @change="comprehensive"></u-dropdown-item>
                 <u-dropdown-item v-model="priceSortDataValue" title="价格" :options="priceSortData" @change="priceSort"></u-dropdown-item>
                 <u-dropdown-item v-model="salesVolumeDataValue" title="销量" :options="salesVolumeData" @change="salesVolume"></u-dropdown-item>
                 <u-dropdown-item v-model="current" title="显示" :options="currentData"></u-dropdown-item>
                 <u-dropdown-item title="其他">
-                    <view class="slot-content bg-white">
+                    <view class="slot-content coreshop-bg-white">
                         <view class="fliter-c u-padding-10 u-margin-bottom-80 u-padding-bottom-60">
                             <view class="fliter-item">
                                 <view class="fliter-item-title">
@@ -94,7 +94,7 @@
                                         {{item.name}}
                                     </view>
                                     <view class="good-price">
-                                        {{item.price}}元 <span class="u-font-xs color-9 linethrough u-margin-left-15 text-gray">{{item.mktprice}}元</span>
+                                        {{item.price}}元 <span class="u-font-xs  coreshop-text-through u-margin-left-15 coreshop-text-gray">{{item.mktprice}}元</span>
                                     </view>
                                     <view class="good-tag-recommend" v-if="item.isRecommend">
                                         推荐
@@ -109,7 +109,7 @@
                     </view>
                     <!-- 无数据时默认显示 -->
                     <view class="coreshop-emptybox" v-else>
-                        <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="当前列表为空" mode="list"></u-empty>
+                        <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="当前列表为空" mode="list"></u-empty>
                     </view>
                 </view>
 
@@ -135,7 +135,7 @@
                                                 {{item.name}}
                                             </view>
                                             <view class="good-price u-padding-10">
-                                                {{item.price}}元 <span class="u-font-xs color-9 linethrough u-margin-left-15 text-gray">{{item.mktprice}}元</span>
+                                                {{item.price}}元 <span class="u-font-xs  coreshop-text-through u-margin-left-15 coreshop-text-gray">{{item.mktprice}}元</span>
                                             </view>
                                             <view class="good-des u-padding-10" v-if="item.commentsCount > 0">
                                                 {{ item.commentsCount }}条评论
@@ -152,14 +152,14 @@
                         <u-loadmore :status="loadStatus" :icon-type="loadIconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
                     </view>
                     <view class="coreshop-emptybox" v-else>
-                        <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="当前列表为空" mode="list"></u-empty>
+                        <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="当前列表为空" mode="list"></u-empty>
                     </view>
                 </view>
             </scroll-view>
         </view>
         <u-back-top :scroll-top="scrollTop" :duration="300"></u-back-top>
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -655,36 +655,5 @@
 </script>
 
 <style scoped lang="scss">
-    .topBox { position: sticky; z-index: 1; width: 100%; /* #ifdef APP-PLUS */ top: calc(var(--status-bar-height) + 70rpx); /* #endif */ /* #ifdef H5 */ top: calc(var(--status-bar-height) + 110rpx); /* #endif */ /* #ifdef MP */ top: calc(var(--status-bar-height) + 135rpx); /* #endif */ }
-
-    .good_box { border-radius: 8px; margin: 5px; background-color: #ffffff; padding: 5px; position: relative; width: calc(100% - 6px); }
-    .good_image { width: 100%; border-radius: 4px; }
-    .good_title { font-size: 26rpx; margin-top: 5px; color: $u-main-color; }
-    .good_title-xl { font-size: 28rpx; margin-top: 5px; color: $u-main-color; }
-    .good-tag-hot { display: flex; margin-top: 5px; position: absolute; top: 15rpx; left: 15rpx; background-color: $u-type-error; color: #FFFFFF; display: flex; align-items: center; padding: 4rpx 14rpx; border-radius: 50rpx; font-size: 20rpx; line-height: 1; }
-    .good-tag-recommend { display: flex; margin-top: 5px; position: absolute; top: 15rpx; right: 15rpx; background-color: $u-type-primary; color: #FFFFFF; margin-left: 10px; border-radius: 50rpx; line-height: 1; padding: 4rpx 14rpx; display: flex; align-items: center; border-radius: 50rpx; font-size: 20rpx; }
-    .good-tag-recommend2 { display: flex; margin-top: 5px; position: absolute; bottom: 15rpx; left: 15rpx; background-color: $u-type-primary; color: #FFFFFF; border-radius: 50rpx; line-height: 1; padding: 4rpx 14rpx; display: flex; align-items: center; border-radius: 50rpx; font-size: 20rpx; }
-    .good-price { font-size: 30rpx; color: $u-type-error; margin-top: 5px; }
-    .good-des { font-size: 22rpx; color: $u-tips-color; margin-top: 5px; }
-    .contentBody { position: relative; }
-    .btnCart { position: absolute; bottom: 5rpx; right: 10rpx; }
-
-    .fliter-item-title { padding: 20upx 26upx 20upx 0; width: 724upx; margin-left: 26upx; border-bottom: 2upx solid #f3f3f3; position: relative; background-color: #fff; color: #333; display: flex; min-height: 90upx; align-items: center; justify-content: space-between; }
-    .fliter-item-title-hd { display: flex; /* vertical-align: middle; */ align-items: center; font-size: 28upx; position: relative; }
-
-    .fliter-item-title-hd-title { /* float: left; */ display: inline-block; position: relative; /* #ifdef MP-ALIPAY */ top: 4upx; /* #endif */ }
-
-
-    .fliter-c { }
-    .fliter-item { }
-        .fliter-item .fliter-item-title { border-bottom: none; }
-    .fliter-i-c { padding: 0 26upx; overflow: hidden; }
-    .fic-item { display: inline-block; float: left; width: 160upx; margin-right: 14upx; height: 70upx; background-color: #f1f1f1; text-align: center; font-size: 24upx; margin-bottom: 14upx; color: #333; padding: 0 10upx; }
-    .fic-item-active { background-color: #ff7159; color: #fff; }
-    .fic-item-text { position: relative; top: 50%; transform: translateY(-50%); }
-    .fic-item:nth-child(4n) { margin-right: 0; }
-    .fic-item-line { float: left; margin: 34upx 18upx 0 0; width: 50upx; height: 2upx; border-bottom: 2upx solid #ccc; }
-    .fic-item-input { position: relative; top: 50%; transform: translateY(-50%); }
-
-    .coreshop-bottomBox { text-align: center; height: 120rpx; }
+    @import "list.scss";
 </style>

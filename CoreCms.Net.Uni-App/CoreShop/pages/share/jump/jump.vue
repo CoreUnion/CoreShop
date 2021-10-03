@@ -122,7 +122,7 @@
             //todo:: 功能暂无后续开发
             // gotoInvitationGroup(id, groupId, teamId) {
             // 	if(id && id != '' && groupId && groupId != '' && teamId && teamId != ''){
-            // 		let url = '/pages/member/order/invitationGroup?id=' + id + '&groupId=' + groupId + '&teamId=' + teamId;
+            // 		let url = '/pages/member/order/invitationGroup/invitationGroup?id=' + id + '&groupId=' + groupId + '&teamId=' + teamId;
             // 		this.$u.route({ type: 'redirectTo', url: url });
             // 	}else{
             // 		this.gotoIndex();
@@ -139,7 +139,7 @@
             },
             gotoStore(id) {
                 if (id && id != '') {
-                    let url = '/pages/member/distribution/myStore?store=' + id;
+                    let url = '/pages/member/distribution/myStore/myStore?store=' + id;
                     this.$u.route({ type: 'redirectTo', url: url });
                 } else {
                     this.gotoIndex();
@@ -147,7 +147,7 @@
             },
             gotoAgentStore(id) {
                 if (id && id != '') {
-                    let url = '/pages/member/agent/myStore?store=' + id;
+                    let url = '/pages/member/agent/myStore/myStore?store=' + id;
                     this.$u.route({ type: 'redirectTo', url: url });
                 } else {
                     this.gotoIndex();

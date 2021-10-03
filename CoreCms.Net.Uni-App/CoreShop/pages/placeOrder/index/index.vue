@@ -10,101 +10,96 @@
                 <view class="content">
                     <view v-show="typeCurrent === 0 || typeCurrent === 1">
                         <!-- 收货地址信息 -->
-                        <view class="margin-tb-sm coreshop-view-box" v-if="userShip && userShip.id" @click="showAddressList">
-                            <view class="bg-white coreshop-card address-view">
-                                <view class="cu-list menu-avatar">
-                                    <view class="cu-item">
-                                        <view class="bg-grey icon-view">
-                                            <text class="cuIcon-locationfill" />
+                        <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box" v-if="userShip && userShip.id" @click="showAddressList">
+                            <view class="coreshop-bg-white coreshop-card address-view">
+                                <view class="coreshop-list menu-avatar">
+                                    <view class="coreshop-list-item">
+                                        <view class="coreshop-bg-grey icon-view">
+                                            <u-icon name="map"></u-icon>
                                         </view>
                                         <view class="content">
-                                            <view class="text-black">
+                                            <view class="coreshop-text-black">
                                                 <text>收货人：{{ userShip.name || '' }}</text>
-                                                <text class="margin-left">{{ userShip.mobile || ''}}</text>
+                                                <text class="u-margin-left-20">{{ userShip.mobile || ''}}</text>
                                             </view>
-                                            <view class="text-gray text-sm flex">
-                                                <view class="text-cut">{{ userShip.areaName || ''}} {{userShip.address || ''}}</view>
+                                            <view class="coreshop-text-gray u-font-sm flex">
+                                                <view class="u-line-1">{{ userShip.areaName || ''}} {{userShip.address || ''}}</view>
                                             </view>
                                         </view>
-                                        <view class="action">
-                                            <text class="text-gray cuIcon-right" @click="goAddress()" />
+                                        <view class="action coreshop-text-gray">
+                                            <u-icon name="arrow-right"  @click="goAddress()"></u-icon>
                                         </view>
                                     </view>
                                 </view>
                                 <view class="address-line" />
                             </view>
                         </view>
-
-                        <view class="margin-tb-sm coreshop-view-box" v-else>
-                            <view class="bg-white coreshop-card address-view text-center u-padding-bottom-30">
-                                <button class="cu-btn radius bg-red" @click="goAddress()">添加收货地址</button>
+                        <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box" v-else>
+                            <view class="coreshop-bg-white coreshop-card address-view u-text-center u-padding-bottom-30">
+                                <u-button type="error" size="mini" @click="goAddress()">添加收货地址</u-button>
                                 <view class="address-line" />
                             </view>
-
                         </view>
-
                     </view>
                     <view v-show="typeCurrent === 2">
                         <!-- 门店信息 -->
-                        <view class="margin-tb-sm coreshop-view-box" v-if="store && store.id" @click="goStorelist()">
-                            <view class="bg-white coreshop-card address-view">
-                                <view class="cu-list menu-avatar">
-                                    <view class="cu-item">
-                                        <view class="bg-grey icon-view">
-                                            <text class="cuIcon-locationfill" />
+                        <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box" v-if="store && store.id" @click="goStorelist()">
+                            <view class="coreshop-bg-white coreshop-card address-view">
+                                <view class="coreshop-list menu-avatar">
+                                    <view class="coreshop-list-item">
+                                        <view class="coreshop-bg-grey icon-view">
+                                            <u-icon name="map"></u-icon>
                                         </view>
                                         <view class="content">
-                                            <view class="text-black">
+                                            <view class="coreshop-text-black">
                                                 <text>{{store.name|| ''}}</text>
-                                                <text class="margin-left">{{store.mobile|| ''}}</text>
+                                                <text class="u-margin-left-20">{{store.mobile|| ''}}</text>
                                             </view>
-                                            <view class="text-gray text-sm flex">
-                                                <view class="text-cut">{{store.address|| ''}}</view>
+                                            <view class="coreshop-text-gray u-font-sm flex">
+                                                <view class="u-line-1">{{store.address|| ''}}</view>
                                             </view>
                                         </view>
-                                        <view class="action">
-                                            <text class="text-gray cuIcon-right" />
+                                        <view class="action coreshop-text-gray">
+                                            <u-icon name="arrow-right"  @click="goStorelist()"></u-icon>
                                         </view>
                                     </view>
                                 </view>
                                 <view class="address-line" />
                             </view>
                         </view>
-                        <view v-else class='margin-tb-sm coreshop-view-box' @click="goStorelist()">
-                            <view class="bg-white coreshop-card address-view">
-                                <view>
-                                    <view class='cell-item add-title-item right-img no-store cell-item-bd-block'>暂无门店</view>
-                                </view>
+                        <view v-else class='u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box' @click="goStorelist()">
+                            <view class="coreshop-bg-white coreshop-card address-view">
+                                    <view class='u-padding-20 u-text-center'>暂无门店</view>
                                 <view class="address-line" />
                             </view>
                         </view>
                     </view>
                 </view>
-                <view class='margin-tb-sm coreshop-view-box' v-if="storeSwitch == 1 && typeCurrent === 2">
-                    <view class="cu-form-group">
+                <view class='u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box' v-if="storeSwitch == 1 && typeCurrent === 2">
+                    <view class="coreshop-form-group">
                         <view class="title">姓名</view>
-                        <input class='cell-bd-input' placeholder='请输入提货人姓名' v-model="storePick.name" style="width: 100%;"></input>
+                        <input class='coreshop-cell-bd-input' placeholder='请输入提货人姓名' v-model="storePick.name" style="width: 100%;"></input>
                     </view>
-                    <view class="cu-form-group">
+                    <view class="coreshop-form-group">
                         <view class="title">电话</view>
-                        <input class='cell-bd-input' placeholder='请输入提货人电话' v-model="storePick.mobile" style="width: 100%;"></input>
+                        <input class='coreshop-cell-bd-input' placeholder='请输入提货人电话' v-model="storePick.mobile" style="width: 100%;"></input>
                     </view>
                 </view>
                 <!-- 商品列表信息 -->
                 <!--商品信息-->
-                <view class="margin-tb-sm coreshop-view-box">
-                    <view class="bg-white coreshop-card goods-view">
-                        <view class="goods-info-view-box solid-bottom" v-if="item.isSelect == true" v-for="(item, index) in products" :key="index">
-                            <view class="cu-avatar radius lg" :style="[{backgroundImage:'url('+ item.products.images+'?x-oss-process=image/resize,m_lfit,h_200,w_200' +')'}]" />
+                <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box">
+                    <view class="coreshop-bg-white coreshop-card goods-view">
+                        <view class="goods-info-view-box coreshop-solid-bottom" v-if="item.isSelect == true" v-for="(item, index) in products" :key="index">
+                            <view class="coreshop-avatar radius lg" :style="[{backgroundImage:'url('+ item.products.images+'?x-oss-process=image/resize,m_lfit,h_200,w_200' +')'}]" />
                             <view class="goods-info-view">
-                                <view class="text-black u-line-2">{{ item.products.name || ''}}</view>
-                                <view class="text-sm text-gray" v-if="item.products.spesDesc !== null">{{ item.products.spesDesc || ''}}</view>
+                                <view class="coreshop-text-black u-line-2">{{ item.products.name || ''}}</view>
+                                <view class="u-font-sm coreshop-text-gray" v-if="item.products.spesDesc !== null">{{ item.products.spesDesc || ''}}</view>
                                 <view class="coreshop-tag-view" v-if="item.products.promotionList">
-                                    <text class="cu-tag line-blue sm radius" v-for="(v, k) in item.products.promotionList" :key="k"> {{ v.name || ''}}</text>
+                                    <u-tag :text="v.name" mode="light" size="mini" v-for="(v, k) in item.products.promotionList" :key="k"/>
                                 </view>
                                 <view class="goods-price-view">
-                                    <text class="text-price text-red text-lg">{{ item.products.price || ''}}</text>
-                                    <view class='text-right goods-num'>× {{ item.nums || ''}}</view>
+                                    <text class="coreshop-text-price coreshop-text-red u-font-lg">{{ item.products.price || ''}}</text>
+                                    <view class='u-text-right goods-num'>× {{ item.nums || ''}}</view>
                                 </view>
                             </view>
                         </view>
@@ -113,33 +108,30 @@
             </view>
 
             <!--商品信息-->
-            <view class="margin-tb-sm coreshop-view-box" v-if="userCoupons.length>0">
-                <view class="bg-white coreshop-card goods-view">
-
-                    <view class="text-black coreshop-gift-list">
-                        <view class="text-cut title">优惠券</view>
-                        <u-tag class="text-right" text="取消选择" closeable type="error" shape="circle" mode="dark" size="mini" @click="notUseCoupon()" v-if="usedCoupons.length>0" />
+            <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box" v-if="userCoupons.length>0">
+                <view class="coreshop-bg-white coreshop-card goods-view">
+                    <view class="coreshop-text-black coreshop-gift-list">
+                        <view class="u-line-1 title">优惠券</view>
+                        <u-tag class="u-text-right" text="取消选择" closeable type="error" shape="circle" mode="dark" size="mini" @click="notUseCoupon()" v-if="usedCoupons.length>0" />
                     </view>
-
                     <!--滑动列表-->
                     <view class="coupon-scroll-box">
                         <scroll-view class="coupon-scroll" scroll-x>
                             <block v-for="(item, index) in userCoupons" :key="index">
-                                <view :id="['scroll' + (index + 1 )]" class="coupon-scroll-item margin-top-sm flex coreshop-service-view couponBox" @click="couponHandle(index)">
-                                    <view class="flex-sub bg-page padding-sm margin-xs radius ">
-                                        <view class="text-black text-cut">{{ item.couponName || ''}}</view>
-                                        <view class="text-gray text-sm text-cut"> {{ item.expression2 }}</view>
-                                        <view class="text-black">
-                                            <!--<text class="margin-right-xs">￥ 95.00</text>-->
-                                            <text class="cu-tag line-red sm radius">有效期：{{ item.stime + ' 至 ' + item.etime }}</text>
+                                <view :id="['scroll' + (index + 1 )]" class="coupon-scroll-item u-margin-top-20 flex coreshop-service-view couponBox" @click="couponHandle(index)">
+                                    <view class="flex-sub bg-page u-padding-20 u-margin-10 radius ">
+                                        <view class="coreshop-text-black u-line-1">{{ item.couponName || ''}}</view>
+                                        <view class="coreshop-text-gray u-font-sm u-line-1"> {{ item.expression2 }}</view>
+                                        <view class="coreshop-text-black">
+                                            <text class="line-red u-font-20 radius">有效期：{{ item.stime + ' 至 ' + item.etime }}</text>
                                         </view>
                                         <view v-if="!item.checked && item.disabled">
                                             <view class="coreshop-corner-mark" />
-                                            <text class="cuIcon-check check-icon" />
+                                            <u-icon name="checkmark" class="check-icon"></u-icon>
                                         </view>
                                         <view v-else-if="item.checked && item.disabled">
                                             <view class="coreshop-corner-mark check" />
-                                            <text class="cuIcon-check check-icon check" />
+                                            <u-icon name="checkmark" class="check-icon check"></u-icon>
                                         </view>
                                     </view>
                                 </view>
@@ -148,111 +140,100 @@
                     </view>
                 </view>
             </view>
-
-
             <!--支付方式-->
-            <view class="margin-tb-sm coreshop-view-box">
-                <view class="bg-white coreshop-card pay-view">
-                    <view class="cu-list menu">
+            <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box">
+                <view class="coreshop-bg-white coreshop-card pay-view">
+                    <view class="coreshop-list menu">
                         <!-- 商户开启积分 并且用户有积分情况下 -->
-                        <view class="cu-item" v-if="isOpenPoint === 1 && userPointNums > 0">
-                            <!--<view class="cu-item arrow">-->
+                        <view class="coreshop-list-item" v-if="isOpenPoint === 1 && userPointNums > 0">
+                            <!--<view class="coreshop-list-item arrow">-->
                             <view class="content">
-                                <text class="text-black">积分抵扣</text>
-                                <view class="text-gray text-xs flex">
-                                    <text class="text-cut">
+                                <text class="coreshop-text-black">积分抵扣</text>
+                                <view class="coreshop-text-gray u-font-xs flex">
+                                    <text class="u-line-1">
                                         可用{{ canUsePoint}}积分，可抵扣{{ pointMoney}}元，共有{{ userPointNums}}积分
                                     </text>
                                 </view>
                             </view>
                             <view class="action" @click="changePointHandle">
-                                <view class="text-gray fr">
-                                    <switch :class="isUsePoint?'checked':''" :checked="isUsePoint?true:false"></switch>
-                                    <!--<radio value="1" :checked="isUsePoint" color="#FF7159" style="transform:scale(0.7)" />-->
+                                <view class="coreshop-text-gray fr">
+                                    <switch :class="isUsePoint?'checked':''" :checked="isUsePoint"></switch>
                                 </view>
                             </view>
                         </view>
-                        <view class="cu-item arrow" v-if="invoiceSwitch == 1" @click="goInvoice()">
+                        <view class="coreshop-list-item" v-if="invoiceSwitch == 1" @click="goInvoice()">
                             <view class="content">
-                                <text class="text-black">发票</text>
+                                <text class="coreshop-text-black">发票</text>
                             </view>
                             <view class="action">
-                                <text class="text-gray">{{invoice.name|| '无'}}</text>
+                                <text class="coreshop-text-gray">{{invoice.name|| '无'}}</text>
+                                <u-icon name="arrow-right"></u-icon>
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
-
             <!--商品价格计算-->
-            <view class="margin-tb-sm coreshop-view-box">
-                <view class="bg-white coreshop-card coreshop-price-view">
+            <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box">
+                <view class="coreshop-bg-white coreshop-card coreshop-price-view">
 
-                    <view class="text-black item-view">
-                        <view class="text-cut title">商品总额</view>
-                        <text class="text-red text-price text-right">{{ cartData.goodsAmount }}</text>
-                    </view>
-
-                    <view class="text-black item-view">
-                        <view class="text-cut title">商品优惠</view>
-                        <text class="text-right">- {{ cartData.goodsPromotionMoney || '0'}}</text>
-                    </view>
-                    <view class="text-black item-view">
-                        <view class="text-cut title">订单优惠</view>
-                        <text class="text-right">- {{ cartData.orderPromotionMoney || '0' }}</text>
-                    </view>
-                    <view class="text-black item-view">
-                        <view class="text-cut title">优惠券抵扣</view>
-                        <text class="text-right">- {{ cartData.couponPromotionMoney  || '0'}}</text>
-                    </view>
-                    <view class="text-black item-view">
-                        <view class="text-cut title">积分抵扣</view>
-                        <text class="text-right">- {{ cartData.pointExchangeMoney || '0'}}</text>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">商品总额</view>
+                        <text class="coreshop-text-red coreshop-text-price u-text-right">{{ cartData.goodsAmount }}</text>
                     </view>
 
-                    <view class="text-black item-view">
-                        <view class="text-cut title">
-                            <text class="margin-right-xs">运费</text>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">商品优惠</view>
+                        <text class="u-text-right">- {{ cartData.goodsPromotionMoney || '0'}}</text>
+                    </view>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">订单优惠</view>
+                        <text class="u-text-right">- {{ cartData.orderPromotionMoney || '0' }}</text>
+                    </view>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">优惠券抵扣</view>
+                        <text class="u-text-right">- {{ cartData.couponPromotionMoney  || '0'}}</text>
+                    </view>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">积分抵扣</view>
+                        <text class="u-text-right">- {{ cartData.pointExchangeMoney || '0'}}</text>
+                    </view>
+                    <view class="coreshop-text-black item-view">
+                        <view class="u-line-1 title">
+                            <text class="u-margin-right-20">运费</text>
                             <text class="cuIcon-question icon" />
                         </view>
-                        <text class="text-right">{{ cartData.costFreight || '0'}}</text>
+                        <text class="u-text-right">{{ cartData.costFreight || '0'}}</text>
                     </view>
-
                 </view>
             </view>
-
             <!--买家留言-->
-            <view class="margin-tb-sm coreshop-view-box">
-                <view class="bg-white">
-                    <view class="cu-form-group margin-top">
+            <view class="u-margin-top-20 u-margin-bottom-20 coreshop-common-view-box">
+                <view class="coreshop-bg-white">
+                    <view class="u-margin-top-20 u-padding-20">
                         <view class="title">买家留言</view>
                         <!--<input v-model="memo" placeholder="50字以内(选填)" name="input" />-->
                     </view>
-                    <view class="cu-form-group">
+                    <view class="u-padding-20">
                         <textarea class="memoBox" maxlength="50" @input="memoChange" placeholder="50字以内(选填)"></textarea>
                     </view>
                 </view>
             </view>
-
             <!--占位底部距离-->
-            <view class="cu-tabbar-height" />
-
+            <view class="coreshop-tabbar-height" />
             <!--底部操作-->
-            <view class="bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
-                <view class="cu-bar padding-lr">
-                    <view class="text-black text-bold price-view">
+            <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
+                <view class="u-flex u-flex-nowrap u-row-between  u-padding-left-20 u-padding-right-20  u-padding-top-20 w100">
+                    <view class="coreshop-text-black coreshop-text-bold price-view">
                         <text class="u-margin-right-20">共 {{ productNums}} 件商品</text>
-                        <text>合计<text class="text-price text-red text-lg u-margin-left-20"> {{ cartData.amount}}</text></text>
+                        <text>合计<text class="coreshop-text-price coreshop-text-red u-font-lg u-margin-left-20"> {{ cartData.amount}}</text></text>
                     </view>
-                    <view class="btn-view">
-                        <button class="cu-btn radius bg-red" @tap="$u.throttle(toPay, 500)" :disabled='submitStatus' :loading='submitStatus'>确认下单</button>
-                    </view>
+                    <u-button  size="medium"  type="error" @click="toPay" :disabled='submitStatus' :loading='submitStatus'>确认下单</u-button>
                 </view>
             </view>
         </div>
-
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
@@ -398,7 +379,7 @@
             // 没有收货地址时跳转
             goAddress() {
                 console.log("没有收货地址时跳转");
-                this.$u.route('/pages/member/address/list?type=order')
+                this.$u.route('/pages/member/address/list/list?type=order')
             },
             // 获取用户的默认收货地址
             userDefaultShip() {
@@ -718,7 +699,7 @@
             },
             // 跳转我的收货地址列表
             showAddressList() {
-                this.$u.route('/pages/member/address/list?type=order')
+                this.$u.route('/pages/member/address/list/list?type=order')
             },
             // tab点击切换
             onClickItem(index) {
@@ -815,5 +796,5 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../static/style/placeOrder.scss';
+    @import 'index.scss';
 </style>

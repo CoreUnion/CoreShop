@@ -3,19 +3,19 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="邀请列表"></u-navbar>
         <!-- 邀请列表 -->
-        <view class="team-box">
-            <view class="team-list">
+        <view class="coreshop-team-box">
+            <view class="coreshop-team-list">
                 <view v-if="list.length">
-                    <view class="team-children x-f" v-for="children in list" :key="children.id">
+                    <view class="coreshop-team-children coreshop-flex coreshop-align-center" v-for="children in list" :key="children.id">
                         <image class="head-img" :src="children.avatarImage" mode=""></image>
                         <view class="head-info">
-                            <view class="name-box x-bc">
+                            <view class="name-box u-flex u-row-between">
                                 <view class="name-text">{{ children.nickName }}</view>
-                                <view class="x-f">
+                                <view class="coreshop-flex coreshop-align-center">
                                     <text class="cu-tag bg-grey sm radius">{{  children.mobile }}</text>
                                 </view>
                             </view>
-                            <view class="x-bc">
+                            <view class="u-flex u-row-between">
                                 <view class="head-time">{{ $u.timeFormat(children.createTime, 'yyyy年mm月dd日') }}</view>
                                 <view class="child-num u-margin-left-30">下级成员：{{ childNum || 0 }}人</view>
                             </view>
@@ -27,7 +27,7 @@
 
                 <!-- 无数据时默认显示 -->
                 <view class="coreshop-emptybox" v-else>
-                    <u-empty :src="$apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无邀请列表" mode="list"></u-empty>
+                    <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无邀请列表" mode="list"></u-empty>
                 </view>
 
             </view>
@@ -41,7 +41,7 @@
             return {
                 list: [],
                 page: 1, //当前页
-                limit: 10, //每页显示几条
+                limit: 20, //每页显示几条
                 status: 'loadmore',
                 iconType: 'flower',
                 loadText: {

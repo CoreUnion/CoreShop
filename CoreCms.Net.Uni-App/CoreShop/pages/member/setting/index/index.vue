@@ -3,71 +3,38 @@
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="设置"></u-navbar>
 
-        <view class="cu-list menu sm-border">
-            <view class="cu-item arrow" @click="navigateToHandle('/pages/member/setting/userInfo/index')">
-                <view class="content">
-                    <text class="cuIcon-settings text-pink"></text>
-                    <text class="text-grey">个人资料</text>
-                </view>
-            </view>
+        <u-cell-group>
+            <u-cell-item icon="setting" title="个人资料" @click="navigateToHandle('/pages/member/setting/userInfo/index')"></u-cell-item>
             <!-- #ifdef MP-WEIXIN  -->
-            <view class="cu-item arrow" @click="syncWeChatInfo()">
-                <view class="content">
-                    <text class="cuIcon-refresh text-pink"></text>
-                    <text class="text-grey">同步微信昵称头像</text>
-                </view>
-            </view>
+            <u-cell-item icon="reload" title="同步微信昵称头像" @click="syncWeChatInfo()"></u-cell-item>
             <!-- #endif  -->
-            <view class="cu-item arrow" @click="navigateToHandle('/pages/member/setting/userInfo/password')">
-                <view class="content">
-                    <text class="cuIcon-warn text-green"></text>
-                    <text class="text-grey">修改密码</text>
-                </view>
-            </view>
-            <view class="cu-item arrow" @click="goAboutUs()">
-                <view class="content">
-                    <text class="cuIcon-btn text-green"></text>
-                    <text class="text-grey">关于我们</text>
-                </view>
-            </view>
-            <view class="cu-item arrow" @click="goUserAgreementPage()">
-                <view class="content">
-                    <text class="cuIcon-emojiflashfill text-pink"></text>
-                    <text class="text-grey">用户协议</text>
-                </view>
-            </view>
-            <view class="cu-item arrow" @click="goUserPrivacyPolicy()">
-                <view class="content">
-                    <text class="cuIcon-tagfill text-red  margin-right-xs"></text>
-                    <text class="text-grey">隐私政策</text>
-                </view>
-            </view>
-            <view class="cu-item" @click="clearCache">
-                <view class="content">
-                    <text class="cuIcon-circlefill text-grey"></text>
-                    <text class="text-grey">清除缓存</text>
-                </view>
-                <view class="action">
-                    <text class="cuIcon-delete text-grey" />
-                </view>
-            </view>
-        </view>
-
+            <u-cell-item icon="warning" title="修改密码" @click="navigateToHandle('/pages/member/setting/userInfo/password')"></u-cell-item>
+            <u-cell-item icon="tags" title="关于我们" @click="goAboutUs()"></u-cell-item>
+            <u-cell-item icon="order" title="用户协议" @click="goUserAgreementPage()"></u-cell-item>
+            <u-cell-item icon="eye-off" title="隐私政策" @click="goUserPrivacyPolicy()"></u-cell-item>
+            <u-cell-item icon="trash" title="清除缓存" @click="clearCache"></u-cell-item>
+            <u-cell-item icon="account" title="切换账号" @click="changeAccount"></u-cell-item>
+        </u-cell-group>
 
         <!--按钮-->
-        <view class="bg-white coreshop-footer-fixed coreshop-foot-padding-bottom" @click="logOff">
-            <view class="flex padding-sm flex-direction">
-                <button class="cu-btn bg-red">退出登录</button>
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
+            <view class="flex u-padding-20 flex-direction">
+                <u-button :custom-style="customStyle" type="error" size="medium" @click="logOff">退出登录</u-button>
             </view>
         </view>
-
     </view>
-
 </template>
 
 <script>
     import { commonUse, articles } from '@/common/mixins/mixinsHelper.js';
     export default {
+        data() {
+            return {
+                customStyle: {
+                    width: '100%',
+                }
+            }
+        },
         mixins: [commonUse, articles],
         methods: {
             navigateToHandle(pageUrl) {
@@ -137,6 +104,13 @@
                     uni.reLaunch({
                         url: '/pages/index/default/default'
                     })
+                })
+            },
+            // 切换账号
+            changeAccount() {
+                this.$common.modelShow('切换', '确认切换登录账号吗?', () => {
+                    this.$db.del('userToken')
+                    this.$u.route({url: '/pages/login/loginBySMS/loginBySMS',});
                 })
             }
         }

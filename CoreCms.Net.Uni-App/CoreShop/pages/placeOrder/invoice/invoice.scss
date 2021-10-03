@@ -1,0 +1,9 @@
+﻿.cu-form-group .title { min-width: calc(4em + 15px); }
+
+.coreshop-bottomBox .coreshop-btn { width: 100%; }
+.cheque { position: relative; }
+.cheque-content { position: absolute; left: 15rpx; top: 90rpx; z-index: 10; width: calc(100% - 30rpx);; background-color: #fff; box-shadow: 0 0 0.666667vw 0.4vw rgba(0, 0, 0, .13); border-radius: 10rpx; padding: 20rpx; }
+.tips-item { margin-bottom: 20rpx; }
+.tips-name { font-size: 32rpx; line-height: 35rpx; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 10rpx; }
+.sub-div { display: flex; width: 100%; justify-content: space-between; height: 30rpx; font-size: 24rpx; line-height: 30rpx; color: #999; }
+.num { display: inline-block; }

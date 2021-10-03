@@ -2,49 +2,43 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="我的积分"></u-navbar>
-        <view class="content">
-            <view class="integral-top bg-red">
+        <u-sticky offset-top="180">
+            <view class="integral-top coreshop-bg-red">
                 <view class="u-font-md text-white  u-margin-bottom-20">
                     可用积分
                 </view>
-                <view class="text-xxl  text-white u-margin-bottom-20">
+                <view class="u-font-xl coreshop-text-white u-margin-bottom-20">
                     {{ pointList.length ? pointList[0].balance : 0}}
                 </view>
-                <view class="u-font-xs text-gray">
+                <view class="u-font-xs coreshop-text-gray">
                     截止{{ nowDate }}可用积分
                 </view>
             </view>
-            
-            <view class="item-box">
-                <!-- 积分记录列表 -->
-                <view v-if="pointList.length>0">
-                    <view class="log-item x-bc" v-for="item in pointList" :key="item.id">
-                        <view class="item-left x-f">
-                            <!--<image class="log-img" :src="item.buyer.avatar" mode=""></image>-->
-                            <view class="y-start">
-                                <view class="log-name text-black">{{ item.typeName }}</view>
-                                <view class="log-notice text-grey">{{ item.remarks }}</view>
-                            </view>
-                        </view>
-                        <view class="item-right y-end">
-                            <view class="log-num text-red">{{ item.num > 0 ? '+' + item.num : item.num }}</view>
-                            <view class="log-date text-grey">{{ $u.timeFormat(item.createTime, 'yyyy.mm.dd') }}</view>
-
-                        </view>
+        </u-sticky>
+        <!-- 积分记录列表 -->
+        <view v-if="pointList.length>0">
+            <view class="coreshop-log-item u-flex u-row-between" v-for="item in pointList" :key="item.id">
+                <view class="item-left coreshop-flex coreshop-align-center">
+                    <!--<image class="log-img" :src="item.buyer.avatar" mode=""></image>-->
+                    <view class="coreshop-flex coreshop-flex-direction coreshop-align-start">
+                        <view class="log-name coreshop-text-black">{{ item.typeName }}</view>
+                        <view class="log-notice coreshop-text-grey">{{ item.remarks }}</view>
                     </view>
-                    <!-- 更多 -->
-                    <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
                 </view>
-
-                <!-- 无数据时默认显示 -->
-                <view class="coreshop-emptybox" v-else>
-                    <u-empty :src="$apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无积分记录" mode="list"></u-empty>
+                <view class="item-right coreshop-flex coreshop-flex-direction coreshop-align-end">
+                    <view class="log-num coreshop-text-red">{{ item.num > 0 ? '+' + item.num : item.num }}</view>
+                    <view class="log-date coreshop-text-grey">{{ $u.timeFormat(item.createTime, 'yyyy.mm.dd') }}</view>
                 </view>
             </view>
+            <!-- 更多 -->
+            <u-loadmore :status="status" :icon-type="iconType" :load-text="loadText" margin-top="20" margin-bottom="20" />
+        </view>
 
+        <!-- 无数据时默认显示 -->
+        <view class="coreshop-emptybox" v-else>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/history.png'" icon-size="300" text="暂无积分记录" mode="list"></u-empty>
         </view>
     </view>
-
 </template>
 <script>
     export default {
@@ -106,7 +100,5 @@
     }
 </script>
 <style lang="scss">
-    page { background-color: #fff; }
-    .integral-top { width: 690rpx; height: 301rpx; background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center; text-align: center; width: 698rpx; margin: 10rpx auto 20rpx; border-radius: 12rpx; padding: 40rpx 0; box-shadow: 1rpx 5rpx 16rpx 0px rgba(229,77,66, 0.81); }
-
+    @import "index.scss";
 </style>

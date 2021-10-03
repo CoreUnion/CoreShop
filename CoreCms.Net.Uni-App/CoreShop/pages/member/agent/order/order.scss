@@ -1,0 +1,58 @@
+﻿.direct-box { margin: 20rpx;
+    .direct-item { width: 341rpx; height: 117rpx; background: #ffffff; border-radius: 20rpx; padding: 20rpx;
+        .item-title { font-size: 22rpx; font-weight: 500; color: #999999; margin-bottom: 6rpx; }
+        .item-value { font-size: 38rpx; font-weight: 600; color: #333333; }
+    }
+}
+.team-data-box { padding: 20rpx;
+    .data-card { width: 340rpx; background: #ffffff; border-radius: 20rpx; padding: 20rpx;
+        .item-title { font-size: 22rpx; font-weight: 500; color: #999999; line-height: 30rpx; margin-bottom: 10rpx; }
+        .total-item { margin-bottom: 20rpx; }
+        .total-num { font-size: 38rpx; font-weight: 600; color: #333333; }
+        .category-num { font-size: 26rpx; font-weight: 600; color: #333333; }
+    }
+}
+.head_box { width: 750rpx; background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center;
+    .cu-back { color: #fff; font-size: 40rpx; }
+    .head-title { font-size: 38rpx; color: #fff; }
+}
+.nav-box { background-color: #fff; padding: 0 30rpx; }
+.state-item { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    .state-title { color: #666; font-weight: 500; font-size: 28rpx; line-height: 90rpx; }
+    .title-active { color: #333; }
+    .underline { display: block; width: 68rpx; height: 4rpx; background: #fff; border-radius: 2rpx; }
+    .underline-active { background: #e54d42; display: block; width: 68rpx; height: 4rpx; border-radius: 2rpx; }
+}
+.order-list { background-color: #fff; margin-top: 20rpx;
+    .order-head { padding: 20rpx;
+        .order-code { font-size: 26rpx; font-weight: 400; color: #999999; }
+        .order-state { font-size: 26rpx; font-weight: 500; color: #05c3a1; }
+    }
+    .order-from { background-color: #f9f9f9; padding: 20rpx;
+        .from-user { font-size: 24rpx; font-weight: 400; color: #666666;
+            .user-avatar { width: 26rpx; height: 26rpx; border-radius: 50%; margin-right: 8rpx; }
+            .user-name { font-size: 24rpx; font-weight: 400; color: #999999; }
+        }
+        .order-time { font-size: 24rpx; font-weight: 400; color: #999999; }
+    }
+    .goods-card { padding: 30rpx 20rpx;
+        .goods-img-box { margin-right: 30rpx;
+            .goods-img { width: 160rpx; height: 160rpx; background-color: #ccc; }
+        }
+        .goods-info { height: 160rpx; width: 600rpx; align-items: flex-start;
+            .goods-title { font-size: 28rpx; font-weight: 500; color: #333333; }
+            .goods-sku { font-size: 24rpx; font-weight: 400; color: #666666; }
+            .goods-price { font-size: 30rpx; font-weight: 500; color: #333333;
+                .goods-state { line-height: 30rpx; padding: 0 10rpx; background: #f1eeff; border: 1rpx solid #e54d42; border-radius: 30rpx; margin-left: 20rpx; font-size: 20rpx; color: #e54d42; }
+                &::before { content: '￥'; font-size: 20rpx; }
+            }
+        }
+    }
+    .total-box { height: 80rpx; padding: 0 20rpx;
+        .num-price { font-size: 24rpx; font-weight: 400; color: #999999; }
+        .name { font-size: 24rpx; font-weight: 400; color: #999999; }
+        .commission-num { font-size: 30rpx; font-weight: 400; color: #eb2b3d;
+            &::before { content: '￥'; font-size: 22rpx; }
+        }
+    }
+}

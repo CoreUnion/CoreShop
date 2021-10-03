@@ -1,11 +1,10 @@
-import {
-    apiFilesUrl
-} from '@/common/setting/constVarsHelper.js'
+import * as GlobalConstVars from '@/common/setting/constVarsHelper.js'
+
 
 module.exports = {
 	data() {
         return {
-            $apiFilesUrl: apiFilesUrl
+			$globalConstVars: GlobalConstVars
         }
 	},
 	onLoad() {

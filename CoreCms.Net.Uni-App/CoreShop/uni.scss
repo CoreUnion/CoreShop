@@ -92,6 +92,9 @@ $fz20: 40upx;
 /* uni.scss */
 @import "uview-ui/theme.scss";
 
+
+@import "static/style/coreTheme.scss";
+
 //项目静态资源请求地址，如果使用官方的静态文件地址可以直接替换为：https://files.coreshop.corecms.net
 //css中背景图片变量。js图片变量在constVarsHelper
 $apiFilesUrl: 'https://files.coreshop.corecms.net';

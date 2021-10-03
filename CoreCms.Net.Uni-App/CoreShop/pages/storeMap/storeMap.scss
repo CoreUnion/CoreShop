@@ -1,0 +1,7 @@
+﻿.content { width: 100%; /* #ifdef H5 */ height: calc(100vh - 44px); /* #endif */ }
+.map-body { width: 100%; height: 700rpx; position: relative; }
+.store-list { background-color: #fff; height: calc(100vh - 44px - 700rpx);
+    .coreshop-list-item { height: 160rpx;
+        .action { width: 130rpx; }
+    }
+}

@@ -25,9 +25,9 @@
                 </view>
                 <view class="hint">
                     登录即代表你同意
-                    <text @click="goUserAgreementPage()" class="color-o link">用户协议</text>
+                    <text @click="goUserAgreementPage()">用户协议</text>
                     和
-                    <text @click="goUserPrivacyPolicy()" class="color-o link">隐私政策</text>，
+                    <text @click="goUserPrivacyPolicy()">隐私政策</text>，
                     并授权使用您的{{appTitle}}账号信息（如昵称、头像、收获地址）以便您统一管理
                 </view>
             </view>
@@ -280,10 +280,10 @@
                     _this.$u.toast('请输入验证码');
                     return false;
                 }
-                if (_this.sessionAuthId == 0) {
-                    this.$refs.uToast.show({ title: '登录失败，请稍后再试', type: 'error', back: true });
-                    return false;
-                }
+                //if (_this.sessionAuthId == 0) {
+                //    this.$refs.uToast.show({ title: '登录失败，请稍后再试', type: 'error', back: true });
+                //    return false;
+                //}
                 var platform = 2;
                 //1就是h5登陆（h5端和微信公众号端），2就是微信小程序登陆，3是支付宝小程序，4是app，5是pc
                 // #ifdef MP-ALIPAY
@@ -361,5 +361,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../static/style/loginBySMS.scss';
+    @import 'loginBySMS.scss';
 </style>

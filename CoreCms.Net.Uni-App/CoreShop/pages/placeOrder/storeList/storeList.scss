@@ -1,0 +1,8 @@
+﻿.coreshop-list { margin: 20rpx;
+    &.menu-avatar {
+        & > .coreshop-list-item { height: auto;
+            & > .coreshop-avatar { position: absolute; left: 15rpx; }
+            .content { position: initial; width: calc(100% - 96rpx - 120rpx - 20rpx); }
+        }
+    }
+}

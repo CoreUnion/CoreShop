@@ -1,0 +1,34 @@
+﻿.wrap { display: flex; flex-direction: column; height: calc(100vh - var(--window-top)); width: 100%; }
+.nobox { height: 130rpx; width: 100%; line-height: 130rpx; font-size: 28rpx; text-align: center; -webkit-flex-shrink: 0; flex-shrink: 0; }
+
+
+.cart-shoppingcard { background: #FFFFFF; border-radius: 8rpx; margin: 0 20rpx; margin-top: 20rpx; border-radius: 16rpx; padding: 20rpx 20rpx; background: #FFFFFF !important; }
+    .cart-shoppingcard:last-child { margin-bottom: 150rpx }
+
+.cart-shopp-name { width: calc(100% - 120rpx); }
+.cart-shopp-go { width: 120rpx; }
+.cart-shoppingcard-goods { margin: 0rpx; display: flex; flex-wrap: nowrap; }
+.cart-shoppingcard-goods-checkbtn { width: 60rpx; flex-shrink: 0; }
+.cart-shoppingcard-goods-image { width: 120rpx; height: 120rpx; border-radius: 10rpx; margin-right: 20rpx; flex-shrink: 0; }
+.cart-shoppingcard-goods-body { width: 100%; }
+.cart-shoppingcard-goods-title { line-height: 1.4em; }
+.cart-shoppingcard-goods-price { color: #e54d42; font-size: 32rpx; display: flex; flex-wrap: nowrap; justify-content: space-between; }
+.cart-shoppingcard-goods-number { padding: 2px 0; }
+.cart-shoppingcard-remove { display: block; text-align: right; line-height: 50rpx; margin-top: 30rpx; color: #CCCCCC; font-size: 24rpx; }
+.cart-shoppingcard-checkbtn { width: 200rpx; margin-left: 50rpx; flex-shrink: 0; }
+.cart-shoppingcard-checkout { width: 180rpx; height: 100rpx; line-height: 100rpx; font-size: 28rpx; text-align: center; flex-shrink: 0; }
+.cart-bg-gray { background: #A5A7B2 !important; color: #FFFFFF !important; }
+.cart-badge { border-radius: 38rpx; height: 38rpx; line-height: 38rpx; padding: 0 13rpx; font-size: 22rpx; }
+
+.cart-space-between { display: flex; flex-direction: row; justify-content: space-between; }
+.cart-h5 { font-size: 30rpx; }
+.cart-bold { font-weight: bold; }
+.cart-nowrap { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; }
+.cart-flex-end { display: flex; flex-direction: row; justify-content: flex-end; }
+.cart-text { font-size: 22rpx; line-height: 40rpx; }
+
+.cart-flex-vcenter { align-items: center; }
+.cart-border-t { border-top: 1px solid #E9E9E9; }
+.cart-coreshop-bg-red { background: #e54d42 !important; color: #FFFFFF !important; }
+
+.slot-wrap { display: flex; align-items: center; padding: 0 20rpx; }

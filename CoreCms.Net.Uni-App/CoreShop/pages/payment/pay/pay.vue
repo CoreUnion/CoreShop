@@ -2,93 +2,86 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="支付"></u-navbar>
-        <view class="cu-bar bg-white solid-bottom">
-            <view class="action">
-                <text class="cuIcon-title text-orange"></text> 支付信息
-            </view>
-            <view class="action">
-            </view>
+        <view class="coreshop-bg-white coreshop-solid-bottom u-padding-30">
+            <u-icon name="error-circle" size="28" class="coreshop-text-orange" label="支付信息"></u-icon>
         </view>
         <!--商品信息-->
-        <view class="cu-list menu">
-            <view class="cu-item">
+        <view class="coreshop-list menu">
+            <view class="coreshop-list-item">
                 <view class="content">
-                    <text class="text-grey">订单类型</text>
+                    <text class="coreshop-text-grey">订单类型</text>
                 </view>
                 <view class="action">
-                    <text class="text-sm text-gray" v-if="type == 1">商品订单</text>
-                    <text class="text-sm text-gray" v-if="type == 2" @click="toRecharge()">充值订单</text>
-                    <text class="text-sm text-gray" v-if="type == 3">表单订单</text>
-                    <text class="text-sm text-gray" v-if="type == 4">付款码</text>
-                    <text class="text-sm text-gray" v-if="type == 5">服务订单</text>
+                    <text class="u-font-sm coreshop-text-gray" v-if="type == 1">商品订单</text>
+                    <text class="u-font-sm coreshop-text-gray" v-if="type == 2" @click="toRecharge()">充值订单</text>
+                    <text class="u-font-sm coreshop-text-gray" v-if="type == 3">表单订单</text>
+                    <text class="u-font-sm coreshop-text-gray" v-if="type == 4">付款码</text>
+                    <text class="u-font-sm coreshop-text-gray" v-if="type == 5">服务订单</text>
                 </view>
             </view>
             <template v-if="type == 1">
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">订单编号</text>
+                        <text class="coreshop-text-grey">订单编号</text>
                     </view>
                     <view class="action">
-                        <text class="text-grey text-sm" v-for="(item, index) in orderInfo.rel" :key="index" @click="goOrderDetail(item.sourceId)">{{ item.sourceId || '' }}</text>
+                        <text class="coreshop-text-grey u-font-sm" v-for="(item, index) in orderInfo.rel" :key="index" @click="goOrderDetail(item.sourceId)">{{ item.sourceId || '' }}</text>
                     </view>
                 </view>
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">订单金额</text>
+                        <text class="coreshop-text-grey">订单金额</text>
                     </view>
                     <view class="action">
-                        <text class="text-price text-red text-lg">{{ orderInfo.money || '' }}</text>
+                        <text class="coreshop-text-price coreshop-text-red u-font-lg">{{ orderInfo.money || '' }}</text>
                     </view>
                 </view>
             </template>
             <template v-else-if="type == 2">
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">充值金额</text>
+                        <text class="coreshop-text-grey">充值金额</text>
                     </view>
                     <view class="action">
-                        <text class="text-price text-red text-lg">{{ recharge || '' }}</text>
+                        <text class="coreshop-text-price coreshop-text-red u-font-lg">{{ recharge || '' }}</text>
                     </view>
                 </view>
             </template>
             <template v-else-if="type == 5">
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">购买服务</text>
+                        <text class="coreshop-text-grey">购买服务</text>
                     </view>
                     <view class="action">
-                        <text class="text-sm text-gray">{{ serviceInfo.title || '' }}</text>
+                        <text class="u-font-sm coreshop-text-gray">{{ serviceInfo.title || '' }}</text>
                     </view>
                 </view>
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">服务金额</text>
+                        <text class="coreshop-text-grey">服务金额</text>
                     </view>
                     <view class="action">
-                        <text class="text-price text-red text-lg">{{ serviceInfo.money || '' }}</text>
+                        <text class="coreshop-text-price coreshop-text-red u-font-lg">{{ serviceInfo.money || '' }}</text>
                     </view>
                 </view>
             </template>
             <template v-else>
-                <view class="cu-item">
+                <view class="coreshop-list-item">
                     <view class="content">
-                        <text class="text-grey">支付金额</text>
+                        <text class="coreshop-text-grey">支付金额</text>
                     </view>
                     <view class="action">
-                        <text class="text-price text-red text-lg">{{ recharge || '' }}</text>
+                        <text class="coreshop-text-price coreshop-text-red u-font-lg">{{ recharge || '' }}</text>
                     </view>
                 </view>
             </template>
 
         </view>
 
-        <view class="cu-bar bg-white solid-bottom margin-top">
-            <view class="action">
-                <text class="cuIcon-title text-orange"></text> 请点击选择以下支付方式
-            </view>
-            <view class="action">
-            </view>
+        <view class="coreshop-bg-white coreshop-solid-bottom u-padding-30  u-margin-top-30">
+            <u-icon name="checkmark-circle" size="28" class="coreshop-text-orange" label="请点击选择以下支付方式"></u-icon>
         </view>
+
         <!--支付方式-->
         <view class="content">
             <!-- #ifdef H5 -->
@@ -109,32 +102,32 @@
         </view>
 
         <!--提示信息-->
-        <view class="text-gray padding-sm text-sm">
+        <view class="coreshop-text-gray u-padding-20 u-font-sm">
             注：如果您在支付中选择的支付方式不适合或异常，请再次选择其他支付方式。
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 <script>
     // #ifdef H5
-    import paymentsByH5 from '@/components/corecms-payments/corecms-paymentsByH5.vue';
+    import paymentsByH5 from '@/components/coreshop-payments/coreshop-paymentsByH5.vue';
     // #endif
 
     // #ifdef MP-WEIXIN
-    import paymentsByWx from '@/components/corecms-payments/corecms-paymentsByWx.vue';
+    import paymentsByWx from '@/components/coreshop-payments/coreshop-paymentsByWx.vue';
     // #endif
 
     // #ifdef MP-ALIPAY
-    import paymentsByAli from '@/components/corecms-payments/corecms-paymentsByAli.vue';
+    import paymentsByAli from '@/components/coreshop-payments/coreshop-paymentsByAli.vue';
     // #endif
 
     // #ifdef APP-PLUS || APP-PLUS-NVUE
-    import paymentsByApp from '@/components/corecms-payments/corecms-paymentsByApp.vue';
+    import paymentsByApp from '@/components/coreshop-payments/coreshop-paymentsByApp.vue';
     // #endif
 
     // #ifdef MP-TOUTIAO
-    import paymentsByTt from '@/components/corecms-payments/corecms-paymentsByTt.vue';
+    import paymentsByTt from '@/components/coreshop-payments/coreshop-paymentsByTt.vue';
     // #endif
 
     import { orders } from '@/common/mixins/mixinsHelper.js';
@@ -149,7 +142,7 @@
                 orderInfo: {}, // 订单详情
                 userInfo: {}, // 用户信息
                 serviceInfo: {}, // 服务信息
-                formId: 0
+                formId: 0,
             };
         },
         components: {
@@ -235,20 +228,11 @@
             },
             // 跳转我的余额页面
             toRecharge() {
-                this.$u.route('/pages/member/balance/index');
+                this.$u.route('/pages/member/balance/index/index');
             }
         }
     };
 </script>
-<style scoped lang="scss">
-    view { box-sizing: border-box; }
-    .margin-cell-group { margin-bottom: 20upx; }
-    .cell-hd-title { color: #999; }
-    .payment-method .cell-item-hd { min-width: 70upx; }
-    .payment-method .cell-hd-icon { width: 70upx; height: 70upx; }
-    .payment-method .cell-item-bd { border-left: 2upx solid #f0f0f0; padding-left: 30upx; }
-    .payment-method .cell-bd-text { font-size: 28upx; color: #666; }
-    .payment-method .address { font-size: 24upx; color: #999; }
-    .flex-item { display: flex; justify-content: space-between; align-items: center; }
-        .flex-item .cell-item-ft { position: relative; top: 0; transform: translateY(0); right: 0; }
+<style lang="scss">
+    @import "pay.scss";
 </style>

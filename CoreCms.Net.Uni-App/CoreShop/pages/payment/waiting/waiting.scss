@@ -1,0 +1,6 @@
+﻿.content { position: relative; height: 80vh;
+    .content-c { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;
+        .load-img { width: 100upx; height: 100upx; }
+        .load-text { font-size: 26upx; }
+    }
+}

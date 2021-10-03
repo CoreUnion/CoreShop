@@ -2,7 +2,7 @@
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar title="搜索"></u-navbar>
-        <view class="u-padding-15 u-margin-bottom-15 bg-white u-border-bottom">
+        <view class="u-padding-15 u-margin-bottom-15 coreshop-bg-white u-border-bottom">
             <u-search placeholder="请输入关键字搜索" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="search" @custom="search"></u-search>
         </view>
 
@@ -25,7 +25,7 @@
             </view>
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 

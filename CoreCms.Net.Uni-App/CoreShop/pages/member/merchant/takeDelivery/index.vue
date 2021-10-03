@@ -1,10 +1,10 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <u-navbar title="提货核销"></u-navbar>
+        <u-navbar title="提货单核销"></u-navbar>
         <view class="content">
 
-            <view class="u-padding-15 u-margin-bottom-15 bg-white u-border-bottom">
+            <view class="u-padding-15 u-margin-bottom-15 coreshop-bg-white u-border-bottom">
                 <u-search placeholder="请输入完整提货单号、订单号、提货手机号" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="search" @custom="search"></u-search>
             </view>
 
@@ -14,12 +14,12 @@
 
             <view v-if="allData.length">
                 <checkbox-group @change="checkboxChange">
-                    <view class="order" :class="item.status?' grayscale':''" v-for="(item, index) in allData" :key="index">
+                    <view class="orderList" :class="item.status?' grayscale':''" v-for="(item, index) in allData" :key="index">
                         <view class="top">
                             <view class="left">
                                 <u-icon name="order" :size="30" color="rgb(94,94,94)"></u-icon>
                                 <view class="store">订单号：{{item.orderId}}</view>
-                                <u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
+                                <!--<u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>-->
                             </view>
                             <view class="right">{{item.statusName}}</view>
                         </view>
@@ -36,7 +36,7 @@
                                 <view class="number">x{{ v.nums }}</view>
                             </view>
                         </view>
-                        <view class="bottom">
+                        <view class="bottom u-margin-top-20">
                             <view class="more u-font-xs" v-if="item.status">
                                 下单时间：{{ $u.timeFormat(item.createTime, 'mm-dd hh:MM:ss') }}
                             </view>
@@ -57,7 +57,7 @@
             </view>
             <!-- 无数据时默认显示 -->
             <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="未查询到数据" mode="list"></u-empty>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/data.png'" icon-size="300" text="未查询到数据" mode="list"></u-empty>
             </view>
 
             <view class="coreshop-bottomBox" v-if="allData.length">
@@ -228,5 +228,4 @@
 </script>
 
 <style scoped lang="scss">
-    .order .bottom { margin-top: 20rpx; }
 </style>

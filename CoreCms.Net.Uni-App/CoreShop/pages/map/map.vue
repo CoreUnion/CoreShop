@@ -2,7 +2,6 @@
     <view>
         <u-navbar :is-back="true" back-text="返回" title="地图展示"></u-navbar>
         <view class="content">
-
             <map :style="[{height:height+'px'},{width:'100%'}]" id="map" :latitude="lat"
                  :longitude="lng"
                  :scale="15"
@@ -12,10 +11,9 @@
                  :enable-traffic="true"
                  :markers="covers">
             </map>
-
         </view>
         <!-- 登录提示 -->
-		<corecms-login-modal></corecms-login-modal>
+		<coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 

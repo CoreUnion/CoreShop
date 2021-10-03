@@ -1,0 +1,28 @@
+﻿.referrer-box { font-size: 28rpx; font-weight: 500; color: #ffffff; margin-top: 10rpx;
+    .referrer-avatarImage { width: 34rpx; height: 34rpx; border-radius: 50%; }
+}
+.refresh-btn { width: 100%; line-height: 100rpx; background: #ffffff; border-radius: 25rpx; font-size: 22rpx; font-weight: 500; color: #999999; white-space: nowrap;
+    .cuIcon-refresh { color: #dbdbdb; margin-right: 12rpx; font-size: 32rpx; }
+}
+.refresh-active { transform: rotate(360deg); transition: all linear 0.5s; }
+.head_box { background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center; background-size: 100% auto; position: relative;
+    &::after { content: ""; position: absolute; z-index: -1; background-color: inherit; width: 100%; height: 100%; left: 0; bottom: -10%; border-radius: 10upx; opacity: 0.2; transform: scale(0.9, 0.9); }
+}
+.team-data-box { margin: 30rpx 20rpx;
+    .data-card { width: 340rpx; background: #ffffff; border-radius: 20rpx; padding: 20rpx;
+        .item-title { font-size: 22rpx; font-weight: 500; color: #999999; line-height: 30rpx; margin-bottom: 10rpx; }
+        .total-item { margin-bottom: 20rpx; }
+        .total-num { font-size: 38rpx; font-weight: 500; color: #333333; }
+        .category-num { font-size: 26rpx; font-weight: 500; color: #333333; }
+    }
+}
+.filter-box { width: 750rpx; height: 95rpx; background: #ffffff;
+    .filter-item { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        .filter-title { color: #666; font-weight: 500; font-size: 28rpx; line-height: 90rpx; }
+        .cuIcon-unfold { font-size: 24rpx; color: #c4c4c4; margin-left: 10rpx; transition: all linear 0.3s; }
+        .icon-active { transform: rotate(180deg); transform-origin: center center; transition: all linear 0.3s; }
+        .title-active { color: #333; }
+        .underline { display: block; width: 68rpx; height: 4rpx; background: #fff; border-radius: 2rpx; }
+        .underline-active { background: #5e49c3; display: block; width: 68rpx; height: 4rpx; border-radius: 2rpx; }
+    }
+}

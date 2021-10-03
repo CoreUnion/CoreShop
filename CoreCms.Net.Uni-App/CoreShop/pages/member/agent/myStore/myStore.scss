@@ -1,0 +1,17 @@
+﻿.mst-top { width: 100%;
+    image { width: 100%; max-height: 450rpx; }
+}
+.coreshop-grid { padding: 20rpx 26rpx; width: 100%; display: flex; border-top: 2rpx solid #ddd; background-color: #fff; margin-bottom: 20rpx;
+    .coreshop-item { flex: 1; text-align: center; position: relative; border-right: 2rpx solid #eee; height: 90rpx;
+        &:last-child { border: none; }
+        &:active { transform: scale(.90); transition: all .5s; opacity: .8; }
+        .coreshop-item-icon { width: 50rpx; height: 50rpx; display: block; margin: 0 auto; }
+        .coreshop-item-text { font-size: 28rpx; color: #666; display: block; margin-top: 6rpx; }
+        .coreshop-item-img { width: 150rpx; height: 150rpx; top: -70rpx; position: absolute; left: 42%; transform: translateX(-50%); border-radius: 10rpx; background-color: #fff; border-radius: 6rpx; box-shadow: 0 0 10rpx #ccc; }
+    }
+}
+
+.collect-pop { width: 100%; height: 100%;
+    image { width: 100%; }
+}
+.h5-tip { text-align: center; margin-top: 300rpx; }

@@ -11,30 +11,6 @@
             this.checkVersion()
             // #endif
 
-
-            //配合corlorUI头部使用
-            uni.getSystemInfo({
-                success: function (e) {
-                    // #ifndef MP
-                    Vue.prototype.StatusBar = e.statusBarHeight;
-                    if (e.platform == 'android') {
-                        Vue.prototype.CustomBar = e.statusBarHeight + 50;
-                    } else {
-                        Vue.prototype.CustomBar = e.statusBarHeight + 45;
-                    };
-                    // #endif
-                    // #ifdef MP-WEIXIN
-                    Vue.prototype.StatusBar = e.statusBarHeight;
-                    let custom = wx.getMenuButtonBoundingClientRect();
-                    Vue.prototype.Custom = custom;
-                    Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
-                    // #endif
-                    // #ifdef MP-ALIPAY
-                    Vue.prototype.StatusBar = e.statusBarHeight;
-                    Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
-                    // #endif
-                }
-            })
             // 获取店铺配置信息  全局只请求一次
             this.$u.api.shopConfigV2().then(res => {
                 this.$store.commit('config', res.data)
@@ -54,10 +30,12 @@
                 }
             });
 
-
-
         },
-        onShow: function () {
+        onShow: function (obj) {
+            // #ifdef MP-WEIXIN
+            this.$store.commit('scene', obj.scene)
+            console.log(obj);
+            // #endif
             //console.log('App Show')
         },
         onHide: function () {
@@ -173,11 +151,8 @@
     }
 </script>
 <style lang="scss">
-    /*加载CorlorUI*/
-    @import "static/colorui/main.css";
-    @import "static/colorui/icon.css";
     /*加载UViewUI*/
     @import "uview-ui/index.scss";
     /*公共css */
-    @import 'static/style/common.scss';
+    @import 'static/style/coreCommon.scss';
 </style>

@@ -12,9 +12,28 @@
                 <u-button :ripple="true">按钮组件演示</u-button>
             </view>
             <view class="link-demo">
-                <u-link :color="$u.color['primary']" :under-line="true" href="http://www.corecms.net">跳转CoreCms官网：www.coreshop.cn</u-link>
+                <u-link :color="$u.color['primary']" :under-line="true" href="http://www.coreshop.net">跳转coreshop官网：www.coreshop.cn</u-link>
             </view>
         </view>
+
+        
+        <view class="coreshop-bg-white coreshop-card-hight-box" />
+
+        <!--底部-->
+        <view class="coreshop-foot-hight-view" />
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom u-text-center u-padding-20">
+            <u-button class='coreshop-bg-red' type="success" size="default"  @click="">确认</u-button>
+        </view>
+
+
+        <!--按钮-->
+        <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
+            <view class="flex u-padding-20 flex-direction">
+                <u-button :custom-style="customStyle" type="error" size="medium" @click="submitHandler" :disabled='submitStatus' :loading='submitStatus'>保存</u-button>
+            </view>
+        </view>
+
+
     </view>
 
 </template>
@@ -23,6 +42,9 @@
     export default {
         data() {
             return {
+                customStyle: {
+                    width: '100%',
+                },
                 title: 'Hello'
             }
         },

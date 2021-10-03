@@ -1,0 +1,19 @@
+﻿/*page { background: #fff; }*/
+.orderList { width: auto; }
+
+.evaluate-c-t { width: 100%; height: 140rpx; }
+    .evaluate-c-t textarea { width: 100%; height: 100%; font-size: 26rpx; padding: 10rpx; }
+.evaluate-c-b { overflow: hidden; }
+.upload-img { width: 146rpx; height: 146rpx; margin: 14rpx; text-align: center; color: #999999; font-size: 22rpx; border: 2rpx solid #E1E1E1; /* #ifdef MP-ALIPAY */ border-top: 8rpx solid #E1E1E1; /* #endif */ border-radius: 4rpx; display: inline-block; float: left; padding: 24rpx 0; }
+.goods-img-item { width: 174rpx; height: 174rpx; padding: 14rpx; float: left; position: relative; }
+    .goods-img-item:nth-child(4n) { margin-right: 0; }
+    .goods-img-item image { width: 100%; height: 100%; }
+.del { width: 30rpx !important; height: 30rpx !important; position: absolute; right: 0; top: 0; z-index: 999; }
+.evaluate-num-t { color: #333; font-size: 28rpx; margin-bottom: 20rpx; }
+.coreshop-bottomBox .coreshop-btn { width: 100%; }
+
+.icon { width: 50rpx; height: 50rpx; /* #ifdef MP-ALIPAY */ background-size: 100% 100%; /* #endif */ }
+
+
+.coreshop-card-box { padding: 0; box-shadow: 0 0 14.54rpx #f1f1f1; }
+.coreshop-card-view { padding: 18.18rpx; box-shadow: none; }

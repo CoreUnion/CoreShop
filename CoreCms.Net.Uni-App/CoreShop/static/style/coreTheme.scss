@@ -1,0 +1,42 @@
+// 此文件为主题变量，这些变量目前只能通过uni.scss引入才有效，另外由于
+// uni.scss中引入的样式会同时混入到全局样式文件和单独每一个页面的样式中，造成微信程序包太大，
+// 故uni.scss只建议放scss变量名相关样式，其他的样式可以通过main.js或者App.vue引入
+
+//通用顶部状态栏加导航颜色
+$core-common-navbar-background-color: #e54d42;
+
+
+$core-main-color: #303133;
+$core-content-color: #606266;
+$core-tips-color: #909399;
+$core-light-color: #c0c4cc;
+$core-border-color: #e4e7ed;
+$core-bg-color: #f3f4f6;
+
+$core-type-primary: #2979ff;
+$core-type-primary-light: #ecf5ff;
+$core-type-primary-disabled: #a0cfff;
+$core-type-primary-dark: #2b85e4;
+
+$core-type-warning: #ff9900;
+$core-type-warning-disabled: #fcbd71;
+$core-type-warning-dark: #f29100;
+$core-type-warning-light: #fdf6ec;
+
+$core-type-success: #19be6b;
+$core-type-success-disabled: #71d5a1;
+$core-type-success-dark: #18b566;
+$core-type-success-light: #dbf1e1;
+
+$core-type-error: #fa3534;
+$core-type-error-disabled: #fab6b6;
+$core-type-error-dark: #dd6161;
+$core-type-error-light: #fef0f0;
+
+$core-type-info: #909399;
+$core-type-info-disabled: #c8c9cc;
+$core-type-info-dark: #82848a;
+$core-type-info-light: #f4f4f5;
+
+$core-form-item-height: 70rpx;
+$core-form-item-border-color: #dcdfe6;

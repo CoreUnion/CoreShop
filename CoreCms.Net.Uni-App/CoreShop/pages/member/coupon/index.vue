@@ -6,31 +6,31 @@
             <view class="u-padding-15">
                 <u-subsection :list="items" :current="current" :animation="true" @change="onClickItem" active-color="#ff9900"></u-subsection>
             </view>
-            <view class="" v-if="listData.length > 0">
+            <view class="coreshop-coupon" v-if="listData.length > 0">
                 <view v-for="(item, key) in listData" :key="key">
-                    <view class="coreshop-sponsored-card-view" :class="item.isExpire || item.isUsed ?' grayscale':''">
+                    <view class="coreshop-coupon-card-view" :class="item.isExpire || item.isUsed ?' grayscale':''">
                         <view class="card-price-view">
-                            <view class="text-red price-left-view">
-                                <text class="text-xs">{{item.couponCode}}</text>
+                            <view class="coreshop-text-red price-left-view">
+                                <text class="u-font-xs">{{item.couponCode}}</text>
                             </view>
                             <view class="name-content-view">
-                                <view class="text-cut text-red">{{item.couponName}}</view>
-                                <view class="text-xs">
+                                <view class="u-line-1 coreshop-text-red">{{item.couponName}}</view>
+                                <view class="u-font-xs">
                                     <text v-for="(itemResult, index) in item.results" :key="index">{{itemResult}}</text>
                                 </view>
-                                <view class="text-xs">有效期：{{item.stime}} - {{item.etime}}</view>
+                                <view class="u-font-xs">有效期：{{item.stime}} - {{item.etime}}</view>
                             </view>
                             <view class="btn-right-view">
-                                <button class="cu-btn bg-red round sm" @click="goIndex" v-if="current == 0">去使用</button>
-                                <button class="cu-btn bg-grey round sm" v-if="item.isUsed==true">已使用</button>
-                                <button class="cu-btn bg-grey round sm" v-if="item.isExpire==true && item.isUsed==fasle">已失效</button>
+                                <u-button type="success" shape="circle" size="mini" @click="goIndex" v-if="current == 0">去使用</u-button>
+                                <u-button type="default" shape="circle" size="mini" v-if="item.isUsed==true">已使用</u-button>
+                                <u-button type="default" shape="circle" size="mini" v-if="item.isExpire==true && item.isUsed==fasle">已失效</u-button>
                             </view>
                         </view>
                         <view class="card-num-view">
-                            <view class="text-xs">
+                            <view class="u-font-xs">
                                 <text v-for="(itemCondition, index) in item.conditions" :key="index">【{{itemCondition}}】</text>
                             </view>
-                            <text class="cuIcon-unfold btnUnfold" />
+                            <u-icon name="arrow-down-fill" class="btnUnfold" size="28"></u-icon>
                         </view>
                     </view>
                 </view>
@@ -38,7 +38,7 @@
             </view>
             <!-- 无数据时默认显示 -->
             <view class="coreshop-emptybox" v-else>
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" text="暂无此类优惠券" mode="list"></u-empty>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/coupon.png'" icon-size="300" text="暂无此类优惠券" mode="list"></u-empty>
             </view>
         </view>
     </view>
@@ -134,5 +134,5 @@
     }
 </script>
 <style lang="scss">
-    @import '../../../static/style/coupon.scss';
+    @import 'index.scss';
 </style>

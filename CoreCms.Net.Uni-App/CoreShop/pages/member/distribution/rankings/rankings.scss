@@ -1,0 +1,20 @@
+﻿.rankings-wrap { background-image: url('/static/images/common/bg.png'); background-size: cover; background-position: center; overflow: hidden; }
+
+.rankings-list-box { background-color: #fff; border-radius: 20rpx 20rpx 0px 0px; width: 690rpx; margin: 60rpx auto 0; margin-bottom: 60rpx;
+    .ranking-list { height: 140rpx; padding: 0 30rpx; border-bottom: 1rpx solid #e5e5e5;
+        .list-left {
+            .tag-box { width: 50rpx; font-size: 36rpx; font-weight: 500; color: #beb4b3; margin-right: 20rpx;
+                .tag-icon { width: 40rpx; height: 60rpx; }
+            }
+            .user-avatar { width: 66rpx; height: 66rpx; border-radius: 50%; margin-right: 30rpx; }
+            .user-info {
+                .name { font-size: 28rpx; font-weight: bold; color: #333333; }
+                .date { font-size: 24rpx; font-weight: 400; color: #999999; }
+            }
+        }
+        .list-right {
+            .num { font-size: 30rpx; font-weight: 500; color: #5e4ddf; }
+            .des { font-size: 24rpx; font-weight: 500; color: #a09a98; }
+        }
+    }
+}

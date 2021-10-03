@@ -12,13 +12,14 @@
                     <!-- #ifdef H5 -->
                     <view class="status-H5bar"></view>
                     <!-- #endif -->
-                    <text class="nav-title x-f">商家中心</text>
+                    <text class="nav-title coreshop-flex coreshop-align-center">商家中心</text>
                 </view>
-                <view class="user-head x-bc">
+                <view class="user-head u-flex u-row-between">
                     <view class="shop-info">
-                        <view class="x-f u-m-b-30" @tap="goStoreList">
+                        <view class="coreshop-flex coreshop-align-center u-m-b-30" @tap="goStoreList">
                             <text class="shop-title">{{ storeDetail.storeName }}</text>
-                            <text class="cuIcon-roundrightfill"></text>
+                            <!--<text class="cuIcon-roundrightfill"></text>-->
+                            <u-icon name="arrow-down" color="#FFF" size="28" class="u-margin-left-20"></u-icon>
                         </view>
                         <view class="shop-address" @tap="goMapDetails(storeDetail.id, storeDetail.latitude, storeDetail.longitude)">
                             {{ storeDetail.address || '' }}
@@ -31,25 +32,36 @@
 
         <!--业务列表-->
         <view class="coreshop-tools-list-box">
-            <view class="cu-list grid col-4 no-border">
-                <block v v-for="(item,i) in icons" :key="i">
-                    <view class="cu-item" @click="goRoute(item.router)">
-                        <view class="text-black" :class="item.icon" />
-                        <text>{{item.name}}</text>
-                    </view>
-                </block>
-            </view>
+
+            <u-grid :col="4">
+		        <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/list')">
+			        <u-icon name="order" :size="46"></u-icon>
+			        <view class="grid-text">提货单列表</view>
+		        </u-grid-item>
+		        <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/index')">
+			        <u-icon name="fingerprint" :size="46"></u-icon>
+			        <view class="grid-text">提货单核销</view>
+		        </u-grid-item>
+		        <u-grid-item @click="goRoute('/pages/member/merchant/serviceVerification/list')">
+			        <u-icon name="coupon" :size="46"></u-icon>
+			        <view class="grid-text">服务券列表</view>
+		        </u-grid-item>
+                <u-grid-item @click="goRoute('/pages/member/merchant/serviceVerification/index')">
+			        <u-icon name="grid" :size="46"></u-icon>
+			        <view class="grid-text">核验服务券</view>
+		        </u-grid-item>
+	        </u-grid>
         </view>
 
         <!-- 统计及切换信息 -->
         <view class="statistics-box">
-            <view class="statistics-nav x-f">
-                <view class="nav-item x-f" v-for="nav in cancelTypeList" :key="nav.id" @tap="onNav(nav.type)">
-                    <view class="y-f" style="width: 100%;">
-                        <view class="item-title x-f" :class="{ 'title-active': cancelType === nav.type }">
-                            <text class="u-font-13">{{ nav.title }}</text>
+            <view class="statistics-nav coreshop-flex coreshop-align-center">
+                <view class="nav-item coreshop-flex coreshop-align-center" v-for="nav in cancelTypeList" :key="nav.id" @tap="onNav(nav.type)">
+                    <view class="coreshop-flex coreshop-flex-direction coreshop-align-center w100">
+                        <view class="item-title coreshop-flex coreshop-align-center" :class="{ 'title-active': cancelType === nav.type }">
+                            <text class="u-font-13 u-margin-right-10">{{ nav.title }}</text>
                             <view :class="{ 'icon-active': cancelType === nav.type }">
-                                <text class="cuIcon-triangledownfill" :class="{ 'icon-active': cancelType === nav.type }"></text>
+                                <u-icon name="arrow-down-fill" size="22"></u-icon>
                             </view>
                         </view>
                         <text class="nav-line" :class="{ 'line-active': cancelType === nav.type }"></text>
@@ -57,39 +69,45 @@
                 </view>
                 <!-- 下拉窗 -->
                 <view class="drop-down-box">
-                    <view class="drop-down-item x-bc" v-for="(item, index) in dropDown[cancelType]" :key="index" @tap="onFilter(item.value, item.title)">
+                    <view class="drop-down-item u-flex u-row-between" v-for="(item, index) in dropDown[cancelType]" :key="index" @tap="onFilter(item.value, item.title)">
                         <text class="item-title">{{ item.title }}</text>
                         <text class="cuIcon-check" v-if="filter[cancelType] == item.value"></text>
                     </view>
                 </view>
             </view>
             <!-- 销量 -->
-            <view class="sales-volume-box x-bc pa30">
+            <view class="sales-volume-box u-flex u-row-between pa30">
                 <view class="sales-volume x-c">订单量(单)：{{ orderTotalCount || 0 }}</view>
                 <view class="sales-volume x-c">交易额(元)：{{ orderTotalMoney || 0 }}</view>
             </view>
         </view>
         <!-- 订单列表 -->
         <view class="order-list" v-for="order in storeOrderList" :key="order.orderId" @tap.stop="goOrderDetail(order.orderId)">
-            <view class="order-head x-bc">
-                <text class="no">订单编号：{{ order.orderId }}</text>
+            <view class="order-head u-flex u-row-between">
+                
+                <text class="no">
+                    编号：{{ order.orderId }}
+                </text>
                 <text class="state">{{ order.shipStatusText }}</text>
+                <u-button type="primary" size="mini" v-if="order.receiptType==1">物流快递</u-button>
+                <u-button type="success" size="mini" v-if="order.receiptType==2">同城配送</u-button>
+                <u-button type="warning" size="mini" v-if="order.receiptType==3">门店自提</u-button>
             </view>
             <view class="goods-order" v-for="item in order.items" :key="item.id">
                 <view class="order-content">
-                    <view class="goods-box x-start">
+                    <view class="goods-box coreshop-flex coreshop-align-start">
                         <view class="order-goods__tag">
                             <image v-if="detail.activity_type" class="tag-img" :src="orderStatus[detail.activity_type]" mode=""></image>
                             <image v-if="orderType === 'score'" class="tag-img" :src="orderStatus[orderType]" mode=""></image>
                         </view>
                         <image class="goods-img" :src="item.imageUrl || ''" mode="aspectFill"></image>
-                        <view class="y-start order-right">
+                        <view class="coreshop-flex coreshop-flex-direction coreshop-align-start">
                             <view class="goods-title more-t u-line-2">{{ item.name || '' }}</view>
                             <view class="order-tip one-t">
                                 <text class="order-num">数量:{{ item.nums || 0 }};</text>
                                 {{ item.addon ? item.addon : '' }}
                             </view>
-                            <view class="order-goods x-f ">
+                            <view class="order-goods coreshop-flex coreshop-align-center ">
                                 <text class="order-price">￥{{ item.amount || 0 }}</text>
                                 <!--<button class="cu-btn status-btn" v-if="detail.status_name">{{ item.status_name }}</button>-->
                             </view>
@@ -98,7 +116,7 @@
                 </view>
             </view>
 
-            <view class="order-bottom x-bc u-border-bottom">
+            <view class="order-bottom u-flex u-row-between u-border-bottom">
                 <view>
                     <text class="u-font-24 tips-color">{{$u.timeFormat(order.createTime, 'yyyy-mm-dd hh:MM:ss')}}</text>
                 </view>
@@ -107,7 +125,7 @@
                 </view>
             </view>
 
-            <view class="order-bottom x-bc">
+            <view class="order-bottom u-flex u-row-between">
                 <view v-if="order.status === 1">
                     <u-button type="success" size="mini">订单正常</u-button>
                 </view>
@@ -132,7 +150,7 @@
 
         <!-- 无数据时默认显示 -->
         <view class="coreshop-emptybox" v-if="storeOrderList.length<=0">
-            <u-empty :src="$apiFilesUrl+'/static/images/empty/order.png'" icon-size="300" text="当前时间暂无订单数据" mode="list"></u-empty>
+            <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/order.png'" icon-size="300" text="当前时间暂无订单数据" mode="list"></u-empty>
         </view>
 
         <!-- 更多 -->
@@ -175,6 +193,11 @@
                         id: 1,
                         title: '全部',
                         type: 'status'
+                    },
+                    {
+                        id: 2,
+                        title: '全部',
+                        type: 'receiptType'
                     }
                 ],
                 showCalendar: false, //日期选择
@@ -188,6 +211,7 @@
                 filter: {
                     date: 'all',
                     status: '0',
+                    receiptType: '0',
                     custom: []
                 },
                 dropDown: {
@@ -203,37 +227,21 @@
                         { title: '全部', value: '0', isChecked: false },
                         { title: '待付款', value: '1', isChecked: false },
                         { title: '待发货', value: '2', isChecked: false },
-                        { title: '待收货', value: '3', isChecked: true },
-                        { title: '待评价', value: '4', isChecked: true },
-                        { title: '已完成', value: '6', isChecked: true },
-                        { title: '已取消', value: '7', isChecked: true }
+                        { title: '待收货', value: '3', isChecked: false },
+                        { title: '待评价', value: '4', isChecked: false },
+                        { title: '已完成', value: '6', isChecked: false },
+                        { title: '已取消', value: '7', isChecked: false }
+                    ],
+                    receiptType: [
+                        { title: '全部', value: '0', isChecked: false },
+                        { title: '物流快递', value: '1', isChecked: false },
+                        { title: '同城配送', value: '2', isChecked: false },
+                        { title: '门店自提', value: '3', isChecked: true },
                     ]
                 },
                 loadStatus: 'loadmore', //loadmore-加载前的状态，loading-加载中的状态，nomore-没有更多的状态
                 currentPage: 1,
                 lastPage: 1,
-                icons: [{
-                    name: '提货单列表',
-                    icon: 'cuIcon-pick text-red',
-                    router: '/pages/member/merchant/takeDelivery/list'
-
-                },
-                {
-                    name: '提货单核销',
-                    icon: 'cuIcon-qr_code text-orange',
-                    router: '/pages/member/merchant/takeDelivery/index'
-                },
-                {
-                    name: '服务券列表',
-                    icon: 'cuIcon-list text-yellow',
-                    router: '/pages/member/merchant/serviceVerification/list'
-
-                },
-                {
-                    name: '核验服务券',
-                    icon: 'cuIcon-qr_code text-green',
-                    router: '/pages/member/merchant/serviceVerification/index'
-                }],
             };
         },
         computed: {},
@@ -310,6 +318,7 @@
                     dateType: that.filter.date,
                     date: that.filter.custom,
                     status: that.filter.status,
+                    receiptType: that.filter.receiptType,
                     page: that.currentPage,
                     limit: 10,
                     storeId: that.storeId
@@ -362,6 +371,9 @@
                 if (this.cancelType == 'status') {
                     this.cancelTypeList[1].title = title;
                 }
+                if (this.cancelType == 'receiptType') {
+                    this.cancelTypeList[2].title = title;
+                }
                 this.filter[this.cancelType] = val;
                 this.storeOrderList = [];
                 this.currentPage = 1;
@@ -373,5 +385,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../../static/style/merchant.scss';
+    @import 'index.scss';
 </style>

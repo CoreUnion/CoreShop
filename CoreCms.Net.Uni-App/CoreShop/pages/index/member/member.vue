@@ -1,9 +1,9 @@
 ﻿<template>
-    <view class="my-box">
+    <view class="memberBox">
         <u-toast ref="uToast" /><u-no-network></u-no-network>
         <u-navbar :is-back="true" back-icon-name="scan" back-icon-color="#000" title="会员中心"></u-navbar>
 
-        <view class="head-box bg-red">
+        <view class="headBox coreshop-bg-red">
             <!--标题栏-->
             <!--小程序端不显示-->
             <!--用户信息-->
@@ -79,11 +79,6 @@
 
             <view class="user-info-num-box">
                 <u-grid :col="4" :border="false" :bg-color="transparent">
-                    <!--<u-grid-item bg-color="transparent" @tap="orderNavigateHandle('/pages/member/order/orderlist', 0)" :custom-style="{padding: '5rpx 0'}">
-                        <view class="u-font-36" v-if="!hasLogin">-</view>
-                        <view class="u-font-36" v-else>{{ userInfo.orderCount }}</view>
-                        <text class="u-font-22">总订单</text>
-                    </u-grid-item>-->
                     <u-grid-item bg-color="transparent" @tap="navigateToHandle('/pages/member/history/index')" :custom-style="{padding: '5rpx 0'}">
                         <view class="u-font-36" v-if="!hasLogin">-</view>
                         <view class="u-font-36" v-else>{{ userInfo.footPrintCount }}</view>
@@ -99,7 +94,7 @@
                         <view class="u-font-36" v-else>{{ userInfo.collectionCount }}</view>
                         <text class="u-font-22">收藏</text>
                     </u-grid-item>
-                    <u-grid-item bg-color="transparent" @tap="navigateToHandle('/pages/member/afterSales/list')" :custom-style="{padding: '5rpx 0'}">
+                    <u-grid-item bg-color="transparent" @tap="navigateToHandle('/pages/member/afterSales/list/list')" :custom-style="{padding: '5rpx 0'}">
                         <view class="u-font-36" v-if="!hasLogin">-</view>
                         <view class="u-font-36" v-else>{{afterSaleNums || 0}}</view>
                         <text class="u-font-22">售后</text>
@@ -110,115 +105,111 @@
 
         <view class="coreshop-view-content">
             <!--用户数据-->
-            <view class="padding-xs bg-white coreshop-user-info-order-box">
-                <view class="text-black text-lg text-bold padding-sm">我的交易</view>
-                <view class="cu-list grid col-5 no-border">
-                    <view class="cu-item" v-for="(item, index) in orderItems" :key="index" @click="orderNavigateHandle('/pages/member/order/orderlist', index)">
-                        <view class="text-xxl text-red" v-if="!hasLogin">
-                            <text :class="['cuIcon-' + item.icon]"></text>
-                        </view>
-                        <view class="text-xxl text-black" v-else>{{item.nums}}</view>
-                        <text class="text-sm">{{ item.name }}</text>
-                    </view>
-                </view>
+            <view class="u-padding-10 coreshop-bg-white coreshop-user-info-order-box">
+                <view class="coreshop-text-black u-font-lg coreshop-text-bold u-padding-20">我的交易</view>
+                <u-grid :col="5" :border="false">
+                    <u-grid-item v-for="(item, index) in orderItems" :key="index" @click="orderNavigateHandle('/pages/member/order/index/index', index)">
+                        <view class="transactionNumber" v-if="hasLogin">{{ item.nums }}</view>
+                        <u-icon :name="item.icon" :size="50" v-else></u-icon>
+                        <view class="grid-text">{{ item.name }}</view>
+                    </u-grid-item>
+                </u-grid>
             </view>
 
             <!--天天有钱-->
-            <view class="padding-xs bg-white margin-top coreshop-user-info-money-box" v-if="order.invite.showItem">
-                <view class="text-black text-lg text-bold padding-sm">天天有钱</view>
-                <view class="grid col-2 money-col">
-                    <view class="money-item">
-                        <view class="money-item-view" @click="navigateToHandle('/pages/member/invite/index')">
-                            <view class="cu-avatar lg yqhy" />
-                            <view class="money-content">
-                                <view class="text-black text-cut">边逛边赚钱</view>
-                                <view class="text-gray text-sm text-cut">最高提现20元</view>
+            <view class="u-padding-10 coreshop-bg-white u-margin-top-30 coreshop-user-info-money-box" v-if="other.invite.showItem">
+                <view class="coreshop-text-black u-font-lg coreshop-text-bold u-padding-20">天天有钱</view>
+                <u-row gutter="16" class="money-col">
+                    <u-col span="6">
+                        <view class="money-item">
+                            <view class="money-item-view" @click="navigateToHandle('/pages/member/invite/index')">
+                                <view class="money-avatar coreshop-avatar lg yqhy" />
+                                <view class="money-content">
+                                    <view class="coreshop-text-black u-line-1">边逛边赚钱</view>
+                                    <view class="coreshop-text-gray u-font-sm u-line-1">最高提现20元</view>
+                                </view>
                             </view>
                         </view>
-                    </view>
-                    <view class="money-item">
-                        <view class="money-item-view" @click="navigateToHandle('/pages/member/invite/index')">
-                            <view class="cu-avatar lg yqhy2" />
-                            <view class="money-content">
-                                <view class="text-black text-cut">邀请好友</view>
-                                <view class="text-gray text-sm text-cut">最高分红50000</view>
+                    </u-col>
+                    <u-col span="6">
+                        <view class="money-item">
+                            <view class="money-item-view" @click="navigateToHandle('/pages/member/invite/index')">
+                                <view class="money-avatar coreshop-avatar lg yqhy2" />
+                                <view class="money-content">
+                                    <view class="coreshop-text-black u-line-1">邀请好友</view>
+                                    <view class="coreshop-text-gray u-font-sm u-line-1">最高分红50000</view>
+                                </view>
                             </view>
                         </view>
-                    </view>
-                </view>
+                    </u-col>
+                </u-row>
             </view>
 
             <!--我的服务-->
-            <view class="padding-xs bg-white margin-top coreshop-user-info-tools-box">
-                <view class="padding-sm tools-view">
-                    <view class="text-black text-bold text-lg tools-title">我的服务</view>
+            <view class="u-padding-10 coreshop-bg-white u-margin-top-30 coreshop-user-info-tools-box">
+                <view class="u-padding-20 tools-view">
+                    <view class="coreshop-text-black coreshop-text-bold u-font-lg tools-title">我的服务</view>
                 </view>
                 <view class="coreshop-tools-list-box">
-                    <view class="cu-list grid col-4 no-border">
+                    <u-grid :col="4" :border="false">
+                        <u-grid-item @click="navigateToHandle('/pages/member/merchant/index/index')" v-if="isClerk">
+                            <u-icon name="calendar" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">商家管理</view>
+                        </u-grid-item>
+                        <u-grid-item @tap="$u.throttle(goDistributionPanel, 500)" v-if="isDistribution">
+                            <u-icon name="wifi" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">分销中心</view>
+                        </u-grid-item>
+                        <u-grid-item @tap="$u.throttle(goAgentPanel, 500)" v-if="isAgent">
+                            <u-icon name="zhuanfa" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">代理中心</view>
+                        </u-grid-item>
+                        <u-grid-item v-for="(item,i) in utilityMenus" :key="i" v-if="(item.showItem && i != 'invoice') || (item.showItem && i == 'invoice' && InvoiceSwitch == 1)" @click="navigateToHandle(item.router)">
+                            <u-icon :name="item.icon" :size="50"  color="#666"></u-icon>
+                            <view class="grid-text">{{ item.name }}</view>
+                        </u-grid-item>
+                    </u-grid>
 
-                        <view class="cu-item" @click="navigateToHandle('/pages/member/merchant/index/index')" v-if="isClerk">
-                            <view class="text-black cuIcon-shop" />
-                            <text>商家管理</text>
-                        </view>
-
-                        <view class="cu-item" @tap="$u.throttle(goDistributionPanel, 500)" v-if="isDistribution">
-                            <view class="text-black cuIcon-all" />
-                            <text>分销中心</text>
-                        </view>
-
-                        <view class="cu-item" @tap="$u.throttle(goAgentPanel, 500)" v-if="isAgent">
-                            <view class="text-black cuIcon-link" />
-                            <text>代理中心</text>
-                        </view>
-
-
-                        <block v-for="(item,i) in utilityMenus" :key="i" v-if="(item.showItem && i != 'invoice') || (item.showItem && i == 'invoice' && InvoiceSwitch == 1)">
-                            <view class="cu-item" @click="navigateToHandle(item.router)">
-                                <view class="text-black" :class="['cuIcon-' + item.icon]" />
-                                <text>{{item.name}}</text>
-                            </view>
-                        </block>
-                    </view>
                 </view>
             </view>
 
             <!--增值业务-->
-            <view class="padding-xs bg-white margin-top coreshop-user-info-tools-box">
-                <view class="padding-sm tools-view">
-                    <view class="text-black text-bold text-lg tools-title">增值业务</view>
+            <view class="u-padding-10 coreshop-bg-white u-margin-top-30 coreshop-user-info-tools-box">
+                <view class="u-padding-20 tools-view">
+                    <view class="coreshop-text-black coreshop-text-bold u-font-lg tools-title">增值业务</view>
                 </view>
                 <view class="coreshop-tools-list-box">
-                    <view class="cu-list grid col-4 no-border">
-                        <block v v-for="(item,i) in vas" :key="i" v-if="item.showItem">
-                            <view class="cu-item" @click="goRoute(item.router)">
-                                <view class="text-black" :class="['cuIcon-' + item.icon]" />
-                                <text>{{item.name}}</text>
-                            </view>
-                        </block>
-                    </view>
+                    <u-grid :col="4" :border="false">
+                        <u-grid-item v-for="(item,i) in vas" :key="i" v-if="item.showItem" @click="goRoute(item.router)">
+                            <u-icon :name="item.icon" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">{{ item.name }}</view>
+                        </u-grid-item>
+                    </u-grid>
                 </view>
             </view>
 
             <!--其他-->
-            <view class="padding-xs bg-white margin-top coreshop-user-info-tools-box">
-                <view class="padding-sm tools-view">
-                    <view class="text-black text-bold text-lg tools-title">其他</view>
+            <view class="u-padding-10 coreshop-bg-white u-margin-top-30 coreshop-user-info-tools-box">
+                <view class="u-padding-20 tools-view">
+                    <view class="coreshop-text-black coreshop-text-bold u-font-lg tools-title">其他</view>
                 </view>
                 <view class="coreshop-tools-list-box">
-                    <view class="cu-list grid col-4 no-border">
-                        <view class="cu-item" @click="goArticleList()">
-                            <view class="text-black cuIcon-question" />
-                            <text>帮助中心</text>
-                        </view>
-                        <view class="cu-item" v-for="(item,i) in order" :key="i" v-if="item.showItem" @click="navigateToHandle(item.router)">
-                            <view class="text-black" :class="['cuIcon-' + item.icon]" />
-                            <text>{{item.name}}</text>
-                        </view>
+
+                    <u-grid :col="4" :border="false">
+                        <u-grid-item @click="goArticleList()">
+                            <u-icon name="question-circle" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">帮助中心</view>
+                        </u-grid-item>
+
+                        <u-grid-item v-for="(item,i) in other" :key="i" v-if="item.showItem" @click="navigateToHandle(item.router)">
+                            <u-icon :name="item.icon" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">{{ item.name }}</view>
+                        </u-grid-item>
                         <!-- #ifdef H5 || APP-PLUS || APP-PLUS-NVUE -->
-                        <view class="cu-item" @click="showChat">
-                            <view class="text-black cuIcon-service" />
-                            <text>联系客服</text>
-                        </view>
+                        <u-grid-item @click="showChat">
+                            <u-icon name="server-man" :size="50" color="#666"></u-icon>
+                            <view class="grid-text">联系客服</view>
+                        </u-grid-item>
                         <!-- #endif -->
                         <!-- #ifdef MP-WEIXIN -->
                         <!-- todo:: 微信客服 -->
@@ -229,14 +220,15 @@
                         <!-- #ifdef MP-ALIPAY -->
                         <!-- todo:: 支付宝客服 -->
                         <!-- #endif -->
-                    </view>
+
+                    </u-grid>
                 </view>
             </view>
 
         </view>
 
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 </template>
 
@@ -257,75 +249,75 @@
                 orderItems: [
                     {
                         name: '全部',
-                        icon: 'timefill',
+                        icon: 'order',
                         nums: 0
                     }, {
                         name: '待付款',
-                        icon: 'timefill',
+                        icon: 'order',
                         nums: 0
                     },
                     {
                         name: '待发货',
-                        icon: 'deliver_fill',
+                        icon: 'order',
                         nums: 0
                     },
                     {
                         name: '待收货',
-                        icon: 'cartfill',
+                        icon: 'order',
                         nums: 0
                     },
                     {
                         name: '待评价',
-                        icon: 'commentfill',
+                        icon: 'order',
                         nums: 0
                     }
                 ],
                 utilityMenus: {
                     myCoupon: {
                         name: '我的优惠券',
-                        icon: 'ticket',
+                        icon: 'coupon',
                         router: '/pages/member/coupon/index',
                         showItem: true
                     },
                     myBalance: {
                         name: '我的余额',
-                        icon: 'recharge',
-                        router: '/pages/member/balance/index',
+                        icon: 'rmb-circle',
+                        router: '/pages/member/balance/index/index',
                         showItem: true
                     },
                     myInvoice: {
                         name: '我的发票',
-                        icon: 'news',
+                        icon: 'calendar',
                         router: '/pages/member/invoice/index',
                         showItem: true
                     },
                     myServices: {
                         name: '我的服务卡',
-                        icon: 'vipcard',
-                        router: '/pages/member/serviceOrder/index',
+                        icon: 'bell',
+                        router: '/pages/member/serviceOrder/index/index',
                         showItem: true
                     },
                     myIntegral: {
                         name: '我的积分',
-                        icon: 'medal',
+                        icon: 'integral',
                         router: '/pages/member/integral/index',
                         showItem: true
                     },
                     myAddress: {
                         name: '地址管理',
-                        icon: 'location',
-                        router: '/pages/member/address/list',
+                        icon: 'map',
+                        router: '/pages/member/address/list/list',
                         showItem: true
                     },
                     myCollection: {
                         name: '我的收藏',
-                        icon: 'favor',
+                        icon: 'bookmark',
                         router: '/pages/member/collection/index',
                         showItem: true
                     },
                     myHistory: {
                         name: '我的足迹',
-                        icon: 'footprint',
+                        icon: 'bag',
                         router: '/pages/member/history/index',
                         showItem: true
                     },
@@ -333,51 +325,57 @@
                 vas: {
                     storeMap: {
                         name: '门店列表',
-                        icon: 'shop',
+                        icon: 'home',
                         router: '/pages/storeMap/storeMap',
                         showItem: false
                     },
                     servicePackage: {
-                        name: '服务包',
-                        icon: 'send',
+                        name: '服务商品',
+                        icon: 'list-dot',
                         router: '/pages/serviceGoods/index/index',
                         showItem: true
                     },
                     coupons: {
                         name: '优惠券',
-                        icon: 'ticket',
+                        icon: 'red-packet',
                         router: '/pages/coupon/coupon',
                         showItem: true
                     },
                     pinTuan: {
                         name: '拼团',
-                        icon: 'cascades',
+                        icon: 'grid',
                         router: '/pages/activity/pinTuan/list/list',
                         showItem: true
                     },
                     seckill: {
                         name: '秒杀',
-                        icon: 'remind',
+                        icon: 'clock',
                         router: '/pages/activity/seckill/list/list',
                         showItem: true
                     },
                     groupBuying: {
                         name: '团购',
-                        icon: 'goods',
+                        icon: 'trash',
                         router: '/pages/activity/groupBuying/list/list',
                         showItem: true
                     },
                 },
-                order: {
+                other: {
                     invite: {
                         name: '邀请好友',
-                        icon: 'friendadd',
+                        icon: 'man-add',
                         router: '/pages/member/invite/index',
                         showItem: false
                     },
+                    search: {
+                        name: '商品检索',
+                        icon: 'search',
+                        router: '/pages/search/search',
+                        showItem: true
+                    },
                     setting: {
                         name: '系统设置',
-                        icon: 'repair',
+                        icon: 'setting',
                         router: '/pages/member/setting/index/index',
                         showItem: true
                     }
@@ -431,11 +429,11 @@
                     if (res.status) {
                         _this.condition = res.data;
                         if (_this.condition.verifyStatus == 1 || (!_this.condition.needApply && _this.conditionStatus)) {
-                            _this.$u.route({ url: '/pages/member/agent/panel' });
+                            _this.$u.route({ url: '/pages/member/agent/panel/panel' });
                         } else if (_this.condition.verifyStatus > 1) {
-                            _this.$u.route({ url: '/pages/member/agent/applyState' });
+                            _this.$u.route({ url: '/pages/member/agent/applyState/applyState' });
                         } else {
-                            _this.$u.route({ url: '/pages/member/agent/index' });
+                            _this.$u.route({ url: '/pages/member/agent/index/index' });
                         }
                     } else {
                         //报错了
@@ -454,11 +452,11 @@
                         _this.condition = res.data;
                         if (_this.condition.hasOwnProperty('verifyStatus')) {
                             if (_this.condition.verifyStatus == 1 || (!_this.condition.needApply && _this.conditionStatus)) {
-                                _this.$u.route({ url: '/pages/member/distribution/panel' });
+                                _this.$u.route({ url: '/pages/member/distribution/panel/panel' });
                             } else if (_this.condition.verifyStatus > 1) {
-                                _this.$u.route({ url: '/pages/member/distribution/applyState' });
+                                _this.$u.route({ url: '/pages/member/distribution/applyState/applyState' });
                             } else {
-                                _this.$u.route({ url: '/pages/member/distribution/index' });
+                                _this.$u.route({ url: '/pages/member/distribution/index/index' });
                             }
                         }
                     } else {
@@ -492,10 +490,10 @@
                 }
                 if (this.config.showInviter == 1) {
                     //不显示-邀请好友
-                    _this.order.invite.showItem = true;
+                    _this.other.invite.showItem = true;
                 } else if (this.config.showInviter == 2) {
                     //显示-邀请好友
-                    _this.order.invite.showItem = false;
+                    _this.other.invite.showItem = false;
                 }
                 if (this.config.showStoresSwitch == 1) {
                     //不显示-门店展示列表
@@ -587,15 +585,6 @@
                     success: e => {
                         console.log(e)
                         if (e.errMsg == 'getUserProfile:ok') {
-                            //var data = {
-                            //    avatarUrl: e.avatarUrl,
-                            //    city: e.city,
-                            //    country: e.country,
-                            //    gender: e.gender,
-                            //    language: e.language,
-                            //    nickName: e.nickName,
-                            //    province: e.province
-                            //}
                             _this.$u.api.syncWeChatInfo(e.userInfo).then(res => {
                                 console.log(res);
                                 if (res.status) {
@@ -641,5 +630,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../../static/style/member.scss';
+    @import 'member.scss';
 </style>

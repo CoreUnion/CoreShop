@@ -1,0 +1,17 @@
+﻿.ig-top-t {
+    & > view { display: inline-block; padding: 0 10upx; color: #999; }
+}
+.user-head-img-c { position: relative; width: 80upx; height: 80upx; border-radius: 50%; margin-right: 20upx; box-sizing: border-box; display: inline-block; border: 1px solid #f3f3f3;
+    .user-head-img { width: 100%; height: 100%; border-radius: 50%; }
+    &:first-child { border: 1px solid #ff7159; }
+    .user-head-img-tip { position: absolute; top: -6upx; left: -10upx; display: inline-block; background-color: #ff7159; color: #fff; font-size: 22upx; z-index: 98; padding: 0 10upx; border-radius: 10upx; transform: scale(.8); }
+}
+
+.no-head-icon { width: 80upx; height: 80upx; border-radius: 50%; display: inline-block; border: 2upx dashed #e1e1e1; text-align: center; color: #d1d1d1; font-size: 40upx; box-sizing: border-box; position: relative;
+    & > text { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+}
+
+.coreshop-cell-ft-text { max-width: 520upx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.group-notice {
+    .coreshop-cell-ft-text { color: #999; margin-left: 20upx; font-size: 26upx; }
+}

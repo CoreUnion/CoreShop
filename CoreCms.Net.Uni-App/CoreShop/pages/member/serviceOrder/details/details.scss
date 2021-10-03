@@ -1,0 +1,23 @@
+﻿page { background: #f4f4f4; }
+.coreshop-list {
+    &.menu-avatar {
+        & > .coreshop-list-item { height: 180rpx; }
+    }
+}
+.taobao { background: white; padding: 30rpx 20rpx 30rpx 20rpx;
+    .ticket { display: flex; margin-top: 20rpx;
+        .left { width: 75%; padding: 30rpx 20rpx; background-color: #fff5f4; border-radius: 20rpx; border-right: dashed 2rpx #e0d7d3; display: flex;
+            .picture { width: 172rpx; border-radius: 20rpx; }
+            .introduce { margin-left: 10rpx;
+                .top { color: #ff9900; font-size: 28rpx;
+                    .big { font-size: 50rpx; font-weight: bold; margin-right: 10rpx; }
+                }
+                .type { font-size: 28rpx; color: #82848a; }
+                .date { margin-top: 10rpx; font-size: 20rpx; color: #82848a; }
+            }
+        }
+        .right { width: 25%; padding: 40rpx 10rpx; background-color: #fff5f4; border-radius: 20rpx; display: flex; align-items: center;
+            .use { height: auto; padding: 0 20rpx; font-size: 24rpx; border-radius: 40rpx; color: #ffffff !important; background-color: #ff9900 !important; line-height: 40rpx; color: #758ea5; margin: 0 auto; }
+        }
+    }
+}

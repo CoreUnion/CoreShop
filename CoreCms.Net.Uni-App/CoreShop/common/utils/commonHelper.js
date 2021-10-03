@@ -1,5 +1,3 @@
-import * as db from './dbHelper.js' //引入common
-import store from '@/common/store'
 
 // 提示框
 function modelShow(

@@ -1,0 +1,11 @@
+﻿.coreshop-cell-hd-title { color: #333; }
+.coreshop-cell-item { border: none; }
+.coreshop-cell-item-bd { color: #666; font-size: 26upx; }
+.withdrawcash-input { display: flex; align-items: center; font-size: 50upx; border-bottom: 2upx solid #e8e8e8; padding-bottom: 20upx; width: 95%; max-width: 95%;
+    text { font-size: 40upx; }
+    input { display: inline-block; min-width: 500upx; padding-left: 20upx; }
+}
+
+/* #ifdef MP-ALIPAY */
+.coreshop-cell-hd-title input { font-size: 24px; height: 18px; }
+/* #endif */

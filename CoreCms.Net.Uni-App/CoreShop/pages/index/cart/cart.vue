@@ -9,18 +9,18 @@
         <!-- 购物车为空 -->
         <view v-if="!shoppingCard.list || shoppingCard.list.length < 1">
             <view class="coreshop-emptybox">
-                <u-empty :src="$apiFilesUrl+'/static/images/empty/cart.png'" icon-size="300" text="您的购物车空空如也" mode="list"></u-empty>
-                <navigator class="coreshop-btn" url="/pages/category/index/index" hover-class="btn-hover" open-type="switchTab">随便逛逛</navigator>
+                <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/cart.png'" icon-size="300" text="您的购物车空空如也" mode="list"></u-empty>
+                <navigator class="coreshop-btn" url="/pages/category/index/index"  open-type="switchTab">随便逛逛</navigator>
             </view>
         </view>
         <!-- 购物车主结构  -->
         <view v-else class="cart-shoppingcard" v-for="(item, index) in shoppingCard.list" :key="index">
             <view class="cart-space-between cart-flex-vcenter" @click="goGoodsDetail(item.products.goodsId)">
                 <view class="cart-shopp-name">
-                    <text class="cart-h5 cart-bold">{{item.products.name}}{{item.id}}</text>
+                    <text class="cart-h5 cart-bold">{{item.products.name}}</text>
                 </view>
                 <view class="cart-shopp-go cart-nowrap cart-flex-end">
-                    <u-button class="cart-text-small" :plain="true" size="mini" @click="goGoodsDetail(item.products.goodsId)">浏览</u-button>
+                    <u-button class="cart-text" :plain="true" size="mini" @click="goGoodsDetail(item.products.goodsId)">浏览</u-button>
                 </view>
             </view>
             <view style="height:25rpx;"></view>
@@ -63,23 +63,19 @@
             </view>
             <view class="cart-shoppingcard-count cart-nowrap cart-flex-vcenter">
                 <text class="cart-text">合计 :</text>
-                <text class="u-font-26 text-red">￥{{totalprice}}</text>
+                <text class="u-font-26 coreshop-text-red">￥{{totalprice}}</text>
             </view>
-            <view class="cart-shoppingcard-checkout cart-bg-red" @tap="checkout">立即结算</view>
+            <view class="cart-shoppingcard-checkout cart-coreshop-bg-red" @tap="checkout">立即结算</view>
         </view>
 
         <!-- 登录提示 -->
-        <corecms-login-modal></corecms-login-modal>
+        <coreshop-login-modal></coreshop-login-modal>
     </view>
 
 </template>
 <script>
-    import checkBtn from '@/components/checkBtn/checkBtn.vue';
     import { goods } from '@/common/mixins/mixinsHelper.js';
     export default {
-        components: {
-            checkBtn
-        },
         mixins: [goods],
         data() {
             return {
@@ -374,41 +370,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    page { background: #fff }
-    .wrap { display: flex; flex-direction: column; height: calc(100vh - var(--window-top)); width: 100%; }
-    .nobox { height: 130rpx; width: 100%; line-height: 130rpx; font-size: 28rpx; text-align: center; -webkit-flex-shrink: 0; flex-shrink: 0; }
-
-    .empty-view { width: 280rpx; height: 280rpx; border-radius: 280rpx; background-color: #F6F7F8; margin-top: 30rpx; }
-    .empty-img { width: 220rpx; height: 200rpx; margin: 40rpx; border-radius: 200rpx; }
-
-    .cart-shoppingcard { background: #FFFFFF; border-radius: 8rpx; margin: 0 20rpx; margin-top: 20rpx; border-radius: 16rpx; padding: 20rpx 20rpx; background: #FFFFFF !important; }
-        .cart-shoppingcard:last-child { margin-bottom: 150rpx }
-
-    .cart-shopp-name { width: calc(100% - 120rpx); }
-    .cart-shopp-go { width: 120rpx; }
-    .cart-shoppingcard-goods { margin: 0rpx; display: flex; flex-wrap: nowrap; }
-    .cart-shoppingcard-goods-checkbtn { width: 60rpx; flex-shrink: 0; }
-    .cart-shoppingcard-goods-image { width: 120rpx; height: 120rpx; border-radius: 10rpx; margin-right: 20rpx; flex-shrink: 0; }
-    .cart-shoppingcard-goods-body { width: 100%; }
-    .cart-shoppingcard-goods-title { line-height: 1.4em; }
-    .cart-shoppingcard-goods-price { color: #e54d42; font-size: 32rpx; display: flex; flex-wrap: nowrap; justify-content: space-between; }
-    .cart-shoppingcard-goods-number { padding: 2px 0; }
-    .cart-shoppingcard-remove { display: block; text-align: right; line-height: 50rpx; margin-top: 30rpx; color: #CCCCCC; font-size: 24rpx; }
-    .cart-shoppingcard-checkbtn { width: 200rpx; margin-left: 50rpx; flex-shrink: 0; }
-    .cart-shoppingcard-checkout { width: 180rpx; height: 100rpx; line-height: 100rpx; font-size: 28rpx; text-align: center; flex-shrink: 0; }
-    .cart-bg-gray { background: #A5A7B2 !important; color: #FFFFFF !important; }
-    .cart-badge { border-radius: 38rpx; height: 38rpx; line-height: 38rpx; padding: 0 13rpx; font-size: 22rpx; }
-
-    .cart-space-between { display: flex; flex-direction: row; justify-content: space-between; }
-    .cart-h5 { font-size: 30rpx; }
-    .cart-bold { font-weight: bold; }
-    .cart-nowrap { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; }
-    .cart-flex-end { display: flex; flex-direction: row; justify-content: flex-end; }
-    .cart-text-small { font-size: 22rpx; line-height: 40rpx; }
-
-    .cart-flex-vcenter { align-items: center; }
-    .cart-border-t { border-top: 1px solid #E9E9E9; }
-    .cart-bg-red { background: #e54d42 !important; color: #FFFFFF !important; }
-
-    .slot-wrap { display: flex; align-items: center; padding: 0 20rpx; }
+    @import "cart.scss";
 </style>
