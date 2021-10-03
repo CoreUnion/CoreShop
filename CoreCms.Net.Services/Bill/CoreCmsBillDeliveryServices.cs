@@ -165,21 +165,6 @@ namespace CoreCms.Net.Services
                 }
 
                 //构建发货单明细
-                //dInfo.items.ForEach(p =>
-                //{
-                //    var bdItem = new CoreCmsBillDeliveryItem();
-                //    bdItem.deliveryId = billDelivery.deliveryId;
-                //    bdItem.orderId = p.orderId;
-                //    bdItem.productId = p.productId;
-                //    bdItem.goodsId = p.goodsId;
-                //    bdItem.bn = p.bn;
-                //    bdItem.sn = p.sn;
-                //    bdItem.weight = p.weight;
-                //    bdItem.name = p.name;
-                //    bdItem.addon = !string.IsNullOrEmpty(p.addon) ? p.addon : "";
-                //    bdItem.nums = orderItem.nums;
-                //    bdRel.Add(bdItem);
-                //});
                 var bdItem = new CoreCmsBillDeliveryItem();
                 bdItem.deliveryId = billDelivery.deliveryId;
                 bdItem.productId = orderItem.productId;
@@ -328,20 +313,17 @@ namespace CoreCms.Net.Services
                 }
 
                 //构建发货单明细
-                dInfo.items.ForEach(p =>
-                {
-                    var bdItem = new CoreCmsBillDeliveryItem();
-                    bdItem.deliveryId = billDelivery.deliveryId;
-                    bdItem.productId = p.productId;
-                    bdItem.goodsId = p.goodsId;
-                    bdItem.bn = p.bn;
-                    bdItem.sn = p.sn;
-                    bdItem.weight = p.weight;
-                    bdItem.name = p.name;
-                    bdItem.addon = !string.IsNullOrEmpty(p.addon) ? p.addon : "";
-                    bdItem.nums = orderItem.nums;
-                    bdRel.Add(bdItem);
-                });
+                var bdItem = new CoreCmsBillDeliveryItem();
+                bdItem.deliveryId = billDelivery.deliveryId;
+                bdItem.productId = orderItem.productId;
+                bdItem.goodsId = orderItem.goodsId;
+                bdItem.bn = orderItem.bn;
+                bdItem.sn = orderItem.sn;
+                bdItem.weight = orderItem.weight;
+                bdItem.name = orderItem.name;
+                bdItem.addon = !string.IsNullOrEmpty(orderItem.addon) ? orderItem.addon : "";
+                bdItem.nums = item.Value;
+                bdRel.Add(bdItem);
             }
             if (tNum < 1)
             {
