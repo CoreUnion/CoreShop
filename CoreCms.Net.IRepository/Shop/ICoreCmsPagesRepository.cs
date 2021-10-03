@@ -21,10 +21,39 @@ namespace CoreCms.Net.IRepository
     public interface ICoreCmsPagesRepository : IBaseRepository<CoreCmsPages>
     {
         /// <summary>
-        ///     重写异步更新方法
+        /// 重写异步插入方法
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<AdminUiCallBack> UpdateAsync(FmPagesUpdate entity);
+        new Task<AdminUiCallBack> InsertAsync(CoreCmsPages entity);
+
+        /// <summary>
+        /// 重写异步更新方法
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        new Task<AdminUiCallBack> UpdateAsync(CoreCmsPages entity);
+
+        /// <summary>
+        /// 重写删除指定ID的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> DeleteByIdAsync(int id);
+
+        /// <summary>
+        ///     更新设计
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> UpdateDesignAsync(FmPagesUpdate entity);
+
+        /// <summary>
+        /// 复制生成一个新的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> CopyByIdAsync(int id);
+
     }
 }

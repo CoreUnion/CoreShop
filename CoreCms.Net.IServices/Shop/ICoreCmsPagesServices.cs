@@ -8,6 +8,7 @@
  *        Description: 暂无
  ***********************************************************************/
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.FromBody;
@@ -20,13 +21,35 @@ namespace CoreCms.Net.IServices
     /// </summary>
     public interface ICoreCmsPagesServices : IBaseServices<CoreCmsPages>
     {
+
         /// <summary>
-        ///     重写异步更新方法方法
+        /// 重写异步插入方法
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<AdminUiCallBack> UpdateAsync(FmPagesUpdate entity);
+        new Task<AdminUiCallBack> InsertAsync(CoreCmsPages entity);
 
+        /// <summary>
+        /// 重写异步更新方法
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        new Task<AdminUiCallBack> UpdateAsync(CoreCmsPages entity);
+
+        /// <summary>
+        /// 重写删除指定ID的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> DeleteByIdAsync(int id);
+
+
+        /// <summary>
+        ///     更新设计
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> UpdateDesignAsync(FmPagesUpdate entity);
 
         /// <summary>
         ///     获取首页数据
@@ -34,5 +57,14 @@ namespace CoreCms.Net.IServices
         /// <param name="code">查询编码</param>
         /// <returns></returns>
         Task<WebApiCallBack> GetPageConfig(string code);
+
+
+        /// <summary>
+        /// 复制生成一个新的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> CopyByIdAsync(int id);
+
     }
 }

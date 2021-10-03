@@ -2,7 +2,7 @@
     <!-- 页面主体 -->
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <u-navbar :title="title"></u-navbar>
+        <u-navbar :custom-back="goBack" :title="title"></u-navbar>
         <view class="coreshop-bg-white u-padding-20 u-margin-20">
             <u-image width="100%" height="300rpx" v-if="info.coverImage" :src="info.coverImage && info.coverImage!='null' ?  info.coverImage+'?x-oss-process=image/resize,m_lfit,h_320,w_240' : '/static/images/common/empty-banner.png'"></u-image>
             <view class="article-title">
@@ -20,9 +20,9 @@
 </template>
 
 <script>
+    import { tools } from '@/common/mixins/mixinsHelper.js';
     export default {
-        components: {
-        },
+        mixins: [tools],
         data() {
             return {
                 idType: 1, //1文章 2公告 3微信图文消息
@@ -36,10 +36,6 @@
         onLoad(e) {
             this.idType = e.idType;
             this.id = e.id;
-
-            console.log(e.idType);
-            console.log(e.id);
-
             if (!this.idType && !this.id) {
                 this.$refs.uToast.show({ title: '获取失败', type: 'error', isTab: true, url: '/pages/index/default/default' });
             } else if (this.idType == 1) {
