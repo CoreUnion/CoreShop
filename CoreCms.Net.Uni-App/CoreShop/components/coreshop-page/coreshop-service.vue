@@ -9,18 +9,18 @@
                     <u-lazy-load threshold="-150" border-radius="10" :image="item.thumbnail" :index="item.id"></u-lazy-load>
                 </view>
                 <view class="img-list-item-r">
-                    <view class="u-font-28  u-line-1">{{item.title}}</view>
-                    <view class="description u-line-1 u-margin-10">{{item.description}}</view>
+                    <view class="u-font-28 coreshop-text-bold u-line-1">{{item.title}}</view>
+                    <view class="description u-line-2 u-margin-top-10 u-margin-bottom-10">{{item.description}}</view>
                     <view class="item-c">
                         <view class="red-price">￥{{item.money}}</view>
                         <view>
                             <view style="float:left;">
-                                <view class="goods-salesvolume red-price u-font-24" v-if="(item.startStatus == 1) && item.lastTime">
+                                <view class="goods-salesvolume red-price u-font-24" v-if="item.status == 0 && item.lastTime > 0">
                                     剩余：
                                     <u-count-down :timestamp="item.lastTime" separator="zh" :show-days="true" :show-hours="true" :show-minutes="true" :show-seconds="true" font-size="24" separator-size="24" @end="end(key)"></u-count-down>
                                 </view>
-                                <view class="goods-salesvolume red-price" v-if="item.startStatus == 3">已结束</view>
-                                <view class="goods-salesvolume red-price" v-if="item.startStatus == 2">即将开始</view>
+                                <view class="goods-salesvolume red-price" v-if="item.status == 1">已结束</view>
+                                <view class="goods-salesvolume red-price" v-if="item.status == 2">售罄</view>
                             </view>
                             <u-icon name="shopping-cart" color="#2979ff" size="40" class="btnCart"></u-icon>
                         </view>
