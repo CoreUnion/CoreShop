@@ -46,15 +46,43 @@ namespace CoreCms.Net.Repository
             }
             article.contentBody = CommonHelper.ClearHtml(article.contentBody, new[] { "width", "height" });
             article.contentBody = article.contentBody.Replace("<img", "<img style='max-width: 100%'");
+            article.contentBody = article.contentBody.Replace("oembed url=", "video  width=\"100%\"  controls=\"controls\" src=");
+            article.contentBody = article.contentBody.Replace("/oembed", "/video");
 
             if (article.typeId > 0)
             {
                 article.articleType = await DbClient.Queryable<CoreCmsArticleType>().InSingleAsync(article.typeId);
             }
             //上一篇
-            article.upArticle = await DbClient.Queryable<CoreCmsArticle>().Where(p => p.id < article.id && p.isPub == true).FirstAsync();
+            article.upArticle = await DbClient.Queryable<CoreCmsArticle>().Where(p => p.id < article.id && p.isPub == true).Select(p => new CoreCmsArticle
+            {
+                id = p.id,
+                title = p.title,
+                brief = p.brief,
+                coverImage = p.coverImage,
+                typeId = p.typeId,
+                sort = p.sort,
+                isPub = p.isPub,
+                isDel = p.isDel,
+                pv = p.pv,
+                createTime = p.createTime,
+                updateTime = p.updateTime
+            }).FirstAsync();
             //下一篇
-            article.downArticle = await DbClient.Queryable<CoreCmsArticle>().Where(p => p.id > article.id && p.isPub == true).FirstAsync();
+            article.downArticle = await DbClient.Queryable<CoreCmsArticle>().Where(p => p.id > article.id && p.isPub == true).Select(p => new CoreCmsArticle
+            {
+                id = p.id,
+                title = p.title,
+                brief = p.brief,
+                coverImage = p.coverImage,
+                typeId = p.typeId,
+                sort = p.sort,
+                isPub = p.isPub,
+                isDel = p.isDel,
+                pv = p.pv,
+                createTime = p.createTime,
+                updateTime = p.updateTime
+            }).FirstAsync();
 
             await DbClient.Updateable<CoreCmsArticle>().SetColumns(p => p.pv == (p.pv + 1)).Where(p => p.id == article.id).ExecuteCommandAsync();
 
