@@ -155,7 +155,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             where = where.And(p => p.isMarketable == true);
 
             var className = string.Empty;
-            if (!string.IsNullOrEmpty(entity.where))
+            if (!string.IsNullOrWhiteSpace(entity.where))
             {
                 var obj = JsonConvert.DeserializeAnonymousType(entity.where, new
                 {
@@ -167,7 +167,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     searchName = "",
                 });
 
-                if (!string.IsNullOrEmpty(obj.priceFrom))
+                if (!string.IsNullOrWhiteSpace(obj.priceFrom))
                 {
                     var priceF = obj.priceFrom.ObjectToDouble(0);
                     if (priceF >= 0)
@@ -176,19 +176,19 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                         where = where.And(p => p.price >= f);
                     }
                 }
-                if (!string.IsNullOrEmpty(obj.priceTo))
+                if (!string.IsNullOrWhiteSpace(obj.priceTo))
                 {
                     var priceT = obj.priceTo.ObjectToDouble(0);
-                    if (priceT >= 0)
+                    if (priceT > 0)
                     {
                         var f = Convert.ToDecimal(priceT);
                         where = where.And(p => p.price <= f);
                     }
                 }
-                if (!string.IsNullOrEmpty(obj.catId))
+                if (!string.IsNullOrWhiteSpace(obj.catId))
                 {
                     var catId = obj.catId.ObjectToInt(0);
-                    if (catId >= 0)
+                    if (catId > 0)
                     {
                         var category = await _goodsCategoryServices.QueryByIdAsync(catId);
                         if (category != null)
@@ -208,30 +208,26 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                         }
                     }
                 }
-                if (!string.IsNullOrEmpty(obj.brandId))
+                if (!string.IsNullOrWhiteSpace(obj.brandId))
                 {
                     var brandId = obj.brandId.ObjectToInt(0);
-                    if (brandId >= 0)
+                    if (brandId > 0)
                     {
                         where = where.And(p => p.brandId == brandId);
                     }
                 }
-                if (!string.IsNullOrEmpty(obj.labelId))
+                if (!string.IsNullOrWhiteSpace(obj.labelId))
                 {
-                    var brandId = obj.brandId.ObjectToInt(0);
-                    if (brandId >= 0)
-                    {
-                        where = where.And(p => p.brandId == brandId);
-                    }
+                    where = where.And(p => p.labelIds.Contains(obj.labelId));
                 }
-                if (!string.IsNullOrEmpty(obj.searchName))
+                if (!string.IsNullOrWhiteSpace(obj.searchName))
                 {
                     where = where.And(p => p.name.Contains(obj.searchName));
                 }
             }
 
             var orderBy = " isRecommend desc,isHot desc";
-            if (!string.IsNullOrEmpty(entity.order))
+            if (!string.IsNullOrWhiteSpace(entity.order))
             {
                 orderBy += "," + entity.order;
             }

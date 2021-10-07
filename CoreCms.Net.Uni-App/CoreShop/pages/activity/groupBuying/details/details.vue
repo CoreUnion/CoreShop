@@ -351,11 +351,13 @@
                 <!-- #endif -->
                 <!-- #ifdef MP-WEIXIN -->
                 <view class="action" >
-                    <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom" open-type="contact" bindcontact="showChat"></u-icon>
+                    <button open-type="contact" bindcontact="showChat" class="noButtonStyle">
+                        <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom"></u-icon>
+                    </button>   
                 </view>
                 <!-- #endif -->
                 <view class="action"  @click="collection">
-                    <u-icon :name="[isfav?'star-fill':'star']" :size="40" :label="isfav?'已收藏':'收藏'" :label-size="22" label-pos="bottom" open-type="contact" bindcontact="showChat"></u-icon>
+                    <u-icon :name="[isfav?'star-fill':'star']" :size="40" :label="isfav?'已收藏':'收藏'" :label-size="22" label-pos="bottom"></u-icon>
                 </view>
                 <view class="action" @click="redirectCart">
                     <u-badge class="car-num" :count="cartNums?cartNums:0" type="error" :offset="[-3, -6]"></u-badge>
