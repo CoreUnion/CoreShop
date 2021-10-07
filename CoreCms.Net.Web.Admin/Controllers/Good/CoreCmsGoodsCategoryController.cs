@@ -255,7 +255,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return Json(jm);
             }
 
-            if (await _goodsServices.ExistsAsync(p => p.goodsCategoryId == entity.id))
+            if (await _goodsServices.ExistsAsync(p => p.goodsCategoryId == entity.id && !p.isDel))
             {
                 jm.msg = "有商品关联此栏目,禁止删除";
                 return Json(jm);
