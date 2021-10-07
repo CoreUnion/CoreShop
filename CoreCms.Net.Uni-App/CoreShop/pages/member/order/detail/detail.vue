@@ -80,7 +80,7 @@
                                 </view>
                             </view>
                             <view class="coreshop-cell-item-ft" v-if="teamInfo.status==1">
-                                <u-button type="success" size="mini"  @click="goInvition()">邀请拼单</u-button>
+                                <u-button type="success" size="mini" @click="goInvition()">邀请拼单</u-button>
                             </view>
                         </view>
                     </view>
@@ -292,7 +292,9 @@
 
                 <u-line color="#eee" border-style="dashed" margin="20rpx 0" />
 
-                <view class="u-text-center coreshop-text-black">联系客服</view>
+                <view class="coreshop-text-black u-text-center">
+                    <u-button type="primary" size="mini" open-type="contact" bindcontact="showChat">联系客服</u-button>
+                </view>
             </view>
         </view>
 
