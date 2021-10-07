@@ -210,7 +210,6 @@ https://api.demo.coreshop.cn/job
 ### ⚡ 进度及计划  
 - 目前虽然完成了通用商城该有的功能开发，但是因为业务逻辑层面的功能繁多，不可否认存在一些较明显的bug。
 - 近阶段我们主要工作重心放在修复Bug、完善测试、优化业务逻辑、编写文档及官网的建设。
-- 开发计划及进度、更新日志等已经更新至gitee wiki板块，欢迎查阅【[点击前往](https://gitee.com/CoreUnion/CoreShop/wikis/%E5%BC%80%E5%8F%91%E8%AE%A1%E5%88%92?sort_id=4196460)】
 
 
 ### 🎏 版权须知
@@ -258,6 +257,7 @@ https://api.demo.coreshop.cn/job
 | 21 | Handsome Man | 50 | 2021-09-15 | 
 | 22 | Handsome Man | 8.5 | 2021-09-21 | 
 | 23 | On-line | 66 | 2021-10-02 | 
+| 24 | 六耳 | 133.32 | 2021-10-07 | 
 
 
 ### ☀️ 组织  
