@@ -218,7 +218,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 }
                 if (!string.IsNullOrWhiteSpace(obj.labelId))
                 {
-                    where = where.And(p => p.labelIds.Contains(obj.labelId));
+                    where = where.And(p => (',' + p.labelIds.Trim(',') + ',').Contains(',' + obj.labelId.Trim(',') + ','));
                 }
                 if (!string.IsNullOrWhiteSpace(obj.searchName))
                 {
