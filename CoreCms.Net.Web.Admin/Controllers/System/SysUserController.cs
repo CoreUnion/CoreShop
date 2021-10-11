@@ -38,8 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
-    //[Authorize(Permissions.Name)]
+    [Authorize(Permissions.Name)]
     public class SysUserController : Controller
     {
         private readonly ISysOrganizationServices _sysOrganizationServices;

@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsAreaController : Controller
     {
         private readonly ICoreCmsAreaServices _coreCmsAreaServices;

@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class SysRoleController : Controller
     {
         private readonly ISysMenuServices _sysMenuServices;

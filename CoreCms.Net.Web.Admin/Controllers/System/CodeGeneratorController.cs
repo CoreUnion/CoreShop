@@ -34,7 +34,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Description("代码生成器")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize]
+    //[Authorize(Permissions.Name)]
     public class CodeGeneratorController : Controller
     {
         private readonly ICodeGeneratorServices _codeGeneratorServices;

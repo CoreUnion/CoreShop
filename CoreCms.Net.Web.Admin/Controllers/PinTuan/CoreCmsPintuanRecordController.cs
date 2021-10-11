@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsPinTuanRecordController : Controller
     {
         private readonly ICoreCmsPinTuanRecordServices _coreCmsPinTuanRecordServices;

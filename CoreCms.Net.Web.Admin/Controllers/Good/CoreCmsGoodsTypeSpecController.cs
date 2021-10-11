@@ -36,7 +36,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsGoodsTypeSpecController : Controller
     {
         private readonly ICoreCmsGoodsTypeSpecServices _coreCmsGoodsTypeSpecServices;
