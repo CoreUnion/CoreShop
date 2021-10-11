@@ -36,7 +36,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsStoreController : Controller
     {
         private readonly ICoreCmsClerkServices _coreCmsClerkServices;

@@ -1445,7 +1445,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
+        [Authorize(Permissions.Name)]
         public async Task<JsonResult> LogisticsByApi([FromBody] FMApiLogisticsByApiPost entity)
         {
             var jm = new WebApiCallBack();

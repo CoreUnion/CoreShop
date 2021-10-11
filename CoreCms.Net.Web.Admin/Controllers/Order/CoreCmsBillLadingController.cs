@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsBillLadingController : Controller
     {
         private readonly ICoreCmsBillLadingServices _coreCmsBillLadingServices;

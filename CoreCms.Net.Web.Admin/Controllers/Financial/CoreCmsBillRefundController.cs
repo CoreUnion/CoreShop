@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsBillRefundController : Controller
     {
         private readonly ICoreCmsBillRefundServices _coreCmsBillRefundServices;

@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsUserServicesOrderController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;

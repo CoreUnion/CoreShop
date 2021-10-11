@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
-    [Authorize]
+    [Authorize(Permissions.Name)]
     public class CoreCmsAgentGoodsController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
