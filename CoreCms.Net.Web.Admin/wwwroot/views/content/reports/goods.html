@@ -40,11 +40,14 @@
 </div>
 
 <div class="table-body">
-    <div class="report_table_bar" style="margin-top: 10px;">
-        <span id="tableExport"><i class="layui-icon">&#xe601;</i>下载明细</span>
-    </div>
     <table id="LAY-app-Report-tableBox" lay-filter="LAY-app-Report-tableBox"></table>
 </div>
+
+
+<script type="text/html" id="LAY-app-Report-toolbar">
+    <div class="report_table_bar"><span><i class="layui-icon layui-icon-triangle-r"></i> 右侧按钮进行打印下载操作。</span></div>
+</script>
+
 <script type="text/javascript">
     var debug = layui.setter.debug;
     layui.use(['index', 'element', 'laydate', 'form', 'table', 'coreHelper', 'util', 'table'], function () {
@@ -70,7 +73,9 @@
         table.render({
             elem: '#LAY-app-Report-tableBox', //指定原始表格元素选择器（推荐id选择器）
             method: 'POST',
-            height: 'full-189',
+            toolbar: '#LAY-app-Report-toolbar',
+            defaultToolbar: ['filter', 'print', 'exports'],
+            height: 'full-159',
             cellMinWidth: '80',
             //id: 'LAY-app-Report-tableBox',
             url: "Api/CoreCmsReports/GetGoods",
@@ -118,10 +123,6 @@
                 });
             }
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-        });
-
-        $('#tableExport').on('click', function () {
-            layui.table.exportFile('table', tableData);
         });
 
         //重载form

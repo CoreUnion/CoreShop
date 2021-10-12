@@ -1,3 +1,6 @@
+2021-10-12
+1、后端开启颗粒化权限控制，数据库结构无变化，只是增加了不同菜单对不同Controller和Action的控制关联，及管理员的关联权限。
+
 2021-08-31
 1、【调整】删除【支付单关系表CoreCmsBillPaymentsRel】，【CoreCmsBillPayments】表增加【sourceId】字段，替换不同类型数据单据关联。
 2、【调整】删除【发货单关系表CoreCmsBillDeliveryOrderRel】，【CoreCmsBillDeliveryItem】表增加【orderId】字段，直接对接订单表。
