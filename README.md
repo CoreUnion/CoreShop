@@ -23,7 +23,11 @@
 
 ------------------------------------------------------------------------
 
-[![](https://img.shields.io/badge/官方网站-coreshop.cn-brightgreen)](https://www.coreshop.cn/)  [![](https://img.shields.io/badge/QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
+官方网站：https://www.coreshop.cn/ 【建设中】   
+
+QQ群：70494974
+
+[![](https://img.shields.io/badge/点击访问官方网站-coreshop.cn-brightgreen)](https://www.coreshop.cn/)  [![](https://img.shields.io/badge/点击加QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
 
 ------------------------------------------------------------------------
 
@@ -258,6 +262,9 @@ https://api.demo.coreshop.cn/job
 | 22 | Handsome Man | 8.5 | 2021-09-21 | 
 | 23 | On-line | 66 | 2021-10-02 | 
 | 24 | 六耳 | 133.32 | 2021-10-07 | 
+| 25 | 唐爽 | 100 | 2021-10-12 | 
+| 26 | 月上松树梢 | 6.66 | 2021-10-13 | 
+| 27 | *文 | 200 | 2021-10-13 | 
 
 
 ### ☀️ 组织  
