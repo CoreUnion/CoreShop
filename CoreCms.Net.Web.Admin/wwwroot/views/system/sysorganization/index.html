@@ -174,7 +174,7 @@
                                 area: ['700px', '350px'],
                                 id: 'LAY-popup-SysOrganization-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/SysOrganization/create', { data: e.data, treeData: treeData, parentId: parentId }).done(function () {
+                                    view(this.id).render('system/sysorganization/create', { data: e.data, treeData: treeData, parentId: parentId }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysOrganization-createForm-submit)',
                                             function (data) {
@@ -219,7 +219,7 @@
                                 area: ['700px', '350px'],
                                 id: 'LAY-popup-SysOrganization-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/SysOrganization/edit', { data: e.data, treeData: treeData }).done(function () {
+                                    view(this.id).render('system/sysorganization/edit', { data: e.data, treeData: treeData }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysOrganization-editForm-submit)',
                                             function (data) {
@@ -360,7 +360,7 @@
                                 area: ['380px', '450px'],
                                 id: 'LAY-popup-SysUser-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/sysorganization/createUser', { data: e.data, treeData: treeData }).done(function () {
+                                    view(this.id).render('system/sysorganization/createUser', { data: e.data, treeData: treeData }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysUser-createForm-submit)',
                                             function (data) {
@@ -407,7 +407,7 @@
                                 area: ['380px', '450px'],
                                 id: 'LAY-popup-SysUser-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/sysorganization/editUser', { data: e.data, treeData: treeData }).done(function () {
+                                    view(this.id).render('system/sysorganization/editUser', { data: e.data, treeData: treeData }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysUser-editForm-submit)',
                                             function (data) {

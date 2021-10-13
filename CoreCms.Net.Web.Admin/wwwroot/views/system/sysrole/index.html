@@ -161,7 +161,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysRole-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysRole/create', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysrole/create', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysRole-createForm-submit)',
                                             function (data) {
@@ -206,7 +206,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysRole-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysRole/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysrole/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysRole-editForm-submit)',
                                             function (data) {

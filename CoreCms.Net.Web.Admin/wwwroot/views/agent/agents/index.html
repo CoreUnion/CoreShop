@@ -222,7 +222,7 @@
                                 area: ['640px', '300px'],
                                 id: 'LAY-popup-CoreCmsAgent-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('Agent/agents/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('agent/agents/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsAgent-editForm-submit)',
                                             function (data) {
@@ -267,7 +267,7 @@
                                 area: ['700px', '550px'],
                                 id: 'LAY-popup-CoreCmsAgent-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('Agent/agents/details', { data: e.data }).done(function () {
+                                    view(this.id).render('agent/agents/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条

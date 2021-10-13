@@ -175,7 +175,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysUser-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysUser/create', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysuser/create', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysUser-createForm-submit)',
                                             function (data) {
@@ -220,7 +220,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysUser-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysUser/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysuser/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysUser-editForm-submit)',
                                             function (data) {

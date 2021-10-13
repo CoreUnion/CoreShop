@@ -168,7 +168,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysDictionary-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/SysDictionary/create', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysdictionary/create', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysDictionary-createForm-submit)',
                                             function (data) {
@@ -208,7 +208,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysDictionary-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysDictionary/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysdictionary/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysDictionary-editForm-submit)',
                                             function (data) {
@@ -306,7 +306,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysDictionaryData-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysDictionary/createData', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysdictionary/createData', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysDictionaryData-createForm-submit)',
                                             function (data) {
@@ -347,7 +347,7 @@
                                 area: ['380px', '400px'],
                                 id: 'LAY-popup-SysDictionaryData-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysDictionary/editData', { data: e.data }).done(function () {
+                                    view(this.id).render('system/sysdictionary/editData', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysDictionaryData-editForm-submit)',
                                             function (data) {

@@ -184,7 +184,7 @@
                                 area: ['1000px', '90%'],
                                 id: 'LAY-popup-SysNLogRecords-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/logs/SysNLogRecords/details', { data: e.data }).done(function () {
+                                    view(this.id).render('system/logs/sysnlogrecords/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条
