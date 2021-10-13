@@ -158,7 +158,7 @@
                                 area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysMenu/create', { data: e.data,treeData:insTb.options.data }).done(function () {
+                                    view(this.id).render('system/sysmenu/create', { data: e.data,treeData:insTb.options.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysMenu-createForm-submit)',
                                             function (data) {
@@ -207,7 +207,7 @@
                                 area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('System/SysMenu/edit', { data: e.data, treeData: insTb.options.data }).done(function() {
+                                    view(this.id).render('system/sysmenu/edit', { data: e.data, treeData: insTb.options.data }).done(function() {
                                         //监听提交
                                         form.on('submit(LAY-app-SysMenu-editForm-submit)',
                                             function(data) {

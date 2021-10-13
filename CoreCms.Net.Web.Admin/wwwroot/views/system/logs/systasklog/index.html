@@ -188,7 +188,7 @@
                                 area: ['600px', '550px'],
                                 id: 'LAY-popup-SysTaskLog-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/logs/SysTaskLog/details', { data: e.data }).done(function () {
+                                    view(this.id).render('system/logs/systasklog/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条

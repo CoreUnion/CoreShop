@@ -268,7 +268,7 @@
                                     area: ['600px', '500px'],
                                     id: 'LAY-popup-CoreCmsUserServicesTicket-create',
                                     success: function (layero, index) {
-                                        view(this.id).render('base/CoreCmsUserServicesTicket/create', { data: e.data }).done(function () {
+                                        view(this.id).render('serviceGoods/servicesTicketcreate', { data: e.data }).done(function () {
                                             //监听提交
                                             form.on('submit(LAY-app-CoreCmsUserServicesTicket-createForm-submit)',
                                                 function(data) {
@@ -308,7 +308,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesTicket-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesTicket/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('serviceGoods/servicesTicketedit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsUserServicesTicket-editForm-submit)',
                                             function(data) {
@@ -348,7 +348,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesTicket-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesTicket/details', { data: e.data }).done(function () {
+                                    view(this.id).render('serviceGoods/servicesTicketdetails', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条

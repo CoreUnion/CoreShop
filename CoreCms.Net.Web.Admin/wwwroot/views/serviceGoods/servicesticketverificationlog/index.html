@@ -200,7 +200,7 @@
                                     area: ['600px', '500px'],
                                     id: 'LAY-popup-CoreCmsUserServicesTicketVerificationLog-create',
                                     success: function (layero, index) {
-                                        view(this.id).render('base/CoreCmsUserServicesTicketVerificationLog/create', { data: e.data }).done(function () {
+                                        view(this.id).render('serviceGoods/servicesticketverificationlog/create', { data: e.data }).done(function () {
                                             //监听提交
                                             form.on('submit(LAY-app-CoreCmsUserServicesTicketVerificationLog-createForm-submit)',
                                                 function(data) {
@@ -238,7 +238,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesTicketVerificationLog-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesTicketVerificationLog/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('serviceGoods/servicesticketverificationlog/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsUserServicesTicketVerificationLog-editForm-submit)',
                                             function(data) {
@@ -276,7 +276,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesTicketVerificationLog-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesTicketVerificationLog/details', { data: e.data }).done(function () {
+                                    view(this.id).render('serviceGoods/servicesticketverificationlog/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条

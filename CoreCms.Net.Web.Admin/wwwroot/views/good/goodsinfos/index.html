@@ -233,7 +233,7 @@
                                 area: ['800px', '600px'],
                                 id: 'LAY-popup-CoreCmsGoods-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsGoods/create', { data: e.data }).done(function () {
+                                    view(this.id).render('good/goodsinfos/create', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsGoods-createForm-submit)',
                                             function (data) {
@@ -273,7 +273,7 @@
                                 area: ['800px', '600px'],
                                 id: 'LAY-popup-CoreCmsGoods-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsGoods/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('good/goodsinfos/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsGoods-editForm-submit)',
                                             function (data) {
@@ -313,7 +313,7 @@
                                 area: ['800px', '600px'],
                                 id: 'LAY-popup-CoreCmsGoods-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsGoods/details', { data: e.data }).done(function () {
+                                    view(this.id).render('good/goodsinfos/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                 }

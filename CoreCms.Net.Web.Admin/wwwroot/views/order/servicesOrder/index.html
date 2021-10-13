@@ -236,7 +236,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesOrder-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesOrder/create', { data: e.data }).done(function () {
+                                    view(this.id).render('order/servicesOrder/create', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsUserServicesOrder-createForm-submit)',
                                             function (data) {
@@ -277,7 +277,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesOrder-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesOrder/edit', { data: e.data }).done(function () {
+                                    view(this.id).render('order/servicesOrder/edit', { data: e.data }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-CoreCmsUserServicesOrder-editForm-submit)',
                                             function (data) {
@@ -318,7 +318,7 @@
                                 area: ['600px', '500px'],
                                 id: 'LAY-popup-CoreCmsUserServicesOrder-details',
                                 success: function (layero, index) {
-                                    view(this.id).render('base/CoreCmsUserServicesOrder/details', { data: e.data }).done(function () {
+                                    view(this.id).render('order/servicesOrder/details', { data: e.data }).done(function () {
                                         form.render();
                                     });
                                     // 禁止弹窗出现滚动条
