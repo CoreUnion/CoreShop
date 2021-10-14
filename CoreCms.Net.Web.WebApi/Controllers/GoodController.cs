@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class GoodController : Controller
+    public class GoodController : ControllerBase
     {
         private IMapper _mapper;
         private readonly IHttpContextUser _user;
@@ -94,7 +94,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetAllCategories()
+        public async Task<WebApiCallBack> GetAllCategories()
         {
             var jm = new WebApiCallBack() { status = true };
 
@@ -135,7 +135,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = wxGoodCategoryDto;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -146,7 +146,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsPageList([FromBody] FMPageByWhereOrder entity)
+        public async Task<WebApiCallBack> GetGoodsPageList([FromBody] FMPageByWhereOrder entity)
         {
             var jm = new WebApiCallBack();
 
@@ -263,7 +263,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             };
             jm.msg = "数据调用成功!";
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -274,7 +274,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetDetial([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetDetial([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -288,7 +288,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (model == null)
             {
                 jm.msg = "商品获取失败";
-                return Json(jm);
+                return jm;
             }
 
             jm.status = true;
@@ -296,7 +296,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.data = model;
             jm.methodDescription = JsonConvert.SerializeObject(_user);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -307,7 +307,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetProductInfo([FromBody] FMGetProductInfo entity)
+        public async Task<WebApiCallBack> GetProductInfo([FromBody] FMGetProductInfo entity)
         {
             var jm = new WebApiCallBack();
 
@@ -323,14 +323,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (getProductInfo == null)
             {
                 jm.msg = "获取单个货品失败";
-                return Json(jm);
+                return jm;
             }
 
             jm.status = true;
             jm.msg = "获取单个货品成功";
             jm.data = getProductInfo;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -342,7 +342,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsComment([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetGoodsComment([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -366,7 +366,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 totalPages = list.TotalPages
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -377,7 +377,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsParams([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetGoodsParams([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -386,7 +386,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (goods == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
             var list = new List<WxNameValueDto>();
             var goodsParams = await _goodsParamsServices.QueryAsync();
@@ -418,7 +418,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取商品参数成功";
             jm.data = list;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -428,7 +428,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsRecommendList([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetGoodsRecommendList([FromBody] FMIntId entity)
         {
             if (entity.id <= 0)
             {
@@ -444,7 +444,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _goodsServices.GetGoodsRecommendList(entity.id, bl)
             };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -459,7 +459,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetDetialByToken([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetDetialByToken([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -473,7 +473,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (model == null)
             {
                 jm.msg = "商品获取失败";
-                return Json(jm);
+                return jm;
             }
 
             await _goodsServices.UpdateAsync(p => new CoreCmsGoods() { viewCount = p.viewCount + 1 },
@@ -485,7 +485,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.data = model;
             jm.methodDescription = JsonConvert.SerializeObject(_user);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class GroupController : Controller
+    public class GroupController : ControllerBase
     {
 
         private readonly IHttpContextUser _user;
@@ -56,11 +56,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetList([FromBody] FMGroupGetListPost entity)
+        public async Task<WebApiCallBack> GetList([FromBody] FMGroupGetListPost entity)
         {
             var jm = await _coreCmsPromotionServices.GetGroupList(entity.type, _user.ID, entity.status, entity.page, entity.limit);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -70,10 +70,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsDetial([FromBody] FMGetGoodsDetial entity)
+        public async Task<WebApiCallBack> GetGoodsDetial([FromBody] FMGetGoodsDetial entity)
         {
             var jm = await _coreCmsPromotionServices.GetGroupDetail(entity.id, 0, "group", entity.groupId);
-            return Json(jm);
+            return jm;
         }
         #endregion
 

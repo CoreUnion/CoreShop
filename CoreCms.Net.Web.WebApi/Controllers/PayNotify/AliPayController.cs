@@ -23,7 +23,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
     /// 支付宝异步通知
     /// </summary>
     [Route("Notify/[controller]/[action]")]
-    public class AliPayController : Controller
+    public class AliPayController : ControllerBase
     {
         private readonly IAlipayNotifyClient _client;
         private readonly IOptions<AlipayOptions> _optionsAccessor;

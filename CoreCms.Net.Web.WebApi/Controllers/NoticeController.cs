@@ -30,7 +30,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class NoticeController : Controller
+    public class NoticeController : ControllerBase
     {
         private IHttpContextUser _user;
         private ICoreCmsNoticeServices _noticeServices;
@@ -53,7 +53,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> NoticeList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> NoticeList([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -62,7 +62,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return Json(jm);
+            return jm;
 
         }
 

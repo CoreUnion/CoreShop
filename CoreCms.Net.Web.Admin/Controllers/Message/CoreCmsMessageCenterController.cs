@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsMessageCenterController : Controller
+    public class CoreCmsMessageCenterController : ControllerBase
     {
         private readonly ICoreCmsMessageCenterServices _coreCmsMessageCenterServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -65,7 +65,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -138,7 +138,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -164,7 +164,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -179,7 +179,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置启用短信")]
-        public async Task<JsonResult> DoSetisSms([FromBody] FMUpdateBoolDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetisSms([FromBody] FMUpdateBoolDataByIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -187,7 +187,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             oldModel.isSms = entity.data;
@@ -197,7 +197,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置启用站内消息")]
-        public async Task<JsonResult> DoSetisMessage([FromBody] FMUpdateBoolDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetisMessage([FromBody] FMUpdateBoolDataByIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -220,7 +220,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             oldModel.isMessage = entity.data;
@@ -230,7 +230,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -245,7 +245,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置启用微信模板消息")]
-        public async Task<JsonResult> DoSetisWxTempletMessage([FromBody] FMUpdateBoolDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetisWxTempletMessage([FromBody] FMUpdateBoolDataByIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -253,7 +253,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             oldModel.isWxTempletMessage = entity.data;
@@ -263,7 +263,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

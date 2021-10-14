@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsStockLogController : Controller
+    public class CoreCmsStockLogController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsStockLogServices _coreCmsStockLogServices;
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -184,7 +184,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -196,7 +196,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -207,7 +207,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 stockType
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -219,11 +219,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public JsonResult GetCreate()
+        public AdminUiCallBack GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
         #endregion
 

@@ -24,7 +24,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ArticleController : Controller
+    public class ArticleController : ControllerBase
     {
 
         private IHttpContextUser _user;
@@ -52,7 +52,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> NoticeList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> NoticeList([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -61,7 +61,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetArticleList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetArticleList([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -96,7 +96,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 count = list.TotalCount
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

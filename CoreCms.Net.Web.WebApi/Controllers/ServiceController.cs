@@ -34,7 +34,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ServiceController : Controller
+    public class ServiceController : ControllerBase
     {
         private readonly ICoreCmsServicesServices _servicesServices;
         private readonly ICoreCmsUserServicesOrderServices _userServicesOrderServices;
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<JsonResult> GetPageList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetPageList([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -134,7 +134,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 list = list,
                 count = list.TotalCount,
             };
-            return Json(jm);
+            return jm;
 
         }
 
@@ -147,7 +147,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<JsonResult> GetDetails([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetDetails([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -184,7 +184,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             jm.status = true;
             jm.data = data;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -199,7 +199,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> AddServiceOrder([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> AddServiceOrder([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -208,20 +208,20 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (data == null)
             {
                 jm.msg = "服务数据获取失败";
-                return Json(jm);
+                return jm;
             }
 
             var user = await _userServices.QueryByIdAsync(_user.ID);
             if (user == null)
             {
                 jm.msg = "用户数据获取失败";
-                return Json(jm);
+                return jm;
             }
 
             if (!data.allowedMembership.Contains("," + user.grade + ","))
             {
                 jm.msg = "您所在的用户级别不支持购买";
-                return Json(jm);
+                return jm;
             }
 
             var order = new CoreCmsUserServicesOrder();
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             jm.status = bl;
             jm.data = order.serviceOrderId;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -251,10 +251,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> VerificationPageList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> VerificationPageList([FromBody] FMPageByIntId entity)
         {
             var jm = await _ticketVerificationLogServices.GetVerificationLogs(_user.ID, entity.page, entity.limit);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -265,10 +265,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> LogDelete([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> LogDelete([FromBody] FMIntId entity)
         {
             var jm = await _ticketVerificationLogServices.LogDelete(entity.id, _user.ID);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -280,21 +280,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetTicketInfo([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> GetTicketInfo([FromBody] FMStringId entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return Json(jm);
+                return jm;
             }
 
             var ticket = await _userServicesTicketServices.QueryByClauseAsync(p => p.redeemCode == entity.id);
             if (ticket == null)
             {
                 jm.msg = "未查询到服务券";
-                return Json(jm);
+                return jm;
             }
 
             ticket.statusStr = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.ServicesTicketStatus>(ticket.status);
@@ -311,7 +311,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 serviceOrder
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -322,53 +322,53 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> VerificationTicket([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> VerificationTicket([FromBody] FMStringId entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return Json(jm);
+                return jm;
             }
             var ticket = await _userServicesTicketServices.QueryByClauseAsync(p => p.redeemCode == entity.id);
             if (ticket == null)
             {
                 jm.msg = "未查询到服务券";
-                return Json(jm);
+                return jm;
             }
 
             if (ticket.status != (int)GlobalEnumVars.ServicesTicketStatus.Normal)
             {
                 jm.msg = "服务券状态不支持核销";
-                return Json(jm);
+                return jm;
             }
 
             var service = await _servicesServices.QueryByIdAsync(ticket.serviceId);
             if (service == null)
             {
                 jm.msg = "服务项目获取失败";
-                return Json(jm);
+                return jm;
             }
 
             var user = await _userServices.QueryByIdAsync(_user.ID);
             if (user == null)
             {
                 jm.msg = "未获取到审核权限";
-                return Json(jm);
+                return jm;
             }
 
             var clerk = await _clerkServices.QueryByClauseAsync(p => p.userId == user.id);
             if (clerk == null)
             {
                 jm.msg = "非门店店员无权限核验";
-                return Json(jm);
+                return jm;
             }
 
             if (!service.consumableStore.Contains("," + clerk.storeId + ","))
             {
                 jm.msg = "您所在的门店无权核销此券";
-                return Json(jm);
+                return jm;
             }
 
             //开始更新数据
@@ -395,7 +395,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = up && bl;
             jm.msg = jm.status ? "核销成功" : "核销失败";
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

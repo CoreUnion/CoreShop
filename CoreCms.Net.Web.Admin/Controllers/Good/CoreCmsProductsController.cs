@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsProductsController : Controller
+    public class CoreCmsProductsController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsProductsServices _coreCmsProductsServices;
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -139,7 +139,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -151,11 +151,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -169,7 +169,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -177,12 +177,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -195,11 +195,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置库存")]
-        public async Task<JsonResult> DoSetStock([FromBody] FMUpdateIntegerDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetStock([FromBody] FMUpdateIntegerDataByIntId entity)
         {
             var jm = await _coreCmsProductsServices.EditStock(entity.id, entity.data);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

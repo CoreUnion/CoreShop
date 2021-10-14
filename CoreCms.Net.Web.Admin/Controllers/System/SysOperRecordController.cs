@@ -40,20 +40,20 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class SysOperRecordController : Controller
+    public class SysOperRecordController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ISysOperRecordServices _SysOperRecordServices;
+        private readonly ISysOperRecordServices _sysOperRecordServices;
 
         /// <summary>
         /// 构造函数
         ///</summary>
         public SysOperRecordController(IWebHostEnvironment webHostEnvironment
-            ,ISysOperRecordServices SysOperRecordServices
+            ,ISysOperRecordServices sysOperRecordServices
             )
         {
             _webHostEnvironment = webHostEnvironment;
-            _SysOperRecordServices = SysOperRecordServices;
+            _sysOperRecordServices = sysOperRecordServices;
         }
 
         #region 获取列表============================================================
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -186,13 +186,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 }
             }
             //获取数据
-            var list = await _SysOperRecordServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize, true);
+            var list = await _sysOperRecordServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize, true);
             //返回数据
             jm.data = list;
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -204,11 +204,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -220,87 +220,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public JsonResult GetCreate()
+        public AdminUiCallBack GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
-        #endregion
-
-        #region 创建提交============================================================
-        // POST: Api/SysOperRecord/DoCreate
-        /// <summary>
-        /// 创建提交
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody]SysOperRecord entity)
-        {
-            var jm = await _SysOperRecordServices.InsertAsync(entity);
-            return Json(jm);
-        }
-        #endregion
-
-        #region 编辑数据============================================================
-        // POST: Api/SysOperRecord/GetEdit
-        /// <summary>
-        /// 编辑数据
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody]FMIntId entity)
-        {
-            var jm = new AdminUiCallBack();
-
-            var model = await _SysOperRecordServices.QueryByIdAsync(entity.id, false);
-            if (model == null)
-            {
-                jm.msg = "不存在此信息";
-                return Json(jm);
-            }
-            jm.code = 0;
-            jm.data = model;
-
-            return Json(jm);
-        }
-        #endregion
-
-        #region 编辑提交============================================================
-        // POST: Api/SysOperRecord/Edit
-        /// <summary>
-        /// 编辑提交
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody]SysOperRecord entity)
-        {
-            var jm = await _SysOperRecordServices.UpdateAsync(entity);
-            return Json(jm);
-        }
-        #endregion
-
-        #region 批量删除============================================================
-        // POST: Api/SysOperRecord/DoBatchDelete/10,11,20
-        /// <summary>
-        /// 批量删除
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("批量删除")]
-        public async Task<JsonResult> DoBatchDelete([FromBody]FMArrayIntIds entity)
-        {
-            var jm = await _SysOperRecordServices.DeleteByIdsAsync(entity.id);
-            return Json(jm);
-        }
-
         #endregion
 
         #region 预览数据============================================================
@@ -312,20 +237,20 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody]FMIntId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody]FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _SysOperRecordServices.QueryByIdAsync(entity.id, false);
+            var model = await _sysOperRecordServices.QueryByIdAsync(entity.id, false);
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -338,7 +263,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<JsonResult> SelectExportExcel([FromBody]FMArrayIntIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody]FMArrayIntIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -347,7 +272,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //添加一个sheet
             var mySheet = book.CreateSheet("Sheet1");
             //获取list数据
-            var listModel = await _SysOperRecordServices.QueryListByClauseAsync(p => entity.id.Contains(p.id), p => p.id, OrderByType.Asc, true);
+            var listModel = await _sysOperRecordServices.QueryListByClauseAsync(p => entity.id.Contains(p.id), p => p.id, OrderByType.Asc, true);
             //给sheet1添加第一行的头部标题
             var headerRow = mySheet.CreateRow(0);
             var headerStyle = ExcelHelper.GetHeaderStyle(book);
@@ -505,7 +430,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -517,7 +442,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("查询导出")]
-        public async Task<JsonResult> QueryExportExcel()
+        public async Task<AdminUiCallBack> QueryExportExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -615,7 +540,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //添加一个sheet
             var mySheet = book.CreateSheet("Sheet1");
             //获取list数据
-            var listModel = await _SysOperRecordServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc, true);
+            var listModel = await _sysOperRecordServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc, true);
             //给sheet1添加第一行的头部标题
                 var headerRow = mySheet.CreateRow(0);
             var headerStyle = ExcelHelper.GetHeaderStyle(book);
@@ -802,7 +727,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

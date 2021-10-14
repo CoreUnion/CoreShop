@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillLadingController : Controller
+    public class CoreCmsBillLadingController : ControllerBase
     {
         private readonly ICoreCmsBillLadingServices _coreCmsBillLadingServices;
         private readonly ICoreCmsStoreServices _storeServices;
@@ -68,7 +68,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -221,7 +221,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -235,7 +235,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<JsonResult> GetIndex()
+        public async Task<AdminUiCallBack> GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -244,7 +244,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 stores
             };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -259,7 +259,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -267,7 +267,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var stores = await _storeServices.QueryAsync();
@@ -278,7 +278,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 stores
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -293,7 +293,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] CoreCmsBillLading entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsBillLading entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -301,7 +301,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             //事物处理过程开始
@@ -314,7 +314,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -329,7 +329,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("单选删除")]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -337,13 +337,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
 
             var bl = await _coreCmsBillLadingServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -359,7 +359,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<JsonResult> SelectExportExcel([FromBody] FMArrayStringIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -416,7 +416,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -430,7 +430,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("查询导出")]
-        public async Task<JsonResult> QueryExportExcel()
+        public async Task<AdminUiCallBack> QueryExportExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -545,7 +545,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -560,12 +560,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("核销数据")]
-        public async Task<JsonResult> LadingOperating([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> LadingOperating([FromBody] FMStringId entity)
         {
             var ids = entity.id.Split(",");
             var jm = await _coreCmsBillLadingServices.LadingOperating(ids);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -581,19 +581,19 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("核销数据")]
-        public async Task<JsonResult> BatchLadingOperating([FromBody] FMArrayStringIds entity)
+        public async Task<AdminUiCallBack> BatchLadingOperating([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
             if (entity.id.Length == 0)
             {
                 jm.msg = "请选择需要核销的数据";
-                return Json(jm);
+                return jm;
             }
 
             jm = await _coreCmsBillLadingServices.LadingOperating(entity.id);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

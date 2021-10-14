@@ -27,7 +27,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CouponController : Controller
+    public class CouponController : ControllerBase
     {
 
         private readonly IHttpContextUser _user;
@@ -56,7 +56,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize]
-        public async Task<JsonResult> CouponList([FromBody] FMCouponForUserCouponPost entity)
+        public async Task<WebApiCallBack> CouponList([FromBody] FMCouponForUserCouponPost entity)
         {
             var jm = new WebApiCallBack() { msg = "获取失败" };
 
@@ -78,7 +78,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     list.TotalPages
                 };
             }
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -91,7 +91,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> CouponDetail([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> CouponDetail([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack() { msg = "获取失败" };
 
@@ -99,7 +99,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.status = false;
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return Json(jm);
+                return jm;
             }
 
             var promotionModel = await _promotionServices.QueryByClauseAsync(p => p.id == entity.id);
@@ -109,7 +109,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.data = promotionModel;
                 jm.msg = "获取成功";
             }
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -121,10 +121,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> UserCoupon([FromBody] FMCouponForUserCouponPost entity)
+        public async Task<WebApiCallBack> UserCoupon([FromBody] FMCouponForUserCouponPost entity)
         {
             var jm = await _couponServices.GetMyCoupon(_user.ID, 0, entity.display, entity.page, entity.limit);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -135,27 +135,27 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetCoupon([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetCoupon([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.id == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return Json(jm);
+                return jm;
             }
             //判断优惠券是否可以领取?
             var promotionModel = await _promotionServices.ReceiveCoupon(entity.id);
             if (promotionModel.status == false)
             {
-                return Json(promotionModel);
+                return promotionModel;
             }
 
             var promotion = (CoreCmsPromotion)promotionModel.data;
             if (promotion == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code15019;
-                return Json(jm);
+                return jm;
             }
 
             if (promotion.maxNums > 0)
@@ -165,12 +165,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (couponResult.status && couponResult.code >= promotion.maxNums)
                 {
                     jm.msg = GlobalErrorCodeVars.Code15018;
-                    return Json(jm);
+                    return jm;
                 }
             }
             jm = await _couponServices.AddData(_user.ID, entity.id, promotion);
             jm.otherData = promotionModel;
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -181,28 +181,28 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetCouponKey([FromBody] FMCouponForGetCouponKeyPost entity)
+        public async Task<WebApiCallBack> GetCouponKey([FromBody] FMCouponForGetCouponKeyPost entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.key))
             {
                 jm.msg = GlobalErrorCodeVars.Code15006;
-                return Json(jm);
+                return jm;
             }
 
             var coupon = await _couponServices.QueryByClauseAsync(p => p.couponCode == entity.key);
             if (coupon == null || coupon.promotionId <= 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15009;
-                return Json(jm);
+                return jm;
             }
 
             //判断优惠券是否可以领取?
             var promotionModel = await _promotionServices.ReceiveCoupon(coupon.promotionId);
             if (promotionModel.status == false)
             {
-                return Json(promotionModel);
+                return promotionModel;
             }
             //判断用户是否已领取?
             if (promotionModel.data is CoreCmsPromotion { maxNums: > 0 } info)
@@ -212,13 +212,13 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 if (couponResult.status && couponResult.code > info.maxNums)
                 {
                     jm.msg = GlobalErrorCodeVars.Code15018;
-                    return Json(jm);
+                    return jm;
                 }
             }
             //
             jm = await _couponServices.ReceiveCoupon(_user.ID, entity.key);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

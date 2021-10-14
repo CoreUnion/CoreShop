@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
     ///     微信支付异步通知
     /// </summary>
     [Route("Notify/[controller]/[action]")]
-    public class WeChatPayController : Controller
+    public class WeChatPayController : ControllerBase
     {
         private readonly ICoreCmsBillPaymentsServices _billPaymentsServices;
         private readonly ICoreCmsBillRefundServices _billRefundServices;

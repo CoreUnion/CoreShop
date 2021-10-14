@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillPaymentsController : Controller
+    public class CoreCmsBillPaymentsController : ControllerBase
     {
         private readonly ICoreCmsBillPaymentsServices _coreCmsBillPaymentsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -66,7 +66,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -202,7 +202,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -234,7 +234,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 paymentCode
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -249,7 +249,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -257,7 +257,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var paymentsStatus = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(model.status);
@@ -274,7 +274,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             };
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -289,7 +289,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<JsonResult> SelectExportExcel([FromBody] FMArrayStringIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -350,7 +350,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -364,7 +364,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("查询导出")]
-        public async Task<JsonResult> QueryExportExcel()
+        public async Task<AdminUiCallBack> QueryExportExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -471,7 +471,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

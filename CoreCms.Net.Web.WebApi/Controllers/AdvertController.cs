@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AdvertController : Controller
+    public class AdvertController : ControllerBase
     {
 
         private IHttpContextUser _user;
@@ -63,7 +63,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetAdvertList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetAdvertList([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -72,7 +72,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -84,14 +84,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetPositionList([FromBody] WxAdvert entity)
+        public async Task<WebApiCallBack> GetPositionList([FromBody] WxAdvert entity)
         {
             var jm = new WebApiCallBack();
 
             var position = await _advertPositionServices.QueryListByClauseAsync(p => p.isEnable && p.code == entity.codes);
             if (!position.Any())
             {
-                return Json(jm);
+                return jm;
             }
             var ids = position.Select(p => p.id).ToList();
             var isement = await _advertisementServices.QueryListByClauseAsync(p => ids.Contains(p.positionId));
@@ -102,7 +102,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = list;
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion

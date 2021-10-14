@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsUserController : Controller
+    public class CoreCmsUserController : ControllerBase
     {
         private readonly ICoreCmsUserBalanceServices _coreCmsUserBalanceServices;
         private readonly ICoreCmsUserGradeServices _coreCmsUserGradeServices;
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -239,7 +239,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -253,7 +253,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<JsonResult> GetIndex()
+        public async Task<AdminUiCallBack> GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -269,7 +269,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userGrade,
                 userAccountTypes
             };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -283,7 +283,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public async Task<JsonResult> GetCreate()
+        public async Task<AdminUiCallBack> GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -291,7 +291,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var userGrade = await _coreCmsUserGradeServices.QueryAsync();
             jm.data = userGrade;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -306,21 +306,21 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody] CoreCmsUser entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] CoreCmsUser entity)
         {
             var jm = new AdminUiCallBack();
 
             if (string.IsNullOrEmpty(entity.mobile))
             {
                 jm.msg = "请输入用户手机号";
-                return Json(jm);
+                return jm;
             }
 
             var isHava = await _coreCmsUserServices.ExistsAsync(p => p.mobile == entity.mobile);
             if (isHava)
             {
                 jm.msg = "已存在此手机号码";
-                return Json(jm);
+                return jm;
             }
 
             entity.createTime = DateTime.Now;
@@ -332,7 +332,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -347,7 +347,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -355,7 +355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             jm.code = 0;
@@ -371,7 +371,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userStatus
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -386,7 +386,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] CoreCmsUser entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsUser entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -394,7 +394,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             if (entity.mobile != oldModel.mobile)
@@ -403,7 +403,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (isHava)
                 {
                     jm.msg = "已存在此手机号码";
-                    return Json(jm);
+                    return jm;
                 }
             }
 
@@ -423,7 +423,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -437,7 +437,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<JsonResult> SelectExportExcel([FromBody] FMArrayIntIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayIntIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -631,7 +631,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -643,7 +643,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("查询导出")]
-        public async Task<JsonResult> QueryExportExcel()
+        public async Task<AdminUiCallBack> QueryExportExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -972,7 +972,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -985,7 +985,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("修改余额")]
-        public async Task<JsonResult> GetEditBalance([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEditBalance([FromBody] FMIntId entity)
         {
             //返回数据
             var jm = new AdminUiCallBack();
@@ -994,13 +994,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1015,10 +1015,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("修改余额提交")]
-        public async Task<JsonResult> DoEditBalance([FromBody] FMUpdateDecimalDataByIntId entity)
+        public async Task<AdminUiCallBack> DoEditBalance([FromBody] FMUpdateDecimalDataByIntId entity)
         {
             var jm = await _coreCmsUserServices.UpdateBalance(entity.id, entity.data);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1032,7 +1032,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("修改积分")]
-        public async Task<JsonResult> GetEditPoint([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEditPoint([FromBody] FMIntId entity)
         {
             //返回数据
             var jm = new AdminUiCallBack();
@@ -1041,13 +1041,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1062,10 +1062,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("修改积分提交")]
-        public async Task<JsonResult> DoEditPoint([FromBody] FMUpdateUserPoint entity)
+        public async Task<AdminUiCallBack> DoEditPoint([FromBody] FMUpdateUserPoint entity)
         {
             var jm = await _coreCmsUserServices.UpdatePiont(entity);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1079,7 +1079,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("余额详情列表")]
-        public async Task<JsonResult> GetUserBalancePageList()
+        public async Task<AdminUiCallBack> GetUserBalancePageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1170,7 +1170,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1184,7 +1184,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("余额详情")]
-        public JsonResult GetDetailsBalanceLog()
+        public AdminUiCallBack GetDetailsBalanceLog()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -1194,7 +1194,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 userBalanceSourceTypes
             };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1208,7 +1208,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetUserPointLogPageList()
+        public async Task<AdminUiCallBack> GetUserPointLogPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1300,7 +1300,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1314,7 +1314,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("余额详情")]
-        public JsonResult GetDetailsPointLog()
+        public AdminUiCallBack GetDetailsPointLog()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -1323,7 +1323,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 userPointSourceTypes
             };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1338,7 +1338,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置删除标志")]
-        public async Task<JsonResult> DoSetisDelete([FromBody] FMUpdateBoolDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetisDelete([FromBody] FMUpdateBoolDataByIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -1346,7 +1346,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             oldModel.isDelete = entity.data;
@@ -1355,7 +1355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

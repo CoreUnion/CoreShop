@@ -33,7 +33,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PaymentsController : Controller
+    public class PaymentsController : ControllerBase
     {
 
         private IHttpContextUser _user;
@@ -64,14 +64,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetList()
+        public async Task<WebApiCallBack> GetList()
         {
             var jm = new WebApiCallBack();
 
             var list = await _paymentsServices.QueryListByClauseAsync(p => p.isEnable == true, p => p.sort, OrderByType.Asc);
             jm.status = true;
             jm.data = list;
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -85,18 +85,18 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> CheckPay([FromBody] CheckPayPost entity)
+        public async Task<WebApiCallBack> CheckPay([FromBody] CheckPayPost entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.ids))
             {
                 jm.msg = GlobalErrorCodeVars.Code13100;
-                return Json(jm);
+                return jm;
             }
 
             jm = await _billPaymentsServices.FormatPaymentRel(entity.ids, entity.paymentType, entity.@params);
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -109,17 +109,17 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetInfo([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> GetInfo([FromBody] FMStringId entity)
         {
             var jm = new WebApiCallBack();
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = GlobalErrorCodeVars.Code13100;
-                return Json(jm);
+                return jm;
             }
             var userId = entity.data.ObjectToInt(0);
             jm = await _billPaymentsServices.GetInfo(entity.id, userId);
-            return Json(jm);
+            return jm;
 
         }
         #endregion

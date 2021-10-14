@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsReportsController : Controller
+    public class CoreCmsReportsController : ControllerBase
     {
         private readonly ICoreCmsReportsServices _reportsServices;
 
@@ -58,7 +58,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
         /// <returns></returns>
         [HttpPost]
         [Description("订单销量统计")]
-        public JsonResult GetOrder([FromBody] FMReports entity)
+        public AdminUiCallBack GetOrder([FromBody] FMReports entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -66,7 +66,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!dataRes.status)
             {
                 jm.msg = dataRes.msg;
-                return Json(jm);
+                return jm;
             }
 
             var echartsOption = new EchartsOption();
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!xData.status)
             {
                 jm.msg = dataRes.msg;
-                return Json(jm);
+                return jm;
             }
             echartsOption.xAxis.data = xData.data as List<string>;
 
@@ -161,7 +161,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 table = tableData
             };
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -174,7 +174,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
         /// <returns></returns>
         [HttpPost]
         [Description("财务收款单")]
-        public JsonResult GetPayments([FromBody] FMReports entity)
+        public AdminUiCallBack GetPayments([FromBody] FMReports entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -182,7 +182,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!dataRes.status)
             {
                 jm.msg = dataRes.msg;
-                return Json(jm);
+                return jm;
             }
 
             var echartsOption = new EchartsOption();
@@ -197,7 +197,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             if (!xData.status)
             {
                 jm.msg = dataRes.msg;
-                return Json(jm);
+                return jm;
             }
             echartsOption.xAxis.data = xData.data as List<string>;
 
@@ -308,7 +308,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 table = tableData
             };
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -321,7 +321,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
         /// <returns></returns>
         [HttpPost]
         [Description("商品销量统计")]
-        public async Task<JsonResult> GetGoods()
+        public async Task<AdminUiCallBack> GetGoods()
         {
             var jm = new AdminUiCallBack();
 
@@ -358,7 +358,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 else
                 {
                     jm.msg = "时间段格式不正确";
-                    return Json(jm);
+                    return jm;
                 }
             }
             else
@@ -373,7 +373,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             jm.data = list;
             jm.count = list.TotalCount;
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -386,7 +386,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
         /// <returns></returns>
         [HttpPost]
         [Description("商品收藏统计")]
-        public async Task<JsonResult> GetGoodsCollection()
+        public async Task<AdminUiCallBack> GetGoodsCollection()
         {
             var jm = new AdminUiCallBack();
 
@@ -415,7 +415,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 else
                 {
                     jm.msg = "时间段格式不正确";
-                    return Json(jm);
+                    return jm;
                 }
             }
             else
@@ -430,7 +430,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
             jm.data = list;
             jm.count = list.TotalCount;
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -445,14 +445,14 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
         /// <returns></returns>
         [HttpPost]
         [Description("换算前台时间按钮")]
-        public JsonResult GetDateType([FromBody] FMIntId entity)
+        public AdminUiCallBack GetDateType([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
             if (entity.id <= 0)
             {
                 jm.msg = "请选择合法的时间段";
-                return Json(jm);
+                return jm;
             }
 
             DateTime dt = DateTime.Now;  //当前时间  
@@ -529,7 +529,7 @@ namespace CoreCms.Net.Web.Admin.Controllers.Content
                 start,
                 end
             };
-            return Json(jm);
+            return jm;
 
         }
         #endregion
