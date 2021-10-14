@@ -55,14 +55,14 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.4" />
-    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.4" />
-    <PackageReference Include="IdentityModel" Version="5.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
+    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.6" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.6" />
+    <PackageReference Include="IdentityModel" Version="5.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.1" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
@@ -73,8 +73,8 @@
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
-    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.22" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
+    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.24" />
     <PackageReference Include="ToolGood.Words" Version="3.0.2.8" />
   </ItemGroup>
 
