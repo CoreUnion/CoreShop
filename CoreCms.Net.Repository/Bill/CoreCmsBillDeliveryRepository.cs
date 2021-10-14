@@ -41,30 +41,21 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<List<StatisticsOut>> Statistics()
         {
-            var dt = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd 00:00:00");
+            var dt = DateTime.Now.AddDays(-8);
 
-            var sqlStr = string.Empty;
-            string dbTypeString = AppSettingsConstVars.DbDbType;
-            if (dbTypeString == DbType.SqlServer.ToString())
-            {
-                sqlStr = @"SELECT  count(1) AS nums,CONVERT(varchar(100),createTime, 23)  AS day
-                            FROM  CoreCmsBillDelivery
-                            WHERE createTime >= '" + dt + @"'  
-                            GROUP BY CONVERT(varchar(100),createTime, 23)";
-            }
-            else if (dbTypeString == DbType.MySql.ToString())
-            {
-                sqlStr = @"SELECT  count(1) AS nums,date(createTime)  AS day
-                            FROM  CoreCmsBillDelivery
-                            WHERE createTime >= '" + dt + @"'  
-                            GROUP BY date(createTime)";
-            }
+            var list = await DbClient.Queryable<CoreCmsBillDelivery>()
+                .Where(p => p.createTime >= dt)
+                .Select(it => new
+                {
+                    it.deliveryId,
+                    createTime = it.createTime.Date
+                })
+                .MergeTable()
+                .GroupBy(it => it.createTime)
+                .Select(it => new StatisticsOut { day = it.createTime.ToString("yyyy-MM-dd"), nums = SqlFunc.AggregateCount(it.deliveryId) })
+                .ToListAsync();
 
-            if (string.IsNullOrEmpty(sqlStr))
-            {
-                return null;
-            }
-            return await DbClient.SqlQueryable<StatisticsOut>(sqlStr).ToListAsync();
+            return list;
         }
 
     }
