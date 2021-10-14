@@ -37,7 +37,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsGoodsTypeSpecController : Controller
+    public class CoreCmsGoodsTypeSpecController : ControllerBase
     {
         private readonly ICoreCmsGoodsTypeSpecServices _coreCmsGoodsTypeSpecServices;
         private readonly ICoreCmsGoodsTypeSpecValueServices _valueServices;
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -128,7 +128,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -142,11 +142,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -160,11 +160,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public JsonResult GetCreate()
+        public AdminUiCallBack GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -179,7 +179,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody] FmGoodsTypeSpecInsert entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] FmGoodsTypeSpecInsert entity)
         {
             var jm = await _coreCmsGoodsTypeSpecServices.InsertAsync(entity);
 
@@ -193,7 +193,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 };
 
             }
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -208,14 +208,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
             var model = await _coreCmsGoodsTypeSpecServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var values =
@@ -225,7 +225,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -240,10 +240,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] FmGoodsTypeSpecUpdate entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] FmGoodsTypeSpecUpdate entity)
         {
             var jm = await _coreCmsGoodsTypeSpecServices.UpdateAsync(entity);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -258,7 +258,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("单选删除")]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -266,11 +266,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
             jm = await _coreCmsGoodsTypeSpecServices.DeleteByIdAsync(entity.id);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

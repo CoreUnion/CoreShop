@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsAreaController : Controller
+    public class CoreCmsAreaController : ControllerBase
     {
         private readonly ICoreCmsAreaServices _coreCmsAreaServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetAllList()
+        public async Task<AdminUiCallBack> GetAllList()
         {
             var jm = new AdminUiCallBack();
 
@@ -74,7 +74,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = list;
             jm.code = 0;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -89,7 +89,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -158,7 +158,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -172,11 +172,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -190,7 +190,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public async Task<JsonResult> GetCreate([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetCreate([FromBody] FMIntId entity)
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var parentModel = await _coreCmsAreaServices.QueryByClauseAsync(p => p.id == entity.id);
             jm.data = parentModel;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -213,10 +213,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody] CoreCmsArea entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] CoreCmsArea entity)
         {
             var jm = await _coreCmsAreaServices.InsertAsync(entity);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -231,7 +231,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -239,14 +239,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             jm.code = 0;
             jm.data = model;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -261,10 +261,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] CoreCmsArea entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsArea entity)
         {
             var jm = await _coreCmsAreaServices.UpdateAsync(entity);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -279,7 +279,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("单选删除")]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -287,11 +287,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (bl)
             {
                 jm.msg = GlobalConstVars.DeleteIsHaveChildren;
-                return Json(jm);
+                return jm;
             }
 
             jm = await _coreCmsAreaServices.DeleteByIdAsync(entity.id);
-            return Json(jm);
+            return jm;
 
         }
 

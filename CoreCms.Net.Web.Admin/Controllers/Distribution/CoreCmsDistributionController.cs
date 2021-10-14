@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsDistributionController : Controller
+    public class CoreCmsDistributionController : ControllerBase
     {
         private readonly ICoreCmsDistributionServices _coreCmsDistributionServices;
         private readonly ICoreCmsUserGradeServices _userGradeServices;
@@ -66,7 +66,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -226,7 +226,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<JsonResult> GetIndex()
+        public async Task<AdminUiCallBack> GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -238,7 +238,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 grades
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -253,7 +253,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -261,7 +261,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var distributionVerifyStatus = EnumHelper.EnumToList<GlobalEnumVars.DistributionVerifyStatus>();
@@ -275,7 +275,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 grades
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -290,7 +290,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] CoreCmsDistribution entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsDistribution entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -298,7 +298,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             //事物处理过程开始
@@ -316,7 +316,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -331,7 +331,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("单选删除")]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -339,13 +339,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
 
             var bl = await _coreCmsDistributionServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -361,7 +361,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -369,7 +369,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var distributionVerifyStatus = EnumHelper.EnumToList<GlobalEnumVars.DistributionVerifyStatus>();
@@ -382,7 +382,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 grades
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

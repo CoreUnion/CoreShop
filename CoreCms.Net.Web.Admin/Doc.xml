@@ -525,23 +525,6 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="T:CoreCms.Net.Web.Admin.Controllers.DemoController">
-            <summary>
-            演示类
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.#ctor(Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.WeChatPay.WeChatPayOptions})">
-            <summary>
-            用于测试及演示用
-            </summary>
-            <param name="optionsAccessor"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.DemoController.Index">
-            <summary>
-            默认首页
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:CoreCms.Net.Web.Admin.Controllers.LoginController">
             <summary>
             用户授权登录
@@ -571,7 +554,7 @@
                 后端常用方法
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory,CoreCms.Net.IServices.ICoreCmsPagesServices)">
             <summary>
                 构造函数
             </summary>
@@ -639,6 +622,12 @@
         <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.GetFormWxCode(CoreCms.Net.Model.FromBody.FMIntId)">
             <summary>
                 后台生成小程序码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.GetPageWxCode(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+                后台生成预览页面设计小程序码
             </summary>
             <returns></returns>
         </member>
@@ -2443,6 +2432,13 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsOrderController.DoRestore(CoreCms.Net.Model.FromBody.FMStringId)">
+            <summary>
+            还原订单
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
         <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsOrderController.GetDoHaveAfterSale(CoreCms.Net.Model.FromBody.FMStringId)">
             <summary>
             判断是否存在售后
@@ -3417,6 +3413,13 @@
         <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsPagesController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
             <summary>
                 单选删除
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsPagesController.DoCopy(CoreCms.Net.Model.FromBody.FMIntId)">
+            <summary>
+                复制数据
             </summary>
             <param name="entity"></param>
             <returns></returns>
@@ -4414,34 +4417,6 @@
             <summary>
             创建数据
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.SysOperRecordController.DoCreate(CoreCms.Net.Model.Entities.SysOperRecord)">
-            <summary>
-            创建提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.SysOperRecordController.GetEdit(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            编辑数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.SysOperRecordController.DoEdit(CoreCms.Net.Model.Entities.SysOperRecord)">
-            <summary>
-            编辑提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.SysOperRecordController.DoBatchDelete(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            批量删除
-            </summary>
-            <param name="entity"></param>
             <returns></returns>
         </member>
         <member name="M:CoreCms.Net.Web.Admin.Controllers.SysOperRecordController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">

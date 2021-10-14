@@ -15,7 +15,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// <summary>
     ///     默认接口示例
     /// </summary>
-    public class DemoController : Controller
+    public class DemoController : ControllerBase
     {
         /// <summary>
         ///     默认首页

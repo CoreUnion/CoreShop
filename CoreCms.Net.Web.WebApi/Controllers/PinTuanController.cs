@@ -31,7 +31,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PinTuanController : Controller
+    public class PinTuanController : ControllerBase
     {
 
         private readonly IHttpContextUser _user;
@@ -66,7 +66,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetList([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetList([FromBody] FMIntId entity)
         {
             WebApiCallBack jm;
 
@@ -81,7 +81,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 id = entity.id;
             }
             jm = await _pinTuanRuleServices.GetPinTuanList(id, userId);
-            return Json(jm);
+            return jm;
 
         }
 
@@ -93,7 +93,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsInfo([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetGoodsInfo([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -108,7 +108,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取详情成功";
             jm.data = await _pinTuanGoodsServices.GetGoodsInfo(entity.id, userId, pinTuanStatus);
 
-            return Json(jm);
+            return jm;
 
         }
 
@@ -120,7 +120,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetProductInfo([FromBody] FMGetProductInfo entity)
+        public async Task<WebApiCallBack> GetProductInfo([FromBody] FMGetProductInfo entity)
         {
             var jm = new WebApiCallBack();
 
@@ -128,7 +128,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (products == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return Json(jm);
+                return jm;
             }
             //把拼团的一些属性等加上
             var info = await _pinTuanRuleServices.QueryMuchFirstAsync<CoreCmsPinTuanRule, CoreCmsPinTuanGoods, CoreCmsPinTuanRule>(
@@ -138,12 +138,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             if (info == null)
             {
                 jm.msg = GlobalErrorCodeVars.Code10000;
-                return Json(jm);
+                return jm;
             }
             products.pinTuanRule = info;
             jm.status = true;
             jm.data = products;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -155,18 +155,18 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetPinTuanTeam([FromBody] FMGetPinTuanTeamPost entity)
+        public async Task<WebApiCallBack> GetPinTuanTeam([FromBody] FMGetPinTuanTeamPost entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.orderId) && entity.teamId == 0)
             {
                 jm.msg = GlobalErrorCodeVars.Code15606;
-                return Json(jm);
+                return jm;
             }
             jm = await _pinTuanRecordServices.GetTeamList(entity.teamId, entity.orderId);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

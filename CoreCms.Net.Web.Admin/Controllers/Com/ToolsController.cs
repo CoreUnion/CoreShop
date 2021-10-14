@@ -53,7 +53,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
-    public class ToolsController : Controller
+    public class ToolsController : ControllerBase
     {
         private readonly ICoreCmsAreaServices _areaServices;
         private readonly ICodeGeneratorServices _codeGeneratorServices;
@@ -154,7 +154,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetUserInfo()
+        public async Task<AdminUiCallBack> GetUserInfo()
         {
             var jm = new AdminUiCallBack();
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
@@ -166,7 +166,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 userModel.nickName,
                 userModel.createTime
             };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -178,7 +178,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetEditUserInfo()
+        public async Task<AdminUiCallBack> GetEditUserInfo()
         {
             var jm = new AdminUiCallBack();
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
@@ -202,7 +202,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.msg = "数据获取正常";
             jm.data = userModel;
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -214,14 +214,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetManagerRoles()
+        public async Task<AdminUiCallBack> GetManagerRoles()
         {
             var jm = new AdminUiCallBack();
             var roles = await _sysRoleServices.QueryAsync();
             jm.code = 0;
             jm.msg = "数据获取正常";
             jm.data = roles.Select(p => new { title = p.roleName, value = p.id });
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -233,38 +233,38 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> EditLoginUserPassWord([FromBody] FMEditLoginUserPassWord entity)
+        public async Task<AdminUiCallBack> EditLoginUserPassWord([FromBody] FMEditLoginUserPassWord entity)
         {
             var jm = new AdminUiCallBack();
 
             if (string.IsNullOrEmpty(entity.oldPassword))
             {
                 jm.msg = "请键入旧密码";
-                return Json(jm);
+                return jm;
             }
 
             if (string.IsNullOrEmpty(entity.password))
             {
                 jm.msg = "请键入新密码";
-                return Json(jm);
+                return jm;
             }
 
             if (string.IsNullOrEmpty(entity.repassword))
             {
                 jm.msg = "请键入新密码确认密码";
-                return Json(jm);
+                return jm;
             }
 
             if (entity.password != entity.repassword)
             {
                 jm.msg = "新密码与确认密码不相符";
-                return Json(jm);
+                return jm;
             }
 
             if (CommonHelper.Md5For32(entity.oldPassword) == CommonHelper.Md5For32(entity.password))
             {
                 jm.msg = "新密码与旧密码相同,无需修改";
-                return Json(jm);
+                return jm;
             }
 
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
@@ -272,7 +272,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (userModel.passWord != CommonHelper.Md5For32(entity.oldPassword))
             {
                 jm.msg = "旧密码输入错误";
-                return Json(jm);
+                return jm;
             }
 
             userModel.passWord = CommonHelper.Md5For32(entity.password);
@@ -280,7 +280,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "修改成功" : "修改失败";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -292,14 +292,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> EditLoginUserInfo([FromBody] EditLoginUserInfo entity)
+        public async Task<AdminUiCallBack> EditLoginUserInfo([FromBody] EditLoginUserInfo entity)
         {
             var jm = new AdminUiCallBack();
 
             if (entity.trueName.Length > 4)
             {
                 jm.msg = "用户真实姓名不能大于4个字符。";
-                return Json(jm);
+                return jm;
             }
 
 
@@ -322,7 +322,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "修改成功" : "修改失败";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -334,14 +334,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetAllControllerAndActionByAssembly()
+        public AdminUiCallBack GetAllControllerAndActionByAssembly()
         {
             var jm = new AdminUiCallBack();
             var data = AdminsControllerPermission.GetAllControllerAndActionByAssembly();
             jm.data = data.OrderBy(u => u.name).ToList();
             jm.code = 0;
             jm.msg = "获取成功";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -355,7 +355,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> UploadFiles()
+        public async Task<AdminUiCallBack> UploadFiles()
         {
             var jm = new AdminUiCallBack();
 
@@ -368,7 +368,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file == null)
             {
                 jm.msg = "请选择文件";
-                return Json(jm);
+                return jm;
             }
 
             var fileName = file.FileName;
@@ -378,7 +378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file.Length > maxSize)
             {
                 jm.msg = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
-                return Json(jm);
+                return jm;
             }
 
             //检查文件扩展名
@@ -386,7 +386,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
-                return Json(jm);
+                return jm;
             }
 
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
@@ -483,7 +483,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 };
 
             }
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -495,7 +495,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> UploadFilesFByBase64([FromBody] FMBase64Post entity)
+        public async Task<AdminUiCallBack> UploadFilesFByBase64([FromBody] FMBase64Post entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -506,7 +506,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(entity.base64))
             {
                 jm.msg = "请上传合法内容";
-                return Json(jm);
+                return jm;
             }
 
             entity.base64 = entity.base64.Replace("data:image/png;base64,", "").Replace("data:image/jgp;base64,", "").Replace("data:image/jpg;base64,", "").Replace("data:image/jpeg;base64,", "");//将base64头部信息替换
@@ -612,7 +612,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.otherData = _filesStorageOptions;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -624,7 +624,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CkEditorUploadFiles()
+        public async Task<CKEditorUploadedResult> CkEditorUploadFiles()
         {
             var jm = new CKEditorUploadedResult();
 
@@ -637,7 +637,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file == null)
             {
                 jm.error.message = "请选择文件";
-                return Json(jm);
+                return jm;
             }
 
             var fileName = file.FileName;
@@ -647,7 +647,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (file.Length > maxSize)
             {
                 jm.error.message = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
-                return Json(jm);
+                return jm;
             }
 
             //检查文件扩展名
@@ -655,7 +655,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
                 jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
-                return Json(jm);
+                return jm;
             }
 
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
@@ -743,7 +743,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             }
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -757,7 +757,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("根据id获取商品信息")]
-        public async Task<JsonResult> GetGoodsByIds([FromBody] FMArrayIntIds entity)
+        public async Task<AdminUiCallBack> GetGoodsByIds([FromBody] FMArrayIntIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -765,7 +765,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.data = list;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -779,7 +779,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("后台生成小程序码")]
-        public async Task<JsonResult> GetFormWxCode([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetFormWxCode([FromBody] FMIntId entity)
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -792,7 +792,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.code = 1;
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var path = "pages/form/details/details?id=" + entity.id;
@@ -911,7 +911,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.otherData = response;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -925,7 +925,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("后台生成小程序码")]
-        public async Task<JsonResult> GetPageWxCode([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetPageWxCode([FromBody] FMStringId entity)
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -938,7 +938,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.code = 1;
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var path = "pages/index/custom/custom?pageCode=" + entity.id;
@@ -1057,7 +1057,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.otherData = response;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1073,7 +1073,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取商品列表")]
-        public async Task<JsonResult> GetGoods()
+        public async Task<AdminUiCallBack> GetGoods()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1107,7 +1107,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1121,7 +1121,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取商品列表")]
-        public async Task<JsonResult> GetProducts(FMIntId entity)
+        public async Task<AdminUiCallBack> GetProducts(FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -1130,7 +1130,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.data = list;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1145,7 +1145,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取文章列表")]
-        public async Task<JsonResult> GetArticles()
+        public async Task<AdminUiCallBack> GetArticles()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1164,7 +1164,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1178,7 +1178,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取智能表单列表")]
-        public async Task<JsonResult> GetForms()
+        public async Task<AdminUiCallBack> GetForms()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1197,7 +1197,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1211,7 +1211,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取文章分类列表")]
-        public async Task<JsonResult> GetArticleTypes()
+        public async Task<AdminUiCallBack> GetArticleTypes()
         {
             var jm = new AdminUiCallBack();
 
@@ -1221,7 +1221,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = list;
             jm.code = 0;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1235,7 +1235,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取公告列表")]
-        public async Task<JsonResult> GetNotices()
+        public async Task<AdminUiCallBack> GetNotices()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1253,7 +1253,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1267,7 +1267,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> TagPinTuan()
+        public async Task<AdminUiCallBack> TagPinTuan()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1289,7 +1289,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1303,7 +1303,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("供tag标签选择合法团购秒杀的时候使用")]
-        public async Task<JsonResult> TagPromotions()
+        public async Task<AdminUiCallBack> TagPromotions()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1326,7 +1326,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1340,7 +1340,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> TagServices()
+        public async Task<AdminUiCallBack> TagServices()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1364,7 +1364,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1378,7 +1378,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取促销列表")]
-        public async Task<JsonResult> GetPromotions()
+        public async Task<AdminUiCallBack> GetPromotions()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -1405,7 +1405,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1417,7 +1417,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetArea()
+        public async Task<WebApiCallBack> GetArea()
         {
             var jm = new WebApiCallBack();
 
@@ -1433,7 +1433,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = areaTrees;
             jm.msg = ids.Count.ToString();
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1446,7 +1446,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize(Permissions.Name)]
-        public async Task<JsonResult> LogisticsByApi([FromBody] FMApiLogisticsByApiPost entity)
+        public async Task<WebApiCallBack> LogisticsByApi([FromBody] FMApiLogisticsByApiPost entity)
         {
             var jm = new WebApiCallBack();
 
@@ -1454,7 +1454,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 jm.code = 1;
                 jm.msg = GlobalErrorCodeVars.Code13225;
-                return Json(jm);
+                return jm;
             }
 
             var systemLogistics = SystemSettingDictionary.GetSystemLogistics();
@@ -1463,12 +1463,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 if (entity.code == p.sKey)
                 {
                     jm.msg = p.sDescription + "不支持轨迹查询";
-                    return Json(jm);
+                    return jm;
                 }
             }
 
             jm = await _logisticsServices.ExpressPoll(entity.code, entity.no, entity.mobile);
-            return Json(jm);
+            return jm;
 
         }
 
@@ -1483,7 +1483,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetNavs()
+        public async Task<AdminUiCallBack> GetNavs()
         {
             var jm = new AdminUiCallBack();
 
@@ -1511,7 +1511,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = "数据获取正常";
             jm.code = 0;
 
-            return Json(jm);
+            return jm;
         }
 
         /// <summary>
@@ -1561,7 +1561,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetAreaCheckedList([FromBody] FMIntId entity)
+        public async Task<List<AreasDtoForAdminEdit>> GetAreaCheckedList([FromBody] FMIntId entity)
         {
             var res = new List<AreasDtoForAdminEdit>();
 
@@ -1601,7 +1601,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 res.Add(model4);
             }
 
-            return Json(res);
+            return res;
         }
 
         /// <summary>
@@ -1609,10 +1609,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetAreaChildren([FromBody] FMIntId entity)
+        public async Task<List<CoreCmsArea>> GetAreaChildren([FromBody] FMIntId entity)
         {
             var list = await _areaServices.QueryListByClauseAsync(p => p.parentId == entity.id);
-            return Json(list);
+            return list;
         }
 
         #endregion
@@ -1628,7 +1628,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取最近登录日志")]
-        public async Task<JsonResult> GetSysLoginRecord()
+        public async Task<AdminUiCallBack> GetSysLoginRecord()
         {
             var jm = new AdminUiCallBack();
 
@@ -1639,7 +1639,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1653,7 +1653,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取全局Nlog日志")]
-        public async Task<JsonResult> GetSysNLogRecords()
+        public async Task<AdminUiCallBack> GetSysNLogRecords()
         {
             var jm = new AdminUiCallBack();
             //获取数据
@@ -1663,7 +1663,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1677,7 +1677,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取7天订单情况数据统计")]
-        public async Task<JsonResult> GetOrdersStatistics()
+        public async Task<AdminUiCallBack> GetOrdersStatistics()
         {
             var jm = new AdminUiCallBack();
 
@@ -1723,7 +1723,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             //返回数据
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1737,7 +1737,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取用户最新统计数据")]
-        public async Task<JsonResult> GetUsersStatistics()
+        public async Task<AdminUiCallBack> GetUsersStatistics()
         {
             var jm = new AdminUiCallBack();
 
@@ -1781,7 +1781,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             //返回数据
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -1795,7 +1795,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取用户最新统计数据")]
-        public async Task<JsonResult> GetBackLog()
+        public async Task<AdminUiCallBack> GetBackLog()
         {
             var jm = new AdminUiCallBack();
             //待支付
@@ -1832,7 +1832,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

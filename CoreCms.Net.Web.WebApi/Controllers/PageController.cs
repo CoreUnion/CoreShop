@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PageController : Controller
+    public class PageController : ControllerBase
     {
         private IMapper _mapper;
         private readonly ICoreCmsSettingServices _settingServices;
@@ -70,10 +70,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取页面布局数据")]
-        public async Task<JsonResult> GetPageConfig([FromBody] FMWxPost entity)
+        public async Task<WebApiCallBack> GetPageConfig([FromBody] FMWxPost entity)
         {
             var jm = await _pagesServices.GetPageConfig(entity.code);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -84,7 +84,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [Description("获取用户购买记录")]
-        public async Task<JsonResult> GetRecod([FromBody] FMGetRecodPost entity)
+        public async Task<WebApiCallBack> GetRecod([FromBody] FMGetRecodPost entity)
         {
             var jm = new WebApiCallBack() { status = true, msg = "获取成功", otherData = entity };
 
@@ -148,7 +148,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     jm.data = listUsers[listI];
                 }
             }
-            return Json(jm);
+            return jm;
         }
         #endregion
 

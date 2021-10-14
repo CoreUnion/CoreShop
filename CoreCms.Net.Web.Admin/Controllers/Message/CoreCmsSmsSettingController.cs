@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsSmsSettingController : Controller
+    public class CoreCmsSmsSettingController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsSettingServices _coreCmsSettingServices;
@@ -62,7 +62,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<JsonResult> GetIndex()
+        public async Task<AdminUiCallBack> GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -75,7 +75,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 filesStorageOptionsType
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -88,10 +88,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("保存提交")]
-        public async Task<JsonResult> DoSave([FromBody] FMCoreCmsSettingDoSaveModel model)
+        public async Task<AdminUiCallBack> DoSave([FromBody] FMCoreCmsSettingDoSaveModel model)
         {
             var jm = await _coreCmsSettingServices.UpdateAsync(model);
-            return Json(jm);
+            return jm;
         }
         #endregion
 

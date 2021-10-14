@@ -26,7 +26,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class DistributionController : Controller
+    public class DistributionController : ControllerBase
     {
         private readonly ICoreCmsDistributionOrderServices _distributionOrderServices;
         private readonly ICoreCmsDistributionServices _distributionServices;
@@ -57,25 +57,25 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetStoreInfo([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetStoreInfo([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.id == 0)
             {
                 jm.msg = "店铺信息丢失";
-                return Json(jm);
+                return jm;
             }
 
             var store = UserHelper.GetUserIdByShareCode(entity.id);
             if (store <= 0)
             {
                 jm.msg = "店铺信息丢失";
-                return Json(jm);
+                return jm;
             }
 
             jm = await _distributionServices.GetStore(store);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -90,10 +90,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> Info()
+        public async Task<WebApiCallBack> Info()
         {
             var jm = await _distributionServices.GetInfo(_user.ID, true);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -106,14 +106,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> ApplyDistribution([FromBody] FMDistributionApply entity)
+        public async Task<WebApiCallBack> ApplyDistribution([FromBody] FMDistributionApply entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.agreement != "on")
             {
                 jm.msg = "请勾选分销协议";
-                return Json(jm);
+                return jm;
             }
 
             var iData = new CoreCmsDistribution();
@@ -123,7 +123,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             iData.qq = entity.qq;
             jm = await _distributionServices.AddData(iData, _user.ID);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -136,10 +136,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> MyOrder([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> MyOrder([FromBody] FMPageByIntId entity)
         {
             var jm = await _distributionServices.GetMyOrderList(_user.ID, entity.page, entity.limit, entity.id);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -152,26 +152,26 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> SetStore([FromBody] FMSetDistributionStorePost entity)
+        public async Task<WebApiCallBack> SetStore([FromBody] FMSetDistributionStorePost entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.storeName))
             {
                 jm.msg = "请填写店铺名称";
-                return Json(jm);
+                return jm;
             }
 
             if (string.IsNullOrEmpty(entity.storeLogo))
             {
                 jm.msg = "请上传店铺logo";
-                return Json(jm);
+                return jm;
             }
 
             if (string.IsNullOrEmpty(entity.storeBanner))
             {
                 jm.msg = "请上传店铺banner";
-                return Json(jm);
+                return jm;
             }
 
             var info = await _distributionServices.QueryByClauseAsync(p => p.userId == _user.ID);
@@ -187,7 +187,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.msg = "保存成功";
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -200,7 +200,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetOrderSum()
+        public async Task<WebApiCallBack> GetOrderSum()
         {
             var jm = new WebApiCallBack();
 
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthOrderMoney
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -249,7 +249,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetTeamSum()
+        public async Task<WebApiCallBack> GetTeamSum()
         {
             var jm = new WebApiCallBack();
 
@@ -274,7 +274,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthSecond
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -287,7 +287,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetDistributionRanking([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetDistributionRanking([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -305,7 +305,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 list.TotalCount
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

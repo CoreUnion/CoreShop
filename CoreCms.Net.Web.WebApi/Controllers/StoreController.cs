@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class StoreController : Controller
+    public class StoreController : ControllerBase
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsStoreServices _storeServices;
@@ -70,7 +70,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetDefaultStore()
+        public async Task<WebApiCallBack> GetDefaultStore()
         {
             var jm = new WebApiCallBack();
 
@@ -78,7 +78,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = ship;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -88,7 +88,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetStoreList([FromBody] FMGetStoreQueryPageByCoordinate entity)
+        public async Task<WebApiCallBack> GetStoreList([FromBody] FMGetStoreQueryPageByCoordinate entity)
         {
             var jm = new WebApiCallBack();
             try
@@ -135,7 +135,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = GlobalConstVars.DataHandleEx;
                 jm.data = e.ToString();
             }
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -145,7 +145,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetRecommendKeys()
+        public async Task<WebApiCallBack> GetRecommendKeys()
         {
             var jm = new WebApiCallBack();
 
@@ -155,7 +155,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.msg = "获取成功";
             jm.data = !string.IsNullOrEmpty(recommendKeysStr) ? recommendKeysStr.Split("|") : new string[] { };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -165,13 +165,13 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetStoreSwitch()
+        public async Task<WebApiCallBack> GetStoreSwitch()
         {
             var jm = new WebApiCallBack { status = true, msg = "获取成功" };
 
             var allConfigs = await _settingServices.GetConfigDictionaries();
             jm.data = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.StoreSwitch).ObjectToInt(2); ;
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -181,7 +181,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetStoreById([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetStoreById([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack
             {
@@ -189,7 +189,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _storeServices.QueryByClauseAsync(p => p.id == entity.id)
             };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -202,10 +202,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> IsClerk()
+        public async Task<WebApiCallBack> IsClerk()
         {
             var jm = await _clerkServices.IsClerk(_user.ID);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -216,7 +216,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetStoreByUserId()
+        public async Task<WebApiCallBack> GetStoreByUserId()
         {
             var jm = new WebApiCallBack
             {
@@ -224,7 +224,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 msg = "获取成功",
                 data = await _storeServices.GetStoreByUserId(_user.ID)
             };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -236,7 +236,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetOrderPageByMerchant([FromBody] GetOrderPageByMerchantPost entity)
+        public async Task<WebApiCallBack> GetOrderPageByMerchant([FromBody] GetOrderPageByMerchantPost entity)
         {
             var jm = new WebApiCallBack();
 
@@ -251,7 +251,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = "你不是店员";
             }
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -263,10 +263,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> StoreLadingList([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> StoreLadingList([FromBody] FMPageByIntId entity)
         {
             var jm = await _billLadingServices.GetStoreLadingList(_user.ID, entity.page, entity.limit);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -277,10 +277,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> LadingDelete([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> LadingDelete([FromBody] FMStringId entity)
         {
             var jm = await _billLadingServices.LadingDelete(entity.id, _user.ID);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -291,18 +291,18 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> LadingInfo([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> LadingInfo([FromBody] FMStringId entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return Json(jm);
+                return jm;
             }
             jm = await _billLadingServices.GetInfo(entity.id, _user.ID);
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -313,21 +313,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> Lading([FromBody] FMStringId entity)
+        public async Task<WebApiCallBack> Lading([FromBody] FMStringId entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.id))
             {
                 jm.msg = "请提交查询数据关键词";
-                return Json(jm);
+                return jm;
             }
             var array = entity.id.Split(",");
             var result = await _billLadingServices.LadingOperating(array, _user.ID);
             jm.status = result.code == 0;
             jm.msg = result.msg;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

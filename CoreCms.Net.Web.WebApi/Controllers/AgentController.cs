@@ -34,7 +34,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AgentController : Controller
+    public class AgentController : ControllerBase
     {
         private IHttpContextUser _user;
         private readonly ICoreCmsAgentServices _agentServices;
@@ -73,23 +73,23 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetStoreInfo([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> GetStoreInfo([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.id == 0)
             {
                 jm.msg = "店铺信息丢失";
-                return Json(jm);
+                return jm;
             }
             var store = UserHelper.GetUserIdByShareCode(entity.id);
             if (store <= 0)
             {
                 jm.msg = "店铺信息丢失";
-                return Json(jm);
+                return jm;
             }
             jm = await _agentServices.GetStore(store);
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -101,7 +101,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetGoodsPageList([FromBody] FMPageByWhereOrder entity)
+        public async Task<WebApiCallBack> GetGoodsPageList([FromBody] FMPageByWhereOrder entity)
         {
             var jm = new WebApiCallBack();
 
@@ -192,7 +192,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             };
             jm.msg = "数据调用成功!";
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -207,10 +207,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> Info()
+        public async Task<WebApiCallBack> Info()
         {
             var jm = await _agentServices.GetInfo(_user.ID);
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -222,14 +222,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> ApplyAgent([FromBody] FMAgentApply entity)
+        public async Task<WebApiCallBack> ApplyAgent([FromBody] FMAgentApply entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.agreement != "on")
             {
                 jm.msg = "请勾选代理商协议";
-                return Json(jm);
+                return jm;
             }
             var iData = new CoreCmsAgent();
             iData.mobile = entity.mobile;
@@ -238,7 +238,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             iData.qq = entity.qq;
             jm = await _agentServices.AddData(iData, _user.ID);
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -250,7 +250,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetTeamSum()
+        public async Task<WebApiCallBack> GetTeamSum()
         {
             var jm = new WebApiCallBack();
 
@@ -286,7 +286,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthSecond
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -298,7 +298,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetOrderSum()
+        public async Task<WebApiCallBack> GetOrderSum()
         {
             var jm = new WebApiCallBack();
 
@@ -344,7 +344,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 monthOrderMoney
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -356,10 +356,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> MyOrder([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> MyOrder([FromBody] FMPageByIntId entity)
         {
             var jm = await _agentServices.GetMyOrderList(_user.ID, entity.page, entity.limit, entity.id);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -370,24 +370,24 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> SetStore([FromBody] FMSetAgentStorePost entity)
+        public async Task<WebApiCallBack> SetStore([FromBody] FMSetAgentStorePost entity)
         {
             var jm = new WebApiCallBack();
 
             if (string.IsNullOrEmpty(entity.storeName))
             {
                 jm.msg = "请填写店铺名称";
-                return Json(jm);
+                return jm;
             }
             if (string.IsNullOrEmpty(entity.storeLogo))
             {
                 jm.msg = "请上传店铺logo";
-                return Json(jm);
+                return jm;
             }
             if (string.IsNullOrEmpty(entity.storeBanner))
             {
                 jm.msg = "请上传店铺banner";
-                return Json(jm);
+                return jm;
             }
 
             var info = await _agentServices.QueryByClauseAsync(p => p.userId == _user.ID);
@@ -402,7 +402,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.msg = "保存成功";
 
-            return Json(jm);
+            return jm;
 
         }
         #endregion
@@ -414,7 +414,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetAgentRanking([FromBody] FMPageByIntId entity)
+        public async Task<WebApiCallBack> GetAgentRanking([FromBody] FMPageByIntId entity)
         {
             var jm = new WebApiCallBack();
 
@@ -433,7 +433,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

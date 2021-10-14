@@ -38,7 +38,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsAdvertPositionController : Controller
+    public class CoreCmsAdvertPositionController : ControllerBase
     {
         private readonly ICoreCmsAdvertPositionServices _coreCmsAdvertPositionServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -63,7 +63,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -174,7 +174,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -188,11 +188,11 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -206,14 +206,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public JsonResult GetCreate()
+        public AdminUiCallBack GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
             var data = EnumHelper.EnumToList<GlobalEnumVars.AdvertTemplateCode>();
             jm.data = data;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -228,7 +228,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody] CoreCmsAdvertPosition entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] CoreCmsAdvertPosition entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -238,7 +238,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -253,7 +253,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -261,7 +261,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var advertTemplateCode = EnumHelper.EnumToList<GlobalEnumVars.AdvertTemplateCode>();
@@ -273,7 +273,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 advertTemplateCode
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -288,7 +288,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] CoreCmsAdvertPosition entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsAdvertPosition entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -296,7 +296,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             //事物处理过程开始
@@ -311,7 +311,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -326,7 +326,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("单选删除")]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -334,13 +334,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
 
             var bl = await _coreCmsAdvertPositionServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
-            return Json(jm);
+            return jm;
 
         }
 
@@ -356,7 +356,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("设置状态")]
-        public async Task<JsonResult> DoSetisEnable([FromBody] FMUpdateBoolDataByIntId entity)
+        public async Task<AdminUiCallBack> DoSetisEnable([FromBody] FMUpdateBoolDataByIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -364,7 +364,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             oldModel.isEnable = entity.data;
@@ -373,7 +373,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

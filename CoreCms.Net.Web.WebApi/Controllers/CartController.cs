@@ -25,7 +25,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CartController : Controller
+    public class CartController : ControllerBase
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsCartServices _cartServices;
@@ -53,10 +53,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> AddCart([FromBody] FMCartAdd entity)
+        public async Task<WebApiCallBack> AddCart([FromBody] FMCartAdd entity)
         {
             var jm = await _cartServices.Add(_user.ID, entity.ProductId, entity.Nums, entity.type, entity.cartType, entity.teamId, entity.groupId);
-            return Json(jm);
+            return jm;
         }
 
         #endregion 添加单个货品到购物车
@@ -69,7 +69,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetList([FromBody] FMCartGetList entity)
+        public async Task<WebApiCallBack> GetList([FromBody] FMCartGetList entity)
         {
             var ids = CommonHelper.StringToIntArray(entity.ids);
             //判断免费运费
@@ -77,7 +77,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             //获取数据
             var jm = await _cartServices.GetCartInfos(_user.ID, ids, entity.type, entity.areaId, entity.point, entity.couponCode, freeFreight, entity.receiptType, entity.groupId);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion 获取购物车列表======================================================================
@@ -90,18 +90,18 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> DoDelete([FromBody] FMIntId entity)
+        public async Task<WebApiCallBack> DoDelete([FromBody] FMIntId entity)
         {
             var jm = new WebApiCallBack();
 
             if (entity.id <= 0)
             {
                 jm.msg = "请提交要删除的货品";
-                return Json(jm);
+                return jm;
             }
             jm = await _cartServices.DeleteByIdsAsync(entity.id, _user.ID);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion 删除购物车信息
@@ -114,10 +114,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> SetCartNum([FromBody] FMSetCartNum entity)
+        public async Task<WebApiCallBack> SetCartNum([FromBody] FMSetCartNum entity)
         {
             var jm = await _cartServices.SetCartNum(entity.id, entity.nums, _user.ID, 2, 1);
-            return Json(jm);
+            return jm;
         }
 
         #endregion 设置购物车商品数量
@@ -130,11 +130,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> GetCartAvailableCoupon([FromBody] FMCouponForUserCouponPost entity)
+        public async Task<WebApiCallBack> GetCartAvailableCoupon([FromBody] FMCouponForUserCouponPost entity)
         {
             var ids = CommonHelper.StringToIntArray(entity.ids);
             var jm = await _cartServices.GetCartAvailableCoupon(_user.ID, ids);
-            return Json(jm);
+            return jm;
         }
 
         #endregion 根据提交的数据判断哪些购物券可以使用==================================================

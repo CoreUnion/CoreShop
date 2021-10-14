@@ -39,7 +39,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers.WeChatOAuth
     /// <summary>
     /// 微信小程序Controller
     /// </summary>
-    public class WxOpenController : Controller
+    public class WxOpenController : ControllerBase
     {
 
         private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;

@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillReshipController : Controller
+    public class CoreCmsBillReshipController : ControllerBase
     {
         private readonly ICoreCmsBillReshipServices _coreCmsBillReshipServices;
         private readonly ICoreCmsBillReshipItemServices _billReshipItemServices;
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -212,7 +212,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -224,7 +224,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 status
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("确认收货")]
-        public async Task<JsonResult> DoAudit([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> DoAudit([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -247,7 +247,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
 
             var bl = await _coreCmsBillReshipServices.UpdateAsync(
@@ -295,7 +295,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "确认成功" : "确认失败";
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -310,7 +310,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -318,7 +318,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
-                return Json(jm);
+                return jm;
             }
             var status = EnumHelper.EnumToList<GlobalEnumVars.BillReshipStatus>();
 
@@ -329,7 +329,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 model
             };
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -344,7 +344,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<JsonResult> SelectExportExcel([FromBody] FMArrayStringIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayStringIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -401,7 +401,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -415,7 +415,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("查询导出")]
-        public async Task<JsonResult> QueryExportExcel()
+        public async Task<AdminUiCallBack> QueryExportExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -516,7 +516,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.data = tpath + fileName;
 
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

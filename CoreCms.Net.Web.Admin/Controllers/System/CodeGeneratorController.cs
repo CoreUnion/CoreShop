@@ -35,7 +35,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize(Permissions.Name)]
-    public class CodeGeneratorController : Controller
+    public class CodeGeneratorController : ControllerBase
     {
         private readonly ICodeGeneratorServices _codeGeneratorServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -59,7 +59,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取数据表格列表")]
-        public JsonResult GetTables()
+        public AdminUiCallBack GetTables()
         {
             var tables = _codeGeneratorServices.GetDbTables();
 
@@ -73,7 +73,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 data = _mapper
                     .Map<List<SqlSugar.DbTableInfo>, List<CoreCms.Net.Model.ViewModels.Basics.DbTableInfoTree>>(tables)
             };
-            return Json(jm);
+            return jm;
         }
 
         /// <summary>
@@ -90,12 +90,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (string.IsNullOrEmpty(tableName))
             {
                 jm.msg = "请选择数据库";
-                return Json(jm);
+                return new JsonResult(jm);
             }
             if (string.IsNullOrEmpty(fileType))
             {
                 jm.msg = "请选择要导出的文件类型";
-                return Json(jm);
+                return new JsonResult(jm);
             }
 
             if (tableName == "AllTable")
@@ -108,7 +108,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else
                 {
                     jm.msg = tableName + "获取数据库字段失败";
-                    return Json(jm);
+                    return new JsonResult(jm);
                 }
             }
             else
@@ -121,7 +121,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else
                 {
                     jm.msg = tableName + "获取数据库字段失败";
-                    return Json(jm);
+                    return new JsonResult(jm);
                 }
             }
 
@@ -136,7 +136,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取所有表和表名并生成excel")]
-        public JsonResult GetDataBaseTablesToExcel()
+        public AdminUiCallBack GetDataBaseTablesToExcel()
         {
             var jm = new AdminUiCallBack();
 
@@ -198,7 +198,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 jm.msg = GlobalConstVars.ExcelExportSuccess;
                 jm.data = tpath + fileName;
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion

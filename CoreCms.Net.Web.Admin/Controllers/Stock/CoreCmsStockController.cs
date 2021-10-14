@@ -41,7 +41,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsStockController : Controller
+    public class CoreCmsStockController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsStockServices _stockServices;
@@ -72,7 +72,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取列表")]
-        public async Task<JsonResult> GetPageList()
+        public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
@@ -154,7 +154,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.code = 0;
             jm.count = list.TotalCount;
             jm.msg = "数据调用成功!";
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -166,7 +166,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public JsonResult GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -177,7 +177,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             {
                 stockType,
             };
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -189,7 +189,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建数据")]
-        public async Task<JsonResult> GetCreate()
+        public async Task<AdminUiCallBack> GetCreate()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -204,7 +204,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 products,
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -217,7 +217,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<JsonResult> DoCreate([FromBody] FMCreateStock entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] FMCreateStock entity)
         {
             if (_user != null)
             {
@@ -229,7 +229,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             var jm = await _stockServices.InsertAsync(entity);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -242,7 +242,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("预览数据")]
-        public async Task<JsonResult> GetDetails([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMStringId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -250,7 +250,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
 
             var manager = await _sysUserServices.QueryByClauseAsync(p => p.id == model.manager);
@@ -266,7 +266,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 manager
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

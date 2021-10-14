@@ -28,7 +28,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class FormController : Controller
+    public class FormController : ControllerBase
     {
         private readonly ICoreCmsFormServices _formServices;
 
@@ -49,10 +49,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> GetFormDetial([FromBody] FmGetForm entity)
+        public async Task<WebApiCallBack> GetFormDetial([FromBody] FmGetForm entity)
         {
             var jm = await _formServices.GetFormInfo(entity.id, entity.token);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -64,13 +64,13 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> AddSubmit([FromBody] FmAddSubmit entity)
+        public async Task<WebApiCallBack> AddSubmit([FromBody] FmAddSubmit entity)
         {
             var jm = await _formServices.AddSubmit(entity);
 
             jm.otherData = entity;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 

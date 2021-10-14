@@ -29,7 +29,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class WeChatAppletsMessageController : Controller
+    public class WeChatAppletsMessageController : ControllerBase
     {
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsUserWeChatMsgTemplateServices _userWeChatMsgTemplateServices;
@@ -54,10 +54,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> IsTip()
+        public async Task<WebApiCallBack> IsTip()
         {
             var jm = await _userWeChatMsgSubscriptionSwitchServices.IsTip(_user.ID);
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -68,10 +68,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> CloseTip()
+        public async Task<WebApiCallBack> CloseTip()
         {
             var jm = await _userWeChatMsgSubscriptionSwitchServices.CloseTip(_user.ID);
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -83,11 +83,11 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> Tmpl()
+        public async Task<WebApiCallBack> Tmpl()
         {
             var jm = await _userWeChatMsgSubscriptionServices.tmpl(_user.ID);
 
-            return Json(jm);
+            return jm;
         }
 
         #endregion
@@ -99,10 +99,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> SetTip([FromBody] SetWeChatAppletsMessageTip entity)
+        public async Task<WebApiCallBack> SetTip([FromBody] SetWeChatAppletsMessageTip entity)
         {
             var jm = await _userWeChatMsgSubscriptionServices.SetTip(_user.ID, entity.templateId, entity.status);
-            return Json(jm);
+            return jm;
         }
         #endregion
 

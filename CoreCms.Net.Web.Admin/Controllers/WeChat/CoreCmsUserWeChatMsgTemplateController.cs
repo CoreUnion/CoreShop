@@ -40,7 +40,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsUserWeChatMsgTemplateController : Controller
+    public class CoreCmsUserWeChatMsgTemplateController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICoreCmsUserWeChatMsgTemplateServices _coreCmsUserWeChatMsgTemplateServices;
@@ -64,7 +64,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<JsonResult> GetIndex()
+        public async Task<AdminUiCallBack> GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
@@ -88,7 +88,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 refund
             };
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -101,7 +101,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<JsonResult> GetEdit([FromBody] FMIntId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -109,12 +109,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
-                return Json(jm);
+                return jm;
             }
             jm.code = 0;
             jm.data = model;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
@@ -127,14 +127,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<JsonResult> DoEdit([FromBody] FMWeChatMsgTemplateEdit entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] FMWeChatMsgTemplateEdit entity)
         {
             var jm = new AdminUiCallBack();
 
             if (entity.list == null || entity.list.Count < 0)
             {
                 jm.msg = "未传输讯息";
-                return Json(jm);
+                return jm;
             }
             //事物处理过程开始
             var data = await _coreCmsUserWeChatMsgTemplateServices.QueryAsync();
@@ -157,7 +157,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
             jm.otherData = entity;
 
-            return Json(jm);
+            return jm;
         }
         #endregion
 
