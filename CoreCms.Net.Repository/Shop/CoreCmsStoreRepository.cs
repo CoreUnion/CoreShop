@@ -146,37 +146,56 @@ namespace CoreCms.Net.Repository
             RefAsync<int> totalCount = 0;
 
             //MySql与SqlServer查询语句相同
-            var sql = string.Empty;
+            List<CoreCmsStore> page;
             if (latitude > 0 && longitude > 0)
             {
                 var sqrt = "SQRT(power(SIN((" + latitude + "*PI()/180-(CoreCmsStore.latitude)*PI()/180)/2),2)+COS(" + latitude + "*PI()/180)*COS((CoreCmsStore.latitude)*PI()/180)*power(SIN((" + longitude + "*PI()/180-(CoreCmsStore.longitude)*PI()/180)/2),2))";
-                sql = "SELECT id, storeName, mobile, linkMan, logoImage, areaId, address, coordinate, latitude, longitude, isDefault, createTime, updateTime, ROUND(6378.138*2*ASIN(" + sqrt + ")*1000,2)  AS distance FROM CoreCmsStore";
+                var sql = "SELECT id, storeName, mobile, linkMan, logoImage, areaId, address, coordinate, latitude, longitude, isDefault, createTime, updateTime, ROUND(6378.138*2*ASIN(" + sqrt + ")*1000,2)  AS distance FROM CoreCmsStore";
+
+                page = await DbClient.SqlQueryable<CoreCmsStore>(sql)
+                    .WhereIF(predicate != null, predicate)
+                    .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
+                    .Select(p => new CoreCmsStore
+                    {
+                        id = p.id,
+                        storeName = p.storeName,
+                        mobile = p.mobile,
+                        linkMan = p.linkMan,
+                        logoImage = p.logoImage,
+                        areaId = p.areaId,
+                        address = p.address,
+                        coordinate = p.coordinate,
+                        latitude = p.latitude,
+                        longitude = p.longitude,
+                        isDefault = p.isDefault,
+                        createTime = p.createTime,
+                        updateTime = p.updateTime,
+                        distance = Convert.ToDecimal(p.distance)
+                    }).ToPageListAsync(pageIndex, pageSize, totalCount);
             }
             else
             {
-                sql = "SELECT id, storeName, mobile, linkMan, logoImage, areaId, address, coordinate, latitude, longitude, isDefault, createTime, updateTime, distance FROM CoreCmsStore";
+                page = await DbClient.Queryable<CoreCmsStore>()
+                    .WhereIF(predicate != null, predicate)
+                    .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
+                    .Select(p => new CoreCmsStore
+                    {
+                        id = p.id,
+                        storeName = p.storeName,
+                        mobile = p.mobile,
+                        linkMan = p.linkMan,
+                        logoImage = p.logoImage,
+                        areaId = p.areaId,
+                        address = p.address,
+                        coordinate = p.coordinate,
+                        latitude = p.latitude,
+                        longitude = p.longitude,
+                        isDefault = p.isDefault,
+                        createTime = p.createTime,
+                        updateTime = p.updateTime,
+                        distance = Convert.ToDecimal(p.distance)
+                    }).ToPageListAsync(pageIndex, pageSize, totalCount);
             }
-
-            var page = await DbClient.SqlQueryable<CoreCmsStore>(sql)
-                .WhereIF(predicate != null, predicate)
-                .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                .Select(p => new CoreCmsStore
-                {
-                    id = p.id,
-                    storeName = p.storeName,
-                    mobile = p.mobile,
-                    linkMan = p.linkMan,
-                    logoImage = p.logoImage,
-                    areaId = p.areaId,
-                    address = p.address,
-                    coordinate = p.coordinate,
-                    latitude = p.latitude,
-                    longitude = p.longitude,
-                    isDefault = p.isDefault,
-                    createTime = p.createTime,
-                    updateTime = p.updateTime,
-                    distance = Convert.ToDecimal(p.distance)
-                }).ToPageListAsync(pageIndex, pageSize, totalCount);
 
             var list = new PageList<CoreCmsStore>(page, pageIndex, pageSize, totalCount);
             return list;
