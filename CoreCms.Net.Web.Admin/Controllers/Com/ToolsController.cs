@@ -158,9 +158,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
-            jm.code = 0;
-            jm.msg = "数据获取正常";
-            jm.data = new
+            jm.code = userModel == null ? 401 : 0;
+            jm.msg = userModel == null ? "注销登录" : "数据获取正常";
+            jm.data = userModel == null ? null : new
             {
                 userModel.userName,
                 userModel.nickName,
