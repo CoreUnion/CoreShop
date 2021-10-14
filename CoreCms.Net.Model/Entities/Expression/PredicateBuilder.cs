@@ -51,7 +51,7 @@ namespace CoreCms.Net.Model.Entities.Expression
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first,
             Expression<Func<T, bool>> second)
         {
-            return first.Compose(second, System.Linq.Expressions.Expression.And);
+            return first.Compose(second, System.Linq.Expressions.Expression.AndAlso);
         }
 
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first,
