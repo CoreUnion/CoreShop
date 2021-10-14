@@ -8,6 +8,7 @@
  *        Description: 暂无
  ***********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreCms.Net.Configuration;
@@ -44,38 +45,45 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<IPageList<GoodsSalesVolume>> GetGoodsSalesVolumes(string start, string end, string filter, string filterSed, string thesort, int pageIndex = 1, int pageSize = 5000)
         {
-            var sqlStr = string.Empty;
-            string dbTypeString = AppSettingsConstVars.DbDbType;
-            if (dbTypeString == DbType.SqlServer.ToString())
-            {
-                sqlStr = @"select top 1000 sum(oi.nums) as nums,sum(oi.amount) as amount,oi.sn,oi.name,oi.imageUrl,oi.addon 
-                        from CoreCmsOrderItem oi
-                                        left join CoreCmsOrder o on oi.orderId = o.orderId
-                                        where o.payStatus <> 1
-                                        and o.paymentTime > '" + start + @"' and o.paymentTime <= '" + end + @"' 
-                                        group by oi.sn,oi.name,oi.imageUrl,oi.addon 
-                                        order by sum(oi." + filter + @") " + thesort + @",sum(oi." + filterSed + @") " + thesort + @"";
-            }
-            else if (dbTypeString == DbType.MySql.ToString())
-            {
-                sqlStr = @"select sum(oi.nums) as nums,sum(oi.amount) as amount,oi.sn,oi.name,oi.imageUrl,oi.addon 
-                        from CoreCmsOrderItem oi
-                                        left join CoreCmsOrder o on oi.orderId = o.orderId
-                                        where o.payStatus <> 1
-                                        and o.paymentTime > '" + start + @"' and o.paymentTime <= '" + end + @"' 
-                                        group by oi.sn,oi.name,oi.imageUrl,oi.addon 
-                                        order by sum(oi." + filter + @") " + thesort + @",sum(oi." + filterSed + @") " + thesort + @" LIMIT 1000";
-            }
-
-            if (string.IsNullOrEmpty(sqlStr))
-            {
-                return null;
-            }
-
-
             RefAsync<int> totalCount = 0;
-            var page = await DbClient.SqlQueryable<GoodsSalesVolume>(sqlStr).ToPageListAsync(pageIndex, pageSize, totalCount);
-            var list = new PageList<GoodsSalesVolume>(page, pageIndex, pageSize, totalCount);
+
+            var startDt = DateTime.Parse(start);
+            var endDt = DateTime.Parse(end);
+
+            var orderBy = thesort switch
+            {
+                "asc" => OrderByType.Asc,
+                "desc" => OrderByType.Desc,
+                _ => OrderByType.Desc
+            };
+
+            var data = await DbClient.Queryable<CoreCmsOrderItem>()
+                .LeftJoin<CoreCmsOrder>((oi, o) => oi.orderId == o.orderId)
+                .Where((oi, o) => o.payStatus != 1 && o.paymentTime > startDt && o.paymentTime <= endDt)
+                .GroupBy((oi, o) => new
+                {
+                    oi.sn,
+                    oi.name,
+                    oi.imageUrl,
+                    oi.addon
+                })
+                .Select((oi, o) => new GoodsSalesVolume()
+                {
+                    nums = SqlFunc.AggregateSum(oi.nums),
+                    amount = SqlFunc.AggregateSum(oi.amount),
+                    sn = oi.sn,
+                    name = oi.name,
+                    imageUrl = oi.imageUrl,
+                    addon = oi.addon
+                })
+                .MergeTable()
+                .OrderByIF(filter == "nums", p => p.nums, orderBy)
+                .OrderByIF(filter == "amount", p => p.amount, orderBy)
+                .OrderByIF(filterSed == "nums", p => p.nums, orderBy)
+                .OrderByIF(filterSed == "amount", p => p.amount, orderBy)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
+
+            var list = new PageList<GoodsSalesVolume>(data, pageIndex, pageSize, totalCount);
             return list;
         }
 
@@ -90,36 +98,34 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<IPageList<GoodsCollection>> GetGoodsCollections(string start, string end, string thesort, int pageIndex = 1, int pageSize = 5000)
         {
-
-            var sqlStr = string.Empty;
-            string dbTypeString = AppSettingsConstVars.DbDbType;
-            if (dbTypeString == DbType.SqlServer.ToString())
-            {
-                sqlStr = @"select top 1000 count(gc.goodsId) as nums,gc.goodsId,gc.goodsName,g.images 
-                         from CoreCmsGoodsCollection gc
-                                left join CoreCmsGoods g on gc.goodsId = g.id
-                                where gc.createTime > '" + start + @"' and gc.createTime <= '" + end + @"'  
-                                group by gc.goodsId,gc.goodsName,g.images
-                                order by sum(gc.goodsId) " + thesort + @"";
-            }
-            else if (dbTypeString == DbType.MySql.ToString())
-            {
-                sqlStr = @"select count(gc.goodsId) as nums,gc.goodsId,gc.goodsName,g.images 
-                         from CoreCmsGoodsCollection gc
-                                left join CoreCmsGoods g on gc.goodsId = g.id
-                                where gc.createTime > '" + start + @"' and gc.createTime <= '" + end + @"'  
-                                group by gc.goodsId,gc.goodsName,g.images
-                                order by sum(gc.goodsId) " + thesort + @" LIMIT 1000";
-            }
-
-            if (string.IsNullOrEmpty(sqlStr))
-            {
-                return null;
-            }
-
             RefAsync<int> totalCount = 0;
-            var page = await DbClient.SqlQueryable<GoodsCollection>(sqlStr).ToPageListAsync(pageIndex, pageSize, totalCount);
-            var list = new PageList<GoodsCollection>(page, pageIndex, pageSize, totalCount);
+
+            var startDt = DateTime.Parse(start);
+            var endDt = DateTime.Parse(end);
+
+            var orderBy = thesort switch
+            {
+                "asc" => OrderByType.Asc,
+                "desc" => OrderByType.Desc,
+                _ => OrderByType.Desc
+            };
+
+            var data = await DbClient.Queryable<CoreCmsGoodsCollection>()
+                .LeftJoin<CoreCmsGoods>((gc, g) => gc.goodsId == g.id)
+                .Where((gc, g) => gc.createTime > startDt && gc.createTime <= endDt)
+                .GroupBy((gc, g) => new { gc.goodsId, gc.goodsName, g.images })
+                .Select((gc, g) => new GoodsCollection()
+                {
+                    nums = SqlFunc.AggregateCount(gc.goodsId),
+                    goodsName = gc.goodsName,
+                    goodId = gc.goodsId,
+                    images = g.images
+                })
+                .MergeTable()
+                .OrderBy(gc => gc.nums, orderBy)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
+
+            var list = new PageList<GoodsCollection>(data, pageIndex, pageSize, totalCount);
             return list;
         }
 
