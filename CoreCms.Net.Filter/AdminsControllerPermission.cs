@@ -37,7 +37,7 @@ namespace CoreCms.Net.Filter
             var controllers = types.Where(p => p.Name.Contains("Controller") && !noController.Contains(p.Name));
             foreach (var type in controllers)
             {
-                if (type.Name.Length > 10 && type.BaseType.Name == "Controller" && type.Name.EndsWith("Controller")) //如果是Controller
+                if (type.Name.Length > 10 && type.BaseType.Name == "ControllerBase" && type.Name.EndsWith("Controller")) //如果是Controller
                 {
                     var members = type.GetMethods();
                     var cp = new ControllerPermission
@@ -56,12 +56,18 @@ namespace CoreCms.Net.Filter
 
 
                     var newMembers = members.Where(p =>
-                        p.ReturnType.Name == "ActionResult" || p.ReturnType.Name == "FileResult" ||
-                        p.ReturnType.Name == "JsonResult" || (p.ReturnType.GenericTypeArguments.Length > 0 && p.ReturnType.GenericTypeArguments[0].Name == "JsonResult")).ToList();
+                        p.ReturnType.FullName != null && (p.ReturnType.Name == "ActionResult" ||
+                                                          p.ReturnType.Name == "FileResult" ||
+                                                          p.ReturnType.Name == "JsonResult" ||
+                                                          (p.ReturnType.GenericTypeArguments.Length > 0 && p.ReturnType.GenericTypeArguments[0].Name == "JsonResult") ||
+                                                          p.ReturnType.Name == "AdminUiCallBack" ||
+                                                          p.ReturnType.Name == "IActionResult" ||
+                                                          p.ReturnType.FullName.Contains("CoreCms.Net.Model.ViewModels.UI.AdminUiCallBack"))
+                        ).ToList();
 
                     foreach (var member in newMembers)
                     {
-                        if (member.Name == "ValidationProblem" || member.Name =="Json") continue;
+                        if (member.Name == "ValidationProblem" || member.Name == "Json") continue;
 
                         //if (member.ReturnType.Name == "ActionResult" || member.ReturnType.Name == "FileResult" || member.ReturnType.Name == "JsonResult" || (member.ReturnType.GenericTypeArguments.Length > 0 && member.ReturnType.GenericTypeArguments[0].Name == "JsonResult")) //如果是Action
                         //{
