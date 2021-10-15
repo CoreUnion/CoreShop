@@ -189,7 +189,6 @@
     <None Include="wwwroot\lib\layuiAdmin\controller\contlist.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\coredropdown.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\Cropper.js" />
-    <None Include="wwwroot\lib\layuiAdmin\controller\CropperImg.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\iconPicker.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\tableX.js" />
     <None Include="wwwroot\lib\layuiAdmin\controller\treeTable.js" />
