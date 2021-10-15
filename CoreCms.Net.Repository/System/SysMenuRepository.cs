@@ -83,12 +83,12 @@ namespace CoreCms.Net.Repository
             oldModel.iconColor = entity.iconColor;
             oldModel.hide = entity.hide;
             //oldModel.deleted = entity.deleted;
-            //oldModel.createTime = entity.createTime;
+            //oldModel.createTime = oldModel.createTime;
             oldModel.updateTime = DateTime.Now;
             oldModel.identificationCode = entity.identificationCode;
 
             //事物处理过程结束
-            var bl = await DbClient.Updateable(entity).ExecuteCommandHasChangeAsync();
+            var bl = await DbClient.Updateable(oldModel).ExecuteCommandHasChangeAsync();
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
             if (bl)
