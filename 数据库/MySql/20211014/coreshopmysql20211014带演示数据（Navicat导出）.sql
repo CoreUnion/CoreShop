@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 阿里云
+ Source Server         : aliyun mysql 5.7
  Source Server Type    : MySQL
  Source Server Version : 50732
  Source Schema         : coreshop
@@ -10,7 +10,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 14/10/2021 22:35:34
+ Date: 15/10/2021 09:32:36
 */
 
 SET NAMES utf8mb4;
@@ -24,12 +24,12 @@ CREATE TABLE `CoreCmsAdvertPosition`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
   `name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
   `code` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '位置编码',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '添加时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '添加时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isEnable` bit(1) NOT NULL COMMENT '是否启用',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '广告位置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '广告位置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAdvertPosition
@@ -48,12 +48,12 @@ CREATE TABLE `CoreCmsAdvertisement`  (
   `val` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性值',
   `valDes` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '属性值说明',
   `sort` int(11) NOT NULL COMMENT '排序',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '添加时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '添加时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `code` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '广告位置编码',
   `type` int(11) NOT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '广告表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '广告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAdvertisement
@@ -77,12 +77,12 @@ CREATE TABLE `CoreCmsAgent`  (
   `storeBanner` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺Banner',
   `storeDesc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺简介',
   `verifyStatus` int(11) NOT NULL COMMENT '审核状态',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `verifyTime` datetime NULL DEFAULT NULL COMMENT '审核时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `verifyTime` datetime(0) NULL DEFAULT NULL COMMENT '审核时间',
   `isDelete` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAgent
@@ -95,13 +95,13 @@ DROP TABLE IF EXISTS `CoreCmsAgentGoods`;
 CREATE TABLE `CoreCmsAgentGoods`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
   `goodId` int(11) NOT NULL COMMENT '商品序列',
-  `goodRefreshTime` datetime NULL DEFAULT NULL COMMENT '商品编辑时间',
+  `goodRefreshTime` datetime(0) NULL DEFAULT NULL COMMENT '商品编辑时间',
   `sortId` int(11) NOT NULL COMMENT '排序',
   `isEnable` bit(1) NOT NULL COMMENT '是否启用',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商品池' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商品池' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAgentGoods
@@ -146,7 +146,7 @@ CREATE TABLE `CoreCmsAgentGrade`  (
   `sortId` int(11) NOT NULL COMMENT '等级排序',
   `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '等级说明',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商等级设置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商等级设置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAgentGrade
@@ -172,11 +172,11 @@ CREATE TABLE `CoreCmsAgentOrder`  (
   `orderId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单编号',
   `amount` decimal(10, 2) NOT NULL COMMENT '结算金额',
   `isSettlement` int(11) NOT NULL COMMENT '是否结算',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isDelete` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商订单记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理商订单记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAgentOrder
@@ -195,11 +195,11 @@ CREATE TABLE `CoreCmsAgentProducts`  (
   `productPrice` decimal(10, 2) NOT NULL COMMENT '货品销售价格',
   `agentGradeId` int(11) NOT NULL COMMENT '代理商等级',
   `agentGradePrice` decimal(10, 2) NOT NULL COMMENT '代理价格',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isDel` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理货品池' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代理货品池' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsAgentProducts
@@ -217,11 +217,11 @@ CREATE TABLE `CoreCmsApiAccessToken`  (
   `accessToken` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '访问令牌，API调用时需要，令牌可以重复使用无失效时间，请开发者全局保存',
   `refreshToken` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新access_token所需，有效时间35天',
   `expiresIn` int(11) NOT NULL COMMENT '令牌的有效时间，单位秒 (30天),注：该模式下可忽略此参数',
-  `expiressEndTime` datetime NULL DEFAULT NULL COMMENT '有效期截止时间',
+  `expiressEndTime` datetime(0) NULL DEFAULT NULL COMMENT '有效期截止时间',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '其他参数',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '第三方授权记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '第三方授权记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsApiAccessToken
@@ -239,7 +239,7 @@ CREATE TABLE `CoreCmsArea`  (
   `postalCode` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮编',
   `sort` int(11) NOT NULL COMMENT '地区排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 920107 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 920107 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsArea
@@ -3874,10 +3874,10 @@ CREATE TABLE `CoreCmsArticle`  (
   `isPub` bit(1) NOT NULL COMMENT '是否发布',
   `isDel` bit(1) NULL DEFAULT NULL COMMENT '是否删除',
   `pv` int(11) NOT NULL COMMENT '访问量',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文章表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文章表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsArticle
@@ -3893,7 +3893,7 @@ CREATE TABLE `CoreCmsArticleType`  (
   `parentId` int(11) NOT NULL COMMENT '父id',
   `sort` int(11) NOT NULL COMMENT '排序 ',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文章分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文章分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsArticleType
@@ -3912,10 +3912,10 @@ CREATE TABLE `CoreCmsBillAftersales`  (
   `status` int(11) NOT NULL COMMENT '状态',
   `reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '退款原因',
   `mark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '卖家备注，如果审核失败了，会显示到前端',
-  `createTime` datetime NOT NULL COMMENT '提交时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '提交时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`aftersalesId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillAftersales
@@ -3929,7 +3929,7 @@ CREATE TABLE `CoreCmsBillAftersalesImages`  (
   `aftersalesId` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '售后单id',
   `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片地址',
   `sortId` int(11) NOT NULL COMMENT '排序'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品图片关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品图片关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillAftersalesImages
@@ -3951,10 +3951,10 @@ CREATE TABLE `CoreCmsBillAftersalesItem`  (
   `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片',
   `nums` int(11) NOT NULL COMMENT '数量',
   `addon` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '货品明细序列号存储',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '售后单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '售后单明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillAftersalesItem
@@ -3977,11 +3977,11 @@ CREATE TABLE `CoreCmsBillDelivery`  (
   `shipMobile` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货电话',
   `status` int(11) NOT NULL COMMENT '状态',
   `memo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `confirmTime` datetime NULL DEFAULT NULL COMMENT '确认收货时间',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `confirmTime` datetime(0) NULL DEFAULT NULL COMMENT '确认收货时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`deliveryId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发货单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发货单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillDelivery
@@ -4004,7 +4004,7 @@ CREATE TABLE `CoreCmsBillDeliveryItem`  (
   `weight` decimal(10, 2) NOT NULL COMMENT '重量',
   `addon` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '货品明细序列号存储',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发货单详情表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发货单详情表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillDeliveryItem
@@ -4021,13 +4021,13 @@ CREATE TABLE `CoreCmsBillLading`  (
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '提货人姓名',
   `mobile` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '提货手机号',
   `clerkId` int(11) NOT NULL COMMENT '处理店员ID',
-  `pickUpTime` datetime NULL DEFAULT NULL COMMENT '提货时间',
+  `pickUpTime` datetime(0) NULL DEFAULT NULL COMMENT '提货时间',
   `status` bit(1) NOT NULL COMMENT '是否提货',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isDel` bit(1) NOT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '提货单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '提货单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillLading
@@ -4049,10 +4049,10 @@ CREATE TABLE `CoreCmsBillPayments`  (
   `parameters` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付的时候需要的参数，存的是json格式的一维数组',
   `payedMsg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付回调后的状态描述',
   `tradeNo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方平台交易流水号',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`paymentId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillPayments
@@ -4073,10 +4073,10 @@ CREATE TABLE `CoreCmsBillRefund`  (
   `tradeNo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方平台交易流水号',
   `status` int(11) NOT NULL COMMENT '状态',
   `memo` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '退款失败原因',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`refundId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退款单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退款单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillRefund
@@ -4095,10 +4095,10 @@ CREATE TABLE `CoreCmsBillReship`  (
   `logiNo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物流单号',
   `status` int(11) NOT NULL COMMENT '状态',
   `memo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`reshipId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillReship
@@ -4120,10 +4120,10 @@ CREATE TABLE `CoreCmsBillReshipItem`  (
   `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
   `nums` int(11) NOT NULL COMMENT '数量',
   `addon` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '货品明细序列号存储',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL,
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '退货单明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBillReshipItem
@@ -4139,9 +4139,9 @@ CREATE TABLE `CoreCmsBrand`  (
   `logoImageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '品牌LOGO',
   `sort` int(11) NULL DEFAULT NULL COMMENT '品牌排序',
   `isShow` bit(1) NOT NULL COMMENT '是否显示',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1028 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '品牌表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1028 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '品牌表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsBrand
@@ -4163,7 +4163,7 @@ CREATE TABLE `CoreCmsCart`  (
   `nums` int(11) NOT NULL COMMENT '货品数量',
   `type` int(11) NOT NULL COMMENT '购物车类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsCart
@@ -4178,10 +4178,10 @@ CREATE TABLE `CoreCmsClerk`  (
   `storeId` int(11) NOT NULL COMMENT '店铺ID',
   `userId` int(11) NOT NULL COMMENT '用户ID',
   `isDel` bit(1) NOT NULL COMMENT '是否删除',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '店铺店员关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '店铺店员关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsClerk
@@ -4198,13 +4198,13 @@ CREATE TABLE `CoreCmsCoupon`  (
   `isUsed` bit(1) NOT NULL COMMENT '是否使用',
   `userId` int(11) NOT NULL COMMENT '谁领取了',
   `usedId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '被谁用了',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '说明',
-  `startTime` datetime NOT NULL COMMENT '开始时间',
-  `endTime` datetime NOT NULL COMMENT '结束时间',
+  `startTime` datetime(0) NOT NULL COMMENT '开始时间',
+  `endTime` datetime(0) NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsCoupon
@@ -4227,12 +4227,12 @@ CREATE TABLE `CoreCmsDistribution`  (
   `storeBanner` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺Banner',
   `storeDesc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺简介',
   `verifyStatus` int(11) NOT NULL COMMENT '审核状态',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `verifyTime` datetime NULL DEFAULT NULL COMMENT '审核时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `verifyTime` datetime(0) NULL DEFAULT NULL COMMENT '审核时间',
   `isDelete` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsDistribution
@@ -4248,7 +4248,7 @@ CREATE TABLE `CoreCmsDistributionCondition`  (
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '升级条件编码',
   `parameters` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '其它参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商等级升级条件' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商等级升级条件' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsDistributionCondition
@@ -4266,7 +4266,7 @@ CREATE TABLE `CoreCmsDistributionGrade`  (
   `sortId` int(11) NOT NULL COMMENT '等级排序',
   `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '等级说明',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商等级设置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商等级设置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsDistributionGrade
@@ -4284,11 +4284,11 @@ CREATE TABLE `CoreCmsDistributionOrder`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '结算金额',
   `isSettlement` int(11) NOT NULL COMMENT '是否结算',
   `level` int(11) NOT NULL COMMENT '层级',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isDelete` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商订单记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分销商订单记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsDistributionOrder
@@ -4304,7 +4304,7 @@ CREATE TABLE `CoreCmsDistributionResult`  (
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '佣金编码',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '佣金设置序列化参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '等级佣金表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '等级佣金表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsDistributionResult
@@ -4331,11 +4331,11 @@ CREATE TABLE `CoreCmsForm`  (
   `times` int(11) NOT NULL COMMENT '可提交次数',
   `qrcode` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '二维码图片地址',
   `returnMsg` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '提交后提示语',
-  `endDateTime` datetime NOT NULL COMMENT '结束时间',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `endDateTime` datetime(0) NOT NULL COMMENT '结束时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '表单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '表单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsForm
@@ -4356,7 +4356,7 @@ CREATE TABLE `CoreCmsFormItem`  (
   `required` bit(1) NOT NULL COMMENT '是否必填',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '表单项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '表单项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsFormItem
@@ -4376,10 +4376,10 @@ CREATE TABLE `CoreCmsFormSubmit`  (
   `status` bit(1) NOT NULL COMMENT '是否处理',
   `feedback` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表单反馈',
   `ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '提交人ip',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户对表的提交记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户对表的提交记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsFormSubmit
@@ -4397,7 +4397,7 @@ CREATE TABLE `CoreCmsFormSubmitDetail`  (
   `formItemName` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表单项名称',
   `formItemValue` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '表单项值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '提交表单保存大文本值表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '提交表单保存大文本值表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsFormSubmitDetail
@@ -4430,19 +4430,19 @@ CREATE TABLE `CoreCmsGoods`  (
   `commentsCount` int(11) NOT NULL COMMENT '评论次数',
   `viewCount` int(11) NOT NULL COMMENT '浏览次数',
   `buyCount` int(11) NOT NULL COMMENT '购买次数',
-  `uptime` datetime NULL DEFAULT NULL COMMENT '上架时间',
-  `downtime` datetime NULL DEFAULT NULL COMMENT '下架时间',
+  `uptime` datetime(0) NULL DEFAULT NULL COMMENT '上架时间',
+  `downtime` datetime(0) NULL DEFAULT NULL COMMENT '下架时间',
   `sort` int(11) NOT NULL COMMENT '商品排序',
   `labelIds` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签id逗号分隔',
   `newSpec` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '自定义规格名称',
   `openSpec` int(11) NOT NULL COMMENT '开启规则',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `isRecommend` bit(1) NOT NULL COMMENT '是否推荐',
   `isHot` bit(1) NOT NULL COMMENT '是否热门',
   `isDel` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4158 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4158 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoods
@@ -4588,10 +4588,10 @@ CREATE TABLE `CoreCmsGoodsBrowsing`  (
   `goodsId` int(11) NOT NULL COMMENT '商品id 关联goods.id',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `goodsName` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   `isdel` bit(1) NOT NULL COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品浏览记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品浏览记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsBrowsing
@@ -4609,9 +4609,9 @@ CREATE TABLE `CoreCmsGoodsCategory`  (
   `sort` int(11) NOT NULL COMMENT '分类排序',
   `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类图片ID',
   `isShow` bit(1) NOT NULL COMMENT '是否显示',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2079 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分类' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2079 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分类' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsCategory
@@ -4658,7 +4658,7 @@ CREATE TABLE `CoreCmsGoodsCategoryExtend`  (
   `goodsId` int(11) NULL DEFAULT NULL COMMENT '商品id',
   `goodsCategroyId` int(11) NULL DEFAULT NULL COMMENT '商品分类id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5610 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分类扩展表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5610 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分类扩展表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsCategoryExtend
@@ -4734,9 +4734,9 @@ CREATE TABLE `CoreCmsGoodsCollection`  (
   `goodsId` int(11) NOT NULL COMMENT '商品id 关联goods.id',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `goodsName` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品收藏表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品收藏表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsCollection
@@ -4758,9 +4758,9 @@ CREATE TABLE `CoreCmsGoodsComment`  (
   `contentBody` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '评价内容',
   `sellerContent` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商家回复',
   `isDisplay` bit(1) NOT NULL COMMENT '前台显示',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品评价表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品评价表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsComment
@@ -4776,7 +4776,7 @@ CREATE TABLE `CoreCmsGoodsGrade`  (
   `gradeId` int(11) NOT NULL COMMENT '会员等级id',
   `gradePrice` decimal(10, 2) NOT NULL COMMENT '会员价',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品会员价表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品会员价表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsGrade
@@ -4790,7 +4790,7 @@ CREATE TABLE `CoreCmsGoodsImages`  (
   `goodsId` int(11) NOT NULL COMMENT '商品ID',
   `imageId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片ID',
   `sort` int(11) NOT NULL COMMENT '图片排序'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品图片关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品图片关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsImages
@@ -4805,10 +4805,10 @@ CREATE TABLE `CoreCmsGoodsParams`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数名称',
   `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '参数值',
   `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数类型',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品参数表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品参数表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsParams
@@ -4831,7 +4831,7 @@ CREATE TABLE `CoreCmsGoodsTypeSpec`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性名称',
   `sort` int(11) NOT NULL COMMENT '属性排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 104 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型属性表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 104 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型属性表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsTypeSpec
@@ -4914,7 +4914,7 @@ CREATE TABLE `CoreCmsGoodsTypeSpecValue`  (
   `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性值',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1699 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型属性值表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1699 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型属性值表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsGoodsTypeSpecValue
@@ -5276,9 +5276,9 @@ CREATE TABLE `CoreCmsImages`  (
   `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物理地址',
   `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储引擎',
   `isDel` bit(1) NULL DEFAULT NULL COMMENT '是否删除',
-  `createTime` datetime NULL DEFAULT NULL,
+  `createTime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '图片表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '图片表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsImages
@@ -5299,10 +5299,10 @@ CREATE TABLE `CoreCmsInvoice`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '发票金额',
   `status` int(11) NOT NULL COMMENT '开票状态',
   `remarks` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开票备注',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发票表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发票表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsInvoice
@@ -5318,7 +5318,7 @@ CREATE TABLE `CoreCmsInvoiceRecord`  (
   `code` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '发票税号',
   `frequency` int(11) NOT NULL COMMENT '被使用次数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发票信息记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '发票信息记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsInvoiceRecord
@@ -5333,7 +5333,7 @@ CREATE TABLE `CoreCmsLabel`  (
   `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签名称',
   `style` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签样式',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '标签表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '标签表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsLabel
@@ -5352,11 +5352,11 @@ CREATE TABLE `CoreCmsLoginLog`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `state` int(11) NULL DEFAULT NULL COMMENT '登录类型',
-  `logTime` datetime NULL DEFAULT NULL COMMENT '时间',
+  `logTime` datetime(0) NULL DEFAULT NULL COMMENT '时间',
   `city` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地点城市',
   `ip` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'ip地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsLoginLog
@@ -5376,7 +5376,7 @@ CREATE TABLE `CoreCmsLogistics`  (
   `sort` int(11) NOT NULL COMMENT '排序',
   `isDelete` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16050 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '物流公司表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 16050 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '物流公司表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsLogistics
@@ -6547,10 +6547,10 @@ CREATE TABLE `CoreCmsMessage`  (
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '参数',
   `contentBody` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '内容',
   `status` bit(1) NOT NULL COMMENT '是否查看',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息发送表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息发送表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsMessage
@@ -6568,7 +6568,7 @@ CREATE TABLE `CoreCmsMessageCenter`  (
   `isMessage` bit(1) NOT NULL COMMENT '启用站内消息',
   `isWxTempletMessage` bit(1) NOT NULL COMMENT '启用微信模板消息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息配置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsMessageCenter
@@ -6592,9 +6592,9 @@ CREATE TABLE `CoreCmsNotice`  (
   `type` int(11) NULL DEFAULT NULL COMMENT '公告类型',
   `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
   `isDel` bit(1) NULL DEFAULT NULL COMMENT '软删除位  有时间代表已删除',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsNotice
@@ -6615,14 +6615,14 @@ CREATE TABLE `CoreCmsOrder`  (
   `orderType` int(11) NOT NULL COMMENT '订单类型',
   `receiptType` int(11) NOT NULL COMMENT '收货方式',
   `paymentCode` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付方式代码',
-  `paymentTime` datetime NULL DEFAULT NULL COMMENT '支付时间',
+  `paymentTime` datetime(0) NULL DEFAULT NULL COMMENT '支付时间',
   `logisticsId` int(11) NOT NULL COMMENT '配送方式ID 关联ship.id',
   `logisticsName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '配送方式名称',
   `costFreight` decimal(10, 2) NOT NULL COMMENT '配送费用',
   `userId` int(11) NOT NULL COMMENT '用户ID 关联user.id',
   `sellerId` int(11) NOT NULL COMMENT '店铺ID 关联seller.id',
   `confirmStatus` int(11) NOT NULL COMMENT '售后状态',
-  `confirmTime` datetime NULL DEFAULT NULL COMMENT '确认收货时间',
+  `confirmTime` datetime(0) NULL DEFAULT NULL COMMENT '确认收货时间',
   `storeId` int(11) NOT NULL COMMENT '自提门店ID，0就是不门店自提',
   `shipAreaId` int(11) NOT NULL COMMENT '收货地区ID',
   `shipAddress` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货详细地址',
@@ -6645,10 +6645,10 @@ CREATE TABLE `CoreCmsOrder`  (
   `source` int(11) NOT NULL COMMENT '订单来源',
   `isComment` bit(1) NOT NULL COMMENT '是否评论',
   `isdel` bit(1) NOT NULL COMMENT '删除标志',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`orderId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsOrder
@@ -6677,10 +6677,10 @@ CREATE TABLE `CoreCmsOrderItem`  (
   `weight` decimal(10, 2) NOT NULL COMMENT '总重量',
   `sendNums` int(11) NOT NULL COMMENT '发货数量',
   `addon` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '货品明细序列号存储',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsOrderItem
@@ -6697,9 +6697,9 @@ CREATE TABLE `CoreCmsOrderLog`  (
   `type` int(11) NOT NULL COMMENT '类型',
   `msg` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述介绍',
   `data` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '请求的数据json',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsOrderLog
@@ -6717,7 +6717,7 @@ CREATE TABLE `CoreCmsPages`  (
   `layout` int(11) NULL DEFAULT NULL COMMENT '布局样式编码，1，手机端',
   `type` int(11) NULL DEFAULT NULL COMMENT '1手机端，2PC端',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '单页' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '单页' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPages
@@ -6737,7 +6737,7 @@ CREATE TABLE `CoreCmsPagesItems`  (
   `sort` int(11) NOT NULL COMMENT '排序，越小越靠前',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '组件配置内容',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4647 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '单页内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4647 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '单页内容' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPagesItems
@@ -6767,7 +6767,7 @@ CREATE TABLE `CoreCmsPayments`  (
   `memo` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '方式描述',
   `isEnable` bit(1) NOT NULL COMMENT '是否启用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付方式表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付方式表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPayments
@@ -6784,7 +6784,7 @@ DROP TABLE IF EXISTS `CoreCmsPinTuanGoods`;
 CREATE TABLE `CoreCmsPinTuanGoods`  (
   `ruleId` int(11) NOT NULL COMMENT '规则表序列',
   `goodsId` int(11) NOT NULL COMMENT '商品序列'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPinTuanGoods
@@ -6803,11 +6803,11 @@ CREATE TABLE `CoreCmsPinTuanRecord`  (
   `status` int(11) NOT NULL COMMENT '状态',
   `orderId` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单序列',
   `parameters` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '拼团人数Json',
-  `closeTime` datetime NOT NULL COMMENT '关闭时间',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `closeTime` datetime(0) NOT NULL COMMENT '关闭时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPinTuanRecord
@@ -6820,8 +6820,8 @@ DROP TABLE IF EXISTS `CoreCmsPinTuanRule`;
 CREATE TABLE `CoreCmsPinTuanRule`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '活动名称',
-  `startTime` datetime NOT NULL COMMENT '开始时间',
-  `endTime` datetime NOT NULL COMMENT '结束时间',
+  `startTime` datetime(0) NOT NULL COMMENT '开始时间',
+  `endTime` datetime(0) NOT NULL COMMENT '结束时间',
   `peopleNumber` int(11) NOT NULL COMMENT '人数2-10人',
   `significantInterval` int(11) NOT NULL COMMENT '单位分钟',
   `discountAmount` decimal(10, 2) NOT NULL COMMENT '优惠金额',
@@ -6829,10 +6829,10 @@ CREATE TABLE `CoreCmsPinTuanRule`  (
   `maxGoodsNums` int(11) NOT NULL COMMENT '每个商品活动数量',
   `sort` int(11) NOT NULL COMMENT '排序',
   `isStatusOpen` bit(1) NOT NULL COMMENT '是否开启',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团规则表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '拼团规则表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPinTuanRule
@@ -6859,7 +6859,7 @@ CREATE TABLE `CoreCmsProducts`  (
   `images` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '规格图片',
   `isDel` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4679 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '货品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4679 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '货品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsProducts
@@ -7416,10 +7416,10 @@ CREATE TABLE `CoreCmsProductsDistribution`  (
   `levelOne` decimal(10, 2) NOT NULL COMMENT '一级佣金',
   `levelTwo` decimal(10, 2) NOT NULL COMMENT '二级佣金',
   `levelThree` decimal(10, 2) NOT NULL COMMENT '三级佣金',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '货品三级佣金表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '货品三级佣金表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsProductsDistribution
@@ -7438,8 +7438,8 @@ CREATE TABLE `CoreCmsPromotion`  (
   `maxNums` int(11) NOT NULL COMMENT '每人限购数量',
   `maxGoodsNums` int(11) NOT NULL COMMENT '每个商品活动数量',
   `maxRecevieNums` int(11) NOT NULL COMMENT '最大领取数量',
-  `startTime` datetime NOT NULL COMMENT '开始时间',
-  `endTime` datetime NOT NULL COMMENT '结束时间',
+  `startTime` datetime(0) NOT NULL COMMENT '开始时间',
+  `endTime` datetime(0) NOT NULL COMMENT '结束时间',
   `isExclusive` bit(1) NOT NULL COMMENT '是否排他',
   `isAutoReceive` bit(1) NOT NULL COMMENT '是否自动领取',
   `isEnable` bit(1) NOT NULL COMMENT '是否开启',
@@ -7447,7 +7447,7 @@ CREATE TABLE `CoreCmsPromotion`  (
   `effectiveDays` int(11) NOT NULL COMMENT '有效天数',
   `effectiveHours` int(11) NOT NULL COMMENT '有效小时',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPromotion
@@ -7463,7 +7463,7 @@ CREATE TABLE `CoreCmsPromotionCondition`  (
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '促销条件编码',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '支付配置参数序列号存储',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销条件表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销条件表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPromotionCondition
@@ -7481,10 +7481,10 @@ CREATE TABLE `CoreCmsPromotionRecord`  (
   `productId` int(11) NOT NULL COMMENT '货品id',
   `orderId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单id',
   `type` int(11) NOT NULL COMMENT '3团购/4秒杀',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NOT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销活动记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销活动记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPromotionRecord
@@ -7500,7 +7500,7 @@ CREATE TABLE `CoreCmsPromotionResult`  (
   `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '促销条件编码',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '支付配置参数序列号存储',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销结果表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '促销结果表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsPromotionResult
@@ -7518,7 +7518,7 @@ CREATE TABLE `CoreCmsServiceDescription`  (
   `isShow` bit(1) NOT NULL COMMENT '是否展示',
   `sortId` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城服务说明' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城服务说明' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsServiceDescription
@@ -7547,17 +7547,17 @@ CREATE TABLE `CoreCmsServices`  (
   `status` int(11) NOT NULL COMMENT '项目状态',
   `maxBuyNumber` int(11) NOT NULL COMMENT '项目重复购买次数',
   `amount` int(11) NOT NULL COMMENT '项目可销售数量',
-  `startTime` datetime NOT NULL COMMENT '项目开始时间',
-  `endTime` datetime NOT NULL COMMENT '项目截止时间',
+  `startTime` datetime(0) NOT NULL COMMENT '项目开始时间',
+  `endTime` datetime(0) NOT NULL COMMENT '项目截止时间',
   `validityType` int(11) NOT NULL COMMENT '核销有效期类型',
-  `validityStartTime` datetime NULL DEFAULT NULL COMMENT '核销开始时间',
-  `validityEndTime` datetime NULL DEFAULT NULL COMMENT '核销结束时间',
+  `validityStartTime` datetime(0) NULL DEFAULT NULL COMMENT '核销开始时间',
+  `validityEndTime` datetime(0) NULL DEFAULT NULL COMMENT '核销结束时间',
   `ticketNumber` int(11) NOT NULL COMMENT '核销服务券数量',
-  `createTime` datetime NOT NULL COMMENT '项目创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '项目更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '项目创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '项目更新时间',
   `money` decimal(10, 2) NOT NULL COMMENT '售价',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务项目表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务项目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsServices
@@ -7571,7 +7571,7 @@ CREATE TABLE `CoreCmsSetting`  (
   `sKey` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '键',
   `sValue` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '值',
   PRIMARY KEY (`sKey`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '店铺设置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '店铺设置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsSetting
@@ -7601,7 +7601,7 @@ CREATE TABLE `CoreCmsShip`  (
   `areaFee` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '地区配送费用',
   `goodsMoney` decimal(10, 2) NOT NULL COMMENT '商品总额满多少免运费',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1014 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '配送方式表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1014 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '配送方式表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsShip
@@ -7621,9 +7621,9 @@ CREATE TABLE `CoreCmsSms`  (
   `contentBody` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
   `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ip',
   `isUsed` bit(1) NOT NULL COMMENT '是否使用',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '短信发送日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '短信发送日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsSms
@@ -7638,9 +7638,9 @@ CREATE TABLE `CoreCmsStock`  (
   `type` int(11) NOT NULL COMMENT '操作类型',
   `manager` int(11) NOT NULL COMMENT '操作员',
   `memo` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '库存操作表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '库存操作表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsStock
@@ -7661,7 +7661,7 @@ CREATE TABLE `CoreCmsStockLog`  (
   `goodsName` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
   `spesDesc` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '货品明细序列号存储',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '库存操作详情表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '库存操作详情表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsStockLog
@@ -7683,11 +7683,11 @@ CREATE TABLE `CoreCmsStore`  (
   `latitude` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '纬度',
   `longitude` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '经度',
   `isDefault` bit(1) NOT NULL COMMENT '是否默认',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `distance` decimal(10, 2) NOT NULL COMMENT '距离',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1009 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1009 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsStore
@@ -7705,20 +7705,20 @@ CREATE TABLE `CoreCmsUser`  (
   `passWord` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
   `mobile` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
   `sex` int(11) NOT NULL COMMENT '性别[1男2女3未知]',
-  `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
+  `birthday` datetime(0) NULL DEFAULT NULL COMMENT '生日',
   `avatarImage` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
   `nickName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
   `balance` decimal(10, 2) NOT NULL COMMENT '余额',
   `point` int(11) NOT NULL COMMENT '积分',
   `grade` int(11) NOT NULL COMMENT '用户等级',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updataTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updataTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `status` int(11) NOT NULL COMMENT '状态[1正常2停用]',
   `parentId` int(11) NOT NULL COMMENT '推荐人',
   `userWx` int(11) NOT NULL COMMENT '关联三方账户',
   `isDelete` bit(1) NOT NULL COMMENT '删除标志 有数据就是删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUser
@@ -7736,9 +7736,9 @@ CREATE TABLE `CoreCmsUserBalance`  (
   `balance` decimal(10, 2) NOT NULL COMMENT '余额',
   `sourceId` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '资源id',
   `memo` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户余额表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户余额表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserBalance
@@ -7759,10 +7759,10 @@ CREATE TABLE `CoreCmsUserBankCard`  (
   `cardNumber` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '卡号',
   `cardType` int(11) NOT NULL COMMENT '银行卡类型',
   `isdefault` bit(1) NOT NULL COMMENT '默认卡',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '银行卡信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '银行卡信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserBankCard
@@ -7777,7 +7777,7 @@ CREATE TABLE `CoreCmsUserGrade`  (
   `title` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题',
   `isDefault` bit(1) NOT NULL COMMENT '是否默认',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1009 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户等级表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1009 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户等级表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserGrade
@@ -7798,9 +7798,9 @@ CREATE TABLE `CoreCmsUserLog`  (
   `state` int(11) NULL DEFAULT NULL COMMENT '状态',
   `parameters` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
   `ip` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'ip地址',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserLog
@@ -7817,9 +7817,9 @@ CREATE TABLE `CoreCmsUserPointLog`  (
   `num` int(11) NOT NULL COMMENT '积分数量',
   `balance` int(11) NOT NULL COMMENT '积分余额',
   `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserPointLog
@@ -7835,13 +7835,13 @@ CREATE TABLE `CoreCmsUserServicesOrder`  (
   `userId` int(11) NOT NULL COMMENT '关联用户',
   `servicesId` int(11) NOT NULL COMMENT '关联服务',
   `isPay` bit(1) NOT NULL COMMENT '是否支付',
-  `payTime` datetime NULL DEFAULT NULL COMMENT '支付时间',
+  `payTime` datetime(0) NULL DEFAULT NULL COMMENT '支付时间',
   `paymentId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付单号',
   `status` int(11) NOT NULL COMMENT '状态',
-  `createTime` datetime NOT NULL COMMENT '订单创建时间',
-  `servicesEndTime` datetime NULL DEFAULT NULL COMMENT '截止服务时间',
+  `createTime` datetime(0) NOT NULL COMMENT '订单创建时间',
+  `servicesEndTime` datetime(0) NULL DEFAULT NULL COMMENT '截止服务时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务购买表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务购买表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserServicesOrder
@@ -7860,13 +7860,13 @@ CREATE TABLE `CoreCmsUserServicesTicket`  (
   `userId` int(11) NOT NULL COMMENT '关联用户id',
   `status` int(11) NOT NULL COMMENT '状态',
   `validityType` int(11) NOT NULL COMMENT '核销有效期类型',
-  `validityStartTime` datetime NULL DEFAULT NULL COMMENT '核销开始时间',
-  `validityEndTime` datetime NULL DEFAULT NULL COMMENT '核销结束时间',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `validityStartTime` datetime(0) NULL DEFAULT NULL COMMENT '核销开始时间',
+  `validityEndTime` datetime(0) NULL DEFAULT NULL COMMENT '核销结束时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   `isVerification` bit(1) NOT NULL COMMENT '是否核销',
-  `verificationTime` datetime NULL DEFAULT NULL COMMENT '核销时间',
+  `verificationTime` datetime(0) NULL DEFAULT NULL COMMENT '核销时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务消费券' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务消费券' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserServicesTicket
@@ -7883,10 +7883,10 @@ CREATE TABLE `CoreCmsUserServicesTicketVerificationLog`  (
   `verificationUserId` int(11) NOT NULL COMMENT '核验人',
   `ticketId` int(11) NOT NULL COMMENT '服务券序列',
   `ticketRedeemCode` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '核验码',
-  `verificationTime` datetime NOT NULL COMMENT '核验时间',
+  `verificationTime` datetime(0) NOT NULL COMMENT '核验时间',
   `isDel` bit(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务券核验日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务券核验日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserServicesTicketVerificationLog
@@ -7904,10 +7904,10 @@ CREATE TABLE `CoreCmsUserShip`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人姓名',
   `mobile` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货电话',
   `isDefault` bit(1) NOT NULL COMMENT '是否默认',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户地址表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户地址表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserShip
@@ -7929,10 +7929,10 @@ CREATE TABLE `CoreCmsUserTocash`  (
   `cardNumber` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '卡号',
   `withdrawals` decimal(10, 2) NOT NULL COMMENT '提现服务费',
   `status` int(11) NOT NULL COMMENT '提现状态',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户提现记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户提现记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserTocash
@@ -7946,9 +7946,9 @@ CREATE TABLE `CoreCmsUserToken`  (
   `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `userId` int(11) NOT NULL COMMENT '用户序列',
   `platform` smallint(6) NOT NULL COMMENT '平台类型，1就是默认，2就是微信小程序',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`token`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户token' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户token' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserToken
@@ -7974,10 +7974,10 @@ CREATE TABLE `CoreCmsUserWeChatInfo`  (
   `country` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '国家',
   `countryCode` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码国家编码',
   `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserWeChatInfo
@@ -7993,7 +7993,7 @@ CREATE TABLE `CoreCmsUserWeChatMsgSubscription`  (
   `userId` int(11) NOT NULL COMMENT '用户Id',
   `type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订阅类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信订阅消息存储表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信订阅消息存储表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserWeChatMsgSubscription
@@ -8008,7 +8008,7 @@ CREATE TABLE `CoreCmsUserWeChatMsgSubscriptionSwitch`  (
   `userId` int(11) NOT NULL COMMENT '用户Id',
   `isSwitch` bit(1) NOT NULL COMMENT '是否关闭',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户订阅提醒状态' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户订阅提醒状态' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserWeChatMsgSubscriptionSwitch
@@ -8031,7 +8031,7 @@ CREATE TABLE `CoreCmsUserWeChatMsgTemplate`  (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `sortId` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信小程序消息模板' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信小程序消息模板' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsUserWeChatMsgTemplate
@@ -8068,10 +8068,10 @@ CREATE TABLE `CoreCmsWeixinAuthor`  (
   `bindType` int(11) NULL DEFAULT NULL COMMENT '绑定类型，1为第三方授权绑定，2为自助绑定',
   `authorType` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权类型，默认b2c',
   `expiresIn` int(11) NULL DEFAULT NULL COMMENT '绑定授权到期时间',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '小程序授权时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '小程序更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '小程序授权时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '小程序更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '获取授权方的帐号基本信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '获取授权方的帐号基本信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsWeixinAuthor
@@ -8089,10 +8089,10 @@ CREATE TABLE `CoreCmsWeixinMediaMessage`  (
   `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '封面',
   `contentBody` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '文章详情',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '原文地址',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信图文消息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信图文消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsWeixinMediaMessage
@@ -8110,7 +8110,7 @@ CREATE TABLE `CoreCmsWeixinMenu`  (
   `type` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单类型',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信公众号菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信公众号菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsWeixinMenu
@@ -8128,10 +8128,10 @@ CREATE TABLE `CoreCmsWeixinMessage`  (
   `isAttention` bit(1) NULL DEFAULT NULL COMMENT '是否关注回复',
   `isDefault` bit(1) NULL DEFAULT NULL COMMENT '是否默认回复',
   `isEnable` bit(1) NULL DEFAULT NULL COMMENT '是否启用',
-  `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信消息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of CoreCmsWeixinMessage
@@ -8148,10 +8148,10 @@ CREATE TABLE `SysDictionary`  (
   `comments` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `sortNumber` int(11) NOT NULL COMMENT '排序号',
   `deleted` bit(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysDictionary
@@ -8172,10 +8172,10 @@ CREATE TABLE `SysDictionaryData`  (
   `comments` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `sortNumber` int(11) NOT NULL COMMENT '排序号',
   `deleted` bit(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysDictionaryData
@@ -8205,10 +8205,10 @@ CREATE TABLE `SysLoginRecord`  (
   `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'ip地址',
   `operType` int(11) NOT NULL COMMENT '操作类型',
   `comments` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `createTime` datetime NOT NULL COMMENT '登录时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '登录时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysLoginRecord
@@ -8235,8 +8235,8 @@ CREATE TABLE `SysMenu`  (
   `iconColor` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单图标颜色',
   `hide` tinyint(1) NOT NULL COMMENT '是否隐藏,0否,1是',
   `deleted` tinyint(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updateTime` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `updateTime` timestamp(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1269 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -8381,8 +8381,6 @@ INSERT INTO `SysMenu` VALUES (660, 630, 'agentGoods', '代理商品池', '', 'ag
 INSERT INTO `SysMenu` VALUES (661, 126, 'message', '消息配置', 'layui-icon-email', '', NULL, 0, 110, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
 INSERT INTO `SysMenu` VALUES (662, 661, 'smssetting', '短信设置', '', 'shop/message/smssetting/index', NULL, 0, 40, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
 INSERT INTO `SysMenu` VALUES (669, 717, 'customform', '自定义表单', 'layui-icon-form', '', NULL, 0, 3, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
-INSERT INTO `SysMenu` VALUES (670, 77, 'solitaire', '接龙', '', '', NULL, 0, 30, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
-INSERT INTO `SysMenu` VALUES (671, 670, 'solitaires', '接龙列表', '', 'promotion/solitaire/solitaires/index', NULL, 0, 1, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
 INSERT INTO `SysMenu` VALUES (717, 0, 'content', '运营管理', 'layui-icon-chart-screen', '', NULL, 0, 85, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
 INSERT INTO `SysMenu` VALUES (719, 47, 'wechatuserinfo', '微信用户列表', '', 'user/wechatuserinfo/index', NULL, 0, 1, '', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
 INSERT INTO `SysMenu` VALUES (724, 42, 'GetPageList', '获取列表', NULL, NULL, NULL, 1, 0, 'SysUser:GetPageList', NULL, NULL, 0, 0, '2021-10-14 22:18:26', NULL);
@@ -8934,7 +8932,7 @@ INSERT INTO `SysMenu` VALUES (1268, 50, 'DoBatchDelete', '批量删除', NULL, N
 DROP TABLE IF EXISTS `SysNLogRecords`;
 CREATE TABLE `SysNLogRecords`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
-  `LogDate` datetime NULL DEFAULT NULL COMMENT '时间',
+  `LogDate` datetime(0) NULL DEFAULT NULL COMMENT '时间',
   `LogLevel` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '级别',
   `LogType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '事件日志上下文',
   `LogTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '事件标题',
@@ -8949,7 +8947,7 @@ CREATE TABLE `SysNLogRecords`  (
   `NetUserAuthtype` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权类型',
   `NetUserIdentity` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份认证',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Nlog记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Nlog记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysNLogRecords
@@ -8977,9 +8975,9 @@ CREATE TABLE `SysOperRecord`  (
   `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'ip地址',
   `spendTime` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '请求耗时,单位毫秒',
   `state` int(11) NOT NULL COMMENT '状态,0成功,1异常',
-  `createTime` datetime NOT NULL COMMENT '登录时间',
+  `createTime` datetime(0) NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysOperRecord
@@ -8999,10 +8997,10 @@ CREATE TABLE `SysOrganization`  (
   `sortNumber` int(11) NOT NULL COMMENT '排序号',
   `comments` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `deleted` bit(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '组织机构表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '组织机构表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysOrganization
@@ -9026,8 +9024,8 @@ CREATE TABLE `SysRole`  (
   `roleCode` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色标识',
   `comments` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `deleted` tinyint(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updateTime` timestamp NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `updateTime` timestamp(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -9047,8 +9045,8 @@ CREATE TABLE `SysRoleMenu`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roleId` int(11) NOT NULL,
   `menuId` int(11) NOT NULL,
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updateTime` timestamp NULL DEFAULT NULL,
+  `createTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `updateTime` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17449 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -9790,11 +9788,11 @@ DROP TABLE IF EXISTS `SysTaskLog`;
 CREATE TABLE `SysTaskLog`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序列',
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务名称',
-  `createTime` datetime NOT NULL COMMENT '完成时间',
+  `createTime` datetime(0) NOT NULL COMMENT '完成时间',
   `isSuccess` bit(1) NOT NULL COMMENT '是否完成',
   `parameters` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '其他数据',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysTaskLog
@@ -9816,15 +9814,15 @@ CREATE TABLE `SysUser`  (
   `emailVerified` bit(1) NOT NULL COMMENT '邮箱是否验证',
   `trueName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
   `idCard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `birthday` datetime NULL DEFAULT NULL COMMENT '出生日期',
+  `birthday` datetime(0) NULL DEFAULT NULL COMMENT '出生日期',
   `introduction` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个人简介',
   `organizationId` int(11) NULL DEFAULT NULL COMMENT '机构id',
   `state` int(11) NOT NULL COMMENT '状态,0正常,1冻结',
   `deleted` bit(1) NOT NULL COMMENT '是否删除,0否,1是',
-  `createTime` datetime NOT NULL COMMENT '注册时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '注册时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysUser
@@ -9839,10 +9837,10 @@ CREATE TABLE `SysUserRole`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `roleId` int(11) NOT NULL COMMENT '角色id',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `createTime` datetime(0) NOT NULL COMMENT '创建时间',
+  `updateTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of SysUserRole
@@ -9871,7 +9869,7 @@ CREATE TABLE `WeChatAccessToken`  (
   `updateTimestamp` bigint(8) NOT NULL COMMENT '更新时间',
   `createTimestamp` bigint(8) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信授权交互' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信授权交互' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of WeChatAccessToken

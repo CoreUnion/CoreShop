@@ -8235,8 +8235,6 @@ insert  into `SysMenu`(`id`,`parentId`,`identificationCode`,`menuName`,`menuIcon
 (661,126,'message','消息配置','layui-icon-email','',NULL,0,110,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
 (662,661,'smssetting','短信设置','','shop/message/smssetting/index',NULL,0,40,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
 (669,717,'customform','自定义表单','layui-icon-form','',NULL,0,3,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
-(670,77,'solitaire','接龙','','',NULL,0,30,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
-(671,670,'solitaires','接龙列表','','promotion/solitaire/solitaires/index',NULL,0,1,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
 (717,0,'content','运营管理','layui-icon-chart-screen','',NULL,0,85,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
 (719,47,'wechatuserinfo','微信用户列表','','user/wechatuserinfo/index',NULL,0,1,'',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
 (724,42,'GetPageList','获取列表',NULL,NULL,NULL,1,0,'SysUser:GetPageList',NULL,NULL,0,0,'2021-10-14 22:18:26',NULL),
