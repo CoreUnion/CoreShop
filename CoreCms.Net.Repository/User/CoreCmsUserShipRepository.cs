@@ -85,7 +85,7 @@ namespace CoreCms.Net.Repository
             }
 
             //事物处理过程结束
-            var bl = await DbClient.Updateable(entity).ExecuteCommandHasChangeAsync();
+            var bl = await DbClient.Updateable(oldModel).ExecuteCommandHasChangeAsync();
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
