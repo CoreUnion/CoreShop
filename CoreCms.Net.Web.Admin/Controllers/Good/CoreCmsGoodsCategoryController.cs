@@ -220,7 +220,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             oldModel.createTime = entity.createTime;
 
             //事物处理过程结束
-            var result = await _coreCmsGoodsCategoryServices.UpdateAsync(entity);
+            var result = await _coreCmsGoodsCategoryServices.UpdateAsync(oldModel);
             var bl = result.code == 0;
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
