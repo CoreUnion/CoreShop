@@ -124,14 +124,19 @@ namespace CoreCms.Net.Model.ViewModels.DTO
         public string ladingMobile { get; set; }
 
         /// <summary>
-        ///     团队序列
+        ///     非普通订单关联营销对象序列
+        /// </summary>
+        public int objectId { get; set; } = 0;
+
+        /// <summary>
+        ///     拼团订单分组序列
         /// </summary>
         public int teamId { get; set; } = 0;
 
         /// <summary>
-        ///     团购秒杀规则序列
+        ///     场景值
         /// </summary>
-        public int groupId { get; set; } = 0;
+        public int scene { get; set; } = 0;
     }
 
     /// <summary>
@@ -221,6 +226,11 @@ namespace CoreCms.Net.Model.ViewModels.DTO
         ///     状态
         /// </summary>
         public int status { get; set; } = 0;
+
+        /// <summary>
+        ///     收货类型
+        /// </summary>
+        public int receiptType { get; set; } = 0;
 
 
         /// <summary>

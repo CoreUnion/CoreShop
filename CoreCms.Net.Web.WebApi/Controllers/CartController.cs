@@ -55,7 +55,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> AddCart([FromBody] FMCartAdd entity)
         {
-            var jm = await _cartServices.Add(_user.ID, entity.ProductId, entity.Nums, entity.type, entity.cartType, entity.teamId, entity.groupId);
+            var jm = await _cartServices.Add(_user.ID, entity.ProductId, entity.Nums, entity.type, entity.cartType, entity.objectId);
             return jm;
         }
 
@@ -75,7 +75,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             //判断免费运费
             var freeFreight = entity.receiptType != 1;
             //获取数据
-            var jm = await _cartServices.GetCartInfos(_user.ID, ids, entity.type, entity.areaId, entity.point, entity.couponCode, freeFreight, entity.receiptType, entity.groupId);
+            var jm = await _cartServices.GetCartInfos(_user.ID, ids, entity.type, entity.areaId, entity.point, entity.couponCode, freeFreight, entity.receiptType, entity.objectId);
 
             return jm;
         }

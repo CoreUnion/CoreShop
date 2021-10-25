@@ -189,13 +189,14 @@ namespace CoreCms.Net.Services
         /// <param name="point">积分</param>
         /// <param name="couponCode">优惠券码</param>
         /// <param name="source">来源平台</param>
+        /// <param name="scene">场景值（一般小程序才有）</param>
         /// <param name="taxType">发票信息</param>
         /// <param name="taxName">发票抬头</param>
         /// <param name="taxCode">发票税务编码</param>
-        /// <param name="teamId">团队序列</param>
-        /// <param name="groupId">团购秒杀序列</param>
+        /// <param name="objectId">关联非普通订单营销功能的序列</param>
+        /// <param name="teamId">拼团订单分组序列</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> ToAdd(int userId, int orderType, string cartIds, int receiptType, int ushipId, int storeId, string ladingName, string ladingMobile, string memo, int point, string couponCode, int source, int taxType, string taxName, string taxCode, int teamId, int groupId)
+        public async Task<WebApiCallBack> ToAdd(int userId, int orderType, string cartIds, int receiptType, int ushipId, int storeId, string ladingName, string ladingMobile, string memo, int point, string couponCode, int source, int scene, int taxType, string taxName, string taxCode, int objectId, int teamId)
         {
             var jm = new WebApiCallBack() { methodDescription = "创建订单" };
 
@@ -206,7 +207,8 @@ namespace CoreCms.Net.Services
                 orderType = orderType,
                 point = point,
                 coupon = couponCode,
-                receiptType = receiptType
+                receiptType = receiptType,
+                objectId = objectId
             };
 
             //生成收货信息
@@ -224,7 +226,7 @@ namespace CoreCms.Net.Services
             //通过购物车生成订单信息和订单明细信息
             List<CoreCmsOrderItem> orderItems;
             var ids = CommonHelper.StringToIntArray(cartIds);
-            var orderRes = await FormatOrder(order, userId, ids, areaId, point, couponCode, false, receiptType, groupId);
+            var orderRes = await FormatOrder(order, userId, ids, areaId, point, couponCode, false, receiptType, objectId);
             if (!orderRes.status)
             {
                 return orderRes;
@@ -308,21 +310,21 @@ namespace CoreCms.Net.Services
                             return pinTuanRes;
                         }
                         break;
-                    case (int)GlobalEnumVars.OrderType.GROUP:
-                        var groupRes = await _promotionRecordServices.OrderAdd(order, orderItems, groupId, orderType);
+                    case (int)GlobalEnumVars.OrderType.Group:
+                        var groupRes = await _promotionRecordServices.OrderAdd(order, orderItems, objectId, orderType);
                         if (groupRes.status == false)
                         {
                             return groupRes;
                         }
                         break;
-                    case (int)GlobalEnumVars.OrderType.SKILL:
-                        var rskillRes = await _promotionRecordServices.OrderAdd(order, orderItems, groupId, orderType);
+                    case (int)GlobalEnumVars.OrderType.Skill:
+                        var rskillRes = await _promotionRecordServices.OrderAdd(order, orderItems, objectId, orderType);
                         if (rskillRes.status == false)
                         {
                             return rskillRes;
                         }
                         break;
-                    case (int)GlobalEnumVars.OrderType.BARGAIN:
+                    case (int)GlobalEnumVars.OrderType.Bargain:
                         //砍价模式
 
                         break;
@@ -387,6 +389,7 @@ namespace CoreCms.Net.Services
             //发送消息
             //推送消息
             await _messageCenterServices.SendMessage(order.userId, GlobalEnumVars.PlatformMessageTypes.CreateOrder.ToString(), JObject.FromObject(order));
+
 
             jm.status = true;
             jm.data = order;

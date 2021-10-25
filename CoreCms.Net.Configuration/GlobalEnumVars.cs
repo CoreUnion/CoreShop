@@ -560,22 +560,33 @@ namespace CoreCms.Net.Configuration
             /// 团购
             /// </summary>
             [Description("团购")]
-            GROUP = 3,
+            Group = 3,
             /// <summary>
             /// 秒杀
             /// </summary>
             [Description("秒杀")]
-            SKILL = 4,
+            Skill = 4,
             /// <summary>
             /// 砍价
             /// </summary>
             [Description("砍价")]
-            BARGAIN = 6,
+            Bargain = 6,
             /// <summary>
             /// 赠品
             /// </summary>
             [Description("赠品")]
-            GIVEAWAY = 7,
+            Giveaway = 7,
+            /// <summary>
+            /// 接龙
+            /// </summary>
+            [Description("接龙")]
+            Solitaire = 8,
+            /// <summary>
+            /// 微信交易组件
+            /// </summary>
+            [Description("微信交易组件")]
+            TransactionComponent = 10,
+
         }
         /// <summary>
         /// 发货单状态

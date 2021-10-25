@@ -60,5 +60,15 @@ namespace CoreCms.Net.Model.Entities
         [SugarColumn(ColumnDescription = "购物车类型")]
         [Required(ErrorMessage = "请输入{0}")]
         public System.Int32 type { get; set; }
+
+
+
+        /// <summary>
+        ///     关联对象序列
+        /// </summary>
+        [Display(Name = "关联对象序列")]
+        [Required(ErrorMessage = "请输入{0}")]
+        public int objectId { get; set; }
+
     }
 }

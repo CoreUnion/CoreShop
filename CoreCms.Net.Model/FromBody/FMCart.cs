@@ -40,18 +40,10 @@ namespace CoreCms.Net.Model.FromBody
         /// </summary>
         public int cartType { get; set; } = 1;
 
-
         /// <summary>
-        /// 如果是拼团，是否带团队id
+        /// 非普通货品，关联对象序列
         /// </summary>
-        public int teamId { get; set; } = 0;
-
-        /// <summary>
-        /// 如果是团购秒杀，是否带团购秒杀规则id
-        /// </summary>
-        public int groupId { get; set; } = 0;
-
-
+        public int objectId { get; set; } = 0;
     }
 
     /// <summary>
@@ -96,9 +88,9 @@ namespace CoreCms.Net.Model.FromBody
 
 
         /// <summary>
-        /// 如果是团购秒杀，是否带团购秒杀规则id
+        /// 关联非普通订单对象序列
         /// </summary>
-        public int groupId { get; set; } = 0;
+        public int objectId { get; set; } = 0;
 
 
     }

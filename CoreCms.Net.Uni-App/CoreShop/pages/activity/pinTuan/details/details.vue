@@ -1,11 +1,9 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <view class="coreshop-full-screen-nav-back">
-            <view class="back-btn" @click="toBackBtn()">
-                <u-icon name="arrow-left" size="40" top="12"></u-icon>
-            </view>
-        </view>
+        <u-navbar :is-back="false" :background="background" title="拼团详情" title-color="#fff">
+            <coreshopNavbarSlot titleColor="#fff" backgroundColor="#e03997" leftIconColor="#fff" :leftIconSize="33"></coreshopNavbarSlot>
+        </u-navbar>
         <!--幻灯片-->
         <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
@@ -511,7 +509,7 @@
 <script>
     import { mapMutations, mapActions, mapState } from 'vuex';
     import coreshopFab from '@/components/coreshop-fab/coreshop-fab.vue';
-
+    import coreshopNavbarSlot from '@/components/coreshop-navbar-slot/coreshop-navbar-slot.vue';
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
     import spec from '@/components/coreshop-spec/coreshop-spec.vue';
     // #ifdef H5
@@ -533,6 +531,7 @@
         mixins: [goods, articles, commonUse, tools],
         components: {
             coreshopFab,
+            coreshopNavbarSlot,
             spec,
             // #ifdef H5
             shareByH5,
@@ -552,13 +551,16 @@
         },
         data() {
             return {
+                background: {
+                    backgroundColor: '#e03997'
+                },
                 customStyle: {
                     width: '100%',
                 },
                 bannerCur: 0,
                 current: 0, // init tab位
                 goodsId: 0, // 商品id
-                groupId: 0, // 团购ID
+                pinTuanId: 0, // 团购ID
                 goodsInfo: {}, // 商品详情
                 cartNums: 0, // 购物车数量
                 product: {}, // 货品详情
@@ -568,7 +570,9 @@
                 goodsComments: [], // 商品评论信息
                 buyNum: 1, // 选定的购买数量
                 minBuyNum: 1, // 最小可购买数量
-                type: 2, // 1单独购买 2拼团
+                pinTuanType: 2, // 1单独购买 2拼团
+                type: 2,
+                cartType: 2,
                 isfav: false, // 商品是否收藏
                 //拼团列表滑动数据
                 swiperSet: {
@@ -604,7 +608,9 @@
             };
         },
         onLoad(e) {
+            console.log(e);
             this.goodsId = e.id;
+            this.pinTuanId = e.pinTuanId;
             if (e.teamId) {
                 this.teamId = e.teamId;
                 this.getTeam(this.teamId);
@@ -675,10 +681,10 @@
                 let pages = getCurrentPages();
                 let page = pages[pages.length - 1];
                 // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE
-                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
+                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.route + '?id=' + this.goodsId + '&pinTuanId=' + this.pinTuanId;
                 // #endif
                 // #ifdef MP-ALIPAY
-                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.__proto__.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
+                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.__proto__.route + '?id=' + this.goodsId + '&pinTuanId=' + this.pinTuanId;
                 // #endif
             },
             defaultSpesDesc() {
@@ -913,7 +919,9 @@
                     let data = {
                         ProductId: this.product.id,
                         Nums: this.buyNum,
-                        cartType: this.type,
+                        type: this.type,
+                        cartType: this.cartType,
+                        objectId: this.pinTuanId,
                         teamId: this.teamId
                     };
                     this.$u.api.addCart(data).then(res => {
@@ -921,9 +929,9 @@
                             this.hideModal(); // 关闭弹出层
                             let cartIds = res.data;
                             if (this.teamId == 0) {
-                                this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.type);
+                                this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.cartType + '&objectId=' + this.pinTuanId);
                             } else {
-                                this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.type + '&teamId=' + this.teamId);
+                                this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.cartType + '&objectId=' + this.pinTuanId + '&teamId=' + this.teamId);
                             }
                         } else {
                             this.hideModal(); // 关闭弹出层
@@ -1055,8 +1063,8 @@
                             this.product = this.spesClassHandle(res.data);
                             //products.price = _this.$common.moneySub(products.price,_this.discountAmount);
                             //this.pinTuanPrice = this.$common.moneySub(this.product.price, this.discountAmount);
-                            console.log("type=" + this.type);
-                            if (this.type == 2) {
+                            console.log("type=" + this.pinTuanType);
+                            if (this.pinTuanType == 2) {
                                 //拼团
                                 this.product.mktprice = this.product.price;//原价
                                 this.price = this.pinTuanPrice = this.$common.moneySub(this.product.price, this.discountAmount);
@@ -1079,13 +1087,13 @@
                 console.log("pinTuanPrice：" + this.pinTuanPrice);
                 console.log("product.price：" + this.product.price);
                 console.log("price：" + this.price);
-                this.type = type;
+                this.pinTuanType = type;
                 if (teamId) {
                     this.teamId = teamId;
                 } else {
                     this.teamId == 0;
                 }
-                if (this.type == 2) {
+                if (this.pinTuanType == 2) {
                     this.price = this.pinTuanPrice;
                 } else {
                     this.price = this.product.price;

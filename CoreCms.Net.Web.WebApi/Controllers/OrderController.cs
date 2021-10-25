@@ -145,8 +145,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             jm = await _orderServices.ToAdd(_user.ID, entity.orderType, entity.cartIds, entity.receiptType,
                 entity.ushipId, entity.storeId, entity.ladingName, entity.ladingMobile, entity.memo,
-                entity.point, entity.couponCode, entity.source, entity.taxType, entity.taxName,
-                entity.taxCode, entity.teamId, entity.groupId);
+                entity.point, entity.couponCode, entity.source, entity.scene, entity.taxType, entity.taxName,
+                entity.taxCode, entity.objectId, entity.teamId);
             jm.otherData = entity;
 
             return jm;

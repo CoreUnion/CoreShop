@@ -60,15 +60,16 @@ namespace CoreCms.Net.IServices
         /// <param name="point">积分</param>
         /// <param name="couponCode">优惠券码</param>
         /// <param name="source">来源平台</param>
+        /// <param name="scene">场景值（一般小程序才有）</param>
         /// <param name="taxType">发票信息</param>
         /// <param name="taxName">发票抬头</param>
         /// <param name="taxCode">发票税务编码</param>
-        /// <param name="teamId">团队序列</param>
-        /// <param name="groupId">团购秒杀序列</param>
+        /// <param name="objectId">关联非普通订单营销功能的序列</param>
+        /// <param name="teamId">拼团订单分组序列</param>
         /// <returns></returns>
         Task<WebApiCallBack> ToAdd(int userId, int orderType, string cartIds, int receiptType, int ushipId, int storeId,
             string ladingName, string ladingMobile, string memo, int point, string couponCode,
-            int source, int taxType, string taxName, string taxCode, int teamId, int groupId);
+            int source, int scene, int taxType, string taxName, string taxCode, int objectId, int teamId);
 
         /// <summary>
         ///     获取订单信息

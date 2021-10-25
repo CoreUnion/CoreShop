@@ -50,11 +50,9 @@ namespace CoreCms.Net.IServices
         /// <param name="nums">数量</param>
         /// <param name="numType">数量类型/1是直接增加/2是赋值</param>
         /// <param name="cartTypes">1普通购物/2拼团模式/3团购模式/4秒杀模式/6砍价模式/7赠品</param>
-        /// <param name="teamId">团队序列</param>
-        /// <param name="groupId">团购秒杀规则序列</param>
+        /// <param name="objectId">关联对象类型</param>
         /// <returns></returns>
-        Task<WebApiCallBack> Add(int userId, int productId, int nums, int numType, int cartTypes = 1, int teamId = 0,
-            int groupId = 0);
+        Task<WebApiCallBack> Add(int userId, int productId, int nums, int numType, int cartTypes = 1, int objectId = 0);
 
 
         /// <summary>
@@ -73,8 +71,10 @@ namespace CoreCms.Net.IServices
         /// <param name="userId">用户序号</param>
         /// <param name="ids">已选择货号</param>
         /// <param name="type">购物车类型/同订单类型</param>
+        /// <param name="objectId">关联非订单类型数据序列</param>
         /// <returns></returns>
-        Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1);
+        Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1, int objectId = 0);
+
 
 
         /// <summary>
@@ -88,11 +88,11 @@ namespace CoreCms.Net.IServices
         /// <param name="couponCode">优惠券码</param>
         /// <param name="freeFreight">是否免运费</param>
         /// <param name="deliveryType">关联上面的是否免运费/1=快递配送（要去算运费）生成订单记录快递方式，2=同城配送/3=门店自提（不需要计算运费）生成订单记录门店自提信息</param>
-        /// <param name="groupId">传团购或秒杀序列</param>
+        /// <param name="objectId">关联非普通订单营销类型序列</param>
         /// <returns></returns>
         Task<WebApiCallBack> GetCartInfos(int userId, int[] ids, int orderType, int areaId, int point,
             string couponCode, bool freeFreight = false,
-            int deliveryType = (int) GlobalEnumVars.OrderReceiptType.Logistics, int groupId = 0);
+            int deliveryType = (int)GlobalEnumVars.OrderReceiptType.Logistics, int objectId = 0);
 
 
         /// <summary>
