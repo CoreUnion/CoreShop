@@ -1,11 +1,9 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <view class="coreshop-full-screen-nav-back">
-            <view class="back-btn" @click="toBackBtn()">
-                <u-icon name="arrow-left" size="40" top="12"></u-icon>
-            </view>
-        </view>
+        <u-navbar :is-back="false" :background="background" title="商品详情" title-color="#fff">
+             <coreshopNavbarSlot titleColor="#fff" backgroundColor="#e54d42" leftIconColor="#fff" :leftIconSize="33"></coreshopNavbarSlot>
+        </u-navbar>
         <!--幻灯片-->
         <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
@@ -297,10 +295,10 @@
                 </view>
                 <!-- #endif -->
                 <!-- #ifdef MP-WEIXIN -->
-                <view class="action" >
-                    <button open-type="contact" bindcontact="showChat" class="noButtonStyle">
+                <view class="action">
+                   <button open-type="contact" bindcontact="showChat" class="noButtonStyle">
                         <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom"></u-icon>
-                    </button>   
+                    </button>
                 </view>
                 <!-- #endif -->
                 <view class="action"  @click="collection">
@@ -402,6 +400,7 @@
     import { mapMutations, mapActions, mapState } from 'vuex';
     import coreshopFab from '@/components/coreshop-fab/coreshop-fab.vue';
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
+    import coreshopNavbarSlot from '@/components/coreshop-navbar-slot/coreshop-navbar-slot.vue';
     import spec from '@/components/coreshop-spec/coreshop-spec.vue'
     // #ifdef H5
     import shareByH5 from '@/components/coreshop-share/shareByh5.vue'
@@ -422,6 +421,7 @@
         mixins: [goods, articles, commonUse, tools],
         components: {
             coreshopFab,
+            coreshopNavbarSlot,
             spec,
             // #ifdef H5
             shareByH5,
@@ -441,6 +441,9 @@
         },
         data() {
             return {
+                background: {
+                    backgroundColor: '#e54d42'
+                },
                 bannerCur: 0,
                 current: 0, // init tab位
                 goodsId: 0, // 商品id
@@ -454,8 +457,8 @@
                 buyNum: 1, // 选定的购买数量
                 minBuyNum: 1, // 最小可购买数量
                 type: 2, // 1加入购物车 2购买
+                cartType: 1,
                 isfav: false, // 商品是否收藏
-
                 submitStatus: false,
                 bottomModal: false,
                 modalTitle: '',
@@ -819,7 +822,8 @@
                     let data = {
                         productId: this.product.id,
                         nums: this.buyNum,
-                        type: 2 // 区分加入购物车和购买
+                        type: this.type, // 区分加入购物车和购买
+                        cartType: this.cartType // 区分加入购物车和购买
                     }
                     this.$u.api.addCart(data).then(res => {
                         this.submitStatus = false;

@@ -1,11 +1,9 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <view class="coreshop-full-screen-nav-back">
-            <view class="back-btn" @click="toBackBtn()">
-                <u-icon name="arrow-left" size="40" top="12"></u-icon>
-            </view>
-        </view>
+        <u-navbar :is-back="false" :background="background" title="秒杀详情" title-color="#fff">
+            <coreshopNavbarSlot titleColor="#fff" backgroundColor="#9c26b0" leftIconColor="#fff" :leftIconSize="33"></coreshopNavbarSlot>
+        </u-navbar>
         <!--幻灯片-->
         <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
@@ -152,19 +150,19 @@
         <view class="u-padding-10">
             <u-popup  mode="bottom" v-model="shareBox" ref="share">
                 <!-- #ifdef H5 -->
-                <shareByH5 :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByH5>
+                <shareByH5 :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType" @close="closeShare()"></shareByH5>
                 <!-- #endif -->
                 <!-- #ifdef MP-WEIXIN -->
-                <shareByWx :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByWx>
+                <shareByWx :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByWx>
                 <!-- #endif -->
                 <!-- #ifdef MP-ALIPAY -->
-                <shareByAli :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByAli>
+                <shareByAli :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByAli>
                 <!-- #endif -->
                 <!-- #ifdef MP-TOUTIAO -->
-                <shareByTt :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByTt>
+                <shareByTt :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByTt>
                 <!-- #endif -->
                 <!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
-                <shareByApp :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" @close="closeShare()"></shareByApp>
+                <shareByApp :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType" :shareType="shareType"  @close="closeShare()"></shareByApp>
                 <!-- #endif -->
             </u-popup>
         </view>
@@ -385,6 +383,7 @@
     import coreshopFab from '@/components/coreshop-fab/coreshop-fab.vue';
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
     import spec from '@/components/coreshop-spec/coreshop-spec.vue';
+    import coreshopNavbarSlot from '@/components/coreshop-navbar-slot/coreshop-navbar-slot.vue';
     // #ifdef H5
     import shareByH5 from '@/components/coreshop-share/shareByh5.vue';
     // #endif
@@ -404,6 +403,7 @@
         mixins: [goods, articles, commonUse, tools],
         components: {
             coreshopFab,
+            coreshopNavbarSlot,
             spec,
             // #ifdef H5
             shareByH5,
@@ -423,8 +423,13 @@
         },
         data() {
             return {
+                background: {
+                    backgroundColor: '#9c26b0'
+                },
                 customStyle: {
                     width: '100%',
+                    borderColor: '#9c26b0',
+                    backgroundColor: '#9c26b0',
                 },
                 bannerCur: 0,
                 current: 0, // init tab位
@@ -439,7 +444,8 @@
                 otherRecommendData: [], // 其他数据
                 buyNum: 1, // 选定的购买数量
                 minBuyNum: 1, // 最小可购买数量
-                type: 1,
+                type: 2,
+                cartType: 4,
                 isfav: false, // 商品是否收藏
                 //拼团列表滑动数据
                 swiperSet: {
@@ -455,6 +461,7 @@
                 selectType: '',
                 shareUrl: '/pages/share/jump/jump',
                 shareBox: false,
+                shareType: 10,
                 serviceDescription: {
                     commonQuestion: [],
                     delivery: [],
@@ -767,14 +774,15 @@
                     let data = {
                         ProductId: this.product.id,
                         Nums: this.buyNum,
-                        cartType: this.type,
-                        groupId: this.groupId
+                        type: this.type,
+                        cartType: this.cartType,
+                        objectId: this.groupId
                     };
                     this.$u.api.addCart(data).then(res => {
                         if (res.status) {
                             this.hideModal(); // 关闭弹出层
                             let cartIds = res.data;
-                            this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.type + '&groupId=' + this.groupId);
+                            this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.cartType + '&objectId=' + this.groupId);
 
                         } else {
                             this.$u.toast(res.msg);
@@ -858,7 +866,7 @@
                     client: 2,
                     url: "/pages/share/jump/jump",
                     type: 1,
-                    page: 9,
+                    page: this.shareType,
                     params: {
                         goodsId: this.goodsId,
                         groupId: this.groupId

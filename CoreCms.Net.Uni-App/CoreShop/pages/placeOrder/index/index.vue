@@ -223,7 +223,7 @@
             <view class="coreshop-tabbar-height" />
             <!--底部操作-->
             <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
-                <view class="u-flex u-flex-nowrap u-row-between  u-padding-left-20 u-padding-right-20  u-padding-top-20 w100">
+                <view class="u-flex u-flex-nowrap u-row-between  u-padding-20 w100">
                     <view class="coreshop-text-black coreshop-text-bold price-view">
                         <text class="u-margin-right-20">共 {{ productNums}} 件商品</text>
                         <text>合计<text class="coreshop-text-price coreshop-text-red u-font-lg u-margin-left-20"> {{ cartData.amount}}</text></text>
@@ -255,7 +255,7 @@
                     couponCode: '', // 优惠券码列表(string)多张逗号分隔
                     point: 0,// 抵扣积分额
                     type: 1,//购物车类型
-                    groupId: 0,//团购秒杀id
+                    objectId: 0,//关联对象类型
                 }, // 监听params参数信息 以重新请求接口
                 // 发票信息
                 invoice: {
@@ -288,27 +288,26 @@
                     name: '',
                     mobile: ''
                 },
-                teamId: 0, //拼团id
-                groupId: 0, //团购秒杀id
+                objectId: 0,//关联对象序列
+                teamId: 0,//拼团订单分组序列
                 submitStatus: false,
             }
         },
         components: {},
         onLoad(options) {
+            console.log(options);
             let cartIds = options.cartIds;
             if (options.orderType) {
                 this.params.orderType = options.orderType;
                 this.params.type = options.orderType;
             }
+            if (options.objectId) {
+                this.objectId = options.objectId;
+                this.params.objectId = options.objectId;
+            }
             if (options.teamId) {
                 this.teamId = options.teamId;
             }
-            //团购活动id
-            if (options.groupId) {
-                this.groupId = options.groupId;
-                this.params.groupId = options.groupId;
-            }
-
             this.params.ids = JSON.parse(cartIds)
             if (!this.params.ids) {
                 _this.$refs.uToast.show({ title: '获取失败', type: 'error', back: true })
@@ -581,8 +580,8 @@
                     couponCode: this.params.couponCode,
                     point: this.params.point,
                     receiptType: this.receiptType,
+                    objectId: this.objectId,
                     teamId: this.teamId,
-                    groupId: this.groupId,
                     orderType: this.params.orderType, //订单类型
                     scene: this.$store.state.scene //场景值（用于确定小程序是否来源直播和视频号）
                 }
@@ -651,16 +650,14 @@
                         // 创建订单成功 去支付
                         // 判断是否为0元订单,如果是0元订单直接支付成功
                         if (res.data.payStatus == '2') {
-                            this.$u.route({ type: 'redirectTo', url: '/pages/payment/result/result?order_id=' + res.data.orderId });
+                            this.$u.route({ type: 'redirectTo', url: '/pages/payment/result/result?orderId=' + res.data.orderId });
                         } else {
                             this.$u.route({ type: 'redirectTo', url: '/pages/payment/pay/pay?orderId=' + res.data.orderId + '&type=' + this.orderType });
                         }
-
                         //发起订阅
                         // #ifdef MP-WEIXIN
                         this.subscription();
                         // #endif
-
                     } else {
                         this.$u.toast(res.msg);
                     }

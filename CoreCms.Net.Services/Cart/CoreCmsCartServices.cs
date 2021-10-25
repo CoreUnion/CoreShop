@@ -159,7 +159,6 @@ namespace CoreCms.Net.Services
         #endregion
 
         #region 添加单个货品到购物车
-
         /// <summary>
         /// 添加单个货品到购物车
         /// </summary>
@@ -168,10 +167,9 @@ namespace CoreCms.Net.Services
         /// <param name="nums">数量</param>
         /// <param name="numType">数量类型/1是直接增加/2是赋值</param>
         /// <param name="cartTypes">1普通购物还是2团购秒杀3团购模式4秒杀模式6砍价模式7赠品</param>
-        /// <param name="teamId">团队序列</param>
-        /// <param name="groupId">团购秒杀规则序列</param>
+        /// <param name="objectId">关联对象类型</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> Add(int userId, int productId, int nums, int numType, int cartTypes = 1, int teamId = 0, int groupId = 0)
+        public async Task<WebApiCallBack> Add(int userId, int productId, int nums, int numType, int cartTypes = 1, int objectId = 0)
         {
             var jm = new WebApiCallBack();
 
@@ -181,7 +179,7 @@ namespace CoreCms.Net.Services
             var productsServices = container.ServiceProvider.GetService<ICoreCmsProductsServices>();
             var goodsServices = container.ServiceProvider.GetService<ICoreCmsGoodsServices>();
 
-            //获取数据
+            //获取数据 
             if (nums == 0)
             {
                 jm.msg = "请选择货品数量";
@@ -209,7 +207,7 @@ namespace CoreCms.Net.Services
             //剩余库存可购判定
             var canBuyNum = products.stock;
             //获取是否存在记录
-            var catInfo = await _dal.QueryByClauseAsync(p => p.userId == userId && p.productId == productId);
+            var catInfo = await _dal.QueryByClauseAsync(p => p.userId == userId && p.productId == productId && p.objectId == objectId);
 
             //根据购物车存储类型匹配数据
             switch (cartTypes)
@@ -220,7 +218,7 @@ namespace CoreCms.Net.Services
                 case (int)GlobalEnumVars.OrderType.PinTuan:
                     numType = (int)GlobalEnumVars.OrderType.PinTuan;
                     //拼团模式去判断是否开启拼团，是否存在
-                    var callBack = await AddCartHavePinTuan(products.id, userId, nums, teamId);
+                    var callBack = await AddCartHavePinTuan(products.id, userId, nums, objectId);
                     if (callBack.status == false)
                     {
                         return callBack;
@@ -229,14 +227,14 @@ namespace CoreCms.Net.Services
                     await _dal.DeleteAsync(p => p.type == (int)GlobalEnumVars.OrderType.PinTuan && p.userId == userId);
                     catInfo = null;
                     break;
-                case (int)GlobalEnumVars.OrderType.GROUP or (int)GlobalEnumVars.OrderType.SKILL:
+                case (int)GlobalEnumVars.OrderType.Group or (int)GlobalEnumVars.OrderType.Skill:
                     //标准模式不需要做什么判断
                     //判断商品是否做团购秒杀
-                    if (goodsServices.IsInGroup((int)products.goodsId, out var promotionsModel, groupId) == true)
+                    if (goodsServices.IsInGroup((int)products.goodsId, out var promotionsModel, objectId) == true)
                     {
                         jm.msg = "进入判断商品是否做团购秒杀";
 
-                        var typeIds = new int[] { (int)GlobalEnumVars.OrderType.GROUP, (int)GlobalEnumVars.OrderType.SKILL };
+                        var typeIds = new int[] { (int)GlobalEnumVars.OrderType.Group, (int)GlobalEnumVars.OrderType.Skill };
                         //此人的购物车中的所有购物车拼团商品都删掉，因为立即购买也是要加入购物车的，所以需要清空之前历史的加入过购物车的商品
                         await _dal.DeleteAsync(p => typeIds.Contains(p.type) && p.productId == products.id && p.userId == userId);
                         catInfo = null;
@@ -263,9 +261,11 @@ namespace CoreCms.Net.Services
 
                     }
                     break;
-                case (int)GlobalEnumVars.OrderType.BARGAIN:
+                case (int)GlobalEnumVars.OrderType.Bargain:
 
+                    break;
 
+                case (int)GlobalEnumVars.OrderType.Solitaire:
 
                     break;
                 default:
@@ -286,7 +286,8 @@ namespace CoreCms.Net.Services
                     userId = userId,
                     productId = productId,
                     nums = nums,
-                    type = cartTypes
+                    type = cartTypes,
+                    objectId = objectId
                 };
                 var outId = await _dal.InsertAsync(catInfo);
                 jm.status = outId > 0;
@@ -407,14 +408,16 @@ namespace CoreCms.Net.Services
         #endregion
 
         #region 获取购物车原始列表(未核算)
+
         /// <summary>
         /// 获取购物车原始列表(未核算)
         /// </summary>
         /// <param name="userId">用户序号</param>
         /// <param name="ids">已选择货号</param>
         /// <param name="type">购物车类型/同订单类型</param>
+        /// <param name="objectId">关联非订单类型数据序列</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1)
+        public async Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1, int objectId = 0)
         {
             var jm = new WebApiCallBack() { methodDescription = "获取购物车原始列表(未核算)" };
 
@@ -486,15 +489,18 @@ namespace CoreCms.Net.Services
                         return result;
                     }
                     break;
-                case (int)GlobalEnumVars.OrderType.GROUP:
+                case (int)GlobalEnumVars.OrderType.Group:
                     //团购模式不需要修改订单数据和商品数据
                     break;
-                case (int)GlobalEnumVars.OrderType.SKILL:
+                case (int)GlobalEnumVars.OrderType.Skill:
                     //秒杀模式不需要修改订单数据和商品数据
                     break;
-                case (int)GlobalEnumVars.OrderType.BARGAIN:
+                case (int)GlobalEnumVars.OrderType.Bargain:
                     //砍价模式
 
+                    break;
+                case (int)GlobalEnumVars.OrderType.Solitaire:
+                    //接龙模式，去获取接龙商品价格。
                     break;
 
                 default:
@@ -524,13 +530,13 @@ namespace CoreCms.Net.Services
         /// <param name="couponCode">优惠券码</param>
         /// <param name="freeFreight">是否免运费</param>
         /// <param name="deliveryType">关联上面的是否免运费/1=快递配送（要去算运费）生成订单记录快递方式  2=门店自提（不需要计算运费）生成订单记录门店自提信息</param>
-        /// <param name="groupId">传团购或秒杀序列</param>
+        /// <param name="objectId">关联非普通订单营销类型序列</param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> GetCartInfos(int userId, int[] ids, int orderType, int areaId, int point, string couponCode, bool freeFreight = false, int deliveryType = (int)GlobalEnumVars.OrderReceiptType.Logistics, int groupId = 0)
+        public async Task<WebApiCallBack> GetCartInfos(int userId, int[] ids, int orderType, int areaId, int point, string couponCode, bool freeFreight = false, int deliveryType = (int)GlobalEnumVars.OrderReceiptType.Logistics, int objectId = 0)
         {
             var jm = new WebApiCallBack() { methodDescription = "获取处理后的购物车信息" };
             var cartDto = new CartDto(); //必须初始化
-            var cartDtoData = await GetCartDtoData(userId, ids, orderType);
+            var cartDtoData = await GetCartDtoData(userId, ids, orderType, objectId);
             if (!cartDtoData.status)
             {
                 jm.msg = "1";
@@ -581,11 +587,11 @@ namespace CoreCms.Net.Services
                 jm.data = await _promotionServices.ToPromotion(cartDto);
                 jm.msg = "订单促销金额计算";
             }
-            else if ((orderType == (int)GlobalEnumVars.OrderType.GROUP || orderType == (int)GlobalEnumVars.OrderType.SKILL) && groupId > 0)
+            else if ((orderType == (int)GlobalEnumVars.OrderType.Group || orderType == (int)GlobalEnumVars.OrderType.Skill) && objectId > 0)
             {
                 //团购秒杀默认时间过期后，不可以下单
                 var dt = DateTime.Now;
-                var promotionInfo = await _promotionServices.QueryByClauseAsync(p => p.startTime < dt && p.endTime > dt && p.id == groupId);
+                var promotionInfo = await _promotionServices.QueryByClauseAsync(p => p.startTime < dt && p.endTime > dt && p.id == objectId);
 
                 var checkRes = await _promotionServices.SetPromotion(promotionInfo, cartDto);
                 if (checkRes == false)

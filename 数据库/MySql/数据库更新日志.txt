@@ -1,3 +1,6 @@
+2021-10-25
+1、【新增】数据库CoreCmsCart表增加objectId字段用于区分来源对象，CoreCmsOrder增加objectId字段，用于区域订单来源关联。
+
 2021-10-14
 1、数据库结构无变化，修复SysMenu误操作清空compoent字段的问题。
 

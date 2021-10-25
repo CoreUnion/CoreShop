@@ -1,11 +1,9 @@
 <template>
     <view>
         <u-toast ref="uToast" /><u-no-network></u-no-network>
-        <view class="coreshop-full-screen-nav-back">
-            <view class="back-btn" @click="toBackBtn()">
-                <u-icon name="arrow-left" size="40" top="12"></u-icon>
-            </view>
-        </view>
+        <u-navbar :is-back="false" :background="background" title="团购详情" title-color="#fff">
+            <coreshopNavbarSlot titleColor="#fff" backgroundColor="#f37b1d" leftIconColor="#fff" :leftIconSize="33"></coreshopNavbarSlot>
+        </u-navbar>
         <!--幻灯片-->
         <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
@@ -364,7 +362,7 @@
 				    <u-icon name="shopping-cart" :size="40"  label="购物车" :label-size="22" label-pos="bottom"></u-icon>
                 </view>
                 <view class="btn-box">
-                    <u-button type="error" :custom-style="customStyle" size="medium" @click="selectTap()" shape="circle" class="coreshop-bg-orange">立即{{ typeName || '' }}</u-button>
+                    <u-button type="error" :custom-style="customStyle" size="medium" @click="selectTap()" shape="circle">立即{{ typeName || '' }}</u-button>
                 </view>
             </view>
         </view>
@@ -380,6 +378,7 @@
     import { mapMutations, mapActions, mapState } from 'vuex';
     import coreshopFab from '@/components/coreshop-fab/coreshop-fab.vue';
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
+    import coreshopNavbarSlot from '@/components/coreshop-navbar-slot/coreshop-navbar-slot.vue';
     import spec from '@/components/coreshop-spec/coreshop-spec.vue';
     // #ifdef H5
     import shareByH5 from '@/components/coreshop-share/shareByh5.vue';
@@ -400,6 +399,7 @@
         mixins: [goods, articles, commonUse, tools],
         components: {
             coreshopFab,
+            coreshopNavbarSlot,
             spec,
             // #ifdef H5
             shareByH5,
@@ -419,8 +419,13 @@
         },
         data() {
             return {
+                background: {
+                    backgroundColor: '#f37b1d'
+                },
                 customStyle: {
                     width: '100%',
+                    borderColor:'#f37b1d',
+                    backgroundColor:'#f37b1d',
                 },
                 bannerCur: 0,
                 current: 0, // init tab位
@@ -435,7 +440,8 @@
                 otherRecommendData: [], // 其他数据
                 buyNum: 1, // 选定的购买数量
                 minBuyNum: 1, // 最小可购买数量
-                type: 1,
+                type: 2,
+                cartType: 3,
                 isfav: false, // 商品是否收藏
                 //拼团列表滑动数据
                 swiperSet: {
@@ -764,14 +770,15 @@
                     let data = {
                         ProductId: this.product.id,
                         Nums: this.buyNum,
-                        cartType: this.type,
-                        groupId: this.groupId
+                        type: this.type,
+                        cartType: this.cartType,
+                        objectId: this.groupId
                     };
                     this.$u.api.addCart(data).then(res => {
                         if (res.status) {
                             this.hideModal(); // 关闭弹出层
                             let cartIds = res.data;
-                            this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.type + '&groupId=' + this.groupId);
+                            this.$u.route('/pages/placeOrder/index/index?cartIds=' + JSON.stringify(cartIds) + '&orderType=' + this.cartType + '&objectId=' + this.groupId);
 
                         } else {
                             this.$u.toast(res.msg);
