@@ -754,7 +754,7 @@ namespace CoreCms.Net.Services
                 foreach (var item in order.refundItem)
                 {
                     item.paymentCodeName = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(item.paymentCode);
-                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillRefundType>(item.status);
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillRefundStatus>(item.status);
                 }
             }
             //发货单
