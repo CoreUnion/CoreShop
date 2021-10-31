@@ -5,7 +5,7 @@
         <view class="content">
 
             <view class="u-padding-15 u-margin-bottom-15 coreshop-bg-white u-border-bottom">
-                <u-search placeholder="请输入完整提货单号、订单号、提货手机号" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="search" @custom="search"></u-search>
+                <u-search placeholder="请输入完整手机号、订单号" v-model="key" :show-action="true" action-text="搜索" :animation="false" @search="search" @custom="search"></u-search>
             </view>
 
             <button class="floatingButton" hover-class="none" @click="Qrcode">

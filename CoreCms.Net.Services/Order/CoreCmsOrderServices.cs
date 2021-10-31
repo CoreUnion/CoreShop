@@ -1119,9 +1119,9 @@ namespace CoreCms.Net.Services
 
         #endregion
 
-        #region 获取订单列表微信小程序
+        #region 商家获取订单列表-微信小程序
         /// <summary>
-        /// 获取订单列表微信小程序
+        /// 商家获取订单列表-微信小程序
         /// </summary>
         /// <returns></returns>
         public async Task<WebApiCallBack> GetOrderPageByMerchant(string dateType, string[] date, int status = 0, int storeId = 0, int page = 1, int limit = 5)
@@ -1224,6 +1224,71 @@ namespace CoreCms.Net.Services
                 totalMoney
             };
 
+            return jm;
+        }
+
+        #endregion
+
+
+        #region 商家获取订单列表通过检索手机号码和订单号-微信小程序
+        /// <summary>
+        /// 商家获取订单列表通过检索手机号码和订单号-微信小程序
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetOrderPageByMerchantSearch(string keyword, int status = 0, int receiptType = 0, int storeId = 0, int page = 1, int limit = 5)
+        {
+            var jm = new WebApiCallBack { status = true };
+
+            var where = PredicateBuilder.True<CoreCmsOrder>();
+            @where = status > 0 ? GetReverseStatus(status) : @where.And(p => p.isdel == false);
+
+            if (storeId > 0)
+            {
+                where = where.And(p => p.storeId == storeId);
+            }
+            if (receiptType > 0)
+            {
+                where = where.And(p => p.receiptType == receiptType);
+
+            }
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                where = where.And(p =>
+                    p.shipMobile.Contains(keyword) || p.shipName.Contains(keyword) || p.orderId.Contains(keyword));
+            }
+
+            var pages = await _dal.QueryPageAsync(where, p => p.createTime, OrderByType.Desc, page, limit);
+
+            if (pages.Any())
+            {
+                foreach (var order in pages)
+                {
+                    //获取相关状态描述说明转换
+                    order.statusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderStatus>(order.status);
+                    order.payStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderPayStatus>(order.payStatus);
+                    order.shipStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderShipStatus>(order.shipStatus);
+                    order.sourceText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.Source>(order.source);
+                    order.typeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderType>(order.orderType);
+                    order.confirmStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderConfirmStatus>(order.confirmStatus);
+                    order.taxTypeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderTaxType>(order.taxType);
+                    order.paymentCodeText = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(order.paymentCode);
+                }
+            }
+
+            var totalMoney = await _dal.GetSumAsync(where, p => p.payedAmount, true);
+
+            jm.data = new
+            {
+                pages,
+                pages.TotalCount,
+                pages.PageSize,
+                pages.HasNextPage,
+                pages.HasPreviousPage,
+                pages.PageIndex,
+                pages.TotalPages,
+                totalMoney
+            };
             return jm;
         }
 
@@ -1342,8 +1407,6 @@ namespace CoreCms.Net.Services
             return jm;
         }
         #endregion
-
-
 
         #region 取消订单
         /// <summary>

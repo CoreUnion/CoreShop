@@ -186,6 +186,9 @@ const install = (Vue, vm) => {
     let getStoreById = (params = {}) => vm.$u.post('/Api/Store/GetStoreById', params, { method: 'store.getStoreByUserId', needToken: false });
     //获取门店订单列表
     let getOrderPageByMerchant = (params = {}) => vm.$u.post('/Api/Store/GetOrderPageByMerchant', params, { method: 'store.getOrderPageByMerchant', needToken: true });
+    //获取门店订单列表
+    let getOrderPageByMerchantSearch = (params = {}) => vm.$u.post('/Api/Store/GetOrderPageByMerchantSearch', params, { method: 'store.getOrderPageByMerchantSearch', needToken: true });
+
     // 判断是否开启门店自提
     let switchStore = (params = {}) => vm.$u.post('/Api/Store/GetStoreSwitch', params, { method: 'store.getstoreswitch', needToken: false });
     // 获取默认的门店
@@ -470,6 +473,7 @@ const install = (Vue, vm) => {
         getStoreByUserId,
         getStoreById,
         getOrderPageByMerchant,
+        getOrderPageByMerchantSearch,
         switchStore,
         defaultStore,
         isPoint,

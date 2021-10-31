@@ -185,9 +185,9 @@ namespace CoreCms.Net.Repository
 
         #endregion
 
-        #region 重写根据条件查询分页数据
+        #region 重写根据条件查询分页数据-带用户数据
         /// <summary>
-        ///     重写根据条件查询分页数据
+        ///     重写根据条件查询分页数据-带用户数据
         /// </summary>
         /// <param name="predicate">判断集合</param>
         /// <param name="orderByType">排序方式</param>
