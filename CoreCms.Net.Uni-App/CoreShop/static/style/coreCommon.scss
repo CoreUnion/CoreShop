@@ -784,3 +784,17 @@ page, .bg-page { background: #f7f7f7; }
         a { text-decoration: none; color: #999 !important; }
     }
 }
+
+
+/*按钮无边框样式*/
+.noButtonStyle { -webkit-appearance: none; overflow: visible; color: #606266; border-color: #c0c4cc; background-color: #ffffff; position: relative; border: 0; display: inline-flex; overflow: visible; line-height: 1; display: flex; flex-direction: row; align-items: center; justify-content: center; cursor: pointer; z-index: 1; box-sizing: border-box; transition: all 0.15s; }
+    .noButtonStyle::after { border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; }
+
+
+/*顶部自定义效果*/
+.coreshop-header-slot-wrap { display: flex; align-items: center; padding: 0 20rpx; margin-top: -10rpx;
+    .coreshop-slot-btns { background: #111727; border: 1px solid #565b6f; padding: 8rpx 24rpx; border-radius: 500rpx; display: flex; align-items: center; z-index: 10075;
+        .coreshop-slot-cut-off { margin: 0 20rpx; color: #fff; width: 1rpx; border-left: 1px solid #fff; background: #fff; height: 35rpx; }
+    }
+    .coreshop-header-title { padding: 2rpx 20rpx; }
+}
