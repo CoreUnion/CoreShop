@@ -241,6 +241,43 @@ namespace CoreCms.Net.Model.ViewModels.DTO
 
 
     /// <summary>
+    ///     搜索获取订单列表提交参数
+    /// </summary>
+    public class GetOrderPageByMerchantSearcgPost
+    {
+        /// <summary>
+        ///     查询关键词
+        /// </summary>
+        public string keyword { get; set; }
+
+        /// <summary>
+        ///     每页数量
+        /// </summary>
+        public int limit { get; set; } = 5;
+
+        /// <summary>
+        ///     页码
+        /// </summary>
+        public int page { get; set; } = 1;
+
+        /// <summary>
+        ///     状态
+        /// </summary>
+        public int status { get; set; } = 0;
+
+        /// <summary>
+        ///     收货类型
+        /// </summary>
+        public int receiptType { get; set; } = 0;
+
+        /// <summary>
+        ///     门店序列
+        /// </summary>
+        public int storeId { get; set; } = 0;
+    }
+
+
+    /// <summary>
     ///     后端订单管理列表返回实体dto
     /// </summary>
     public class OrderListUIResult

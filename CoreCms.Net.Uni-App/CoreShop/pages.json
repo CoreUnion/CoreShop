@@ -652,6 +652,13 @@
           }
         },
         {
+          "path": "merchant/search/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "订单查询"
+          }
+        },
+        {
           "path": "merchant/detail/detail",
           "style": {
             "navigationBarTextStyle": "black",

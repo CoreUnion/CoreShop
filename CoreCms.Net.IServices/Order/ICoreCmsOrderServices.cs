@@ -109,12 +109,18 @@ namespace CoreCms.Net.IServices
 
 
         /// <summary>
-        ///     获取商家管理订单列表
+        ///     商家获取订单列表
         /// </summary>
         /// <returns></returns>
         Task<WebApiCallBack> GetOrderPageByMerchant(string dateType, string[] date, int status = 0, int storeId = 0,
             int page = 1, int limit = 5);
 
+        /// <summary>
+        ///     根据搜索条件商家获取订单列表
+        /// </summary>
+        /// <returns></returns>
+        Task<WebApiCallBack> GetOrderPageByMerchantSearch(string keyword, int status = 0, int receiptType = 0, int storeId = 0,
+            int page = 1, int limit = 5);
 
 
         /// <summary>

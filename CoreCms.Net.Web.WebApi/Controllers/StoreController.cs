@@ -256,6 +256,35 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
         #endregion
 
+        #region 搜索订单
+
+        /// <summary>
+        /// 搜索订单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<WebApiCallBack> GetOrderPageByMerchantSearch([FromBody] GetOrderPageByMerchantSearcgPost entity)
+        {
+            var jm = new WebApiCallBack();
+
+            var store = await _storeServices.GetStoreByUserId(_user.ID);
+            if (store != null)
+            {
+                jm = await _orderServices.GetOrderPageByMerchantSearch(entity.keyword, entity.status, entity.receiptType, entity.storeId, entity.page, entity.limit);
+            }
+            else
+            {
+                jm.status = false;
+                jm.msg = "你不是店员";
+            }
+
+            return jm;
+        }
+
+        #endregion
+
+
         #region 店铺提货单列表
         /// <summary>
         /// 店铺提货单列表

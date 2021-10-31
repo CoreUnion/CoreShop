@@ -1,6 +1,7 @@
 ﻿<!-- 商家中心 -->
 <template>
     <view class="">
+        <u-toast ref="uToast" /><u-no-network></u-no-network>
         <view class="mask" v-if="isShowDropDown" cathctouchmove @tap.stop="onHideDropDown"></view>
         <!-- 商家信息 -->
         <view class="head-box">
@@ -34,23 +35,27 @@
         <view class="coreshop-tools-list-box">
 
             <u-grid :col="4">
-		        <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/list')">
-			        <u-icon name="order" :size="46"></u-icon>
-			        <view class="grid-text">提货单列表</view>
-		        </u-grid-item>
-		        <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/index')">
-			        <u-icon name="fingerprint" :size="46"></u-icon>
-			        <view class="grid-text">提货单核销</view>
-		        </u-grid-item>
-		        <u-grid-item @click="goRoute('/pages/member/merchant/serviceVerification/list')">
-			        <u-icon name="coupon" :size="46"></u-icon>
-			        <view class="grid-text">服务券列表</view>
-		        </u-grid-item>
+                <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/list')">
+                    <u-icon name="order" :size="46"></u-icon>
+                    <view class="grid-text">提货单列表</view>
+                </u-grid-item>
+                <u-grid-item @click="goRoute('/pages/member/merchant/takeDelivery/index')">
+                    <u-icon name="fingerprint" :size="46"></u-icon>
+                    <view class="grid-text">提货单核销</view>
+                </u-grid-item>
+                <u-grid-item @click="goRoute('/pages/member/merchant/serviceVerification/list')">
+                    <u-icon name="coupon" :size="46"></u-icon>
+                    <view class="grid-text">服务券列表</view>
+                </u-grid-item>
                 <u-grid-item @click="goRoute('/pages/member/merchant/serviceVerification/index')">
-			        <u-icon name="grid" :size="46"></u-icon>
-			        <view class="grid-text">核验服务券</view>
-		        </u-grid-item>
-	        </u-grid>
+                    <u-icon name="grid" :size="46"></u-icon>
+                    <view class="grid-text">核验服务券</view>
+                </u-grid-item>
+            </u-grid>
+        </view>
+
+        <view class="u-padding-top-10 u-padding-bottom-10 u-padding-left-15 u-padding-right-15 u-margin-top-15 u-margin-bottom-15 coreshop-bg-white" v-bind:class="coreshopdata.parameters.style">
+            <u-search placeholder="请输订单号、收货人手机号、收货人姓名" v-model="keyword" shape="square" :show-action="true" action-text="搜索" @custom="goSearch" @search="goSearch"></u-search>
         </view>
 
         <!-- 统计及切换信息 -->
@@ -84,7 +89,7 @@
         <!-- 订单列表 -->
         <view class="order-list" v-for="order in storeOrderList" :key="order.orderId" @tap.stop="goOrderDetail(order.orderId)">
             <view class="order-head u-flex u-row-between">
-                
+
                 <text class="no">
                     编号：{{ order.orderId }}
                 </text>
@@ -111,6 +116,8 @@
                                 <text class="order-price">￥{{ item.amount || 0 }}</text>
                                 <!--<button class="cu-btn status-btn" v-if="detail.status_name">{{ item.status_name }}</button>-->
                             </view>
+
+
                         </view>
                     </view>
                 </view>
@@ -177,6 +184,7 @@
         components: {},
         data() {
             return {
+                keywords: '',
                 storeId: 0,
                 storeOrderList: [], //订单商品列表
                 orderTotalCount: 0, //订单统计信息
@@ -266,11 +274,21 @@
             }
         },
         methods: {
+            goSearch() {
+                if (this.keyword) {
+                    this.$u.route('/pages/member/merchant/search/index?keyword=' + this.keyword);
+                } else {
+                    this.$refs.uToast.show({
+                        title: '请输订单号、收货人手机号、收货人姓名',
+                        type: 'warning',
+                    })
+                }
+            },
             // 选择门店
             goStoreList() {
                 this.$u.route('/pages/member/merchant/storeList/storeList');
             },
-            // 选择门店
+            // 订单详情
             goOrderDetail(id) {
                 this.$u.route({
                     url: '/pages/member/merchant/detail/detail',
