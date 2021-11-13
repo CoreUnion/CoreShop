@@ -34,7 +34,7 @@
                                             <view class="original">￥{{ item.price }}</view>
                                         </view>
                                     </view>
-                                    <button class="cu-btn buy-btn" @tap="goPinTuanDetail(item.id)">马上拼</button>
+                                    <button class="cu-btn buy-btn" @tap="goPinTuanDetail(item.id,item.pinTuanRule.id)">马上拼</button>
                                 </view>
                             </view>
                         </view>

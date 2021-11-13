@@ -265,6 +265,7 @@
                 } else {
                     _this.$u.toast('如未授权，您可尝试使用手机号+短信验证码登录');
                 }
+                _this.showLogin = false;
             },
             //实际的去登陆
             toGetPhoneNumber: function (data) {

@@ -23,7 +23,7 @@
 
 ------------------------------------------------------------------------
 
-官方网站：https://www.coreshop.cn/ 【建设中】   
+官方网站：https://www.coreshop.cn/ 
 
 QQ群：70494974
 
@@ -156,7 +156,7 @@ https://api.demo.coreshop.cn/job
 | Jwt | 授权认证 |  [![nuget](https://img.shields.io/nuget/v/IdentityModel?cacheSeconds=10800)](https://www.nuget.org/packages/IdentityModel/)  [![nuget](https://img.shields.io/nuget/dt/IdentityModel)](https://www.nuget.org/packages/IdentityModel/) |  
 | HangFire | 定时任务 |  [![nuget](https://img.shields.io/nuget/v/HangFire?cacheSeconds=10800)](https://www.nuget.org/packages/HangFire/)  [![nuget](https://img.shields.io/nuget/dt/HangFire)](https://www.nuget.org/packages/HangFire/) |  
 | Paylink  | 在线支付 |   [![nuget](https://img.shields.io/nuget/v/Essensoft.Paylink.WeChatPay?cacheSeconds=10800)](https://www.nuget.org/packages/Essensoft.Paylink.WeChatPay/)  [![nuget](https://img.shields.io/nuget/dt/Essensoft.Paylink.WeChatPay)](https://www.nuget.org/packages/Essensoft.Paylink.WeChatPay/) |  
-| SKIT.FlurlHttpClient.Wechat | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/SKIT.FlurlHttpClient.Wechat?cacheSeconds=10800)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat/)  [![nuget](https://img.shields.io/nuget/dt/SKIT.FlurlHttpClient.Wechat)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat/) |  
+| SKIT.FlurlHttpClient.Wechat | 微信SDK |   [![nuget](https://img.shields.io/nuget/v/SKIT.FlurlHttpClient.Wechat.Api?cacheSeconds=10800)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat.Api/)  [![nuget](https://img.shields.io/nuget/dt/SKIT.FlurlHttpClient.Wechat.Api)](https://www.nuget.org/packages/SKIT.FlurlHttpClient.Wechat.Api/) |  
 | LayUIAdmin | 后端管理UI框架 |  [![npm](https://img.shields.io/npm/v/layui.svg?sanitize=true)](https://www.layui.com/)  [![github](https://img.shields.io/github/stars/sentsin/layui.svg?style=social)](https://www.layui.com/) |  
 
 
@@ -207,13 +207,8 @@ https://api.demo.coreshop.cn/job
 - [ ] （可选）易联云网络打印机
 
 ### ⛵ 安装及说明文档
-- 由于文档内容较多，请加QQ群 【[70494974](https://jq.qq.com/?_wv=1027&k=y83TiQC7)】 后群附内下载多种文档，或git源代码从其目录【文档】中获取。   
+- 由于文档内容较多，请加QQ群 【[70494974](https://jq.qq.com/?_wv=1027&k=y83TiQC7)】 后群附内下载多种文档，或访问官网[https://www.coreshop.cn](https://www.coreshop.cn)在线浏览。   
 - 已经支持linux下docker-compose部署，可实现一键部署coreshop应用、mysql、redis，请获取代码中【docker-compose.yaml】文件，
-
-
-### ⚡ 进度及计划  
-- 目前虽然完成了通用商城该有的功能开发，但是因为业务逻辑层面的功能繁多，不可否认存在一些较明显的bug。
-- 近阶段我们主要工作重心放在修复Bug、完善测试、优化业务逻辑、编写文档及官网的建设。
 
 
 ### 🎏 版权须知

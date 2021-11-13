@@ -139,13 +139,13 @@ export const goods = {
             this.$u.route('/pages/activity/groupBuying/details/details', { id: id, groupId: groupId, });
         },
         //拼团详情页
-        goPinTuanDetail(id, teamId) {
+        goPinTuanDetail(id, pinTuanId, teamId) {
             console.log(id);
             console.log(teamId);
             if (teamId) {
-                this.$u.route('/pages/activity/pinTuan/details/details', { id: id, teamId: teamId, });
+                this.$u.route('/pages/activity/pinTuan/details/details', { id: id, pinTuanId: pinTuanId, teamId: teamId, });
             } else {
-                this.$u.route('/pages/activity/pinTuan/details/details', { id: id });
+                this.$u.route('/pages/activity/pinTuan/details/details', { id: id, pinTuanId: pinTuanId });
             }
         },
         // 查看秒杀列表
