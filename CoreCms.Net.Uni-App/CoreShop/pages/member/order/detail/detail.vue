@@ -181,7 +181,7 @@
                     <image class="coreshop-avatar radius" :src="item.imageUrl" mode="aspectFill"></image>
                     <view class="goods-info-view">
                         <view class="coreshop-text-black u-line-2" @click="goGoodsDetail(item.goodsId)" v-if="orderInfo.orderType == 1">{{ item.name }}</view>
-                        <view class="coreshop-text-black u-line-2" @click="goPinTuanDetail(item.goodsId)" v-else-if="orderInfo.orderType == 2">{{ item.name }}</view>
+                        <view class="coreshop-text-black u-line-2" @click="goPinTuanDetail(item.goodsId,orderInfo.objectId)" v-else-if="orderInfo.orderType == 2">{{ item.name }}</view>
                         <view class="coreshop-text-gray u-font-sm u-line-1 introduce" v-if="item.addon">{{ item.addon}}</view>
                         <view class="u-line-1 tag-view">
                             <u-tag :text="v.name" type="success" size="mini" shape="circle" v-for="(v, k) in item.promotionList" :key="k" />

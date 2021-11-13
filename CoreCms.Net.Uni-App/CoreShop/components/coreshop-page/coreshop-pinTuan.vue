@@ -9,7 +9,7 @@
                 <swiper class="carousel" circular @change="swiperChange" :autoplay="true" duration="2000">
                     <swiper-item  v-for="(goods, index) in goodsList" :key="index"  class="carousel-item">
                         <view class="goods-list-box coreshop-flex coreshop-align-center">
-                            <view class="goods-item" v-for="item in goods" :key="item.id"  @tap="goPinTuanDetail(item.goodsId)">
+                            <view class="goods-item" v-for="item in goods" :key="item.id"  @tap="goPinTuanDetail(item.goodsId,item.id)">
                                 <view class="min-goods">
                                     <view class="img-box">
                                         <view class="tag">{{item.peopleNumber}}人团</view>

@@ -335,7 +335,7 @@
                                 <text class="u-line-1 coreshop-text-black">{{item.title}}</text>
                             </view>
                             <view class="u-font-sm text-list-view">
-                                <view class="margin-left u-line-1 coreshop-text-gray">{{item.description}}</view>
+                                <view class="margin-left coreshop-text-gray">{{item.description}}</view>
                             </view>
                         </view>
                     </view>
