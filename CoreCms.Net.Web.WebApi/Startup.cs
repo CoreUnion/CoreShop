@@ -179,7 +179,7 @@ namespace CoreCms.Net.Web.WebApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // 记录请求与返回数据 (注意开启权限，不然本地无法写入)
-            app.UseReuestResponseLog();
+            app.UseRequestResponseLog();
             // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)(注意开启权限，不然本地无法写入)
             app.UseRecordAccessLogsMildd();
             // 记录ip请求 (注意开启权限，不然本地无法写入)
