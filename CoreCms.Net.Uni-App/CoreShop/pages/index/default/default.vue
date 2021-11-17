@@ -11,7 +11,7 @@
         <!--首页模块化组合组件-->
         <coreshopPage :coreshopdata="pageData"></coreshopPage>
         <!--版权组件-->
-        <copyright v-if="copy"></copyright>
+        <copyright></copyright>
         <!--客服组件-->
         <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
         <view class="floatingButton" @click="showChat()">
@@ -65,13 +65,9 @@
                 pageCode: 'mobile_home', //页面布局编码
                 //userInfo: {}, // 用户信息
                 kefupara: '', //客服传递资料
-                copy: false,
                 shareUrl: '/pages/share/jump/jump',
                 modalShow: true,
             };
-        },
-        updated() {
-            this.copy = true;
         },
         computed: {
             ...mapState({

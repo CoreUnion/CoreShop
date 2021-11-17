@@ -226,7 +226,8 @@
             </view>
 
         </view>
-
+         <!--版权组件-->
+        <copyright></copyright>
         <!-- 登录提示 -->
         <coreshop-login-modal></coreshop-login-modal>
     </view>
@@ -235,9 +236,12 @@
 <script>
     import { commonUse, articles } from '@/common/mixins/mixinsHelper.js';
     import { mapMutations, mapActions, mapState } from 'vuex';
-
+    import copyright from '@/components/coreshop-copyright/coreshop-copyright.vue';
     export default {
         mixins: [commonUse, articles],
+        components: {
+            copyright
+        },
         data() {
             return {
                 afterSaleNums: 0, //售后数量
