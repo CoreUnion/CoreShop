@@ -96,55 +96,55 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                     }
 
 
-                    var templateMessageData = new Dictionary<string, CgibinMessageSubscribeBusinessSendRequest.Types.DataItem>();
+                    var templateMessageData = new Dictionary<string, CgibinMessageSubscribeSendRequest.Types.DataItem>();
                     var pageUrl = string.Empty;
 
                     if (request.code == GlobalEnumVars.PlatformMessageTypes.CreateOrder.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["shipName"].ToString() };
-                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["shipMobile"].ToString() };
-                        templateMessageData[templateData.data05] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["shipAddress"].ToString() };
-                        pageUrl = "/pages/member/order/orderdetail?orderId=" + parameters["orderId"];
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["shipName"].ToString() };
+                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["shipMobile"].ToString() };
+                        templateMessageData[templateData.data05] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["shipAddress"].ToString() };
+                        pageUrl = "/pages/member/order/detail/detail?orderId=" + parameters["orderId"];
                     }
                     else if (request.code == GlobalEnumVars.PlatformMessageTypes.RemindOrderPay.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["createTime"].ToString() };
-                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = "订单即将失效，请及时付款！" };
-                        pageUrl = "/pages/member/order/orderdetail?orderId=" + parameters["orderId"];
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["createTime"].ToString() };
+                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = "订单即将失效，请及时付款！" };
+                        pageUrl = "/pages/member/order/detail/detail?orderId=" + parameters["orderId"];
                     }
                     else if (request.code == GlobalEnumVars.PlatformMessageTypes.OrderPayed.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["paymentTime"].ToString() };
-                        pageUrl = "/pages/member/order/orderdetail?orderId=" + parameters["orderId"];
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["paymentTime"].ToString() };
+                        pageUrl = "/pages/member/order/detail/detail?orderId=" + parameters["orderId"];
                     }
                     else if (request.code == GlobalEnumVars.PlatformMessageTypes.DeliveryNotice.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["logiName"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["logiNo"].ToString() };
-                        pageUrl = "/pages/member/order/orderdetail?orderId=" + parameters["orderId"];
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["logiName"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["logiNo"].ToString() };
+                        pageUrl = "/pages/member/order/detail/detail?orderId=" + parameters["orderId"];
                     }
                     else if (request.code == GlobalEnumVars.PlatformMessageTypes.AfterSalesPass.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["aftersalesId"].ToString() };
-                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["aftersalesStatus"].ToString() };
-                        pageUrl = "/pages/member/order/orderdetail?orderId=" + parameters["orderId"];
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["orderAmount"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["aftersalesId"].ToString() };
+                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["aftersalesStatus"].ToString() };
+                        pageUrl = "/pages/member/order/detail/detail?orderId=" + parameters["orderId"];
                     }
                     else if (request.code == GlobalEnumVars.PlatformMessageTypes.RefundSuccess.ToString())
                     {
-                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["sourceId"].ToString() };
-                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["aftersalesId"].ToString() };
-                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["money"].ToString() };
-                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["paymentCode"].ToString() };
-                        templateMessageData[templateData.data05] = new CgibinMessageSubscribeBusinessSendRequest.Types.DataItem() { Value = parameters["createTime"].ToString() };
+                        templateMessageData[templateData.data01] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["sourceId"].ToString() };
+                        templateMessageData[templateData.data02] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["aftersalesId"].ToString() };
+                        templateMessageData[templateData.data03] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["money"].ToString() };
+                        templateMessageData[templateData.data04] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["paymentCode"].ToString() };
+                        templateMessageData[templateData.data05] = new CgibinMessageSubscribeSendRequest.Types.DataItem() { Value = parameters["createTime"].ToString() };
                     }
                     var result = await Send(weChatUserInfo.openid, templateData.templateId, templateMessageData, pageUrl);
 
@@ -223,20 +223,21 @@ namespace CoreCms.Net.RedisMQ.Subscribe
         /// <param name="tmpData">发送数据</param>
         /// <param name="pageUrl">路径（如：pages/index/index）</param>
         /// <returns></returns>
-        private async Task<WebApiCallBack> Send(string openId, string templateId, Dictionary<string, CgibinMessageSubscribeBusinessSendRequest.Types.DataItem> tmpData, string pageUrl)
+        private async Task<WebApiCallBack> Send(string openId, string templateId, Dictionary<string, CgibinMessageSubscribeSendRequest.Types.DataItem> tmpData, string pageUrl)
         {
             var jm = new WebApiCallBack();
             var accessToken = WeChatCacheAccessTokenHelper.GetWxOpenAccessToken();
             var client = _weChatApiHttpClientFactory.CreateWxOpenClient();
-            var request = new CgibinMessageSubscribeBusinessSendRequest();
-            
+            var request = new CgibinMessageSubscribeSendRequest();
+
             request.AccessToken = accessToken;
-            request.Page = pageUrl;
+            request.MiniProgramPagePath = pageUrl;
             request.TemplateId = templateId;
             request.ToUserOpenId = openId;
             request.Data = tmpData;
+            request.MiniProgramState = "formal";
 
-            var response = await client.ExecuteCgibinMessageSubscribeBusinessSendAsync(request);
+            var response = await client.ExecuteCgibinMessageSubscribeSendAsync(request);
             if (response.IsSuccessful())
             {
                 jm.status = true;

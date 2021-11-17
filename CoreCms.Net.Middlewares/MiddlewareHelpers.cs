@@ -25,7 +25,7 @@ namespace CoreCms.Net.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseReuestResponseLog(this IApplicationBuilder app)
+        public static IApplicationBuilder UseRequestResponseLog(this IApplicationBuilder app)
         {
             return app.UseMiddleware<RequRespLogMildd>();
         }

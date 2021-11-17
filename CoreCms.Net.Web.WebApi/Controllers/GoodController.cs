@@ -196,7 +196,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                             className = category.name;
                         }
 
-                        var childs = await _goodsCategoryServices.QueryListByClauseAsync(p => p.parentId == category.id);
+                        var childs = await _goodsCategoryServices.QueryListByClauseAsync(p => p.parentId == catId);
                         if (childs.Any())
                         {
                             var ids = childs.Select(p => p.id).ToList();
