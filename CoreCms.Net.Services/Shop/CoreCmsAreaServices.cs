@@ -322,7 +322,7 @@ namespace CoreCms.Net.Services.Basic
         private void GetParentArea(List<CoreCmsArea> cacheAreas, int id, List<CoreCmsArea> outAreas)
         {
             //获取当前级别
-            var model = cacheAreas.First(p => p.id == id);
+            var model = cacheAreas.FirstOrDefault(p => p.id == id);
             if (model != null)
             {
                 if (outAreas.All(p => p.id != model.id)) outAreas.Add(model);
