@@ -22,7 +22,7 @@
                         <label for="commentId">评价用户</label>
                     </td>
                     <td>
-                        <a href="javascript:void(0);" onclick="layui.coreHelper.viewImage('{{ d.params.data.avatarImage || setter.noImagePicUrl }}')"><image style="max-width:60px;max-height:60px;border-radius: 30px;" src="{{d.params.data.avatarImage || setter.noImagePicUrl }}" /></a>   {{ d.params.data.nickName || '' }}  【{{ d.params.data.mobile || '' }}】
+                        <a href="javascript:void(0);" onclick="layui.coreHelper.viewImage('{{ d.params.data.avatarImage || layui.setter.noImagePicUrl }}')"><image style="max-width:60px;max-height:60px;border-radius: 30px;" src="{{d.params.data.avatarImage || layui.setter.noImagePicUrl }}" /></a>   {{ d.params.data.nickName || '' }}  【{{ d.params.data.mobile || '' }}】
 
                     </td>
                 </tr>
