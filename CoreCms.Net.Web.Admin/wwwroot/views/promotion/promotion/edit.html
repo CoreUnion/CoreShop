@@ -158,7 +158,7 @@
                                 admin.popup({
                                     shadeClose: false,
                                     title: '创建数据',
-                                    area: ['600px', '400px'],
+                                    area: ['600px', '80%'],
                                     id: 'LAY-popup-CoreCmsPromotionCondition-GetConditionCreate',
                                     success: function (layero, index) {
                                         view(this.id).render('promotion/promotion/conditioncreate', { data: e.data }).done(function () {
@@ -233,7 +233,7 @@
 
                                         });
                                         // 禁止弹窗出现滚动条
-                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                        //$(layero).children('.layui-layer-content').css('overflow', 'visible');
                                     }
                                     , btn: ['确定', '取消']
                                     , yes: function (index, layero) {
@@ -253,7 +253,7 @@
                                 admin.popup({
                                     shadeClose: false,
                                     title: '编辑数据',
-                                    area: ['600px', '400px'],
+                                    area: ['600px', '80%'],
                                     id: 'LAY-popup-CoreCmsPromotionCondition-GetConditionEdit',
                                     success: function (layero, index) {
                                         view(this.id).render('promotion/promotion/conditionedit', { data: e.data }).done(function () {
@@ -326,7 +326,7 @@
                                                 });
                                         })
                                         // 禁止弹窗出现滚动条
-                                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                        //$(layero).children('.layui-layer-content').css('overflow', 'visible');
                                     }
                                     , btn: ['确定', '取消']
                                     , yes: function (index, layero) {

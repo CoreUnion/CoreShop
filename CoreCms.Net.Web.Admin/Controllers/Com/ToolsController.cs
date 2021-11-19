@@ -1799,16 +1799,13 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
             //待支付
-            var unpaidCount = await _orderServices.GetCountAsync(p =>
-                p.status == (int)GlobalEnumVars.OrderStatus.Normal &&
-                p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No &&
-                p.shipStatus == (int)GlobalEnumVars.ShipStatus.Yes);
+            var paymentWhere = _orderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_PAYMENT);
+            var unpaidCount = await _orderServices.GetCountAsync(paymentWhere);
+
 
             //待发货
-            var unshipCount = await _orderServices.GetCountAsync(p =>
-                p.status == (int)GlobalEnumVars.OrderStatus.Normal &&
-                p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No &&
-                (p.shipStatus == (int)GlobalEnumVars.ShipStatus.Yes || p.shipStatus == (int)GlobalEnumVars.ShipStatus.No));
+            var deliveredWhere = _orderServices.GetReverseStatus((int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_DELIVERY);
+            var unshipCount = await _orderServices.GetCountAsync(deliveredWhere);
 
             //待售后
             var aftersalesCount = await _aftersalesServices.GetCountAsync(p => p.status == (int)GlobalEnumVars.BillAftersalesStatus.WaitAudit);
@@ -1829,8 +1826,6 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 aftersalesCount,
                 goodsStaticsTotalWarn
             };
-
-
 
             return jm;
         }

@@ -874,7 +874,6 @@ namespace CoreCms.Net.Repository
                         })
                         .MergeTable()
                         .OrderBy(p => p.createTime, OrderByType.Desc)
-                        .WithCache(60 * 60)
                         .ToListAsync();
             }
             else
