@@ -661,7 +661,7 @@ page, .bg-page { background: #f7f7f7; }
 /*商品页面底部浮层*/
 .coreshop-good-footer-fixed { display: flex; position: fixed; bottom: 0; margin-top: 120rpx; width: 100%; z-index: 1; border-top: solid 2rpx #f2f2f2; background-color: #ffffff;
     .tabbar { display: flex; position: relative; align-items: center; min-height: 100upx; justify-content: space-between; padding: 0; height: calc(100upx + env(safe-area-inset-bottom) / 2); padding-bottom: calc(env(safe-area-inset-bottom) / 2); width: 100%;
-        .action { display: flex; align-items: center; height: 100%; justify-content: center; max-width: 100%; color: #333333; width: 90rpx; position: relative; text-align: center;
+        .action { display: flex; align-items: center; height: 100%; justify-content: center; max-width: 100%; color: #333333; position: relative; text-align: center;
             .car-num { position: absolute; top: 10rpx; right: 15rpx; }
         }
         .btn-group { justify-content: space-around;
@@ -785,13 +785,14 @@ page, .bg-page { background: #f7f7f7; }
     }
 }
 
-
-/*按钮无边框样式*/
+/*
+按钮无边框样式*/
 .noButtonStyle { -webkit-appearance: none; overflow: visible; color: #606266; border-color: #c0c4cc; background-color: #ffffff; position: relative; border: 0; display: inline-flex; overflow: visible; line-height: 1; display: flex; flex-direction: row; align-items: center; justify-content: center; cursor: pointer; z-index: 1; box-sizing: border-box; transition: all 0.15s; }
     .noButtonStyle::after { border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; }
 
 
-/*顶部自定义效果*/
+
+/*    顶部自定义效果*/
 .coreshop-header-slot-wrap { display: flex; align-items: center; padding: 0 20rpx; margin-top: -10rpx;
     .coreshop-slot-btns { background: #111727; border: 1px solid #565b6f; padding: 8rpx 24rpx; border-radius: 500rpx; display: flex; align-items: center; z-index: 10075;
         .coreshop-slot-cut-off { margin: 0 20rpx; color: #fff; width: 1rpx; border-left: 1px solid #fff; background: #fff; height: 35rpx; }
