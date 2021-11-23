@@ -268,14 +268,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
-
-            if (userModel.passWord != CommonHelper.Md5For32(entity.oldPassword))
+            var newPassWord = CommonHelper.Md5For32(entity.oldPassword).ToLowerInvariant();
+            if (userModel.passWord.ToLowerInvariant() != newPassWord)
             {
                 jm.msg = "旧密码输入错误";
                 return jm;
             }
 
-            userModel.passWord = CommonHelper.Md5For32(entity.password);
+            userModel.passWord = newPassWord;
             var bl = await _sysUserServices.UpdateAsync(userModel);
 
             jm.code = bl ? 0 : 1;
