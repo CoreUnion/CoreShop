@@ -261,21 +261,29 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return jm;
             }
 
-            if (CommonHelper.Md5For32(entity.oldPassword) == CommonHelper.Md5For32(entity.password))
+            if (entity.password == entity.oldPassword)
             {
-                jm.msg = "新密码与旧密码相同,无需修改";
+                jm.msg = "请设置与旧密码不同的新密码";
                 return jm;
             }
 
+            var oldPassWord = CommonHelper.Md5For32(entity.oldPassword);
+            var newPassWord = CommonHelper.Md5For32(entity.password);
+
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
-            var newPassWord = CommonHelper.Md5For32(entity.oldPassword).ToLowerInvariant();
-            if (userModel.passWord.ToLowerInvariant() != newPassWord)
+            if (userModel.passWord != oldPassWord)
             {
                 jm.msg = "旧密码输入错误";
                 return jm;
             }
+            else if (userModel.passWord == newPassWord)
+            {
+                jm.msg = "新旧密码一致，无需修改，请设置与旧密码不同的新密码";
+                return jm;
+            }
 
             userModel.passWord = newPassWord;
+
             var bl = await _sysUserServices.UpdateAsync(userModel);
 
             jm.code = bl ? 0 : 1;
