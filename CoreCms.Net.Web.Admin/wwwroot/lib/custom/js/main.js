@@ -217,6 +217,82 @@ var allWidget = {
         },
     },
     {
+        "type": "goodTabBar",
+        "name": "商品选项卡",
+        "icon": "icon-shangpin",
+        "value": {
+            "isFixedHead": "true",//是否固定头部
+            "list": [
+                {
+                    "title": '选项卡名称一',
+                    "subTitle": '子标题一',
+                    "type": "auto", //auto自动获取  choose 手动选择
+                    "classifyId": '', //所选分类id
+                    "brandId": '', //所选品牌id
+                    "limit": 10,
+                    "column": 2, //分裂数量
+                    "isShow":true,
+                    "list": [
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        }
+                    ],
+                    "hasChooseGoods": [],
+                },
+                {
+                    "title": '选项卡名称二',
+                    "subTitle": '子标题二',
+                    "type": "auto", //auto自动获取  choose 手动选择
+                    "classifyId": '', //所选分类id
+                    "brandId": '', //所选品牌id
+                    "limit": 10,
+                    "column": 2, //分裂数量
+                    "isShow": true,
+                    "list": [
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        },
+                        {
+                            "image": "/static/images/common/empty-banner.png",
+                            "name": '',
+                            "price": ''
+                        }
+                    ],
+                    "hasChooseGoods": [],
+                }
+            ]
+        },
+    },
+    {
         "type": "groupPurchase",
         "name": "团购秒杀",
         "value": {
@@ -742,6 +818,9 @@ Vue.component('layout-config', {
                     case 'goods':
                         return '商品组'
                         break;
+                    case 'goodTabBar':
+                        return '商品选项卡'
+                        break;
                     case 'groupPurchase':
                         return '团购秒杀'
                         break;
@@ -1049,6 +1128,66 @@ Vue.component('layout-config', {
         handleDeleteGoods: function (index) {
             this.selectWg.value.list.splice(index, 1)
         },
+
+        //切换TabBar商品来源类型
+        changeTabBarGoodsType: function (val, key) {
+            console.log(val);
+            console.log(key);
+            if (val == 'auto') {
+                this.selectWg.value.list[key].hasChooseGoods = this.selectWg.value.list[key].list;
+                this.selectWg.value.list[key].list = this.defaultGoods
+            } else {
+                this.selectWg.value.list[key].list = this.selectWg.value.list[key].hasChooseGoods.length > 0 ? this.selectWg.value.list[key].hasChooseGoods : this.defaultGoods
+            }
+        },
+        handleDeleteTabBarGoods: function (key, index) {
+            console.log(key);
+            console.log(index);
+            this.selectWg.value.list[key].list.splice(index, 1)
+        },
+        handleRemoveTabBar: function (index) {
+            this.selectWg.value.list.splice(index, 1)
+        },
+        handleChange: function (index) {
+            console.log(index);
+        },
+        handleAddTabBarGoods: function () {
+            this.selectWg.value.list.push({
+                "title": '选项卡名称',
+                "subTitle": '子标题',
+                "type": "auto", //auto自动获取  choose 手动选择
+                "classifyId": '', //所选分类id
+                "brandId": '', //所选品牌id
+                "limit": 10,
+                "column": 2, //分裂数量
+                "isShow": false,
+                "list": [
+                    {
+                        "image": "/static/images/common/empty-banner.png",
+                        "name": '',
+                        "price": ''
+                    },
+                    {
+                        "image": "/static/images/common/empty-banner.png",
+                        "name": '',
+                        "price": ''
+                    },
+                    {
+                        "image": "/static/images/common/empty-banner.png",
+                        "name": '',
+                        "price": ''
+                    },
+                    {
+                        "image": "/static/images/common/empty-banner.png",
+                        "name": '',
+                        "price": ''
+                    }
+                ],
+                "hasChooseGoods": [],
+            })
+        },
+
+
         selectNotice: function () {
             var that = this;
             layui.use(['form', 'table'], function () {
@@ -1173,20 +1312,13 @@ Vue.component('layout-config', {
         },
         selectGoods: function () {
             var that = this;
-            var objData = {};
-            var list = that.selectWg.value.list;
-            for (var i = 0; i < list.length; i++) {
-                if (list[i].id) {
-                    objData[list[i].id] = list[i];
-                }
-            }
             layui.use(['form', 'table'], function () {
                 layui.admin.popup({
                     title: '商品列表',
                     area: ['1200px', '90%'],
                     id: 'LAY-app-CoreCmsCommon-getGoodIds',
                     success: function (layero, index) {
-                        layui.view(this.id).render('common/getGoodIds', { data: objData }).done(function () {
+                        layui.view(this.id).render('common/getGoodIds', null).done(function () {
                             layui.form.on('submit(LAY-app-CoreCmsGoods-getData)',
                                 function (data) {
                                     //判断个数是否满足
@@ -1200,6 +1332,37 @@ Vue.component('layout-config', {
                                     }
                                     that.hasChooseGoods = arr;
                                     that.$set(that.selectWg.value, 'list', arr)
+                                    console.log(arr);
+                                    layer.close(index);
+                                });
+
+                        });
+                    }
+                });
+            });
+        },
+        selectTabBarGoods: function (key) {
+            var that = this;
+            layui.use(['form', 'table'], function () {
+                layui.admin.popup({
+                    title: '商品列表',
+                    area: ['1200px', '90%'],
+                    id: 'LAY-app-CoreCmsCommon-getGoodIds',
+                    success: function (layero, index) {
+                        layui.view(this.id).render('common/getGoodIds', null).done(function () {
+                            layui.form.on('submit(LAY-app-CoreCmsGoods-getData)',
+                                function (data) {
+                                    //判断个数是否满足
+                                    if (Object.getOwnPropertyNames(ids).length > that.maxSelectGoods) {
+                                        layer.msg("最多只能选择" + that.maxSelectGoods + "个");
+                                        return false;
+                                    }
+                                    var arr = []
+                                    for (let i in ids) {
+                                        arr.push(ids[i]);
+                                    }
+                                    //that.hasChooseGoods = arr;
+                                    that.$set(that.selectWg.value.list[key], 'list', arr)
                                     console.log(arr);
                                     layer.close(index);
                                 });

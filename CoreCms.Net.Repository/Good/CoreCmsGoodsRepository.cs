@@ -519,7 +519,6 @@ namespace CoreCms.Net.Repository
 
                                 }
                             });
-
                             oldDistributions.ForEach(o =>
                             {
                                 var oldPost = oldPostProducts.Find(p => p.id == o.productsId);
@@ -533,11 +532,53 @@ namespace CoreCms.Net.Repository
                                 }
                             });
 
+                            //极端情况下，如果不存在三级佣金明细，则创建.
+                            var newDt = new List<CoreCmsProductsDistribution>();
+                            if (oldDistributions.Any())
+                            {
+                                var ids = oldDistributions.Select(p => p.productsId).ToList();
+                                var oldNoDtProduts = oldPostProducts.Where(p => ids.Contains(p.id)).ToList();
+                                if (oldNoDtProduts.Any())
+                                {
+                                    oldNoDtProduts.ForEach(p =>
+                                    {
+                                        var pd = new CoreCmsProductsDistribution();
+                                        pd.createTime = DateTime.Now;
+                                        pd.productsSN = p.sn;
+                                        pd.levelOne = p.levelOne;
+                                        pd.levelTwo = p.levelTwo;
+                                        pd.levelThree = p.levelThree;
+                                        pd.productsId = p.id;
+                                        newDt.Add(pd);
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                oldPostProducts.ForEach(p =>
+                                {
+                                    var pd = new CoreCmsProductsDistribution();
+                                    pd.createTime = DateTime.Now;
+                                    pd.productsSN = p.sn;
+                                    pd.levelOne = p.levelOne;
+                                    pd.levelTwo = p.levelTwo;
+                                    pd.levelThree = p.levelThree;
+                                    pd.productsId = p.id;
+                                    newDt.Add(pd);
+                                });
+                            }
+
                             var upOldData = await DbClient.Updateable(oldDataProducts).ExecuteCommandHasChangeAsync();
                             if (upOldData)
                             {
                                 await DbClient.Updateable(oldDistributions).ExecuteCommandHasChangeAsync();
+                                if (newDt.Any())
+                                {
+                                    await DbClient.Insertable(newDt).ExecuteCommandAsync();
+                                }
                             }
+
+
                         }
                     }
                     else
@@ -607,7 +648,7 @@ namespace CoreCms.Net.Repository
                     await DbClient.Updateable<CoreCmsProducts>().SetColumns(p => p.isDel == true).Where(p => p.goodsId == model.id).ExecuteCommandHasChangeAsync();
                     var newObj = entity.products.FirstOrDefault();
 
-                    if (newObj != null && newObj.id > 0)
+                    if (newObj is { id: > 0 })
                     {
                         var obj = products.Find(p => p.id == newObj.id);
                         //obj.barcode = model.bn;

@@ -60,7 +60,7 @@ namespace CoreCms.Net.Auth
                 issuer,//发行人
                 audience,//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 60 * 1)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60 * 60 * 24)//接口的过期时间
                 );
             #endregion
 
