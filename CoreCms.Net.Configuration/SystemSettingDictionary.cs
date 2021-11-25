@@ -31,7 +31,7 @@ namespace CoreCms.Net.Configuration
             di.Add(SystemSettingConstVars.ShopName, new DictionaryKeyValues() { sKey = "平台名称", sValue = "核心内容管理系统" });
             di.Add(SystemSettingConstVars.ShopDesc, new DictionaryKeyValues() { sKey = "平台描述", sValue = "平台描述会展示在前台及微信分享描述" });
             di.Add(SystemSettingConstVars.ShopAddress, new DictionaryKeyValues() { sKey = "平台地址", sValue = "我的平台地址" });
-            di.Add(SystemSettingConstVars.ShopBeian, new DictionaryKeyValues() { sKey = "备案信息", sValue = "网站备案信息" });
+            di.Add(SystemSettingConstVars.ShopBeiAn, new DictionaryKeyValues() { sKey = "备案信息", sValue = "网站备案信息" });
             di.Add(SystemSettingConstVars.ShopLogo, new DictionaryKeyValues() { sKey = "平台logo", sValue = "" });
             di.Add(SystemSettingConstVars.ShopFavicon, new DictionaryKeyValues() { sKey = "Favicon图标", sValue = "" });
             di.Add(SystemSettingConstVars.ShopDefaultImage, new DictionaryKeyValues() { sKey = "默认图", sValue = "" });

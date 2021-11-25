@@ -34,7 +34,7 @@ namespace CoreCms.Net.Configuration
         /// <summary>
         /// 备案信息
         /// </summary>
-        public const string ShopBeian = "shopBeian";
+        public const string ShopBeiAn = "shopBeiAn";
 
         /// <summary>
         /// 平台logo

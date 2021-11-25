@@ -23,6 +23,8 @@
             <coreshopimgSingle :coreshopdata="item" v-if="item.widgetCode=='imgSingle' "></coreshopimgSingle>
             <!--商品（修复）-->
             <coreshopgoods :coreshopdata="item" v-if="item.widgetCode=='goods' "></coreshopgoods>
+            <!--商品选项卡（修复）-->
+            <coreshopgoodTabBar :coreshopdata="item" v-if="item.widgetCode=='goodTabBar' "></coreshopgoodTabBar>
             <!--文章（修复）-->
             <coreshoparticle :coreshopdata="item" v-if="item.widgetCode=='article' "></coreshoparticle>
             <!--文章分类（修复）-->
@@ -56,6 +58,7 @@
     import coreshopimgWindow from '@/components/coreshop-page/coreshop-imgWindow.vue'
     import coreshopimgSingle from '@/components/coreshop-page/coreshop-imgSingle.vue'
     import coreshopgoods from '@/components/coreshop-page/coreshop-goods.vue'
+    import coreshopgoodTabBar from '@/components/coreshop-page/coreshop-goodTabBar.vue'
     import coreshoparticle from '@/components/coreshop-page/coreshop-article.vue'
     import coreshoparticleClassify from '@/components/coreshop-page/coreshop-articleClassify.vue'
     import coreshopnavBar from '@/components/coreshop-page/coreshop-navBar.vue'
@@ -80,6 +83,7 @@
             coreshopimgWindow,
             coreshopimgSingle,
             coreshopgoods,
+            coreshopgoodTabBar,
             coreshoparticle,
             coreshoparticleClassify,
             coreshopnavBar,

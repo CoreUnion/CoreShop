@@ -272,6 +272,124 @@ namespace CoreCms.Net.Services
                 {
                     dto.parameters = (JObject)JsonConvert.DeserializeObject(item.parameters);
                 }
+                else if (item.widgetCode == "goodTabBar")
+                {
+                    JObject parameters = (JObject)JsonConvert.DeserializeObject(item.parameters);
+
+                    if (parameters != null && parameters.ContainsKey("list"))
+                    {
+                        var list = JArray.Parse(parameters["list"].ToString());
+                        var newList = new JArray();
+                        var count = 0;
+                        foreach (var jToken in list)
+                        {
+                            var child = (JObject)jToken;
+
+                            child.Add("isShow", count == 0);
+
+                            var where = PredicateBuilder.True<CoreCmsGoods>();
+                            where = where.And(p => p.isDel == false);
+                            where = where.And(p => p.isMarketable == true);
+
+                            if (child != null && child.ContainsKey("type") && child["type"].ToString() == "auto")
+                            {
+                                //商品分类,同时取所有子分类
+                                if (child.ContainsKey("classifyId") && child["classifyId"].ObjectToInt(0) > 0)
+                                {
+                                    var classifyId = child["classifyId"].ObjectToInt(0);
+                                    var childCats = await _goodsCategoryServices.QueryListByClauseAsync(p => p.parentId == classifyId);
+                                    var catIds = childCats != null && childCats.Any()
+                                        ? childCats.Select(p => p.id).ToList()
+                                        : new List<int>();
+                                    catIds.Add(classifyId);
+
+                                    where = where.And(p => catIds.Contains(p.goodsCategoryId));
+                                    //扩展分类 CoreCmsGoodsCategory
+                                }
+                                //品牌筛选
+                                if (child.ContainsKey("brandId") && child["brandId"].ObjectToInt(0) > 0)
+                                {
+                                    var brandId = child["brandId"].ObjectToInt(0);
+                                    where = where.And(p => p.brandId == brandId);
+                                }
+
+                                var limit = 0;
+                                if (child.ContainsKey("limit") && child["limit"].ObjectToInt(0) > 0)
+                                {
+                                    limit = child["limit"].ObjectToInt(0);
+                                }
+                                limit = limit > 0 ? limit : 10;
+
+                                var goods = await _goodsServices.QueryListByClauseAsync(where, limit, p => p.createTime, OrderByType.Desc, true);
+                                if (goods != null && goods.Any())
+                                {
+                                    JArray result = JArray.FromObject(goods);
+                                    child.Remove("list");
+                                    child.Add("list", result);
+                                }
+                                else
+                                {
+                                    child.Remove("list");
+                                    child.Add("list", new JArray());
+                                }
+                            }
+                            else
+                            {
+                                var orderBy = string.Empty;
+                                string goodidsStr;
+                                if (child != null && child.ContainsKey("list"))
+                                {
+                                    JArray result = JArray.Parse(child["list"].ToString());
+                                    var goodids = new List<int>();
+                                    foreach (var ss in result)  //查找某个字段与值
+                                    {
+                                        var goodid = ((JObject)ss)["id"].ObjectToInt(0);
+                                        if (goodid > 0)
+                                        {
+                                            goodids.Add(goodid);
+                                        }
+                                    }
+                                    where = where.And(p => goodids.Contains(p.id));
+                                    if (goodids.Any())
+                                    {
+                                        goodidsStr = string.Join(",", goodids);
+                                        //按照id序列打乱后的顺序排序
+                                        if (AppSettingsConstVars.DbDbType == DbType.SqlServer.ToString())
+                                        {
+                                            orderBy = " CHARINDEX(RTRIM(CAST(id as NCHAR)),'" + goodidsStr + "') ";
+                                        }
+                                        else if (AppSettingsConstVars.DbDbType == DbType.MySql.ToString())
+                                        {
+                                            orderBy = " find_in_set(id,'" + goodidsStr + "') ";
+                                        }
+                                    }
+                                }
+                                var goods = await _goodsServices.QueryListByClauseAsync(where, orderBy);
+                                if (goods != null && goods.Any())
+                                {
+                                    JArray result = JArray.FromObject(goods);
+                                    child.Remove("list");
+                                    child.Add("list", result);
+                                }
+                                else
+                                {
+                                    child.Remove("list");
+                                    child.Add("list", new JArray());
+                                }
+                            }
+                            count++;
+                            newList.Add(child);
+                        }
+
+                        if (newList != null && newList.Any())
+                        {
+                            parameters.Remove("list");
+                            parameters.Add("list", newList);
+                        }
+                    }
+                    dto.parameters = parameters;
+                }
+
                 else if (item.widgetCode == "goods")
                 {
                     JObject parameters = (JObject)JsonConvert.DeserializeObject(item.parameters);

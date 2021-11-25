@@ -37,6 +37,7 @@
                 <div class="layui-card-header">
                     <div class="custom-tip" style="margin-top: 0px;">
                         1.设计完成后点击"保存页面"，在前端端页面下拉刷新即可看到效果。2.自定义页面的地址为：/pages/index/custom?pageCode=themes，其中themes为新增页面时的编码
+                        <font color="#ff0000">因前后端视觉差异问题，请保存后，前端预览效果，后端设计器仅供大体格局展示。</font>
                     </div>
                 </div>
                 <div class="layui-card-body">
@@ -170,6 +171,25 @@
                                     {{goods.name||'此处显示商品名称'}}
                                 </p>
                                 <p class="goods-price">{{goods.price||'99.00'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 商品选项卡 -->
+                    <div v-if="item.type === 'goodTabBar'" class="drag clearfix lay-goods list">
+                        <div class="goods-tab-head">
+                            <div v-for="(goods,key) in item.value.list" :key="key">{{goods.title}}</div>
+                        </div>
+                        <div v-for="(goods,key) in item.value.list" :key="key"   v-show="key==0">
+                            <div class="goods-item" :class="'column'+goods.column" v-for="(goodsitem,itemkey) in goods.list" :key="itemkey">
+                                <div class="goods-image">
+                                    <img :src="goodsitem.image" alt="">
+                                </div>
+                                <div class="goods-detail">
+                                    <p class="goods-name twolist-hidden">
+                                        {{goodsitem.name||'此处显示商品名称'}}
+                                    </p>
+                                    <p class="goods-price">{{goodsitem.price||'99.00'}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -528,7 +548,99 @@
                         </el-form-item>
                         <div class="pl25">
                             <p class="layout-tip">
-                                商品数据请到 商品管理 - <a href="javascript:;" lay-href="/good/goods/list">商品列表</a> 中管理
+                                商品数据请到 商品管理 - <a href="javascript:;" lay-href="/good/goods/">商品列表</a> 中管理
+                            </p>
+                        </div>
+                    </div>
+                </template>
+                <!-- 商品选项卡 -->
+                <template v-if="selectWg.type=='goodTabBar'">
+                    <div>
+                        <el-form-item label="是否固定头部">
+                            <el-radio-group v-model="selectWg.value.isFixedHead">
+                                <el-radio label="true">是</el-radio>
+                                <el-radio label="false">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+
+                        <div v-for="(child,key) in selectWg.value.list">
+                            <div class="drag-block">
+                                <div class="handle-icon" title="删除这一项">
+                                    <i class="iconfontCustom icon-cuohao" @click="handleRemoveTabBar(key)"></i>
+                                </div>
+                            </div>
+                            <div class="tabBarItem">
+                                <el-form-item label="商品来源">
+                                    <el-radio-group v-model="child.type" @change="changeTabBarGoodsType(child.type,key)">
+                                        <el-radio label="auto">自动获取</el-radio>
+                                        <el-radio label="choose">手动选择</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <div v-show="child.type=='auto'">
+                                    <el-form-item label="商品分类">
+                                        <el-select v-model="child.classifyId" placeholder="请选择分类">
+                                            <el-option value=" " label="请选择分类"></el-option>
+                                            <template v-for="itemCat in catList">
+                                                <el-option :value="itemCat.id" :label="itemCat.title"></el-option>
+                                                <template v-if="itemCat.children">
+                                                    <el-option v-for="second in itemCat.children" :key="second.id" :label="second.title" :value="second.id"
+                                                               class="second">
+                                                    </el-option>
+                                                </template>
+                                            </template>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="品牌分类">
+                                        <el-select v-model="child.brandId" placeholder="请选择品牌">
+                                            <el-option value=" " label="请选择品牌"></el-option>
+                                            <el-option v-for="itemBrand in brandList" :value="itemBrand.id" :label="itemBrand.name" :key="itemBrand.id"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="显示数量">
+                                        <input type="number" v-model.number="child.limit" :min="1" class="number-input">
+                                    </el-form-item>
+                                </div>
+                                <div v-show="child.type=='choose'">
+                                    <div class="select_seller_goods_box">
+                                        <input type="hidden" name="params[goodsId]" value="">
+                                        <ul id="selectGoods" class="sellect_seller_goods_list clearfix">
+                                            <draggable element="ul" :list="child.list" :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
+                                                <li v-for="(goods,index) in child.list" :key="index">
+                                                    <i class="layui-icon layui-icon-close-fill icon-delete" @click="handleDeleteTabBarGoods(key,index)"></i>
+                                                    <img :src="goods.image" alt="">
+                                                </li>
+                                            </draggable>
+                                        </ul>
+                                        <div class="addImg" @click="selectTabBarGoods(key)">
+                                            <i class="iconfontCustom icon-icon-test"></i>
+                                            <span>选择商品</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="divider" />
+                                <el-form-item label="分列数量">
+                                    <el-radio-group v-model="child.column">
+                                        <el-radio :label="1" :disabled="child.display=='slide'">单列</el-radio>
+                                        <el-radio :label="2">两列</el-radio>
+                                        <el-radio :label="3">三列</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <el-form-item label="Tab大标题名称">
+                                    <input type="text" v-model="child.title" class="selectLinkVal">
+                                </el-form-item>
+                                <el-form-item label="Tab子标题名称">
+                                    <input type="text" v-model="child.subTitle" class="selectLinkVal">
+                                </el-form-item>
+
+                            </div>
+                        </div>
+                        <div class="addImg" @click="handleAddTabBarGoods">
+                            <i class="iconfontCustom icon-icon-test"></i>
+                            <span>添加一个Tab</span>
+                        </div>
+                        <div class="pl25">
+                            <p class="layout-tip">
+                                商品数据请到 商品管理 - <a href="javascript:;" lay-href="/good/goods/">商品列表</a> 中管理
                             </p>
                         </div>
                     </div>
@@ -539,8 +651,7 @@
                         <div class="select_seller_goods_box">
                             <input type="hidden" name="params[goodsId]" value="">
                             <ul id="selectGroupPurchaseGoods" class="sellect_seller_goods_list clearfix">
-                                <draggable element="ul" :list="selectWg.value.list"
-                                           :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
+                                <draggable element="ul" :list="selectWg.value.list" :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
                                     <li v-for="(goods,key) in selectWg.value.list" :key="key">
                                         <i class="layui-icon layui-icon-close-fill icon-delete" @click="handleDeleteGoods(key)"></i>
                                         <!--<img :src="goods.image" alt="">-->
@@ -568,7 +679,7 @@
                         </el-form-item>
                         <div class="pl25">
                             <p class="layout-tip">
-                                团购秒杀数据请到 促销管理 - <a href="javascript:;" lay-href="promotion/group/list">团购秒杀列表</a>中管理
+                                团购秒杀数据请到 促销管理 - <a href="javascript:;" lay-href="/promotion/group/">团购秒杀列表</a>中管理
                             </p>
                         </div>
                     </div>
@@ -579,8 +690,7 @@
                         <div class="select_seller_goods_box">
                             <input type="hidden" name="params[goodsId]" value="">
                             <ul id="selectGoods" class="sellect_seller_goods_list clearfix">
-                                <draggable element="ul" :list="selectWg.value.list"
-                                           :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
+                                <draggable element="ul" :list="selectWg.value.list" :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
                                     <li v-for="(goods,key) in selectWg.value.list" :key="key">
                                         <i class="layui-icon layui-icon-close-fill icon-delete" @click="handleDeleteGoods(key)"></i>
                                         <img :src="goods.goodsImage" alt="">
@@ -602,7 +712,7 @@
                         </el-form-item>
                         <div class="pl25">
                             <p class="layout-tip">
-                                拼团数据请到 促销管理 - <a href="javascript:;" lay-href="promotion/pinTuan/pinTuanrule/list">拼团列表</a>中管理
+                                拼团数据请到 促销管理 - <a href="javascript:;" lay-href="/promotion/pintuan/pintuanrule/">拼团列表</a>中管理
                             </p>
                         </div>
                     </div>
@@ -613,8 +723,7 @@
                         <div class="select_seller_goods_box">
                             <input type="hidden" name="params[goodsId]" value="">
                             <ul id="selectGoods" class="sellect_seller_goods_list clearfix">
-                                <draggable element="ul" :list="selectWg.value.list"
-                                           :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
+                                <draggable element="ul" :list="selectWg.value.list" :options="{group:{ name:'selectGoodsList'}, ghostClass: 'ghost',animation: 150}">
                                     <li v-for="(goods,key) in selectWg.value.list" :key="key">
                                         <i class="layui-icon layui-icon-close-fill icon-delete" @click="handleDeleteGoods(key)"></i>
                                         <img :src="goods.thumbnail" alt="">
@@ -636,7 +745,7 @@
                         </el-form-item>
                         <div class="pl25">
                             <p class="layout-tip">
-                                服务卡数据请到 项目管理 - <a href="javascript:;" lay-href="serviceGoods/services/">项目列表</a>中管理
+                                服务卡数据请到 项目管理 - <a href="javascript:;" lay-href="/good/servicegoods/">项目列表</a>中管理
                             </p>
                         </div>
                     </div>
@@ -647,8 +756,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">添加文章：</label>
                             <div class="layui-input-inline seller-inline-5">
-                                <input type="text" v-model="selectWg.value.list[0].title" placeholder="请选择广告文章" readonly="readonly"
-                                       class="layui-input" @click="article_list">
+                                <input type="text" v-model="selectWg.value.list[0].title" placeholder="请选择广告文章" readonly="readonly" class="layui-input" @click="article_list">
                             </div>
                         </div>
                         <div class="pl25">
@@ -728,8 +836,7 @@
                                             <upload-img @upload-img="upImage(index,item)" :index="index" :item="item"></upload-img>
                                         </el-form-item>
                                     </div>
-                                    <select-link @choose-link="chooseLink(index,item.linkType)" :index="index" :type.sync="item.linkType"
-                                                 :id.sync="item.linkValue"></select-link>
+                                    <select-link @choose-link="chooseLink(index,item.linkType)" :index="index" :type.sync="item.linkType" :id.sync="item.linkValue"></select-link>
                                 </div>
                             </li>
                         </draggable>
@@ -895,7 +1002,7 @@
                     </div>
                     <div class="pl25">
                         <p class="layout-tip">
-                            公告数据请到 运营管理 - <a href="javascript:;" lay-href="shop/notice/list">公告列表</a> 中管理
+                            公告数据请到 运营管理 - <a href="javascript:;" lay-href="content/notice/">公告列表</a> 中管理
                         </p>
                     </div>
                 </template>

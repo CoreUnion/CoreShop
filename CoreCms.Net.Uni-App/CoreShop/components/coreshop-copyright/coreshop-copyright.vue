@@ -4,7 +4,7 @@
             Powered by CoreShop
         </view>
         <view class="beian u-font-xs" v-if="shopBeiAn">
-            <view v-if="shopBeian"><a href="http://beian.miit.gov.cn/" target="_blank" style="font-size:24upx">备案号：{{shopBeiAn}}</a></view>
+            <view v-if="shopBeiAn"><a href="http://beian.miit.gov.cn/" target="_blank" style="font-size:24upx">备案号：{{shopBeiAn}}</a></view>
         </view>
     </view>
 </template>
@@ -13,7 +13,7 @@
     export default {
         data() {
             return {
-                shopBeiAn: this.$store.state.config.shopBeian || '',
+                shopBeiAn: this.$store.state.config.shopBeiAn || '',
             }
         }
     }

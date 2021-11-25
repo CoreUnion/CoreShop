@@ -94,7 +94,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
 
             var shopLogo = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopLogo); //店铺logo
             var shopName = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopName);  //店铺名称
-            var shopBeian = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopBeian);  //店铺备案
+            var shopBeiAn = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopBeiAn);  //店铺备案
             var shopDesc = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopDesc);  //店铺描述
             var showStoresSwitch = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowStoresSwitch).ObjectToInt(2);   //显示门店列表
             var showStoreBalanceRechargeSwitch = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowStoreBalanceRechargeSwitch).ObjectToInt(2); //显示充值功能
@@ -157,7 +157,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 shopLogo,
                 shopName,
-                shopBeian,
+                shopBeiAn = shopBeiAn,
                 shopDesc,
                 imageMax,
                 storeSwitch,
