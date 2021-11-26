@@ -280,13 +280,9 @@ namespace CoreCms.Net.Services
                     {
                         var list = JArray.Parse(parameters["list"].ToString());
                         var newList = new JArray();
-                        var count = 0;
                         foreach (var jToken in list)
                         {
                             var child = (JObject)jToken;
-
-                            child.Add("isShow", count == 0);
-
                             var where = PredicateBuilder.True<CoreCmsGoods>();
                             where = where.And(p => p.isDel == false);
                             where = where.And(p => p.isMarketable == true);
@@ -377,7 +373,6 @@ namespace CoreCms.Net.Services
                                     child.Add("list", new JArray());
                                 }
                             }
-                            count++;
                             newList.Add(child);
                         }
 
