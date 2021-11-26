@@ -113,6 +113,7 @@
         mounted() {
             this.newData = this.coreshopdata;
             for (var i = 0; i < this.newData.parameters.list.length; i++) {
+                this.newData.parameters.list[i].isShow = i == 0;
                 let item = {
                     name: this.newData.parameters.list[i].title
                 }
