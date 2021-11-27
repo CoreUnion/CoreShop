@@ -548,7 +548,7 @@
                                             <div class="layui-input-inline layui-inline-10">
                                                 <input type="text" name="filesStoragePath" value="{{d.data.configs['filesStoragePath']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
                                             </div>
-                                            <div class="layui-form-mid layui-word-aux">请使用路径，如"/upload/doc/"，路径前后都要加“/”</div>
+                                            <div class="layui-form-mid layui-word-aux">请使用路径，如"/upload/doc/"，路径前后都要加“/”（七牛云为key/value结构不支持）</div>
                                         </div>
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">{{d.data.configs['filesStorageFileSuffix']['sKey']}}：</label>
@@ -621,7 +621,14 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div id="qiniu">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">{{d.data.configs['filesStorageQiNiuBucketName']['sKey']}}：</label>
+                                                <div class="layui-input-inline layui-inline-10">
+                                                    <input type="text" name="filesStorageQiNiuBucketName" value="{{d.data.configs['filesStorageQiNiuBucketName']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">&nbsp;</label>
@@ -909,14 +916,22 @@
                     $("#cloudConfig").hide();
                     $("#tencentCloud").hide();
                     $("#aliyun").hide();
+                    $("#qiniu").hide();
                 } else if (data.value == 'AliYunOSS') {
                     $("#cloudConfig").show();
                     $("#tencentCloud").hide();
                     $("#aliyun").show();
+                    $("#qiniu").hide();
                 } else if (data.value == 'QCloudOSS') {
                     $("#cloudConfig").show();
                     $("#tencentCloud").show();
                     $("#aliyun").hide();
+                    $("#qiniu").hide();
+                } else if (data.value == 'QiNiuKoDo') {
+                    $("#cloudConfig").show();
+                    $("#tencentCloud").hide();
+                    $("#aliyun").hide();
+                    $("#qiniu").show();
                 }
             });
 
@@ -928,14 +943,22 @@
                         $("#cloudConfig").hide();
                         $("#tencentCloud").hide();
                         $("#aliyun").hide();
+                        $("#qiniu").hide();
                     } else if (obj.sValue == 'AliYunOSS') {
                         $("#cloudConfig").show();
                         $("#tencentCloud").hide();
                         $("#aliyun").show();
+                        $("#qiniu").hide();
                     } else if (obj.sValue == 'QCloudOSS') {
                         $("#cloudConfig").show();
                         $("#tencentCloud").show();
                         $("#aliyun").hide();
+                        $("#qiniu").hide();
+                    } else if (obj.sValue == 'QiNiuKoDo') {
+                        $("#cloudConfig").show();
+                        $("#tencentCloud").hide();
+                        $("#aliyun").hide();
+                        $("#qiniu").show();
                     }
                 }
             }

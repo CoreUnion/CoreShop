@@ -649,6 +649,11 @@ namespace CoreCms.Net.Configuration
         /// </summary>
         public static readonly string FilesStorageAliYunBucketName = "filesStorageAliYunBucketName";
 
+        /// <summary>
+        /// 七牛云桶名称
+        /// </summary>
+        public static readonly string FilesStorageQiNiuBucketName = "filesStorageQiNiuBucketName";
+
 
 
     }

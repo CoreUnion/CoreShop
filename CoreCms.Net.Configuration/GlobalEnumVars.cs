@@ -105,6 +105,8 @@ namespace CoreCms.Net.Configuration
             AliYunOSS = 1,
             [Description("腾讯云COS")]
             QCloudOSS = 2,
+            [Description("七牛云KoDo")]
+            QiNiuKoDo = 3,
         }
 
         #endregion

@@ -192,6 +192,9 @@ namespace CoreCms.Net.Configuration
             di.Add(SystemSettingConstVars.FilesStorageAliYunEndpoint, new DictionaryKeyValues() { sKey = "阿里云节点", sValue = "https://oss-cn-shenzhen.aliyuncs.com" });
             di.Add(SystemSettingConstVars.FilesStorageAliYunBucketName, new DictionaryKeyValues() { sKey = "阿里云桶名称", sValue = "CoreShop" });
 
+            di.Add(SystemSettingConstVars.FilesStorageQiNiuBucketName, new DictionaryKeyValues() { sKey = "七牛云桶名称", sValue = "CoreShop" });
+
+
             return di;
         }
 
