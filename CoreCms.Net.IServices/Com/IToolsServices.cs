@@ -9,8 +9,11 @@
  ***********************************************************************/
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
+using CoreCms.Net.Model.ViewModels.Options;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreCms.Net.IServices
 {
@@ -33,6 +36,63 @@ namespace CoreCms.Net.IServices
         /// </summary>
         /// <returns></returns>
         Task<bool> IllegalWordsContainsAny(string oldString);
+
+
+        #region FIle文件上传处理
+        /// <summary>
+        /// 本地上传（File）
+        /// </summary>
+        /// <returns></returns>
+        Task<string> UpLoadFileForLocalStorage(FilesStorageOptions options, string fileExt, IFormFile file);
+
+        /// <summary>
+        /// AliYunOSS-阿里云上传方法（File）
+        /// </summary>
+        /// <returns></returns>
+        Task<string> UpLoadFileForAliYunOSS(FilesStorageOptions options, string fileExt, IFormFile file);
+
+        /// <summary>
+        /// QCloudOSS-腾讯云存储上传方法（File）
+        /// </summary>
+        /// <returns></returns>
+        Task<string> UpLoadFileForQCloudOSS(FilesStorageOptions options, string fileExt, IFormFile file);
+        /// <summary>
+        /// QiNiuKoDo-七牛云存储上传方法（File）
+        /// </summary>
+        /// <returns></returns>
+        Task<string> UpLoadFileForQiNiuKoDo(FilesStorageOptions options, string fileExt, IFormFile file);
+        #endregion
+
+
+
+        #region Base64文件上传处理
+        /// <summary>
+        /// 本地上传（Base64）
+        /// </summary>
+        /// <returns></returns>
+        string UpLoadBase64ForLocalStorage(FilesStorageOptions options, MemoryStream memStream);
+
+        /// <summary>
+        /// AliYunOSS-阿里云上传方法（Base64）
+        /// </summary>
+        /// <returns></returns>
+        Task<string> UpLoadBase64ForAliYunOSS(FilesStorageOptions options, MemoryStream memStream);
+
+        /// <summary>
+        /// QCloudOSS-腾讯云存储上传方法（Base64）
+        /// </summary>
+        /// <returns></returns>
+        string UpLoadBase64ForQCloudOSS(FilesStorageOptions options, byte[] bytes);
+
+        /// <summary>
+        /// QiNiuKoDo-七牛云存储上传方法（Base64）
+        /// </summary>
+        /// <returns></returns>
+        string UpLoadBase64ForQiNiuKoDo(FilesStorageOptions options, byte[] bytes);
+
+        #endregion
+
+
 
 
     }

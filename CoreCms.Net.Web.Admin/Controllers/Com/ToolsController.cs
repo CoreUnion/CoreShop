@@ -85,6 +85,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsProductsServices _productsServices;
         private readonly ICoreCmsServicesServices _servicesServices;
         private readonly ICoreCmsPagesServices _pagesServices;
+        private readonly IToolsServices _toolsServices;
+
 
 
         private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
@@ -111,7 +113,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ISysMenuServices sysMenuServices
             , ISysUserRoleServices sysUserRoleServices
             , ISysOrganizationServices sysOrganizationServices, ICodeGeneratorServices codeGeneratorServices,
-            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsPagesServices pagesServices)
+            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsPagesServices pagesServices, IToolsServices toolsServices)
         {
             _user = user;
             _webHostEnvironment = webHostEnvironment;
@@ -145,6 +147,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _sysRoleMenuServices = sysRoleMenuServices;
             _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
             _pagesServices = pagesServices;
+            _toolsServices = toolsServices;
         }
 
         #region 获取登录用户用户信息(用于面板展示)====================================================
@@ -367,10 +370,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var _filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
+            var filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
 
             //初始化上传参数
-            var maxSize = 1024 * 1024 * _filesStorageOptions.MaxSize; //上传大小5M
+            var maxSize = 1024 * 1024 * filesStorageOptions.MaxSize; //上传大小5M
 
             var file = Request.Form.Files["file"];
             if (file == null)
@@ -385,112 +388,44 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //检查大小
             if (file.Length > maxSize)
             {
-                jm.msg = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
+                jm.msg = "上传文件大小超过限制，最大允许上传" + filesStorageOptions.MaxSize + "M";
                 return jm;
             }
 
             //检查文件扩展名
-            if (string.IsNullOrEmpty(fileExt) ||
-                Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
-                jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
+                jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;
             }
 
-            var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
-            var today = DateTime.Now.ToString("yyyyMMdd");
-
-            if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
+            string url = string.Empty;
+            if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                var saveUrl = _filesStorageOptions.Path + today + "/";
-                var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
-                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
-                var filePath = dirPath + newFileName;
-                var fileUrl = saveUrl + newFileName;
-
-                string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
-
-                await using (var fs = System.IO.File.Create(filePath))
-                {
-                    await file.CopyToAsync(fs);
-                    fs.Flush();
-                }
-
-                jm.code = 0;
-                jm.msg = "上传成功!";
-                jm.data = new
-                {
-                    fileUrl = bucketBindDomain + fileUrl,
-                    src = bucketBindDomain + fileUrl
-                };
+                url = await _toolsServices.UpLoadFileForLocalStorage(filesStorageOptions, fileExt, file);
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
             {
-
-                //上传到阿里云
-                await using (var fileStream = file.OpenReadStream()) //转成Stream流
-                {
-                    var md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
-
-                    var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
-                    var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
-                    //将文件md5值赋值给meat头信息，服务器验证文件MD5
-                    var objectMeta = new ObjectMetadata
-                    {
-                        ContentMd5 = md5
-                    };
-                    //文件上传--空间名、文件保存路径、文件流、meta头信息(文件md5) //返回meta头信息(文件md5)
-                    aliyun.PutObject(_filesStorageOptions.BucketName, filePath, fileStream, objectMeta);
-                    //返回给UEditor的插入编辑器的图片的src
-                    jm.code = 0;
-                    jm.msg = "上传成功";
-                    jm.data = new
-                    {
-                        fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
-                        src = _filesStorageOptions.BucketBindUrl + filePath
-                    };
-                }
+                url = await _toolsServices.UpLoadFileForAliYunOSS(filesStorageOptions, fileExt, file);
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
             {
-                var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-
-                //上传到腾讯云OSS
-                //初始化 CosXmlConfig
-                string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
-                string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
-                CosXmlConfig config = new CosXmlConfig.Builder()
-                    //.SetAppid(appid)
-                    .IsHttps(true)  //设置默认 HTTPS 请求
-                    .SetRegion(region)  //设置一个默认的存储桶地域
-                    .SetDebugLog(true)  //显示日志
-                    .Build();  //创建 CosXmlConfig 对象
-
-                long durationSecond = 600;  //每次请求签名有效时长，单位为秒
-                QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider(_filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret, durationSecond);
-
-
-                byte[] bytes;
-                await using (var ms = new MemoryStream())
-                {
-                    await file.CopyToAsync(ms);
-                    bytes = ms.ToArray();
-                }
-
-                var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
-                cosXml.PutObject(putObjectRequest);
-
-                jm.code = 0;
-                jm.msg = "上传成功";
-                jm.data = new
-                {
-                    fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
-                    src = _filesStorageOptions.BucketBindUrl + filePath
-                };
-
+                url = await _toolsServices.UpLoadFileForQCloudOSS(filesStorageOptions, fileExt, file);
             }
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QiNiuKoDo.ToString())
+            {
+                url = await _toolsServices.UpLoadFileForQiNiuKoDo(filesStorageOptions, fileExt, file);
+            }
+
+            var bl = !string.IsNullOrEmpty(url);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? "上传成功!" : "上传失败";
+            jm.data = new
+            {
+                fileUrl = url,
+                src = url
+            };
+
             return jm;
         }
 
@@ -507,9 +442,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var _filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
-
-
+            var filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
 
             if (string.IsNullOrEmpty(entity.base64))
             {
@@ -521,104 +454,35 @@ namespace CoreCms.Net.Web.Admin.Controllers
             byte[] bytes = Convert.FromBase64String(entity.base64);
             MemoryStream memStream = new MemoryStream(bytes);
 
-            Image mImage = Image.FromStream(memStream);
-            Bitmap bp = new Bitmap(mImage);
-
-
-            var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + ".jpg";
-            var today = DateTime.Now.ToString("yyyyMMdd");
-
-
-            if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
+            string url = string.Empty;
+            if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                var saveUrl = _filesStorageOptions.Path + today + "/";
-                var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
-                string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
-
-                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
-                var filePath = dirPath + newFileName;
-                var fileUrl = saveUrl + newFileName;
-
-                bp.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);//注意保存路径
-
-                jm.code = 0;
-                jm.msg = "上传成功!";
-                jm.data = new
-                {
-                    fileUrl = bucketBindDomain + fileUrl,
-                    src = bucketBindDomain + fileUrl
-                };
-                jm.otherData = GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString();
-
+                url = _toolsServices.UpLoadBase64ForLocalStorage(filesStorageOptions, memStream);
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
             {
                 //上传到阿里云
-
-                // 设置当前流的位置为流的开始
-                memStream.Seek(0, SeekOrigin.Begin);
-
-                await using (var fileStream = memStream) //转成Stream流
-                {
-                    var md5 = OssUtils.ComputeContentMd5(fileStream, memStream.Length);
-
-                    var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
-                    var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
-                    //将文件md5值赋值给meat头信息，服务器验证文件MD5
-                    var objectMeta = new ObjectMetadata
-                    {
-                        ContentMd5 = md5
-                    };
-                    //文件上传--空间名、文件保存路径、文件流、meta头信息(文件md5) //返回meta头信息(文件md5)
-                    aliyun.PutObject(_filesStorageOptions.BucketName, filePath, fileStream, objectMeta);
-                    //返回给UEditor的插入编辑器的图片的src
-                    jm.code = 0;
-                    jm.msg = "上传成功";
-                    jm.data = new
-                    {
-                        fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
-                        src = _filesStorageOptions.BucketBindUrl + filePath
-                    };
-                }
-                jm.otherData = GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString();
+                url = await _toolsServices.UpLoadBase64ForAliYunOSS(filesStorageOptions, memStream);
 
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
             {
                 //上传到腾讯云OSS
-                //初始化 CosXmlConfig
-                string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
-                string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
-                CosXmlConfig config = new CosXmlConfig.Builder()
-                    //.SetAppid(appid)
-                    .IsHttps(true)  //设置默认 HTTPS 请求
-                    .SetRegion(region)  //设置一个默认的存储桶地域
-                    .SetDebugLog(true)  //显示日志
-                    .Build();  //创建 CosXmlConfig 对象
-
-                long durationSecond = 600;  //每次请求签名有效时长，单位为秒
-                QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider(
-                    _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret, durationSecond);
-
-
-                var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-
-                var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
-
-                cosXml.PutObject(putObjectRequest);
-
-                jm.code = 0;
-                jm.msg = "上传成功";
-                jm.data = new
-                {
-                    fileUrl = _filesStorageOptions.BucketBindUrl + filePath,
-                    src = _filesStorageOptions.BucketBindUrl + filePath
-                };
+                url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, bytes);
             }
-            jm.otherData = _filesStorageOptions;
-
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QiNiuKoDo.ToString())
+            {
+                //上传到七牛云kodo
+                url = _toolsServices.UpLoadBase64ForQiNiuKoDo(filesStorageOptions, bytes);
+            }
+            var bl = !string.IsNullOrEmpty(url);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? "上传成功!" : "上传失败";
+            jm.data = new
+            {
+                fileUrl = url,
+                src = url
+            };
 
             return jm;
         }
@@ -636,10 +500,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new CKEditorUploadedResult();
 
-            var _filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
+            var filesStorageOptions = await _coreCmsSettingServices.GetFilesStorageOptions();
 
             //初始化上传参数
-            var maxSize = 1024 * 1024 * _filesStorageOptions.MaxSize; //上传大小5M
+            var maxSize = 1024 * 1024 * filesStorageOptions.MaxSize; //上传大小5M
 
             var file = Request.Form.Files["upload"];
             if (file == null)
@@ -654,103 +518,38 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //检查大小
             if (file.Length > maxSize)
             {
-                jm.error.message = "上传文件大小超过限制，最大允许上传" + _filesStorageOptions.MaxSize + "M";
+                jm.error.message = "上传文件大小超过限制，最大允许上传" + filesStorageOptions.MaxSize + "M";
                 return jm;
             }
 
             //检查文件扩展名
-            if (string.IsNullOrEmpty(fileExt) ||
-                Array.IndexOf(_filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
             {
-                jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + _filesStorageOptions.FileTypes;
+                jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;
             }
 
-            var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
-            var today = DateTime.Now.ToString("yyyyMMdd");
-
-
-            if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
+            string url = string.Empty;
+            if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                var saveUrl = _filesStorageOptions.Path + today + "/";
-                var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
-                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
-                var filePath = dirPath + newFileName;
-                var fileUrl = saveUrl + newFileName;
-
-                string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
-
-                await using (var fs = System.IO.File.Create(filePath))
-                {
-                    await file.CopyToAsync(fs);
-                    fs.Flush();
-                }
-
-                jm.uploaded = 1;
-                jm.fileName = fileName;
-                jm.url = bucketBindDomain + fileUrl;
+                url = await _toolsServices.UpLoadFileForLocalStorage(filesStorageOptions, fileExt, file);
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
             {
                 //上传到阿里云
-                await using (var fileStream = file.OpenReadStream()) //转成Stream流
-                {
-                    var md5 = OssUtils.ComputeContentMd5(fileStream, file.Length);
-
-                    var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-                                                                                          //初始化阿里云配置--外网Endpoint、访问ID、访问password
-                    var aliyun = new OssClient(_filesStorageOptions.Endpoint, _filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret);
-                    //将文件md5值赋值给meat头信息，服务器验证文件MD5
-                    var objectMeta = new ObjectMetadata
-                    {
-                        ContentMd5 = md5
-                    };
-                    //文件上传--空间名、文件保存路径、文件流、meta头信息(文件md5) //返回meta头信息(文件md5)
-                    aliyun.PutObject(_filesStorageOptions.BucketName, filePath, fileStream, objectMeta);
-                    //返回给UEditor的插入编辑器的图片的src
-
-                    jm.uploaded = 1;
-                    jm.fileName = fileName;
-                    jm.url = _filesStorageOptions.BucketBindUrl + filePath;
-
-                }
+                url = await _toolsServices.UpLoadFileForAliYunOSS(filesStorageOptions, fileExt, file);
             }
-            else if (_filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
             {
-                var filePath = _filesStorageOptions.Path + today + "/" + newFileName; //云文件保存路径
-
-                //上传到腾讯云OSS
-                //初始化 CosXmlConfig
-                string appid = _filesStorageOptions.AccountId;//设置腾讯云账户的账户标识 APPID
-                string region = _filesStorageOptions.CosRegion; //设置一个默认的存储桶地域
-                CosXmlConfig config = new CosXmlConfig.Builder()
-                    //.SetAppid(appid)
-                    .IsHttps(true)  //设置默认 HTTPS 请求
-                    .SetRegion(region)  //设置一个默认的存储桶地域
-                    .SetDebugLog(true)  //显示日志
-                    .Build();  //创建 CosXmlConfig 对象
-
-                long durationSecond = 600;  //每次请求签名有效时长，单位为秒
-                QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider(_filesStorageOptions.AccessKeyId, _filesStorageOptions.AccessKeySecret, durationSecond);
-
-
-                byte[] bytes;
-                await using (var ms = new MemoryStream())
-                {
-                    await file.CopyToAsync(ms);
-                    bytes = ms.ToArray();
-                }
-
-                var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-                COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(_filesStorageOptions.TencentBucketName, filePath, bytes);
-                cosXml.PutObject(putObjectRequest);
-
-                jm.uploaded = 1;
-                jm.fileName = fileName;
-                jm.url = _filesStorageOptions.BucketBindUrl + filePath;
-
+                url = await _toolsServices.UpLoadFileForQCloudOSS(filesStorageOptions, fileExt, file);
             }
-
+            else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QiNiuKoDo.ToString())
+            {
+                url = await _toolsServices.UpLoadFileForQiNiuKoDo(filesStorageOptions, fileExt, file);
+            }
+            jm.uploaded = !string.IsNullOrEmpty(url) ? 1 : 0;
+            jm.fileName = fileName;
+            jm.url = url;
             return jm;
         }
 

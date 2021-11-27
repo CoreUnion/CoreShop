@@ -41,6 +41,10 @@ namespace CoreCms.Net.Model.ViewModels.Options
         /// </summary>
         public string TencentBucketName { get; set; }
 
+        /// <summary>
+        ///     存储桶名称（七牛云）
+        /// </summary>
+        public string QiNiuBucketName { get; set; }
 
         /// <summary>
         ///     授权账户

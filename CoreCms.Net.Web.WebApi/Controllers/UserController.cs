@@ -11,9 +11,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using CoreCms.Net.Auth.HttpContextUser;
 using CoreCms.Net.Auth.Policys;
@@ -88,7 +90,6 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         private readonly WeChatOptions _weChatOptions;
 
         private readonly AsyncLock _mutex = new AsyncLock();
-
 
         /// <summary>
         /// 构造函数
@@ -176,61 +177,62 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var response = await client.ExecuteSnsJsCode2SessionAsync(request, HttpContext.RequestAborted);
             if (response.ErrorCode == (int)WeChatReturnCode.ReturnCode.请求成功)
             {
-                var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == response.OpenId);
-                if (userInfo == null)
+                using (await _mutex.LockAsync())
                 {
-                    userInfo = new CoreCmsUserWeChatInfo();
-                    userInfo.openid = response.OpenId;
-                    userInfo.type = (int)GlobalEnumVars.UserAccountTypes.微信小程序;
-                    userInfo.sessionKey = response.SessionKey;
-                    userInfo.gender = 1;
-                    userInfo.createTime = DateTime.Now;
-
-                    var id = await _userWeChatInfoServices.InsertAsync(userInfo);
-                }
-                else
-                {
-                    if (userInfo.sessionKey != response.SessionKey)
+                    var userInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == response.OpenId);
+                    if (userInfo == null)
                     {
-                        await _userWeChatInfoServices.UpdateAsync(
-                            p => new CoreCmsUserWeChatInfo() { sessionKey = response.SessionKey, updateTime = DateTime.Now },
-                            p => p.openid == userInfo.openid);
+                        userInfo = new CoreCmsUserWeChatInfo();
+                        userInfo.openid = response.OpenId;
+                        userInfo.type = (int)GlobalEnumVars.UserAccountTypes.微信小程序;
+                        userInfo.sessionKey = response.SessionKey;
+                        userInfo.gender = 1;
+                        userInfo.createTime = DateTime.Now;
+
+                        await _userWeChatInfoServices.InsertAsync(userInfo);
                     }
-                }
-
-                if (userInfo is { userId: > 0 })
-                {
-                    var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
-                    if (user != null)
+                    else
                     {
+                        if (userInfo.sessionKey != response.SessionKey)
+                        {
+                            await _userWeChatInfoServices.UpdateAsync(
+                                p => new CoreCmsUserWeChatInfo() { sessionKey = response.SessionKey, updateTime = DateTime.Now },
+                                p => p.openid == userInfo.openid);
+                        }
+                    }
 
-
-                        var claims = new List<Claim> {
+                    if (userInfo is { userId: > 0 })
+                    {
+                        var user = await _userServices.QueryByClauseAsync(p => p.id == userInfo.userId);
+                        if (user != null)
+                        {
+                            var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Name, user.nickName),
                                 new Claim(JwtRegisteredClaimNames.Jti, user.id.ToString()),
-                                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
+                                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString(CultureInfo.InvariantCulture)) };
 
-                        //用户标识
-                        var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
-                        identity.AddClaims(claims);
-                        jm.status = true;
-                        jm.data = new
-                        {
-                            auth = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement),
-                            user
-                        };
-                        jm.otherData = response.OpenId;
+                            //用户标识
+                            var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
+                            identity.AddClaims(claims);
+                            jm.status = true;
+                            jm.data = new
+                            {
+                                auth = JwtToken.BuildJwtToken(claims.ToArray(), _permissionRequirement),
+                                user
+                            };
+                            jm.otherData = response.OpenId;
 
-                        //录入登录日志
-                        var log = new CoreCmsUserLog();
-                        log.userId = user.id;
-                        log.state = (int)GlobalEnumVars.UserLogTypes.登录;
-                        log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
-                        log.createTime = DateTime.Now;
-                        log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
-                        await _userLogServices.InsertAsync(log);
+                            //录入登录日志
+                            var log = new CoreCmsUserLog();
+                            log.userId = user.id;
+                            log.state = (int)GlobalEnumVars.UserLogTypes.登录;
+                            log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
+                            log.createTime = DateTime.Now;
+                            log.parameters = GlobalEnumVars.UserLogTypes.登录.ToString();
+                            await _userLogServices.InsertAsync(log);
 
-                        return jm;
+                            return jm;
+                        }
                     }
                 }
 
@@ -267,8 +269,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.status = false;
                 jm.msg = "用户信息获取失败";
+                return jm;
             }
-
             var decodedEntity = EncryptHelper.DecodeUserInfoBySessionId(userInfo.sessionKey, entity.encryptedData, entity.iv);
             var token = string.Empty;
             var userWxId = entity.sessionAuthId;
@@ -301,7 +303,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                             var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Name, user.nickName),
                                 new Claim(JwtRegisteredClaimNames.Jti, user.id.ToString()),
-                                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
+                                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString(CultureInfo.InvariantCulture)) };
 
                             //用户标识
                             var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
@@ -355,7 +357,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
             if (entity.code == "login")
             {
-                var shave = _userServices.Exists(p => p.mobile == entity.mobile && p.userWx > 0);
+                var shave = await _userServices.ExistsAsync(p => p.mobile == entity.mobile && p.userWx > 0);
                 if (shave)
                 {
                     jm.msg = "手机号码已被绑定,请更换";
@@ -399,6 +401,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.status = false;
                 jm.msg = "用户信息获取失败";
+                return jm;
             }
             DecodedPhoneNumber phoneNumber;
             try
@@ -420,7 +423,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 sessionAuthId = entity.sessionAuthId
             };
 
-            jm = await _userServices.SmsLogin(data, (int)GlobalEnumVars.LoginType.WeChatPhoneNumber, 1);
+            jm = await _userServices.SmsLogin(data);
 
             return jm;
         }
@@ -511,7 +514,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name, user.nickName),
                     new Claim(JwtRegisteredClaimNames.Jti, id.ToString()),
-                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString()) };
+                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_permissionRequirement.Expiration.TotalSeconds).ToString(CultureInfo.InvariantCulture)) };
                 //用户标识
                 var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
                 identity.AddClaims(claims);
@@ -522,7 +525,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 var log = new CoreCmsUserLog();
                 log.userId = id;
                 log.state = (int)GlobalEnumVars.UserLogTypes.注册;
-                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ? 
+                log.ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress != null ?
                     _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString() : "127.0.0.1";
                 log.createTime = DateTime.Now;
                 log.parameters = GlobalEnumVars.UserLogTypes.注册.ToString();
@@ -588,7 +591,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var jm = new WebApiCallBack { status = true, msg = "获取成功" };
 
             var allConfigs = await _settingServices.GetConfigDictionaries();
-            jm.data = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.PointSwitch).ObjectToInt(2); ;
+            jm.data = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.PointSwitch).ObjectToInt(2);
 
             return jm;
         }
@@ -938,20 +941,23 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var ship = await _userShipServices.QueryListByClauseAsync(p => p.userId == _user.ID, p => p.isDefault, OrderByType.Desc);
             if (ship.Any())
             {
-                ship.ForEach(async p =>
-                {
-                    var fullName = await _areaServices.GetAreaFullName(p.areaId);
-                    if (fullName.status)
-                    {
-                        p.areaName = fullName.data.ToString();
-                    }
-                });
+                ship.ForEach(Action);
             }
             jm.status = true;
             jm.data = ship;
 
             return jm;
         }
+
+        private async void Action(CoreCmsUserShip p)
+        {
+            var fullName = await _areaServices.GetAreaFullName(p.areaId);
+            if (fullName.status)
+            {
+                p.areaName = fullName.data.ToString();
+            }
+        }
+
         #endregion
 
         #region 保存用户地址
@@ -1157,10 +1163,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> AddBankCards([FromBody] CoreCmsUserBankCard entity)
         {
-            var jm = new WebApiCallBack();
-
             entity.userId = _user.ID;
-            jm = await _userBankCardServices.AddBankCards(entity);
+            var jm = await _userBankCardServices.AddBankCards(entity);
             return jm;
 
         }
@@ -1270,10 +1274,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> Cash([FromBody] FMIntId entity)
         {
-            var jm = new WebApiCallBack();
-
             var money = entity.data.ObjectToDecimal(0);
-            jm = await _userTocashServices.Tocash(_user.ID, money, entity.id);
+            var jm = await _userTocashServices.Tocash(_user.ID, money, entity.id);
             return jm;
         }
 
@@ -1288,11 +1290,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> CashList([FromBody] FMPageByIntId entity)
         {
-            var jm = new WebApiCallBack();
-
-            jm = await _userTocashServices.UserToCashList(_user.ID, entity.page, entity.limit, entity.id);
+            var jm = await _userTocashServices.UserToCashList(_user.ID, entity.page, entity.limit, entity.id);
             return jm;
-
         }
 
         #endregion
@@ -1480,11 +1479,8 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> GoodsCollection([FromBody] FMIntId entity)
         {
-            var jm = new WebApiCallBack();
-
-            jm = await _goodsCollectionServices.ToAdd(_user.ID, entity.id);
+            var jm = await _goodsCollectionServices.ToAdd(_user.ID, entity.id);
             return jm;
-
         }
 
         #endregion
@@ -1739,12 +1735,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         [Authorize]
         public async Task<WebApiCallBack> GetMyInvite()
         {
-            var jm = await _userServices.GetMyInvite(_user.ID);
-
-            var first = await _userServices.QueryChildCountAsync(_user.ID, 1);
-            var second = await _userServices.QueryChildCountAsync(_user.ID, 2);
-
-            return jm;
+            return await _userServices.GetMyInvite(_user.ID);
         }
 
         #endregion
@@ -1762,7 +1753,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         {
             var jm = new WebApiCallBack();
 
-            var first = await _userServices.QueryChildCountAsync(_user.ID, 1);
+            var first = await _userServices.QueryChildCountAsync(_user.ID);
             var second = await _userServices.QueryChildCountAsync(_user.ID, 2);
 
             var monthFirst = await _userServices.QueryChildCountAsync(_user.ID, 1, true);
