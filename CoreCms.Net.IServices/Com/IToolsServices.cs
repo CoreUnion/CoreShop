@@ -11,8 +11,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CoreCms.Net.Configuration;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Options;
+using CoreCms.Net.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Http;
 
 namespace CoreCms.Net.IServices
@@ -37,13 +39,12 @@ namespace CoreCms.Net.IServices
         /// <returns></returns>
         Task<bool> IllegalWordsContainsAny(string oldString);
 
-
         #region FIle文件上传处理
         /// <summary>
         /// 本地上传（File）
         /// </summary>
         /// <returns></returns>
-        Task<string> UpLoadFileForLocalStorage(FilesStorageOptions options, string fileExt, IFormFile file);
+        Task<string> UpLoadFileForLocalStorage(FilesStorageOptions options, string fileExt, IFormFile file, int filesStorageLocation = (int)GlobalEnumVars.FilesStorageLocation.Admin);
 
         /// <summary>
         /// AliYunOSS-阿里云上传方法（File）
@@ -70,7 +71,7 @@ namespace CoreCms.Net.IServices
         /// 本地上传（Base64）
         /// </summary>
         /// <returns></returns>
-        string UpLoadBase64ForLocalStorage(FilesStorageOptions options, MemoryStream memStream);
+        string UpLoadBase64ForLocalStorage(FilesStorageOptions options, MemoryStream memStream, int filesStorageLocation = (int)GlobalEnumVars.FilesStorageLocation.Admin);
 
         /// <summary>
         /// AliYunOSS-阿里云上传方法（Base64）
