@@ -537,7 +537,7 @@
                                     <div class="layui-form coreshop-form">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">{{d.data.configs['filesStorageType']['sKey']}}：</label>
-                                            <div class="layui-input-inline layui-inline-7">
+                                            <div class="layui-input-inline layui-inline-12">
                                                 {{# layui.each(d.data.filesStorageOptionsType, function(index, item){ }}
                                                 <input type="radio" name="filesStorageType" value="{{ item.title }}" lay-filter="filesStorageType" title="{{ item.description }}" {{d.data.configs['filesStorageType']['sValue']=== item.title ? 'checked':''}}>
                                                 {{# }); }}
