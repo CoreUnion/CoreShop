@@ -146,19 +146,19 @@
             }
             // #endif
         },
-        watch: {
-            'hasLogin': {
-                handler(newVal) {
-                    console.log(newVal);
-                    if (newVal == false) {
-                        console.log("watch监听");
-                        this.doToken();
-                    }
-                },
-                deep: true,
-                immediate: true,
-            }
-        },
+        //watch: {
+        //    'hasLogin': {
+        //        handler(newVal) {
+        //            console.log(newVal);
+        //            if (newVal == false) {
+        //                console.log("watch监听");
+        //                this.doToken();
+        //            }
+        //        },
+        //        deep: true,
+        //        immediate: true,
+        //    }
+        //},
         methods: {
             doToken() {
                 const _this = this

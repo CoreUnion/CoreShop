@@ -310,12 +310,14 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             }
 
             var bl = !string.IsNullOrEmpty(url);
+            jm.status = bl;
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "上传成功!" : "上传失败";
             jm.data = new
             {
                 fileUrl = url,
-                src = url
+                src = url,
+                imageId = url
             };
 
             return jm;
