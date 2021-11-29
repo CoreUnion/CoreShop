@@ -44,6 +44,7 @@ namespace CoreCms.Net.Services
         private readonly IWebHostEnvironment _webHostEnvironment;
 
 
+
         public ToolsServices(IWebHostEnvironment hostEnvironment, IWebHostEnvironment webHostEnvironment)
         {
             _hostEnvironment = hostEnvironment;
@@ -112,16 +113,17 @@ namespace CoreCms.Net.Services
         }
 
 
-
         #region 本地上传方法(File)
+
         /// <summary>
         /// 本地上传方法(File)
         /// </summary>
         /// <param name="options"></param>
         /// <param name="fileExt"></param>
         /// <param name="file"></param>
+        /// <param name="filesStorageLocation"></param>
         /// <returns></returns>
-        public async Task<string> UpLoadFileForLocalStorage(FilesStorageOptions options, string fileExt, IFormFile file)
+        public async Task<string> UpLoadFileForLocalStorage(FilesStorageOptions options, string fileExt, IFormFile file, int filesStorageLocation = (int)GlobalEnumVars.FilesStorageLocation.Admin)
         {
 
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
@@ -133,7 +135,15 @@ namespace CoreCms.Net.Services
             var filePath = dirPath + newFileName;
             var fileUrl = saveUrl + newFileName;
 
-            string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+            string bucketBindDomain = string.Empty;
+            if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.Admin)
+            {
+                bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+            }
+            else if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.API)
+            {
+                bucketBindDomain = AppSettingsConstVars.AppConfigAppInterFaceUrl;
+            }
 
             await using (var fs = System.IO.File.Create(filePath))
             {
@@ -277,13 +287,15 @@ namespace CoreCms.Net.Services
 
 
         #region 本地上传方法(Base64)
+
         /// <summary>
         /// 本地上传方法(Base64)
         /// </summary>
         /// <param name="options"></param>
         /// <param name="memStream"></param>
+        /// <param name="filesStorageLocation"></param>
         /// <returns></returns>
-        public string UpLoadBase64ForLocalStorage(FilesStorageOptions options, MemoryStream memStream)
+        public string UpLoadBase64ForLocalStorage(FilesStorageOptions options, MemoryStream memStream, int filesStorageLocation = (int)GlobalEnumVars.FilesStorageLocation.Admin)
         {
             var jm = new AdminUiCallBack();
 
@@ -295,7 +307,16 @@ namespace CoreCms.Net.Services
 
             var saveUrl = options.Path + today + "/";
             var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
-            string bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+
+            string bucketBindDomain = string.Empty;
+            if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.Admin)
+            {
+                bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+            }
+            else if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.API)
+            {
+                bucketBindDomain = AppSettingsConstVars.AppConfigAppInterFaceUrl;
+            }
 
             if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
             var filePath = dirPath + newFileName;

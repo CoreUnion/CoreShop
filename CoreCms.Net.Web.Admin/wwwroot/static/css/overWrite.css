@@ -68,7 +68,6 @@ a {
 /*tab切换标题显示字体大小*/
 .layui-tab-title li {
   font-size: 13px;
-  width: 100px;
 }
 /*带标题的栅格线*/
 .layui-elem-field legend {

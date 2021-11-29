@@ -294,7 +294,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             string url = string.Empty;
             if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
             {
-                url = await _toolsServices.UpLoadFileForLocalStorage(filesStorageOptions, fileExt, file);
+                url = await _toolsServices.UpLoadFileForLocalStorage(filesStorageOptions, fileExt, file, (int)GlobalEnumVars.FilesStorageLocation.API);
             }
             else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.AliYunOSS.ToString())
             {

@@ -109,6 +109,18 @@ namespace CoreCms.Net.Configuration
             QiNiuKoDo = 3,
         }
 
+
+        /// <summary>
+        /// 本地存储位置
+        /// </summary>
+        public enum FilesStorageLocation
+        {
+            [Description("后端")]
+            Admin = 0,
+            [Description("API接口端")]
+            API = 1
+        }
+
         #endregion
 
         #region User用户相关===========================================================================
