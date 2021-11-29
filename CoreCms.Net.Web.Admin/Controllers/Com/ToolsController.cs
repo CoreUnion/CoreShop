@@ -274,12 +274,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var newPassWord = CommonHelper.Md5For32(entity.password);
 
             var userModel = await _sysUserServices.QueryByIdAsync(_user.ID);
-            if (userModel.passWord != oldPassWord)
+            if (userModel.passWord.ToUpperInvariant() != oldPassWord)
             {
                 jm.msg = "旧密码输入错误";
                 return jm;
             }
-            else if (userModel.passWord == newPassWord)
+            else if (userModel.passWord.ToUpperInvariant() == newPassWord)
             {
                 jm.msg = "新旧密码一致，无需修改，请设置与旧密码不同的新密码";
                 return jm;

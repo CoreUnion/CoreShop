@@ -269,7 +269,7 @@
         </view>
 
 
-        <u-popup class="coreshop-bottom-popup-box"  v-model="bottomModal" mode="bottom">
+        <u-popup class="coreshop-bottom-popup-box"  v-model="bottomModal" mode="bottom" height="60%">
             <view class="radius coreshop-bg-white">
                 <!--标题-->
                 <view class="coreshop-text-black u-text-center u-margin-top-30 u-margin-bottom-30 u-font-lg coreshop-title-bar">

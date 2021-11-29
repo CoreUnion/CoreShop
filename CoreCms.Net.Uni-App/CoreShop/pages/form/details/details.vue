@@ -223,7 +223,7 @@
         </form>
 
         <!--弹出框-->
-        <u-popup class="coreshop-bottom-popup-box" v-model="bottomModal" mode="bottom"  border-radius="14" closeable="true">
+        <u-popup class="coreshop-bottom-popup-box" v-model="bottomModal" mode="bottom"  border-radius="14" closeable="true" height="60%">
             <!-- 多规格商品弹出 -->
             <block v-if="showSpecs">
                 <view class="coreshop-bg-white">
