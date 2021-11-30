@@ -186,8 +186,13 @@ namespace CoreCms.Net.Auth.Policys
                         return;
                     }
                 }
+                else
+                {
+                    context.Fail();
+                    return;
+                }
                 //判断没有登录时，是否访问登录的url,并且是Post请求，并且是form表单提交类型，否则为失败
-                if (!questUrl.Equals(requirement.LoginPath.ToLower(), StringComparison.Ordinal) && (!httpContext.Request.Method.Equals("POST") || !httpContext.Request.HasFormContentType))
+                if (!questUrl.Equals(requirement.LoginPath.ToLower(), StringComparison.Ordinal) && (!httpContext.Request.Method.Equals("POST") || !httpContext.Request.HasJsonContentType()))
                 {
                     context.Fail();
                     return;
