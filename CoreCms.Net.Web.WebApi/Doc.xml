@@ -181,7 +181,7 @@
             通用调用接口数据
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.#ctor(CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsAreaServices,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsServiceDescriptionServices,CoreCms.Net.IServices.ICoreCmsSettingServices)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CommonController.#ctor(CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsAreaServices,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsServiceDescriptionServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.IToolsServices)">
             <summary>
             构造函数
             </summary>
@@ -818,6 +818,12 @@
         <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetOrderPageByMerchant(CoreCms.Net.Model.ViewModels.DTO.GetOrderPageByMerchantPost)">
             <summary>
             获取个人订单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.StoreController.GetOrderPageByMerchantSearch(CoreCms.Net.Model.ViewModels.DTO.GetOrderPageByMerchantSearcgPost)">
+            <summary>
+            搜索订单
             </summary>
             <returns></returns>
         </member>
