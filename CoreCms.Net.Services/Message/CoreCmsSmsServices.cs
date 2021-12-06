@@ -225,7 +225,111 @@ namespace CoreCms.Net.Services
             {
                 isUsed = true;
             }
-            var str = SmsHelper.GetTemp(code, parameters);
+
+
+            var str = string.Empty;
+            var allConfigs = await _settingServices.GetConfigDictionaries();
+
+            if (code == GlobalEnumVars.SmsMessageTypes.Reg.ToString())
+            {
+                // 账户注册
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForReg);
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    var sendCode = string.Empty;
+                    if (parameters.ContainsKey("code"))
+                    {
+                        sendCode = parameters["code"]?.ToString();
+                    }
+                    str = msg.Replace("{code}", sendCode);
+                }
+            }
+            else if (code == GlobalEnumVars.SmsMessageTypes.Login.ToString())
+            {
+                // 账户登录
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForLogin);
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    var sendCode = string.Empty;
+                    if (parameters.ContainsKey("code"))
+                    {
+                        sendCode = parameters["code"]?.ToString();
+                    }
+                    str = msg.Replace("{code}", sendCode);
+                }
+            }
+            else if (code == GlobalEnumVars.SmsMessageTypes.Veri.ToString())
+            {
+                // 验证验证码
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForVeri);
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    var sendCode = string.Empty;
+                    if (parameters.ContainsKey("code"))
+                    {
+                        sendCode = parameters["code"]?.ToString();
+                    }
+                    str = msg.Replace("{code}", sendCode);
+                }
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.CreateOrder.ToString())
+            {
+                // 订单创建
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForCreateOrder);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.OrderPayed.ToString())
+            {
+                // 订单支付通知买家
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForOrderPayed);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.RemindOrderPay.ToString())
+            {
+                // 未支付催单
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForRemindOrderPay);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.DeliveryNotice.ToString())
+            {
+                // 订单发货
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForDeliveryNotice);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.AfterSalesPass.ToString())
+            {
+                // 售后审核通过
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForAfterSalesPass);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.RefundSuccess.ToString())
+            {
+                // 退款已处理
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForRefundSuccess);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.SellerOrderNotice.ToString())
+            {
+                // 订单支付通知卖家
+                var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForSellerOrderNotice);
+                str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+            }
+            else if (code == GlobalEnumVars.PlatformMessageTypes.Common.ToString())
+            {
+                //通用类型
+                var tpl = string.Empty;
+                if (parameters.ContainsKey("tpl"))
+                {
+                    tpl = parameters["tpl"]?.ToString();
+                }
+                str = tpl;
+                if (!string.IsNullOrEmpty(str))
+                {
+                    var msg = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.SmsTplForCommon);
+                    str = !string.IsNullOrEmpty(msg) ? msg : string.Empty;
+                }
+            }
+
             if (string.IsNullOrEmpty(str))
             {
                 jm.msg = GlobalErrorCodeVars.Code10009;

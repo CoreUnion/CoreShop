@@ -234,10 +234,18 @@ namespace CoreCms.Net.Services
                     iData.gradeId = disGradeModel.id;
                 }
             }
-            if (iData.verifyStatus == 0)
+
+            var allConfigs = await _settingServices.GetConfigDictionaries();
+            var distributionType = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.DistributionType).ObjectToInt(0);
+            if (distributionType == (int)GlobalEnumVars.DistributionConditionType.NoReview)
+            {
+                iData.verifyStatus = (int)GlobalEnumVars.DistributionVerifyStatus.VerifyYes;
+            }
+            else
             {
                 iData.verifyStatus = (int)GlobalEnumVars.DistributionVerifyStatus.VerifyWait;
             }
+
             iData.isDelete = false;
             iData.createTime = DateTime.Now;
 

@@ -2264,6 +2264,29 @@ namespace CoreCms.Net.Configuration
             COMMISSION_TYPE_FIXED = 2,
         }
 
+        /// <summary>
+        /// 成为分销商条件
+        /// </summary>
+        public enum DistributionConditionType
+        {
+
+            /// <summary>
+            /// 无条件（需审核）
+            /// </summary>
+            [Description("无条件（需审核）")]
+            Unconditional = 1,
+            /// <summary>
+            /// 申请（需审核）
+            /// </summary>
+            [Description("申请（需审核）")]
+            Apply = 2,
+            /// <summary>
+            /// 无需审核
+            /// </summary>
+            [Description("无需审核")]
+            NoReview = 3,
+        }
+
         #endregion
 
         #region 快递100api接口相关===================

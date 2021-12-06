@@ -1,47 +1,47 @@
 <template>
     <view>
         <block v-for="(item,index) in coreshopdata" :key="index">
-            <!--ËÑË÷£¨ÐÞ¸´£©-->
+            <!--æœç´¢ï¼ˆä¿®å¤ï¼‰-->
             <coreshopsearch :coreshopdata="item" v-if="item.widgetCode=='search' "></coreshopsearch>
-            <!--ÇÐ»»-->
+            <!--åˆ‡æ¢-->
             <coreshoptabbar :coreshopdata="item" v-if="item.widgetCode=='tabBar' "></coreshoptabbar>
-            <!--¹«¸æ£¨ÐÞ¸´£©-->
+            <!--å…¬å‘Šï¼ˆä¿®å¤ï¼‰-->
             <coreshopnotice :coreshopdata="item" v-if="item.widgetCode=='notice' "></coreshopnotice>
-            <!--Í¼Æ¬ÂÖ²¥£¨ÐÞ¸´£©-->
+            <!--å›¾ç‰‡è½®æ’­ï¼ˆä¿®å¤ï¼‰-->
             <coreshopimgSlide :coreshopdata="item" v-if="item.widgetCode=='imgSlide' "></coreshopimgSlide>
-            <!--ÓÅ»ÝÈ¯£¨ÐÞ¸´£©-->
+            <!--ä¼˜æƒ åˆ¸ï¼ˆä¿®å¤ï¼‰-->
             <coreshopcoupon :coreshopdata="item" v-if="item.widgetCode=='coupon' "></coreshopcoupon>
-            <!--¿Õ¸ñ£¨ÐÞ¸´£©-->
+            <!--ç©ºæ ¼ï¼ˆä¿®å¤ï¼‰-->
             <coreshopblank :coreshopdata="item" v-if="item.widgetCode=='blank' "></coreshopblank>
-            <!--¶àÐÐÎÄ±¾ÊäÈëÇø£¨ÐÞ¸´£©-->
+            <!--å¤šè¡Œæ–‡æœ¬è¾“å…¥åŒºï¼ˆä¿®å¤ï¼‰-->
             <coreshoptextarea :coreshopdata="item" v-if="item.widgetCode=='textarea' "></coreshoptextarea>
-            <!--ÊÓÆµ£¨ÐÞ¸´£©-->
+            <!--è§†é¢‘ï¼ˆä¿®å¤ï¼‰-->
             <coreshopvideo :coreshopdata="item" v-if="item.widgetCode=='video' "></coreshopvideo>
-            <!--Í¼Æ¬¼¯£¨ÐÞ¸´£©-->
+            <!--å›¾ç‰‡é›†ï¼ˆä¿®å¤ï¼‰-->
             <coreshopimgWindow :coreshopdata="item" v-if="item.widgetCode=='imgWindow' "></coreshopimgWindow>
-            <!--Í¼Æ¬--£¨ÐÞ¸´£©-->
+            <!--å›¾ç‰‡--ï¼ˆä¿®å¤ï¼‰-->
             <coreshopimgSingle :coreshopdata="item" v-if="item.widgetCode=='imgSingle' "></coreshopimgSingle>
-            <!--ÉÌÆ·£¨ÐÞ¸´£©-->
+            <!--å•†å“ï¼ˆä¿®å¤ï¼‰-->
             <coreshopgoods :coreshopdata="item" v-if="item.widgetCode=='goods' "></coreshopgoods>
-            <!--ÉÌÆ·Ñ¡Ïî¿¨£¨ÐÞ¸´£©-->
+            <!--å•†å“é€‰é¡¹å¡ï¼ˆä¿®å¤ï¼‰-->
             <coreshopgoodTabBar :coreshopdata="item" v-if="item.widgetCode=='goodTabBar' "></coreshopgoodTabBar>
-            <!--ÎÄÕÂ£¨ÐÞ¸´£©-->
+            <!--æ–‡ç« ï¼ˆä¿®å¤ï¼‰-->
             <coreshoparticle :coreshopdata="item" v-if="item.widgetCode=='article' "></coreshoparticle>
-            <!--ÎÄÕÂ·ÖÀà£¨ÐÞ¸´£©-->
+            <!--æ–‡ç« åˆ†ç±»ï¼ˆä¿®å¤ï¼‰-->
             <coreshoparticleClassify :coreshopdata="item" v-if="item.widgetCode=='articleClassify' "></coreshoparticleClassify>
-            <!--¹¬¸ñ×Ô¶¨Òåµ¼º½£¨ÐÞ¸´£©-->
+            <!--å®«æ ¼è‡ªå®šä¹‰å¯¼èˆªï¼ˆä¿®å¤ï¼‰-->
             <coreshopnavBar :coreshopdata="item" v-if="item.widgetCode=='navBar' "></coreshopnavBar>
-            <!--ÍÅ¹º£¨ÐÞ¸´£©-->
+            <!--å›¢è´­ï¼ˆä¿®å¤ï¼‰-->
             <coreshopgroupPurchase :coreshopdata="item" v-if="item.widgetCode=='groupPurchase' "></coreshopgroupPurchase>
-            <!--ä¯ÀÀ¼ÇÂ¼£¨ÐÞ¸´£©-->
+            <!--æµè§ˆè®°å½•ï¼ˆä¿®å¤ï¼‰-->
             <coreshoprecord :coreshopdata="item" v-if="item.widgetCode=='record' "></coreshoprecord>
-            <!--Æ´ÍÅ£¨ÐÞ¸´£©-->
+            <!--æ‹¼å›¢ï¼ˆä¿®å¤ï¼‰-->
             <coreshoppinTuan :coreshopdata="item" v-if="item.widgetCode=='pinTuan' "></coreshoppinTuan>
-            <!--·þÎñ£¨ÐÞ¸´£©-->
+            <!--æœåŠ¡ï¼ˆä¿®å¤ï¼‰-->
             <coreshopservice :coreshopdata="item" v-if="item.widgetCode=='service' "></coreshopservice>
-            <!--µ¯´°¹ã¸æ-->
+            <!--å¼¹çª—å¹¿å‘Š-->
             <coreshopadpop :coreshopdata="item" v-if="item.widgetCode=='adpop' "></coreshopadpop>
-            <!--ÎÄ±¾ÄÚÈÝ£¨ÐÞ¸´£©-->
+            <!--æ–‡æœ¬å†…å®¹ï¼ˆä¿®å¤ï¼‰-->
             <coreshopContent :coreshopdata="item" v-if="item.widgetCode=='content' "></coreshopContent>
         </block>
     </view>

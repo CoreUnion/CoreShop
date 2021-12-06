@@ -24,6 +24,7 @@ using CoreCms.Net.Model.Entities.Expression;
 using CoreCms.Net.Model.FromBody;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
+using CoreCms.Net.Utility.Extensions;
 using CoreCms.Net.Utility.Helper;
 using Newtonsoft.Json;
 using SqlSugar;
@@ -454,7 +455,7 @@ namespace CoreCms.Net.Services
                     goodId = "",
                     num = 0,
                 });
-                if (obj.goodId == goodId.ToString()) return false;
+                if (obj.goodId.ObjectToInt(0) != goodId) return false;
                 promotionsModel = promotions;
                 return true;
             }
