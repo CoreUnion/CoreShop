@@ -539,6 +539,61 @@ namespace CoreCms.Net.Configuration
         public const string SmsSignature = "smsSignature";
 
 
+        /// <summary>
+        /// 账户注册-短信内容模板
+        /// </summary>
+        public const string SmsTplForReg = "smsTplForReg";
+
+        /// <summary>
+        /// 账户登录-短信内容模板
+        /// </summary>
+        public const string SmsTplForLogin = "smsTplForLogin";
+
+        /// <summary>
+        /// 验证验证码-短信内容模板
+        /// </summary>
+        public const string SmsTplForVeri = "smsTplForVeri";
+
+        /// <summary>
+        /// 下单成功时-短信内容模板
+        /// </summary>
+        public const string SmsTplForCreateOrder = "smsTplForCreateOrder";
+
+        /// <summary>
+        /// 订单支付成功时-短信内容模板
+        /// </summary>
+        public const string SmsTplForOrderPayed = "smsTplForOrderPayed";
+
+        /// <summary>
+        /// 订单催付提醒-短信内容模板
+        /// </summary>
+        public const string SmsTplForRemindOrderPay = "smsTplForRemindOrderPay";
+
+        /// <summary>
+        /// 订单发货通知-短信内容模板
+        /// </summary>
+        public const string SmsTplForDeliveryNotice = "smsTplForDeliveryNotice";
+
+        /// <summary>
+        /// 售后确认通过-短信内容模板
+        /// </summary>
+        public const string SmsTplForAfterSalesPass = "smsTplForAfterSalesPass";
+
+        /// <summary>
+        /// 用户退款成功通知-短信内容模板
+        /// </summary>
+        public const string SmsTplForRefundSuccess = "smsTplForRefundSuccess";
+
+        /// <summary>
+        /// 订单付款成功平台通知-短信内容模板
+        /// </summary>
+        public const string SmsTplForSellerOrderNotice = "smsTplForSellerOrderNotice";
+
+        /// <summary>
+        /// 通用类型-短信内容模板
+        /// </summary>
+        public const string SmsTplForCommon = "smsTplForCommon";
+
         //网络打印机============================================================================
         /// <summary>
         /// 是否开启

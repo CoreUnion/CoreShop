@@ -31,7 +31,7 @@ namespace CoreCms.Net.Services
     {
         private readonly ICoreCmsPromotionResultRepository _dal;
 
-        private ICoreCmsPromotionConditionServices _promotionConditionServices;
+        private readonly ICoreCmsPromotionConditionServices _promotionConditionServices;
 
 
         private readonly IUnitOfWork _unitOfWork;
@@ -156,7 +156,7 @@ namespace CoreCms.Net.Services
             {
                 case (int)GlobalEnumVars.PromotionType.Promotion:
                     //总促销修改
-                    cart.orderPromotionMoney = cart.orderPromotionMoney + (decimal)parameters["money"];
+                    cart.orderPromotionMoney += (decimal)parameters["money"];
                     //设置促销列表
                     if (cart.promotionList.ContainsKey(promotionInfo.id))
                     {
@@ -171,7 +171,7 @@ namespace CoreCms.Net.Services
 
                 case (int)GlobalEnumVars.PromotionType.Coupon:
                     //优惠券促销金额
-                    cart.couponPromotionMoney = cart.couponPromotionMoney + (decimal)parameters["money"];
+                    cart.couponPromotionMoney += (decimal)parameters["money"];
                     break;
             }
             return true;
@@ -190,7 +190,7 @@ namespace CoreCms.Net.Services
             //var objDiscount = Convert.ToInt32(parameters["discount"]);
 
             if (!parameters.ContainsKey("discount")) return true;
-            var objDiscount = parameters["discount"].ObjectToInt(0);
+            var objDiscount = parameters["discount"].ObjectToDecimal(0);
 
             //判断参数是否设置的正确
             if (objDiscount >= 10 || objDiscount <= 0)
@@ -264,7 +264,7 @@ namespace CoreCms.Net.Services
         public decimal result_GOODS_DISCOUNT(JObject parameters, CartProducts cartProducts, CoreCmsPromotion promotionInfo)
         {
             if (!parameters.ContainsKey("discount")) return 0;
-            var objDiscount = parameters["discount"].ObjectToInt(0);
+            var objDiscount = parameters["discount"].ObjectToDecimal(0);
 
             decimal promotionMoney = 0;
             decimal goodsPrice = cartProducts.products.price;

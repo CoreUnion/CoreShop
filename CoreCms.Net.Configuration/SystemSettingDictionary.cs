@@ -194,6 +194,19 @@ namespace CoreCms.Net.Configuration
 
             di.Add(SystemSettingConstVars.FilesStorageQiNiuBucketName, new DictionaryKeyValues() { sKey = "七牛云桶名称", sValue = "CoreShop" });
 
+            //短信发送内容模板
+            di.Add(SystemSettingConstVars.SmsTplForReg, new DictionaryKeyValues() { sKey = "账户注册", sValue = "您正在注册账号，验证码是{code}，请勿告诉他人。" });
+            di.Add(SystemSettingConstVars.SmsTplForLogin, new DictionaryKeyValues() { sKey = "账户登录", sValue = "您正在登陆账号，验证码是{code}，请勿告诉他人。" });
+            di.Add(SystemSettingConstVars.SmsTplForVeri, new DictionaryKeyValues() { sKey = "验证验证码", sValue = "您的验证码是{code}，请勿告诉他人。" });
+            di.Add(SystemSettingConstVars.SmsTplForCreateOrder, new DictionaryKeyValues() { sKey = "下单成功时", sValue = "恭喜您，订单创建成功，祝您购物愉快。" });
+            di.Add(SystemSettingConstVars.SmsTplForOrderPayed, new DictionaryKeyValues() { sKey = "订单支付成功时", sValue = "恭喜您，订单支付成功，祝您购物愉快。" });
+            di.Add(SystemSettingConstVars.SmsTplForRemindOrderPay, new DictionaryKeyValues() { sKey = "订单催付提醒", sValue = "您的订单还有1个小时就要取消了，请及时进行支付。" });
+            di.Add(SystemSettingConstVars.SmsTplForDeliveryNotice, new DictionaryKeyValues() { sKey = "订单发货通知", sValue = "您好，您的订单已经发货。" });
+            di.Add(SystemSettingConstVars.SmsTplForAfterSalesPass, new DictionaryKeyValues() { sKey = "售后确认通过", sValue = "您好，您的售后已经通过。" });
+            di.Add(SystemSettingConstVars.SmsTplForRefundSuccess, new DictionaryKeyValues() { sKey = "用户退款成功通知", sValue = "用户您好，您的退款已经处理，请确认。" });
+            di.Add(SystemSettingConstVars.SmsTplForSellerOrderNotice, new DictionaryKeyValues() { sKey = "订单付款成功平台通知", sValue = "您有新的订单了，请及时处理。" });
+            di.Add(SystemSettingConstVars.SmsTplForCommon, new DictionaryKeyValues() { sKey = "通用类型", sValue = "欢迎您访问我们的微信小程序，有问题请联系客服。" });
+
 
             return di;
         }

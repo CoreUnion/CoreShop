@@ -144,7 +144,7 @@ namespace CoreCms.Net.Services
 
             //查询获取几级返利
             var user = await _userServices.QueryByClauseAsync(p => p.id == order.userId);
-            if (user != null && user.parentId > 0)
+            if (user is { parentId: > 0 })
             {
                 //获取购物明细
                 var orderItems = await _orderItemServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
