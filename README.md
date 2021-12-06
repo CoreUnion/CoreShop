@@ -29,6 +29,11 @@ QQ群：70494974
 
 [![](https://img.shields.io/badge/点击访问官方网站-coreshop.cn-brightgreen)](https://www.coreshop.cn/)  [![](https://img.shields.io/badge/点击加QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
 
+<p align="center">
+    <img alt="wechat" src="http://files.cdn.coreshop.cn/wechat.png" width="400" style="margin-bottom: 10px;">
+</p>
+
+
 ------------------------------------------------------------------------
 
 </div>
