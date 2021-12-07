@@ -276,7 +276,7 @@ namespace CoreCms.Net.Services
             }
             else if (type == "group" || type == "skill")
             {
-                if (!goodsServices.IsInGroup(productModel.goodsId, out var groupModel))
+                if (!goodsServices.IsInGroup(productModel.goodsId, out var groupModel, groupId))
                 {
                     return null;
                 }

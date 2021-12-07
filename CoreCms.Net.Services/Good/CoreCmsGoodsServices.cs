@@ -452,10 +452,10 @@ namespace CoreCms.Net.Services
                 if (string.IsNullOrEmpty(promotions.parameters)) return false;
                 var obj = JsonConvert.DeserializeAnonymousType(promotions.parameters, new
                 {
-                    goodId = "",
+                    goodsId = "",
                     num = 0,
                 });
-                if (obj.goodId.ObjectToInt(0) != goodId) return false;
+                if (obj.goodsId.ObjectToInt(0) != goodId) return false;
                 promotionsModel = promotions;
                 return true;
             }
