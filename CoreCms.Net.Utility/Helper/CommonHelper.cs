@@ -506,7 +506,7 @@ namespace CoreCms.Net.Utility.Helper
         /// <returns></returns>
         public static string EnPassword(string password, DateTime createTime)
         {
-            var dtStr = createTime.ToString("yyyyMMddHHmmssfff");
+            var dtStr = createTime.ToString("yyyyMMddHHmmss");
             var md5 = Md5For32(password);
             var enPwd = Md5For32(md5 + dtStr);
             return enPwd;
