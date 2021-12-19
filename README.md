@@ -112,7 +112,7 @@ QQ群：70494974
 #### 🎨 系统演示  
 
 | 微信小程序演示 | H5演示（搁置开发） | 安卓APP下载 |
-|---------------------|---------------------|
+|---------------------|---------------------|---------------------|
 | ![微信小程序演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/h5qCode.jpg)  |![安卓APP](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/android.png)  |
 
 
