@@ -27,11 +27,10 @@
 
 QQ群：70494974
 
+微信群：人已满200，请加QQ群后联系群主邀请进入微信群。
+
 [![](https://img.shields.io/badge/点击访问官方网站-coreshop.cn-brightgreen)](https://www.coreshop.cn/)  [![](https://img.shields.io/badge/点击加QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
 
-<p align="center">
-    <img alt="wechat" src="https://gitee.com/jianweie/images/raw/master/coreshop/images/wechat.png" width="400" style="margin-bottom: 10px;">
-</p>
 
 
 ------------------------------------------------------------------------
@@ -138,8 +137,8 @@ https://api.demo.coreshop.cn/doc
 
 6、定时任务面板演示地址：  
 https://api.demo.coreshop.cn/job  
-账号：coreshop  
-密码：coreshop 
+账号：CoreShop  
+密码：CoreShop 
 
 
 ### 🌈 技术选型
