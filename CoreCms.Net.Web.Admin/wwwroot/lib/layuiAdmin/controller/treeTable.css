@@ -60,9 +60,9 @@
 .ew-tree-table tr.ew-tree-table-loading > * { pointer-events: none !important; }
 
 /* 图标列 */
-.ew-tree-table .ew-tree-pack { cursor: pointer; line-height: 16px; display: inline-block; vertical-align: middle; }
+.ew-tree-table .ew-tree-pack { cursor: pointer; line-height: 16px; display: inline; vertical-align: middle; }
 
-    .ew-tree-table .ew-tree-pack > span { height: 16px; line-height: 16px; display: inline-block; vertical-align: middle; }
+    .ew-tree-table .ew-tree-pack > span { height: 16px; line-height: 16px; display: inline; vertical-align: middle; }
 
 /* 折叠行 */
 .ew-tree-table .ew-tree-tb-hide { display: none; }
