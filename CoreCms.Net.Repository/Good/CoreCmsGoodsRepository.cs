@@ -919,8 +919,8 @@ namespace CoreCms.Net.Repository
             }
             else
             {
-                var ids = DbClient.Queryable<CoreCmsGoods>().Where(p => p.isDel == false && p.isMarketable == true)
-                .Select(p => p.id).ToArray();
+                var ids = await DbClient.Queryable<CoreCmsGoods>().Where(p => p.isDel == false && p.isMarketable == true)
+                    .Select(p => p.id).ToArrayAsync();
                 var dbIds = new List<int>();
                 if (ids.Any())
                 {

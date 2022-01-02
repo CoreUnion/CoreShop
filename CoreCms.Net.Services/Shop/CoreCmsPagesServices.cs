@@ -421,7 +421,7 @@ namespace CoreCms.Net.Services
                         }
                         limit = limit > 0 ? limit : 10;
 
-                        var goods = await _goodsServices.QueryListByClauseAsync(where, limit, p => p.createTime, OrderByType.Desc, false);
+                        var goods = await _goodsServices.QueryPageAsync(where, " sort desc,id desc ", 1, limit, true);
                         if (goods != null && goods.Any())
                         {
                             JArray result = JArray.FromObject(goods);

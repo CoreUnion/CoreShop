@@ -676,11 +676,8 @@
                                 success(ress) {
                                     if (res.errMsg == "requestSubscribeMessage:ok") {
                                         console.log(ress);
-                                    } else {
-
                                     }
                                 }, fail(ress) {
-                                    _this.$u.toast(ress.errMsg);
                                     console.log(ress);
                                 }
                             });

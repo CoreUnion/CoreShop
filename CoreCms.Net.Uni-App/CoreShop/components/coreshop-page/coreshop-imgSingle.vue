@@ -137,7 +137,7 @@
 
 <style lang="scss" scoped>
     .coreshop-imgsingle { width: 100%; overflow: hidden; position: relative; margin: 20rpx 0rpx; padding: 0 15rpx;
-        .ad-img { width: 100%; float: left; position: relative; z-index: 667; }
+        .ad-img { width: 100%; float: left; }
         .ad-img:last-child { margin-bottom: 0; }
         .imgup-btn { position: absolute; z-index: 668; bottom: 80upx; left: 40upx;
             .coreshop-btn { line-height: 2; font-size: 28upx; padding: 0 50upx; border-radius: 50rpx; }

@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
+    <PackageReference Include="SqlSugar.IOC" Version="1.7.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.4.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
   </ItemGroup>
