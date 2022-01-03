@@ -607,7 +607,9 @@
                     layer.confirm('确认取消订单号：' + id + ' 的订单吗？', {
                         title: '提示', btn: ['确认', '取消'] //按钮
                     }, function () {
-                        coreHelper.Post("Api/CoreCmsOrder/CancelOrder", { id: id }, function (e) {
+                        var delidsStr = [];
+                        delidsStr.push(id);
+                        coreHelper.Post("Api/CoreCmsOrder/CancelOrder", { id: delidsStr }, function (e) {
                             layer.msg(e.msg, { time: 1300 }, function () {
                                 layui.table.reloadData('LAY-app-CoreCmsOrder-tableBox'); //重载表格
                                 doreLoadOrderCount();

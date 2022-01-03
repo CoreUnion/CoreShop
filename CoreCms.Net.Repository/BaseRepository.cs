@@ -22,7 +22,7 @@ namespace CoreCms.Net.Repository
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : class, new()
     {
         //private readonly IUnitOfWork _unitOfWork;
-        private readonly SqlSugarClient _dbBase;
+        private readonly SqlSugarScope _dbBase;
 
         protected BaseRepository(IUnitOfWork unitOfWork)
         {

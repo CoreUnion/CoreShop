@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="DotLiquid" Version="2.2.548" />
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.6" />
+    <PackageReference Include="SqlSugar.IOC" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>

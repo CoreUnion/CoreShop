@@ -77,18 +77,18 @@
                             trigger: 'blur',
                         },
                         {
-                            min: 3,
+                            min: 2,
                             max: 16,
-                            message: '昵称长度在3到16个字符',
+                            message: '昵称长度在2到16个长度',
                             trigger: ['change', 'blur'],
                         },
-                        {
-                            validator: (rule, value, callback) => {
-                                return this.$u.test.chinese(value);
-                            },
-                            message: '昵称必须为中文',
-                            trigger: ['change', 'blur'],
-                        }
+                        //{
+                        //    validator: (rule, value, callback) => {
+                        //        return this.$u.test.chinese(value);
+                        //    },
+                        //    message: '昵称必须为中文',
+                        //    trigger: ['change', 'blur'],
+                        //}
                     ],
                     sex: [
                         {
@@ -187,13 +187,22 @@
                     this.submitStatus = false;
                     return false;
                 } else {
-                    this.$u.api.editInfo({
-                        sex: sex,
-                        birthday: this.model.birthday,
-                        nickname: this.model.nickname
-                    }).then(res => {
-                        this.submitStatus = false;
-                        this.$refs.uToast.show({ title: res.msg, type: 'success', back: false })
+                    this.$refs.uForm.validate(valid => {
+                        if (valid) {
+                            console.log('验证通过');
+                            this.$u.api.editInfo({
+                                sex: sex,
+                                birthday: this.model.birthday,
+                                nickname: this.model.nickname
+                            }).then(res => {
+                                this.submitStatus = false;
+                                this.$refs.uToast.show({ title: res.msg, type: 'success', back: false })
+                            });
+                        } else {
+                            console.log('验证失败');
+                            this.submitStatus = false;
+                            this.$refs.uToast.show({ title: '验证失败，请完善信息', type: 'error' })
+                        }
                     });
                 }
             }

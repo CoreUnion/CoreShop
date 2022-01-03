@@ -552,20 +552,20 @@ namespace CoreCms.Net.Repository
                                         newDt.Add(pd);
                                     });
                                 }
-                            }
-                            else
-                            {
-                                oldPostProducts.ForEach(p =>
+                                else
                                 {
-                                    var pd = new CoreCmsProductsDistribution();
-                                    pd.createTime = DateTime.Now;
-                                    pd.productsSN = p.sn;
-                                    pd.levelOne = p.levelOne;
-                                    pd.levelTwo = p.levelTwo;
-                                    pd.levelThree = p.levelThree;
-                                    pd.productsId = p.id;
-                                    newDt.Add(pd);
-                                });
+                                    oldPostProducts.ForEach(p =>
+                                    {
+                                        var pd = new CoreCmsProductsDistribution();
+                                        pd.createTime = DateTime.Now;
+                                        pd.productsSN = p.sn;
+                                        pd.levelOne = p.levelOne;
+                                        pd.levelTwo = p.levelTwo;
+                                        pd.levelThree = p.levelThree;
+                                        pd.productsId = p.id;
+                                        newDt.Add(pd);
+                                    });
+                                }
                             }
 
                             var upOldData = await DbClient.Updateable(oldDataProducts).ExecuteCommandHasChangeAsync();
@@ -919,8 +919,8 @@ namespace CoreCms.Net.Repository
             }
             else
             {
-                var ids = DbClient.Queryable<CoreCmsGoods>().Where(p => p.isDel == false && p.isMarketable == true)
-                .Select(p => p.id).ToArray();
+                var ids = await DbClient.Queryable<CoreCmsGoods>().Where(p => p.isDel == false && p.isMarketable == true)
+                    .Select(p => p.id).ToArrayAsync();
                 var dbIds = new List<int>();
                 if (ids.Any())
                 {

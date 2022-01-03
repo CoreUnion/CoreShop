@@ -14,6 +14,7 @@ using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.Loging;
 using NLog;
 using SqlSugar;
+using SqlSugar.IOC;
 
 namespace CoreCms.Net.Repository.UnitOfWork
 {
@@ -21,19 +22,25 @@ namespace CoreCms.Net.Repository.UnitOfWork
     {
         private readonly ISqlSugarClient _sqlSugarClient;
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient)
+        //public UnitOfWork(ISqlSugarClient sqlSugarClient)
+        //{
+        //    _sqlSugarClient = sqlSugarClient;
+        //}
+
+
+        public UnitOfWork()
         {
-            _sqlSugarClient = sqlSugarClient;
+            _sqlSugarClient = DbScoped.SugarScope;
         }
 
         /// <summary>
         ///     获取DB，保证唯一性
         /// </summary>
         /// <returns></returns>
-        public SqlSugarClient GetDbClient()
+        public SqlSugarScope GetDbClient()
         {
             // 必须要as，后边会用到切换数据库操作
-            return _sqlSugarClient as SqlSugarClient;
+            return _sqlSugarClient as SqlSugarScope;
         }
 
         public void BeginTran()

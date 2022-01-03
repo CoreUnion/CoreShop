@@ -15,7 +15,6 @@ using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
-using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Model.ViewModels.DTO;
 using CoreCms.Net.Utility.Extensions;
 using Newtonsoft.Json;
@@ -31,7 +30,7 @@ namespace CoreCms.Net.Services
     {
         private readonly ICoreCmsPromotionResultRepository _dal;
 
-        private readonly ICoreCmsPromotionConditionServices _promotionConditionServices;
+        private ICoreCmsPromotionConditionServices _promotionConditionServices;
 
 
         private readonly IUnitOfWork _unitOfWork;
@@ -59,6 +58,7 @@ namespace CoreCms.Net.Services
                 //如果是订单促销就直接去判断促销条件，如果是商品促销，就循环订单明细
                 if (resultModel.sValue == "goods")
                 {
+                    var isUsed = false;
                     foreach (var item in cart.list)
                     {
                         var type = await _promotionConditionServices.goods_check(promotionInfo.id, (int)item.products.goodsId, item.nums);
@@ -67,20 +67,23 @@ namespace CoreCms.Net.Services
                             //到这里就说明此商品信息满足促销商品促销信息的条件，去计算结果
                             //注意，在明细上面，就不细分促销的种类了，都放到一个上面，在订单上面才细分
                             decimal promotionModel = 0;
-                            switch (resultInfo.code)
+                            if (isUsed == false)
                             {
-                                case "GOODS_REDUCE":
-                                    promotionModel = result_GOODS_REDUCE(parameters, item, promotionInfo);
-                                    break;
-                                case "GOODS_DISCOUNT":
-                                    promotionModel = result_GOODS_DISCOUNT(parameters, item, promotionInfo);
-                                    break;
-                                case "GOODS_ONE_PRICE":
-                                    promotionModel = result_GOODS_ONE_PRICE(parameters, item, promotionInfo);
-                                    break;
-                                default:
-                                    promotionModel = 0;
-                                    break;
+                                switch (resultInfo.code)
+                                {
+                                    case "GOODS_REDUCE":
+                                        promotionModel = result_GOODS_REDUCE(parameters, item, promotionInfo);
+                                        break;
+                                    case "GOODS_DISCOUNT":
+                                        promotionModel = result_GOODS_DISCOUNT(parameters, item, promotionInfo);
+                                        break;
+                                    case "GOODS_ONE_PRICE":
+                                        promotionModel = result_GOODS_ONE_PRICE(parameters, item, promotionInfo);
+                                        break;
+                                    default:
+                                        promotionModel = 0;
+                                        break;
+                                }
                             }
 
                             if (item.isSelect)
@@ -94,10 +97,19 @@ namespace CoreCms.Net.Services
                                         cart.amount = Math.Round(cart.amount - promotionModel, 2);
                                         break;
                                     case (int)GlobalEnumVars.PromotionType.Coupon:
-                                        //优惠券促销金额
-                                        cart.couponPromotionMoney = Math.Round(cart.couponPromotionMoney + promotionModel, 2);
-                                        //设置总的价格
-                                        cart.amount = Math.Round(cart.amount - promotionModel, 2);
+                                        if (isUsed)
+                                        {
+                                            item.products.promotionList.Remove(promotionInfo.id);
+                                        }
+                                        else
+                                        {
+                                            //优惠券促销金额
+                                            cart.couponPromotionMoney = Math.Round(cart.couponPromotionMoney + promotionModel, 2);
+                                            //设置总的价格
+                                            cart.amount = Math.Round(cart.amount - promotionModel, 2);
+                                            //跳出下级处理
+                                            isUsed = true;
+                                        }
                                         break;
                                     case (int)GlobalEnumVars.PromotionType.Group:
                                         //团购
@@ -246,7 +258,7 @@ namespace CoreCms.Net.Services
             }
             cartProducts.products.price = Math.Round(cartProducts.products.price - objMoney, 2);
             //此次商品促销一共优惠了多少钱
-            promotionMoney = Math.Round(cartProducts.nums * objMoney, 2);
+            promotionMoney = promotionInfo.type == (int)GlobalEnumVars.PromotionType.Coupon ? objMoney : Math.Round(cartProducts.nums * objMoney, 2);
             //设置商品优惠总金额
             cartProducts.products.promotionAmount = Math.Round(cartProducts.products.promotionAmount + objMoney, 2);
             //设置商品的实际销售金额（单品）
@@ -269,8 +281,9 @@ namespace CoreCms.Net.Services
             decimal promotionMoney = 0;
             decimal goodsPrice = cartProducts.products.price;
             cartProducts.products.price = Math.Round(Math.Round(Math.Round(cartProducts.products.price * objDiscount, 3) * 10, 2) / 100, 2);
-            var pmoney = Math.Round(goodsPrice - cartProducts.products.price, 2);        //单品优惠的金额
-            promotionMoney = Math.Round(cartProducts.nums * pmoney, 2);
+            //单品优惠的金额
+            var pmoney = Math.Round(goodsPrice - cartProducts.products.price, 2);
+            promotionMoney = promotionInfo.type == (int)GlobalEnumVars.PromotionType.Coupon ? pmoney : Math.Round(cartProducts.nums * pmoney, 2);
             //设置商品优惠总金额
             cartProducts.products.promotionAmount = Math.Round(cartProducts.products.promotionAmount + promotionMoney, 2);
             //设置商品的实际销售总金额
@@ -293,8 +306,9 @@ namespace CoreCms.Net.Services
             }
             var goodsPrice = (decimal)cartProducts.products.price;
             cartProducts.products.price = Math.Round(objMoney, 2);
-            var pmoney = Math.Round(goodsPrice - cartProducts.products.price, 2);        //单品优惠的金额
-            promotionMoney = Math.Round(cartProducts.nums * pmoney, 2);
+            //单品优惠的金额
+            var pmoney = Math.Round(goodsPrice - cartProducts.products.price, 2);
+            promotionMoney = promotionInfo.type == (int)GlobalEnumVars.PromotionType.Coupon ? pmoney : Math.Round(cartProducts.nums * pmoney, 2);
             //设置商品优惠总金额
             cartProducts.products.promotionAmount = Math.Round(cartProducts.products.promotionAmount + promotionMoney, 2);
             //设置商品的实际销售总金额
