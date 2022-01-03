@@ -552,20 +552,20 @@ namespace CoreCms.Net.Repository
                                         newDt.Add(pd);
                                     });
                                 }
-                            }
-                            else
-                            {
-                                oldPostProducts.ForEach(p =>
+                                else
                                 {
-                                    var pd = new CoreCmsProductsDistribution();
-                                    pd.createTime = DateTime.Now;
-                                    pd.productsSN = p.sn;
-                                    pd.levelOne = p.levelOne;
-                                    pd.levelTwo = p.levelTwo;
-                                    pd.levelThree = p.levelThree;
-                                    pd.productsId = p.id;
-                                    newDt.Add(pd);
-                                });
+                                    oldPostProducts.ForEach(p =>
+                                    {
+                                        var pd = new CoreCmsProductsDistribution();
+                                        pd.createTime = DateTime.Now;
+                                        pd.productsSN = p.sn;
+                                        pd.levelOne = p.levelOne;
+                                        pd.levelTwo = p.levelTwo;
+                                        pd.levelThree = p.levelThree;
+                                        pd.productsId = p.id;
+                                        newDt.Add(pd);
+                                    });
+                                }
                             }
 
                             var upOldData = await DbClient.Updateable(oldDataProducts).ExecuteCommandHasChangeAsync();
