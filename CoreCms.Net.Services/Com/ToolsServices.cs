@@ -268,7 +268,7 @@ namespace CoreCms.Net.Services
             // 上传策略的过期时间(单位:秒)
             putPolicy.SetExpires(3600);
             // 文件上传完毕后，在多少天后自动被删除
-            putPolicy.DeleteAfterDays = 1;
+            //putPolicy.DeleteAfterDays = 1;
             // 生成上传token
             string token = Qiniu.Util.Auth.CreateUploadToken(mac, putPolicy.ToJsonString());
 
@@ -426,7 +426,7 @@ namespace CoreCms.Net.Services
             // 上传策略的过期时间(单位:秒)
             putPolicy.SetExpires(3600);
             // 文件上传完毕后，在多少天后自动被删除
-            putPolicy.DeleteAfterDays = 1;
+            //putPolicy.DeleteAfterDays = 1;
             // 生成上传token
             string token = Qiniu.Util.Auth.CreateUploadToken(mac, putPolicy.ToJsonString());
 
