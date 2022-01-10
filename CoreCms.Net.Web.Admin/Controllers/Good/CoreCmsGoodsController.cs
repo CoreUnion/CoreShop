@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
 using SqlSugar;
+using Yitter.IdGenerator;
 
 namespace CoreCms.Net.Web.Admin.Controllers
 {
@@ -938,8 +939,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var obj = new CoreCmsProducts();
 
                     if (count == 0) obj.isDefalut = true;
-                    var sn = list.Find(p => p.name == "goods[sn]");
-                    obj.sn = sn != null ? sn.value + "_" + (count + 1) : null;
+                    //var sn = list.Find(p => p.name == "goods[sn]");
+                    obj.sn = "SN" + YitIdHelper.NextId();
                     var price = list.Find(p => p.name == "goods[price]");
                     obj.price = price != null && !string.IsNullOrEmpty(price.value)
                         ? Convert.ToDecimal(price.value)

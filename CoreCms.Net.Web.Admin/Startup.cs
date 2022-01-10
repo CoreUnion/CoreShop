@@ -26,6 +26,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Yitter.IdGenerator;
 
 namespace CoreCms.Net.Web.Admin
 {
@@ -136,6 +137,15 @@ namespace CoreCms.Net.Web.Admin
                     //设置时间格式
                     p.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                 });
+
+
+
+            // 雪花漂移算法
+            // 创建 IdGeneratorOptions 对象，请在构造函数中输入 WorkerId：
+            var options = new IdGeneratorOptions(1);
+            // 保存参数（必须的操作，否则以上设置都不能生效）：
+            YitIdHelper.SetIdGenerator(options);
+
 
         }
 

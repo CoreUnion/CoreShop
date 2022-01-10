@@ -76,6 +76,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.24" />
     <PackageReference Include="ToolGood.Words" Version="3.0.2.8" />
+    <PackageReference Include="Yitter.IdGenerator" Version="1.0.12" />
   </ItemGroup>
 
   <ItemGroup>
