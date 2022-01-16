@@ -624,8 +624,10 @@ namespace CoreCms.Net.Services
                     if (!string.IsNullOrEmpty(p.promotionList))
                     {
                         var jobj = JObject.Parse(p.promotionList);
-                        var v = jobj.Values().First();
-                        p.promotionObj = v;
+                        if (jobj.Values().Any())
+                        {
+                            p.promotionObj = jobj.Values().FirstOrDefault();
+                        }
                     }
                 });
             }

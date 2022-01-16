@@ -405,7 +405,7 @@ namespace CoreCms.Net.Services
                         var sLog = new CoreCmsStockLog
                         {
                             stockId = deliveryInfo.deliveryId,
-                            productId = item.id,
+                            productId = item.productId,
                             goodsId = item.goodsId,
                             nums = -sendNum,
                             sn = item.sn,

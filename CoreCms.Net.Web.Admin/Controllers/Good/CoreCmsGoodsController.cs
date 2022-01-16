@@ -628,11 +628,99 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (model == null)
             {
                 jm.msg = "不存在此信息";
+                jm.data = entity.id;
                 return jm;
             }
 
             jm.code = 0;
-            jm.data = model;
+
+            //获取商品分类
+            var categories = await _coreCmsGoodsCategoryServices.GetCaChe();
+            categories = categories.Where(p => p.isShow == true).ToList();
+
+            //获取用户等级
+            var userGrade = await _userGradeServices.QueryAsync();
+            //用户价格体系
+            var goodsGrades = await _goodsGradeServices.QueryListByClauseAsync(p => p.goodsId == model.id);
+            //货品信息
+            var products =
+                await _productsServices.QueryListByClauseAsync(p => p.goodsId == model.id && p.isDel == false);
+            //扩展信息
+            var categoryExtend = await _categoryExtendServices.QueryListByClauseAsync(p => p.goodsId == model.id);
+            //获取商品分销enum
+            var productsDistributionType = EnumHelper.EnumToList<GlobalEnumVars.ProductsDistributionType>();
+
+
+            //获取参数列表
+            var paramsList = await _goodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+            //获取SKU列表
+            var skuList = await _goodsTypeSpecServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+
+            //获取品牌
+            var brands = await _brandServices.QueryListByClauseAsync(p => p.id > 0 && p.isShow == true, p => p.id, OrderByType.Desc, true);
+
+
+            if (products != null && products.Any())
+            {
+                var pIds = products.Select(p => p.id).ToList();
+                if (pIds.Any())
+                {
+                    // 获取商品分销明细
+                    var pds = await _productsDistributionServices.QueryListByClauseAsync(p => pIds.Contains(p.productsId), p => p.id, OrderByType.Asc);
+                    products.ForEach(p =>
+                    {
+                        foreach (var o in pds.Where(o => o.productsId == p.id))
+                        {
+                            p.levelOne = o.levelOne;
+                            p.levelTwo = o.levelTwo;
+                            p.levelThree = o.levelThree;
+                        }
+                    });
+                    jm.otherData = pds;
+                }
+
+            }
+
+            //获取参数信息
+            var goodsTypeSpec = new List<CoreCmsGoodsTypeSpec>();
+            var goodsParams = new List<CoreCmsGoodsParams>();
+
+            //获取参数
+            if (!string.IsNullOrEmpty(model.goodsParamsIds))
+            {
+                var paramsIds = Utility.Helper.CommonHelper.StringToIntArray(model.goodsParamsIds);
+                goodsParams = await _goodsParamsServices.QueryListByClauseAsync(p => paramsIds.Contains(p.id));
+            }
+
+            //获取属性
+            if (!string.IsNullOrEmpty(model.goodsSkuIds))
+            {
+                var specIds = Utility.Helper.CommonHelper.StringToIntArray(model.goodsSkuIds);
+                var typeSpecs = await _typeSpecServices.QueryListByClauseAsync(p => specIds.Contains(p.id));
+                var typeSpecValues = await _typeSpecValueServices.QueryListByClauseAsync(p => specIds.Contains(p.specId));
+                typeSpecs.ForEach(p =>
+                {
+                    p.specValues = typeSpecValues.Where(o => o.specId == p.id).ToList();
+                });
+                goodsTypeSpec = typeSpecs;
+            }
+
+            jm.data = new
+            {
+                model,
+                categories = GoodsHelper.GetTree(categories, false),
+                brands,
+                userGrade,
+                goodsGrades,
+                products,
+                categoryExtend,
+                goodsTypeSpec,
+                goodsParams,
+                productsDistributionType,
+                paramsList,
+                skuList
+            };
+
 
             return jm;
         }
