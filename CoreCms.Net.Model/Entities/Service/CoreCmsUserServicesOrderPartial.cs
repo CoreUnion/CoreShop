@@ -32,5 +32,23 @@ namespace CoreCms.Net.Model.Entities
         [Display(Name = "状态说明")]
         [SugarColumn(IsIgnore = true)]
         public string statusStr { get; set; }
+
+
+        /// <summary>
+        ///     服务标题
+        /// </summary>
+        [Display(Name = "服务标题")]
+        [SugarColumn(IsIgnore = true)]
+        public string serviceTitle { get; set; }
+
+
+        /// <summary>
+        ///     用户昵称
+        /// </summary>
+        [Display(Name = "用户昵称")]
+        [SugarColumn(IsIgnore = true)]
+        public string userName { get; set; }
+
+
     }
 }

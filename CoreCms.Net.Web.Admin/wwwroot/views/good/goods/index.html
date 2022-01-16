@@ -118,6 +118,11 @@
                     , element = layui.element
                     , view = layui.view;
 
+                //监听行双击事件
+                table.on('rowDouble(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
+                    //查看详情
+                    doDetails(obj);
+                });
 
 
                 //重载form
@@ -255,13 +260,14 @@
                         }
                     });
                 });
-                //监听行双击事件
-                //table.on('rowDouble(LAY-app-CoreCmsGoods-tableBox)', function (obj) {
-                //});
+
+
                 //监听工具条
                 table.on('tool(LAY-app-CoreCmsGoods-tableBox)',
                     function (obj) {
-                        if (obj.event === 'del') {
+                        if (obj.event === 'detail') {
+                            doDetails(obj);
+                        } else if (obj.event === 'del') {
                             doDelete(obj);
                         } else if (obj.event === 'edit') {
                             doEdit(obj)
@@ -421,6 +427,32 @@
                         }
                     });
                 }
+
+                //执行预览操作
+                function doDetails(obj) {
+                    console.log(obj);
+                    coreHelper.Post("Api/CoreCmsGoods/GetDetails", { id: obj.data.id }, function (e) {
+                        if (e.code === 0) {
+                            admin.popup({
+                                shadeClose: false,
+                                title: '查看详情',
+                                area: ['95%', '95%'],
+                                id: 'LAY-popup-CoreCmsGoods-details',
+                                success: function (layero, index) {
+                                    view(this.id).render('good/goods/details', { data: e.data }).done(function () {
+                                        form.render();
+                                    });
+                                    // 禁止弹窗出现滚动条
+                                    //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                                }
+                            });
+                        } else {
+                            layer.msg(e.msg);
+                        }
+                    });
+                }
+
+
                 //删除商品
                 function delGoods(delidsStr) {
                     layer.confirm('确定删除吗？删除后将无法恢复。',

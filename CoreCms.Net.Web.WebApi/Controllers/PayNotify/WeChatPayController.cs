@@ -65,11 +65,12 @@ namespace CoreCms.Net.Web.WebApi.Controllers.PayNotify
                     await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.WeChatPayNotice, JsonConvert.SerializeObject(notify));
                     return WeChatPayNotifyResult.Success;
                 }
+                NLogUtil.WriteAll(LogLevel.Trace, LogType.Order, "微信支付成功回调", JsonConvert.SerializeObject(notify));
                 return NoContent();
             }
             catch (Exception ex)
             {
-                NLogUtil.WriteAll(LogLevel.Trace, LogType.Refund, "微信支付成功回调", "统一下单支付结果通知", ex);
+                NLogUtil.WriteAll(LogLevel.Trace, LogType.Order, "微信支付成功回调", "统一下单支付结果通知", ex);
                 return NoContent();
             }
         }

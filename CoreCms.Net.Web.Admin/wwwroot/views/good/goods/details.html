@@ -1,0 +1,744 @@
+
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-fluid addGoods">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsGoods-editForm" id="LAY-app-CoreCmsGoods-editForm">
+
+                <div class="layui-tab layui-tab-card" style="margin: 0 0 10px 0">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">基础信息</li>
+                        <li>图集/视频</li>
+                        <li>SKU/货品设置</li>
+                        <li>参数设置</li>
+                        <li>会员折扣</li>
+                        <li>商品详情</li>
+                    </ul>
+                    <div class="layui-tab-content" style="min-height: 500px;">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品名称</label>
+                                <div class="layui-input-inline layui-inline-100 layui-form-mid">{{d.params.data.model.name }}</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="goodsCategoryId" class="layui-form-label">商品分类</label>
+                                <div class="layui-input-inline layui-inline-6">
+                                    <div id="goodsCategoryId_SelectCreateTree" class="ew-xmselect-tree" lay-verType="tips" lay-reqText="请选择商品分类"></div>
+                                </div>
+                                <label class="layui-form-label">扩展分类：</label>
+                                <div class="layui-input-inline layui-inline-10">
+                                    <div id="goodsCategoryIdExtend_SelectCreateTree" class="xm-select-demo"></div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="brandId" class="layui-form-label">品牌</label>
+                                <div class="layui-input-inline layui-inline-6" id="brandIdView">
+                                    <select name="goods[brandId]" id="brandId" disabled="disabled">
+                                        <option value="0">无</option>
+                                        {{# layui.each(d.params.data.brands, function(index, item){ }}
+                                        <option value="{{ item.id }}" {{item.id===d.params.data.model.brandId?'selected="selected"':''}}>{{ item.name }}</option>
+                                        {{# }); }}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品编码</label>
+                                <div class="layui-input-inline layui-inline-100 layui-form-mid">{{d.params.data.model.bn }}</div>
+
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">商品简介</label>
+                                <div class="layui-input-inline layui-inline-100 layui-form-mid">{{d.params.data.model.brief }}</div>
+                            </div>
+                            <fieldset class="layui-elem-field layui-field-title site-title"><legend><a name="compress">其他参数</a></legend></fieldset>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label">重量</label>
+                                <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.model.weight }}克</div>
+
+                                <label class="layui-form-label">单位</label>
+                                <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.model.unit }}</div>
+
+                                <label class="layui-form-label">商品排序</label>
+                                <div class="layui-input-inline layui-inline-3 layui-form-mid">{{d.params.data.model.sort }}</div>
+
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <label for="isMarketable" class="layui-form-label layui-form-required">是否上架</label>
+                                <div class="layui-input-inline layui-inline-3">
+                                    <input type="checkbox" lay-filter="switch" name="goods[isMarketable]" {{d.params.data.model.isMarketable ?'checked="checked"':'' }} id="isMarketable" lay-skin="switch" lay-text="上架|下架" disabled="disabled">
+                                </div>
+                                <label for="isNomalVirtual" class="layui-form-label layui-form-required">虚拟商品</label>
+                                <div class="layui-input-inline layui-inline-3">
+                                    <input type="checkbox" lay-filter="switch" name="goods[isNomalVirtual]" {{d.params.data.model.isNomalVirtual ?'checked="checked"':'' }} id="isNomalVirtual" lay-skin="switch" lay-text="是|否" disabled="disabled">
+                                </div>
+                                <label for="isRecommend" class="layui-form-label layui-form-required">是否推荐</label>
+                                <div class="layui-input-inline layui-inline-3">
+                                    <input type="checkbox" lay-filter="switch" name="goods[isRecommend]" {{d.params.data.model.isRecommend ?'checked="checked"':'' }} id="isRecommend" lay-skin="switch" lay-text="是|否" disabled="disabled">
+                                </div>
+                                <label for="isHot" class="layui-form-label layui-form-required">是否热门</label>
+                                <div class="layui-input-inline layui-inline-3">
+                                    <input type="checkbox" lay-filter="switch" name="goods[isHot]" {{d.params.data.model.isHot ?'checked="checked"':'' }} id="isHot" lay-skin="switch" lay-text="是|否" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <fieldset class="layui-elem-field layui-field-title site-title"><legend><a name="compress">封面图</a></legend></fieldset>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="avatarImage">封面图：</label>
+                                <div class="layui-input-inline layui-inline-12 layui-form-mid">{{d.params.data.model.image}}</div>
+                                <div class="layui-input-inline">
+                                    <div class="layui-upload">
+                                        <img class="layui-upload-img" id="viewImgBox" src="{{d.params.data.model.image || layui.setter.noImagePicUrl }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="layui-elem-field layui-field-title site-title"><legend><a name="compress">图集</a></legend></fieldset>
+
+                            <div class="layui-form-item">
+                                <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                    <div class="layui-upload-list" id="upload-more-list"></div>
+                                </blockquote>
+                            </div>
+
+                            <fieldset class="layui-elem-field layui-field-title site-title"><legend><a name="compress">媒体</a></legend></fieldset>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="video">视频：</label>
+                                <div class="layui-input-inline layui-inline-12 layui-form-mid">{{d.params.data.model.video ||'无'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <!--<blockquote class="layui-elem-quote">
+                                1、选择对应的【商品类型】，将进入多SKU货品模式。同时如果类别有参数，也将进行显示设置。<br/>
+                                2、设置多SKU后，商品本身的价格只做对外展示用，实际以进入商品详情选择不同货品为准。<br/>
+                                3、货品SKU组合属性值只支持：中文、英文、数字、大写符号，小写符号三个（-、/、.））<br/>
+                                4、货号必须为SN字母开头<br/>
+                                5、如果不设置单货品重量，将默认使用商品重量为1个单位的重量。
+                            </blockquote>-->
+
+                            <div class="layui-form-item">
+                                <label for="brandId" class="layui-form-label">佣金设置</label>
+                                <div class="layui-input-inline layui-inline-6">
+                                    {{# layui.each(d.params.data.productsDistributionType, function(index, item){ }}
+                                    <input type="radio" name="goods[productsDistributionType]" disabled="disabled" value="{{ item.value }}" title="{{ item.description }}" {{item.value===d.params.data.model.productsDistributionType?'checked="checked"':''}}>
+                                    {{# }); }}
+                                </div>
+                            </div>
+                            <!--<div class="layui-form-item">
+                                <label class="layui-form-label">开启SKU</label>
+                                <div class="layui-input-inline">
+                                    <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="openSpecBtn" lay-active="openSpecBtn" data-id="typeInfo.id" style="margin-top:5px;margin-left: 10px;">启用SKU</button>
+                                </div>
+                            </div>-->
+
+                            <div class="layui-form-item" id="goodsTypeIdViewBox" style="display: none;">
+                                <label for="goodsTypeId" class="layui-form-label">选择SKU模型</label>
+                                <div class="layui-input-inline layui-inline-10">
+                                    <div id="goodsSku_SelectCreateTree" class="xm-select-demo"></div>
+                                </div>
+                            </div>
+                            <div id="product-info">
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">参数模型选择</label>
+                                <div class="layui-input-inline layui-inline-10">
+                                    <div id="goodsParams_SelectCreateTree" class="xm-select-demo"></div>
+                                </div>
+                            </div>
+                            <div id="parametersBox">
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <blockquote class="layui-elem-quote">
+                                会员价为0时，使用默认价格。大于0时，商品实际价格=货品销售价-会员价
+                            </blockquote>
+                            <div class="layui-form-item">
+                                {{# layui.each(d.params.data.userGrade, function(index, item){ }}
+                                <label class="layui-form-label layui-form-required">{{ item.title }}</label>
+                                <div class="layui-input-inline layui-inline-3 layui-form-mid">{{getUserGradePrice(d.params.data.goodsGrades, item.id, item.value || 0)}}</div>
+                                {{# }); }}
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <div class="layui-form-item layui-form-text">
+                                <div class="layui-input-block">
+                                    {{d.params.data.model.intro}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="getSpec_tpl" type="text/html">
+    <table class="layui-table" lay-size="sm">
+        <colgroup>
+            <col width="150">
+            <col width="150">
+            <col width="150">
+            <col>
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>默认货品</th>
+                <th>图片</th>
+                <th>货号</th>
+                <th>SKU</th>
+                <th>冻结库存</th>
+                <th>重量(克)</th>
+                <th>库存</th>
+                <th><i class="required-color">*</i>销售价</th>
+                <th>成本价</th>
+                <th>市场价</th>
+                <th>一级返现</th>
+                <th>二级返现</th>
+                <th>三级返现</th>
+            </tr>
+        </thead>
+        <tbody id="productsTbody">
+            {{# layui.each(d, function(index, item){ }}
+            <tr>
+                <td>
+                    <input type="hidden" value="{{item.id}}" name="product[id][]" />
+                    <input type="hidden" value="{{item.goodsId || 0}}" name="product[goodsId][]" />
+                    <input type="checkbox" id="product[{{item.spesDesc}}][isDefalut]" name="product[isDefalut][]" title="是否默认" {{item.isDefalut? 'checked="true"':''}} value="{{item.isDefalut? '1':'0'}}" class="isdefalut" lay-filter="isdefalut" disabled="disabled">
+                </td>
+                <td class="spec-td">
+                    <div class="spec_image">
+                        <div class="spec_image_item">
+                            <!--<div class="del-img">
+                                x
+                            </div>-->
+                            <img src="{{ item.images && item.images !='null'? item.images : layui.setter.noImagePicUrl }}" id="productImagesSrc" style="width:60px;height:60px">
+                        </div>
+                        <input type="hidden" id="productImagesInput" name="product[images][]" value="{{item.images}}">
+                    </div>
+                </td>
+                <td>
+                    {{item.sn}}
+                </td>
+                <td>
+                    {{item.spesDesc}}
+                </td>
+                <td>
+                    {{item.freezeStock}}
+                </td>
+                <td>
+                    {{item.weight}}
+                </td>
+
+                <td class="have-add-td">
+                    {{item.stock}}
+                </td>
+                <td>
+                    {{item.price}}
+                </td>
+                <td>
+                    {{item.costprice}}
+                </td>
+                <td>
+                    {{item.mktprice}}
+                </td>
+                <td>
+                    {{item.levelOne}}
+                </td>
+                <td>
+                    {{item.levelTwo}}
+                </td>
+                <td>
+                    {{item.levelThree}}
+                </td>
+            </tr>
+            {{# }); }}
+        </tbody>
+    </table>
+</script>
+
+
+<script id="params_tpl" type="text/html">
+
+    {{# if(d.goodsParams){ }}
+    <blockquote class="layui-elem-quote">
+        {{# layui.each(d.goodsParams, function(index, item){ }}
+        <div class="layui-form-item" {{#if(item.type && item.type!='text'){}} pane {{# } }}>
+            <label class="layui-form-label">{{item.name}}</label>
+            <div class="layui-input-block">
+                {{# if(item.type && item.type==='radio'){ }}
+                {{# layui.each(layui.coreHelper.stringToArray(item.value), function(indexRadio, itemRadio){ }}
+                <input type="radio" name="paramsValue[{{index}}]" value="{{itemRadio}}" title="{{itemRadio}}" {{ setRadioParameters(d.arrParameters, item.id , itemRadio) ?'checked':'' }} lay-verType="tips" lay-verify="required" disabled="disabled">
+                {{# }); }}
+                {{# } else if (item.type && item.type==='checkbox'){ }}
+                {{# layui.each(layui.coreHelper.stringToArray(item.value), function(indexCheckbox, itemCheckbox){ }}
+                <input type="checkbox" name="paramsValue[{{index}}][]" value="{{itemCheckbox}}" lay-skin="primary" {{ setCheckboxParameters(d.arrParameters, item.id , itemCheckbox) ?'checked':'' }} title="{{itemCheckbox}}" disabled="disabled">
+                {{# }); }}
+                {{# } else if (item.type && item.type==='text'){ }}
+                <input type="text" name="paramsValue[{{index}}]" value="{{setTextParameters(d.arrParameters, item.id)}}" class="layui-input" disabled="disabled">
+                {{# } else { }}
+                {{# } }}
+            </div>
+        </div>
+        {{# }); }}
+    </blockquote>
+    {{# } }}
+</script>
+
+<script id="sku_tpl" type="text/html">
+    <form id="spec_form">
+        <div id="spec_select" style="display: none">
+            <blockquote class="layui-elem-quote">
+                {{# if(d.goodsTypeSpec){ }}
+                {{# layui.each(d.goodsTypeSpec, function(index, item){ }}
+                <div class="layui-card">
+                    <div class="layui-card-header">{{item.name}}</div>
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+                            {{# layui.each(item.specValues, function(indexValue, itemValue){ }}
+                            <div class="spec-item">
+                                <div class="checkboxBox">
+                                    <input type="checkbox" name="selectSpec.{{itemValue.id}}.{{item.name}}" value="{{itemValue.value}}" lay-skin="switch" {{isSelectedTypeSpec(d.model.spesDesc, itemValue.id,item.name)?'checked="checked"':''}} lay-filter="spec_select" class="spec-select" lay-text="启用|关闭" disabled="disabled">
+                                </div>
+                                <div class="layui-input-inline layui-inline-3 layui-form-mid">{{getSelectedTypeSpecValue(d.model.newSpec, itemValue.id, itemValue.value)}}</div>
+                            </div>
+                            {{# }); }}
+                        </div>
+                    </div>
+                </div>
+                {{# }); }}
+                {{# } }}
+            </blockquote>
+        </div>
+        <div id="more_spec"></div>
+    </form>
+</script>
+
+<script id="image_tpl" type="text/html">
+    {{# layui.each(d, function(index, item){  }}
+    <div class="imgdiv">
+        <img src="{{ item }}" class="layui-upload-img" onclick='layui.coreHelper.viewImage("{{ item }}")' style="width: 100px;height:100px;">
+    </div>
+    {{#  }); }}
+</script>
+
+
+<script>
+    var $;
+    var debug = layui.setter.debug;
+    var types;
+    var imgs = [];
+    var thumbnailBtn;
+    var _that = this;
+    var enptyProducts;
+    var oldSingleData = {};
+    var oldMultitermData = [];
+    var tempMultitermData = [];
+
+    layui.data.done = function (d) {
+        types = d.params.data.types;
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d.data); }
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'dtree', 'view', 'laytpl', 'xmSelect', 'layedit', 'util', 'cropperImg'],
+            function () {
+                $ = layui.$;
+                var form = layui.form
+                    , admin = layui.admin
+                    , laydate = layui.laydate
+                    , upload = layui.upload
+                    , dtree = layui.dtree
+                    , view = layui.view
+                    , laytpl = layui.laytpl
+                    , xmSelect = layui.xmSelect
+                    , layedit = layui.layedit
+                    , util = layui.util
+                    , cropperImg = layui.cropperImg
+                    , coreHelper = layui.coreHelper;
+                var element = layui.element;
+
+
+
+                //初始化图片
+                var defaultImg = 'no';
+                if (d.params.data.model.images) {
+                    imgs = d.params.data.model.images.split(',');
+                    defaultImg = imgs[0];
+                    $('#imageIds').val(imgs);
+                    var getTpl = image_tpl.innerHTML, viewBox = document.getElementById('upload-more-list');
+                    laytpl(getTpl).render(imgs, function (html) {
+                        viewBox.innerHTML = html;
+                    });
+                }
+
+                //初始化已经确认商品SKU
+                if (d.params.data.goodsTypeSpec) {
+                    var tmpData = { goodsTypeSpec: d.params.data.goodsTypeSpec, model: d.params.data.model };
+                    //赋值商品参数数据
+                    var getTpl = sku_tpl.innerHTML, viewBox = document.getElementById('product-info');
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        viewBox.innerHTML = html;
+                    });
+                }
+
+                var arrParameters = [];
+                //初始化已经确认商品参数
+                if (d.params.data.goodsParams) {
+                    if (d.params.data.model.parameters) {
+                        var arr = d.params.data.model.parameters.split('|');
+                        for (var i = 0; i < arr.length; i++) {
+                            var arrChild = arr[i].split(':');
+                            arrParameters.push(arrChild);
+                        }
+                    }
+                    var tmpData = { goodsParams: d.params.data.goodsParams, arrParameters: arrParameters };
+                    //赋值商品参数数据
+                    var getTpl = params_tpl.innerHTML, viewBox = document.getElementById('parametersBox');
+                    laytpl(getTpl).render(tmpData, function (html) {
+                        viewBox.innerHTML = html;
+                    });
+                }
+
+
+                //初始化数据
+                enptyProducts = {
+                    id: 0,
+                    goodsId: 0,
+                    isDefalut: true,
+                    images: layui.setter.noImagePicUrl,
+                    sn: layui.coreHelper.getSN('SN'),
+                    spesDesc: "",
+                    stock: 1000,
+                    weight: 0,
+                    price: 0,
+                    costprice: 0,
+                    mktprice: 0,
+                    levelOne: 0,
+                    levelTwo: 0,
+                    levelThree: 0,
+                }
+                oldMultitermData = d.params.data.products;
+                if (d.params.data.model.openSpec == 1) {
+                    oldSingleData = enptyProducts;
+                    tempMultitermData = d.params.data.products;
+                } else {
+                    oldSingleData = d.params.data.products[0];
+                }
+
+                //初始化商品信息
+                var getTpl = getSpec_tpl.innerHTML, viewBox = document.getElementById('more_spec');
+                var tmpData = oldMultitermData;
+                laytpl(getTpl).render(tmpData, function (html) {
+                    viewBox.innerHTML = html;
+                });
+                $('#productsCount').val(oldMultitermData.length);
+
+                if (d.params.data.model.openSpec == 1) {
+                    $("#spec_select").show();
+                    $("#parametersBox").show();
+                    $("#goodsTypeIdViewBox").show();
+                    var btn = $('#openSpecBtn');
+                    $(btn).html("取消SKU");
+                }
+
+                // 渲染商品分类
+                var insXmSelGoodsCategoryId = xmSelect.render({
+                    el: '#goodsCategoryId_SelectCreateTree',
+                    height: '250px',
+                    data: d.params.data.categories.data,
+                    initValue: d.params.data.model ? [d.params.data.model.goodsCategoryId] : [],
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsCategoryId',
+                    prop: {
+                        name: 'title',
+                        value: 'id'
+                    },
+                    layVerify: 'required',
+                    layVerType: 'msg',
+                    radio: true,
+                    clickClose: true,
+                    disabled: true,
+                    tree: {
+                        show: true,
+                        indent: 15,
+                        strict: false,
+                        expandedKeys: true
+                    }
+                });
+                //渲染商品扩展分类
+
+                var arr = [];
+                if (d.params.data.categoryExtend.length > 0) {
+                    for (var i = 0; i < d.params.data.categoryExtend.length; i++) {
+                        arr.push(d.params.data.categoryExtend[i].goodsCategroyId);
+                    }
+                }
+                var insXmSelGoodsCategoryIdExtend = xmSelect.render({
+                    el: '#goodsCategoryIdExtend_SelectCreateTree',
+                    height: '250px',
+                    data: d.params.data.categories.data,
+                    //initValue: mData ? [mData.parentId] : [],
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsCategoryIdExtend',
+                    prop: {
+                        name: 'title',
+                        value: 'id'
+                    },
+                    disabled: true,
+                    initValue: arr,
+                    //layVerify: 'required',
+                    //layVerType: 'msg',
+                    //radio: false,
+                    //clickClose: true,
+                    autoRow: true,
+
+                    tree: {
+                        //是否显示树状结构
+                        show: true,
+                        //是否展示三角图标
+                        showFolderIcon: true,
+                        //是否显示虚线
+                        showLine: true,
+                        //间距
+                        indent: 20,
+                        //默认展开节点的数组, 为 true 时, 展开所有节点
+                        expandedKeys: true,
+                        //是否严格遵守父子模式
+                        strict: false,
+                        //是否开启极简模式
+                        simple: false,
+                    }
+                });
+
+                var arrParams = [];
+                if (d.params.data.model.goodsParamsIds) {
+                    arrParams = d.params.data.model.goodsParamsIds.split(',');
+                }
+
+                //渲染商品扩展分类
+                var insGoodsParams = xmSelect.render({
+                    el: '#goodsParams_SelectCreateTree',
+                    height: '250px',
+                    data: d.params.data.paramsList,
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsParamsIds',
+                    prop: {
+                        name: 'name',
+                        value: 'id'
+                    },
+                    disabled: true,
+                    initValue: arrParams,
+                    tree: {
+                        //是否显示树状结构
+                        show: true,
+                        //是否展示三角图标
+                        showFolderIcon: true,
+                        //是否显示虚线
+                        showLine: true,
+                        //间距
+                        indent: 20,
+                        //默认展开节点的数组, 为 true 时, 展开所有节点
+                        expandedKeys: true,
+                        //是否严格遵守父子模式
+                        strict: false,
+                        //是否开启极简模式
+                        simple: false,
+                    }
+                });
+
+                var arrSku = [];
+                if (d.params.data.model.goodsSkuIds) {
+                    arrSku = d.params.data.model.goodsSkuIds.split(',');
+                }
+
+                //渲染商品扩展分类
+                var insgoodsSKU = xmSelect.render({
+                    el: '#goodsSku_SelectCreateTree',
+                    height: '250px',
+                    data: d.params.data.skuList,
+                    //model: { label: { type: 'text' } },
+                    name: 'goodsSkuIds',
+                    prop: {
+                        name: 'name',
+                        value: 'id'
+                    },
+                    disabled: true,
+                    initValue: arrSku,
+                    tree: {
+                        //是否显示树状结构
+                        show: true,
+                        //是否展示三角图标
+                        showFolderIcon: true,
+                        //是否显示虚线
+                        showLine: true,
+                        //间距
+                        indent: 20,
+                        //默认展开节点的数组, 为 true 时, 展开所有节点
+                        expandedKeys: true,
+                        //是否严格遵守父子模式
+                        strict: false,
+                        //是否开启极简模式
+                        simple: false,
+                    }
+                });
+
+                function openSpecBox(is_open) {
+                    if (is_open == '0') {
+                        $("input[name=openSpec]").val("1");
+                        $("#spec_select").show();
+                        $("#goodsTypeIdViewBox").show();
+                        $("#openSpecBtn").html("取消SKU");
+                        console.log("取消SKU");
+
+                        if (_that.tempMultitermData.length == 0) {
+                            $('#more_spec').html('');
+                            $('#productsCount').val(0);
+                        } else {
+                            var getTpl = getSpec_tpl.innerHTML, viewBox = document.getElementById('more_spec');
+                            laytpl(getTpl).render(_that.tempMultitermData, function (html) {
+                                viewBox.innerHTML = html;
+                            });
+                            $('#productsCount').val(_that.tempMultitermData.length);
+                        }
+
+                    } else {
+                        $("input[name=openSpec]").val("0");
+                        $("#spec_select").hide();
+                        $("#goodsTypeIdViewBox").hide();
+                        $("#openSpecBtn").html("启用SKU");
+                        console.log("启用SKU");
+
+                        var arr = [];
+                        arr.push(_that.oldSingleData);
+                        var getTpl = getSpec_tpl.innerHTML, viewBox = document.getElementById('more_spec');
+                        laytpl(getTpl).render(arr, function (html) {
+                            viewBox.innerHTML = html;
+                        });
+                        $('#productsCount').val(1);
+                    }
+                    form.render();
+                }
+
+
+                form.render();
+
+            })
+    };
+
+    //删除图片
+    function delImg(obj, imageUrl) {
+        var imgDiv = $(obj).parent().parent().parent();
+        imgDiv.remove();
+        var index = imgs.indexOf(imageUrl);
+        if (index > -1) {
+            imgs.splice(index, 1);
+        }
+        $('#imageIds').val(imgs);
+    }
+    //设为默认图
+    function setDefault(obj, imageUrl) {
+        var imgDiv = $(obj).parent().parent().parent();
+        $("#upload-more-list").prepend(imgDiv);
+        var index = imgs.indexOf(imageUrl);
+        if (index > -1) {
+            imgs.unshift(imgs.splice(index, 1)[0]);
+        }
+        $('#imageIds').val(imgs);
+    }
+    //获取设置参数文字内容
+    function setTextParameters(parameters, id) {
+        if (parameters) {
+            for (var i = 0; i < parameters.length; i++) {
+                if (parameters[i][0] == id) {
+                    return parameters[i][1];
+                }
+            }
+        }
+        return '';
+    }
+    //获取设置参数单选内容
+    function setRadioParameters(parameters, id, value) {
+        if (parameters) {
+            for (var i = 0; i < parameters.length; i++) {
+                if (parameters[i][0] == id && parameters[i][1] == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    //获取设置参数复选框内容
+    function setCheckboxParameters(parameters, id, value) {
+        if (parameters) {
+            for (var i = 0; i < parameters.length; i++) {
+                if (parameters[i][0] == id) {
+                    var arr = parameters[i][1].split(',');
+                    for (var j = 0; j < arr.length; j++) {
+                        if (value == arr[j]) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    //获取不同会员级别价格
+    function getUserGradePrice(parameters, id, value) {
+        if (parameters) {
+            for (var i = 0; i < parameters.length; i++) {
+                if (parameters[i].gradeId == id) {
+                    return parameters[i].gradePrice
+                }
+            }
+            return value;
+        }
+        return value;
+    }
+    //判断SKU是否选中
+    function isSelectedTypeSpec(parameters, id, value) {
+        if (parameters) {
+            var arr = parameters.split('|');
+            for (var i = 0; i < arr.length; i++) {
+                var str = id + '.' + value;
+                var child = arr[i].split(':');
+                if (child[0] === str) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+    function getSelectedTypeSpecValue(parameters, id, value) {
+        if (parameters) {
+            var arr = parameters.split('|');
+            for (var i = 0; i < arr.length; i++) {
+                var child = arr[i].split(':');
+                if (child[0] === id.toString()) {
+                    return child[1];
+                }
+            }
+            return value;
+        }
+        return value;
+    }
+</script>

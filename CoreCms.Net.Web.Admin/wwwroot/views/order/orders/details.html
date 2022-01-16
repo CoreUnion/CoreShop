@@ -183,6 +183,26 @@
                         <label class="layui-form-label">买家备注</label>
                         <div class="layui-input-inline layui-form-mid layui-inline-10">{{d.params.data.memo||'无'}}</div>
                     </div>
+                    <!--下单用户-->
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend style="font-size:14px;">下单用户</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户编号</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{d.params.data.user.id}}
+                        </div>
+                        <label class="layui-form-label">用户手机</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{d.params.data.user.mobile}}
+                        </div><label class="layui-form-label">用户昵称</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{d.params.data.user.nickName}}
+                        </div><label class="layui-form-label">微信编号</label>
+                        <div class="layui-input-inline layui-inline-3 layui-form-mid">
+                            {{d.params.data.user.userWx}}
+                        </div>
+                    </div>
                 </div>
 
                 <!--商品详情-->

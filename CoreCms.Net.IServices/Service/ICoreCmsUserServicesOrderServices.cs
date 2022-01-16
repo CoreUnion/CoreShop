@@ -8,9 +8,13 @@
  *        Description: 暂无
  ***********************************************************************/
 
+using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoreCms.Net.Model.Entities;
+using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.UI;
+using SqlSugar;
 
 namespace CoreCms.Net.IServices
 {
@@ -26,5 +30,23 @@ namespace CoreCms.Net.IServices
         /// <param name="paymentId"></param>
         /// <returns></returns>
         Task<WebApiCallBack> CreateUserServicesTickets(string serviceOrderId, string paymentId);
+
+
+
+        /// <summary>
+        ///     重写根据条件查询分页数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="pageIndex">当前页面索引</param>
+        /// <param name="pageSize">分布大小</param>
+        /// <param name="orderByExpression"></param>
+        /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <returns></returns>
+        new Task<IPageList<CoreCmsUserServicesOrder>> QueryPageAsync(
+            Expression<Func<CoreCmsUserServicesOrder, bool>> predicate,
+            Expression<Func<CoreCmsUserServicesOrder, object>> orderByExpression, OrderByType orderByType, int pageIndex = 1,
+            int pageSize = 20, bool blUseNoLock = false);
+
     }
 }

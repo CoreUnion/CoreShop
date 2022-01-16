@@ -2491,26 +2491,24 @@ namespace CoreCms.Net.Configuration
             /// <summary>
             /// 正常
             /// </summary>
-            [Description("正常")]
+            [Description("<button type='button' class='layui-btn  layui-btn-normal  layui-btn-xs'>正常</button>")]
             Normal = 0,
             /// <summary>
             /// 过期
             /// </summary>
-            [Description("过期")]
+            [Description("<button type='button' class='layui-btn layui-btn-warm layui-btn-disabled layui-btn-xs'>过期</button>")]
             Overdue = 1,
             /// <summary>
             /// 作废
             /// </summary>
-            [Description("作废")]
+            [Description("<button type='button' class='layui-btn  layui-btn-primary layui-btn-disabled layui-btn-xs'>作废</button>")]
             Cancellation = 2,
             /// <summary>
             /// 已核销
             /// </summary>
-            [Description("已核销")]
+            [Description("<button type='button' class='layui-btn layui-btn-disabled layui-btn-xs'>已核销</button>")]
             Verification = 3
         }
-
-
 
         /// <summary>
         /// 服务订单状态
@@ -2520,24 +2518,24 @@ namespace CoreCms.Net.Configuration
             /// <summary>
             /// 正常
             /// </summary>
-            [Description("正常")]
+            [Description("<button type='button' class='layui-btn  layui-btn-normal  layui-btn-xs'>订单正常</button>")]
             正常 = 1,
             /// <summary>
             /// 作废
             /// </summary>
-            [Description("作废")]
+            [Description("<button type='button' class='layui-btn  layui-btn-primary layui-btn-disabled layui-btn-xs'>订单作废</button>")]
             作废 = 2,
 
             /// <summary>
             /// 过期
             /// </summary>
-            [Description("过期")]
+            [Description("<button type='button' class='layui-btn layui-btn-warm layui-btn-disabled layui-btn-xs'>订单过期</button>")]
             过期 = 3,
 
             /// <summary>
             /// 用罄
             /// </summary>
-            [Description("用罄")]
+            [Description("<button type='button' class='layui-btn layui-btn-disabled layui-btn-xs'>订单用罄</button>")]
             用罄 = 4
         }
 
