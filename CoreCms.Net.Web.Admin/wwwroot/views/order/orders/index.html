@@ -460,7 +460,7 @@
                     //支付
                     payOrder: function () {
                         var id = $(this).attr('data-id');
-                        doPayOrder(id);
+                        doPayOrder(id,0);
                     },
                     //发货
                     shipOrder: function () {
@@ -534,7 +534,7 @@
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'payOrderArray':
-                            doPayOrder(checkStatus);
+                            doPayOrder(checkStatus,1);
                             break;
                         case 'shipOrderArray':
                             doShip(checkStatus, 0);
@@ -1147,18 +1147,22 @@
                     });
                 }
                 //执行支付操作
-                function doPayOrder(checkStatus) {
-
-                    var checkData = checkStatus.data;
-                    if (checkData.length === 0) {
-                        return layer.msg('请选择您要支付的数据');
-                    }
+                function doPayOrder(checkStatus, type) {
                     var delidsStr = [];
-                    layui.each(checkData,
-                        function (index, item) {
-                            delidsStr.push(item.orderId);
-                        });
-
+                    if (type == 0) {
+                        delidsStr.push(checkStatus);
+                    } else if (type == 1) {
+                        var checkData = checkStatus.data;
+                        if (checkData.length === 0) {
+                            return layer.msg('请选择您要支付的数据');
+                        }
+                        layui.each(checkData,
+                            function (index, item) {
+                                delidsStr.push(item.orderId);
+                            });
+                    } else {
+                        return layer.msg('您的支付模式有问题，请核实');
+                    }
                     coreHelper.Post("Api/CoreCmsOrder/GetPay", { id: delidsStr, data: 1 }, function (e) {
                         if (e.code === 0) {
                             admin.popup({
