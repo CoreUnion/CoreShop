@@ -497,7 +497,7 @@ namespace CoreCms.Net.Services
                             var articleClassifyId = parameters["articleClassifyId"].ObjectToInt(0);
                             var limit = parameters["limit"].ObjectToInt(0);
                             limit = limit > 0 ? limit : 20;
-                            var list = await _articleServices.QueryPageAsync(p => p.typeId == articleClassifyId,
+                            var list = await _articleServices.QueryPageAsync(p => p.typeId == articleClassifyId && p.isPub == true,
                                 p => p.createTime, OrderByType.Desc, 1, limit);
                             if (list != null && list.Any())
                             {
