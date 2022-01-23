@@ -80,6 +80,9 @@ namespace CoreCms.Net.Services
                                     case "GOODS_ONE_PRICE":
                                         promotionModel = result_GOODS_ONE_PRICE(parameters, item, promotionInfo);
                                         break;
+                                    case "GOODS_HALF_PRICE": //todo 指定商品每第几件减指定金额
+                                        promotionModel = result_GOODS_HALF_PRICE(parameters, item, promotionInfo);
+                                        break;
                                     default:
                                         promotionModel = 0;
                                         break;
@@ -309,6 +312,35 @@ namespace CoreCms.Net.Services
             //单品优惠的金额
             var pmoney = Math.Round(goodsPrice - cartProducts.products.price, 2);
             promotionMoney = promotionInfo.type == (int)GlobalEnumVars.PromotionType.Coupon ? pmoney : Math.Round(cartProducts.nums * pmoney, 2);
+            //设置商品优惠总金额
+            cartProducts.products.promotionAmount = Math.Round(cartProducts.products.promotionAmount + promotionMoney, 2);
+            //设置商品的实际销售总金额
+            cartProducts.products.amount = Math.Round(cartProducts.products.amount - promotionMoney, 2);
+            return promotionMoney;
+        }
+
+        //商品第N个半价
+        public decimal result_GOODS_HALF_PRICE(JObject parameters, CartProducts cartProducts, CoreCmsPromotion promotionInfo)
+        {
+            if (!parameters.ContainsKey("money")) return 0;
+            var objMoney = parameters["money"].ObjectToDecimal(0);
+
+            //如果一口价比商品价格高，那么就不执行了
+            decimal promotionMoney = 0;
+            if (cartProducts.products.price <= objMoney)
+            {
+                return promotionMoney;
+            }
+            //第几个优惠
+            var num = parameters["num"].ObjectToInt(0);
+            //购买的数量
+            var buyNum = cartProducts.nums;
+            //取整数，保证满足了，才优惠  ，比如设置 原价 10 第2个 减少5，购买5个产品的时候，实际只优惠2个产品的价格
+            var promotionNum = buyNum / num;
+            var pmoney = Math.Round((decimal)promotionNum * objMoney / buyNum, 2);  //单品优惠的金额 
+            var goodsPrice = (decimal)cartProducts.products.price;
+            cartProducts.products.price = goodsPrice - pmoney; //优惠后的平均价格 
+            promotionMoney = Math.Round(cartProducts.nums * pmoney, 2);//优惠金额  
             //设置商品优惠总金额
             cartProducts.products.promotionAmount = Math.Round(cartProducts.products.promotionAmount + promotionMoney, 2);
             //设置商品的实际销售总金额
