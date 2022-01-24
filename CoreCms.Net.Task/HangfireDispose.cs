@@ -45,26 +45,25 @@ namespace CoreCms.Net.Task
             RecurringJob.AddOrUpdate<AutoCancelOrderJob>(s => s.Execute(), "0 0/5 * * * ? ", TimeZoneInfo.Utc); // 每5分钟取消一次订单
 
             //自动完成订单任务
-            RecurringJob.AddOrUpdate<CompleteOrderJob>(s => s.Execute(), Cron.Hourly, TimeZoneInfo.Utc); // 每小时自动完成订单
+            RecurringJob.AddOrUpdate<CompleteOrderJob>(s => s.Execute(), "0 0 0/1 * * ? ", TimeZoneInfo.Utc); // 每小时自动完成订单
 
             //自动评价订单任务
-            RecurringJob.AddOrUpdate<EvaluateOrderJob>(s => s.Execute(), Cron.Hourly, TimeZoneInfo.Utc); // 每小时自动完成订单
+            RecurringJob.AddOrUpdate<EvaluateOrderJob>(s => s.Execute(), "0 0 0/1 * * ? ", TimeZoneInfo.Utc); // 每小时自动完成订单
 
             //自动签收订单任务
-            RecurringJob.AddOrUpdate<AutoSignOrderJob>(s => s.Execute(), Cron.Hourly, TimeZoneInfo.Utc); // 每小时自动完成订单
+            RecurringJob.AddOrUpdate<AutoSignOrderJob>(s => s.Execute(), "0 0 0/1 * * ? ", TimeZoneInfo.Utc); // 每小时自动完成订单
 
             //催付款订单
             RecurringJob.AddOrUpdate<RemindOrderPayJob>(s => s.Execute(), "0 0/5 * * * ? ", TimeZoneInfo.Utc); // 每5分钟催付款订单
 
             //拼团自动取消到期团（每分钟执行一次）
-            RecurringJob.AddOrUpdate<AutoCanclePinTuanJob>(s => s.Execute(), Cron.Minutely, TimeZoneInfo.Utc); // 每分钟取消一次订单
+            RecurringJob.AddOrUpdate<AutoCanclePinTuanJob>(s => s.Execute(), "0 0/2 * * * ? ", TimeZoneInfo.Utc); // 每分钟取消一次订单
 
             //每天凌晨5点定期清理7天前操作日志
             RecurringJob.AddOrUpdate<RemoveOperationLogJob>(s => s.Execute(), "0 0 5 * * ? ", TimeZoneInfo.Utc); // 每天5点固定时间清理一次
 
-
             //定时刷新获取微信AccessToken
-            RecurringJob.AddOrUpdate<RefreshWeChatAccessTokenJob>(s => s.Execute(), "0 0/2 * * * ? ", TimeZoneInfo.Utc); // 每2分钟刷新获取微信AccessToken
+            RecurringJob.AddOrUpdate<RefreshWeChatAccessTokenJob>(s => s.Execute(), "0 0/4 * * * ? ", TimeZoneInfo.Utc); // 每2分钟刷新获取微信AccessToken
 
         }
 

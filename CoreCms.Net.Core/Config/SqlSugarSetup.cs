@@ -46,11 +46,11 @@ namespace CoreCms.Net.Core.Config
             services.ConfigurationSugar(db =>
             {
                 db.CurrentConnectionConfig.InitKeyType = InitKeyType.Attribute;
-                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices()
-                {
-                    //判断是否开启redis设置二级缓存方式
-                    DataInfoCacheService = AppSettingsConstVars.RedisUseCache ? (ICacheService)new SqlSugarRedisCache() : new SqlSugarMemoryCache()
-                };
+                //db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices()
+                //{
+                //    //判断是否开启redis设置二级缓存方式
+                //    DataInfoCacheService = AppSettingsConstVars.RedisUseCache ? (ICacheService)new SqlSugarRedisCache() : new SqlSugarMemoryCache()
+                //};
 
                 //执行SQL 错误事件，可监控sql（暂时屏蔽，需要可开启）
                 //db.Aop.OnLogExecuting = (sql, p) =>
