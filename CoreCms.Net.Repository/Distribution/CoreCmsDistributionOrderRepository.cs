@@ -242,7 +242,6 @@ namespace CoreCms.Net.Repository
                     .WhereIF(thisMonth == true, (orders, users) => orders.createTime > dtFirst && orders.createTime < dtLast)
                     .Where((orders, users) => users.parentId == parentId)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .CountAsync();
 
                 return totalSum;
@@ -264,7 +263,6 @@ namespace CoreCms.Net.Repository
                     .Where(p => allIds.Contains(p.buyUserId))
                     .WhereIF(thisMonth, p => p.createTime > dtFirst && p.createTime < dtLast)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .CountAsync();
 
                 return totalSum;
@@ -287,7 +285,6 @@ namespace CoreCms.Net.Repository
                     .Where(p => allIds.Contains(p.buyUserId))
                     .WhereIF(thisMonth, p => p.createTime > dtFirst && p.createTime < dtLast)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .CountAsync();
 
                 return totalSum;
@@ -323,7 +320,6 @@ namespace CoreCms.Net.Repository
                     .Where((orders, users) => users.parentId == parentId)
                     .WhereIF(thisMonth, (orders, users) => orders.createTime > dtFirst && orders.createTime < dtLast)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .SumAsync((orders, users) => orders.amount);
                 return totalSum;
             }
@@ -344,7 +340,6 @@ namespace CoreCms.Net.Repository
                     .Where((orders, users) => allIds.Contains(orders.buyUserId))
                     .WhereIF(thisMonth, (orders, users) => orders.createTime > dtFirst && orders.createTime < dtLast)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .SumAsync((orders, users) => orders.amount);
                 return totalSum;
 
@@ -366,7 +361,6 @@ namespace CoreCms.Net.Repository
                     .Where((orders, users) => allIds.Contains(orders.buyUserId))
                     .WhereIF(thisMonth, (orders, users) => orders.createTime > dtFirst && orders.createTime < dtLast)
                     .With(SqlWith.NoLock)
-                    .WithCache(60 * 60)
                     .SumAsync((orders, users) => orders.amount);
                 return totalSum;
             }

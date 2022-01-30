@@ -173,7 +173,6 @@ namespace CoreCms.Net.Repository
                 .With(SqlWith.NoLock)
                 .MergeTable()
                 .OrderBy(dOrder => dOrder.totalInCome, OrderByType.Desc)
-                .WithCache()
                 .ToPageListAsync(pageIndex, pageSize, totalCount);
 
             var list = new PageList<AgentRankingDTO>(page, pageIndex, pageSize, totalCount);
