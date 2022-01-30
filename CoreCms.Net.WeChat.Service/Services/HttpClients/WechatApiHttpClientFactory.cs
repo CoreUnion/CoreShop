@@ -7,6 +7,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
 using SKIT.FlurlHttpClient;
+using SKIT.FlurlHttpClient.Wechat;
 using SKIT.FlurlHttpClient.Wechat.Api;
 
 namespace CoreCms.Net.WeChat.Service.HttpClients
