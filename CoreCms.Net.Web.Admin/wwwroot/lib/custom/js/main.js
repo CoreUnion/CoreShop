@@ -1031,27 +1031,27 @@ Vue.component('layout-config', {
         },
         upImage: function (index, item) {
             var _that = this;
-            layui.use(['admin', 'coreHelper', 'cropperImg'],
-                function () {
-                    var $ = layui.$, coreHelper = layui.coreHelper, cropperImg = layui.cropperImg;
-                    cropperImg.cropImg({
-                        aspectRatio: 16 / 9,
-                        imgSrc: _that.selectWg.value.list[index].image,
-                        onCrop: function (data) {
-                            var loadIndex = layer.load(2);
-                            coreHelper.Post("api/Tools/UploadFilesFByBase64", { base64: data }, function (res) {
-                                if (0 === res.code) {
-                                    _that.$set(_that.selectWg.value.list[index], 'image', res.data.fileUrl)
-                                    layer.msg(res.msg);
-                                    layer.close(loadIndex);
-                                } else {
-                                    layer.close(loadIndex);
-                                    layer.msg(res.msg, { icon: 2, anim: 6 });
-                                }
-                            });
-                        }
-                    });
-                })
+            layui.use(['form', 'table'], function () {
+                layui.admin.popup({
+                    title: '图片设置',
+                    area: ['800px', '300px'],
+                    id: 'LAY-app-CoreCmsCommon-GetNoticeIds',
+                    success: function (layero, indexChild) {
+                        layui.view(this.id).render('common/getUpLoad', null).done(function () {
+                            layui.form.on('submit(LAY-app-getUpLoad-submit)',
+                                function (data) {
+                                    console.log(data);
+                                    _that.$set(_that.selectWg.value.list[index], 'image', data.field.imagesUrl)
+                                    layer.close(indexChild);
+                                });
+                        });
+                    }
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        layero.contents().find("#LAY-app-getUpLoad-submit").click();
+                    }
+                });
+            });
         },
         upTopSlideBgImage: function (index, item) {
             var _that = this;

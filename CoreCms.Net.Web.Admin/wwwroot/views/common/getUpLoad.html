@@ -1,0 +1,76 @@
+<script type="text/html" template lay-done="layui.data.done(d);">
+    <div class="layui-form coreshop-form layui-form-pane">
+        <blockquote class="layui-elem-quote">
+            请选择小于5M的图片进行裁剪上传
+        </blockquote>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图像地址：</label>
+                <div class="layui-input-inline layui-inline-8">
+                    <input name="imagesUrl" id="imagesUrl" type="text" class="layui-input" lay-verify="required|url" lay-reqText="可手动输入地址或点击上传" />
+                </div>
+                <div class="layui-input-inline">
+                    <img class="coreshop-upload-img" id="viewImgBoximageUrl" src="{{ layui.setter.noImagePicUrl }}">
+                    <button type="button" class="layui-btn" id="upBtn" lay-active="doCropperImg">上传图片</button>
+                    <div id="viewTextBox"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item core-hidden">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-getUpLoad-submit" id="LAY-app-getUpLoad-submit" value="确认添加">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script>
+    var debug = layui.setter.debug;
+    layui.data.done = function (d) {
+        //开启调试情况下获取接口赋值数据
+        if (debug) { console.log(d); }
+        layui.use(['index', 'table', 'laydate', 'upload', 'coreHelper'],
+            function () {
+                var $ = layui.$
+                    , admin = layui.admin
+                    , table = layui.table
+                    , form = layui.form
+                    , laydate = layui.laydate
+                    , setter = layui.setter
+                    , coreHelper = layui.coreHelper
+                    , upload = layui.upload
+                    , view = layui.view;
+
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#upBtn'
+                    , url: layui.setter.apiUrl + 'Api/Tools/UploadFiles'
+                    , before: function (obj) {
+                        obj.preview(function (index, file, result) {
+                            $('#viewImgBox').attr('src', result);
+                        });
+                    }
+                    , done: function (res) {
+                        if (res.code > 0) { return layer.msg('上传失败'); }
+                        layer.msg('上传成功');
+                        $("#imagesUrl").val(res.data.fileUrl);
+                    }
+                    , error: function () {
+                        var viewTextBox = $('#viewTextBox');
+                        viewTextBox.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                        viewTextBox.find('.demo-reload').on('click', function () {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+
+                //重载form
+                form.render();
+
+            });
+    };
+</script>
