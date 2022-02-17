@@ -4,7 +4,7 @@
  */
 
 //接口请求地址，如果需要不部署接口端的情况下测试uni-app，可以直接替换为官方测试接口：https://api.demo.coreshop.cn
-export const apiBaseUrl = 'https://api.nsts.mvccms.cn';
+export const apiBaseUrl = 'https://api.demo.coreshop.cn';
 //项目静态资源请求地址，如果使用官方的静态文件地址可以直接替换为：https://files.cdn.coreshop.cn
 export const apiFilesUrl = 'https://files.cdn.coreshop.cn';
 export const h5Url = apiBaseUrl + "/wap/"; //H5端网站地址,
