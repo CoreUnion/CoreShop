@@ -8,13 +8,13 @@
         <div class="layui-form-item">
             <label for="name" class="layui-form-label">参数名称</label>
             <div class="layui-input-block">
-                <input name="name" id="name" lay-verType="tips" lay-verify="required|verifyname" class="layui-input" placeholder="请输入参数名称" lay-reqText="请输入参数名称" value="{{d.params.data.model.name || '' }}" />
+                <input name="name" id="name" lay-verify="required|verifyParamsname" class="layui-input" placeholder="请输入参数名称" lay-reqText="请输入参数名称" value="{{d.params.data.model.name || '' }}" />
             </div>
         </div>
         <div class="layui-form-item">
             <label for="type" class="layui-form-label">参数类型</label>
             <div class="layui-input-block">
-                <select name="type" id="type" lay-verType="tips" lay-verify="required|verifytype" lay-reqText="请输入参数类型" placeholder="请输入参数类型">
+                <select name="type" id="type" lay-verify="required|verifytype" lay-reqText="请输入参数类型" placeholder="请输入参数类型">
                     <option value="">请选择</option>
                     {{# layui.each(d.params.data.goodsParamTypes, function(index, item){ }}
                     <option value="{{ item.title }}" {{d.params.data.model.type === item.title ? 'selected="selected"' : '' }}>{{ item.description }}</option>
@@ -49,8 +49,7 @@
                     , coreHelper = layui.coreHelper;
 
                 form.verify({
-
-                    verifyname: [/^[\S]{0,10}$/, '参数名称最大只允许输入50位字符，且不能出现空格'],
+                    verifyParamsname: [/^[\S]{0,10}$/, '参数名称最大只允许输入50位字符，且不能出现空格'],
                     verifytype: [/^[\S]{0,10}$/, '参数类型最大只允许输入10位字符，且不能出现空格'],
                 });
                 //重载form

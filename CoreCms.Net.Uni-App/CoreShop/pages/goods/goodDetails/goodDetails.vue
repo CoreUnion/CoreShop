@@ -185,11 +185,9 @@
                 <text class="u-margin-left-10 coreshop-text-black">商品详情</text>
             </view>
             <!--参数-->
-            <view class="grid col-2">
-                <view class="col-item" v-for="(item, index) in goodsParams" :key="index">
-                    <text class="coreshop-text-gray">{{ item.name || ''}}：</text>
-                    <text class="coreshop-text-black">{{ item.value || ''}}</text>
-                </view>
+            <view class="u-padding-bottom-10 u-padding-left-10 u-padding-right-10 coreshop-flex-direction-row" v-for="(item, index) in goodsParams" :key="index">
+                <text class="coreshop-text-gray">{{ item.name || ''}}：</text>
+                <text class="coreshop-text-black">{{ item.value || ''}}</text>
             </view>
             <view class="u-padding-top-10">
                 <u-parse :html="goodsInfo.intro" :selectable="true" v-if="goodsInfo.intro"></u-parse>

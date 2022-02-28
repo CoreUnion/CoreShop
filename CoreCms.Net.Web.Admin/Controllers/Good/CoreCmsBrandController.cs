@@ -311,7 +311,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return jm;
             }
 
-            if (await _goodsServices.ExistsAsync(p => p.brandId == model.id))
+            if (await _goodsServices.ExistsAsync(p => p.brandId == model.id && !p.isDel))
             {
                 jm.msg = "有商品关联品牌数据,禁止删除";
                 return jm;

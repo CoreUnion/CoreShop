@@ -73,7 +73,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var jm = new AdminUiCallBack();
 
             //获取数据
-            var list = await _coreCmsArticleTypeServices.QueryAsync();
+            var list = await _coreCmsArticleTypeServices.QueryListByClauseAsync(p => p.id > 0, p => p.sort,
+                OrderByType.Desc);            
             //返回数据
             jm.data = list;
             jm.code = 0;
