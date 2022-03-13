@@ -1023,7 +1023,7 @@ namespace CoreCms.Net.Repository
             var totalCount = 0;
             var page = blUseNoLock
                 ? DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).Where(SqlWith.NoLock)
+                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
                     .ToPageList(pageIndex, pageSize, ref totalCount)
                 : DbClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
                     .WhereIF(predicate != null, predicate).ToPageList(pageIndex, pageSize, ref totalCount);
@@ -1047,7 +1047,7 @@ namespace CoreCms.Net.Repository
             RefAsync<int> totalCount = 0;
             var page = blUseNoLock
                 ? await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).Where(SqlWith.NoLock)
+                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
                     .ToPageListAsync(pageIndex, pageSize, totalCount)
                 : await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
                     .WhereIF(predicate != null, predicate).ToPageListAsync(pageIndex, pageSize, totalCount);
@@ -1072,7 +1072,7 @@ namespace CoreCms.Net.Repository
             var totalCount = 0;
             var page = blUseNoLock
                 ? DbBaseClient.Queryable<T>().OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .WhereIF(predicate != null, predicate).Where(SqlWith.NoLock)
+                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
                     .ToPageList(pageIndex, pageSize, ref totalCount)
                 : DbBaseClient.Queryable<T>().OrderByIF(orderByExpression != null, orderByExpression, orderByType)
                     .WhereIF(predicate != null, predicate).ToPageList(pageIndex, pageSize, ref totalCount);
@@ -1097,7 +1097,7 @@ namespace CoreCms.Net.Repository
             RefAsync<int> totalCount = 0;
             var page = blUseNoLock
                 ? await DbBaseClient.Queryable<T>().WhereIF(predicate != null, predicate).OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .Where(SqlWith.NoLock).ToPageListAsync(pageIndex, pageSize, totalCount)
+                    .With(SqlWith.NoLock).ToPageListAsync(pageIndex, pageSize, totalCount)
                 : await DbBaseClient.Queryable<T>().WhereIF(predicate != null, predicate).OrderByIF(orderByExpression != null, orderByExpression, orderByType)
                     .ToPageListAsync(pageIndex, pageSize, totalCount);
             var list = new PageList<T>(page, pageIndex, pageSize, totalCount);
