@@ -6,7 +6,7 @@
         <!--无网络组件-->
         <u-no-network></u-no-network>
         <!--头部组件-->
-        <u-navbar :is-back="false" :title="appTitle" :background="background" :title-color="titleColor" :custom-back="about"></u-navbar>
+        <u-navbar :is-back="false" :title="homeTitle" :background="background" :title-color="titleColor" :custom-back="about"></u-navbar>
 
         <!--首页模块化组合组件-->
         <coreshopPage :coreshopdata="pageData"></coreshopPage>
@@ -67,6 +67,7 @@
                 kefupara: '', //客服传递资料
                 shareUrl: '/pages/share/jump/jump',
                 modalShow: true,
+                homeTitle: '',
             };
         },
         computed: {
@@ -91,7 +92,8 @@
                 }
             },
             appTitle() {
-                return this.$store.state.config.shopName;
+                this.homeTitle = this.$store.state.config.shopName;
+                return this.homeTitle;
             },
             // 获取店铺联系人手机号
             shopMobile() {

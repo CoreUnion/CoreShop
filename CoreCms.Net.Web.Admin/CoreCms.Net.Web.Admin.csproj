@@ -226,6 +226,10 @@
     <None Include="wwwroot\lib\layuiAdmin\style\res\noImage.psd" />
     <None Include="wwwroot\lib\layui\font\iconfont.svg" />
     <None Include="wwwroot\lib\layui\font\iconfont.woff2" />
+    <None Include="wwwroot\lib\lodop\CLodop_Setup_for_Win32NT.exe" />
+    <None Include="wwwroot\lib\lodop\install_lodop32.exe" />
+    <None Include="wwwroot\lib\lodop\install_lodop64.exe" />
+    <None Include="wwwroot\lib\lodop\LodopFuncs.js" />
     <None Include="wwwroot\static\css\documentEditor.less" />
     <None Include="wwwroot\static\css\overWrite.less" />
     <None Include="wwwroot\static\js\common.js" />
