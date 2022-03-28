@@ -636,11 +636,11 @@ namespace CoreCms.Net.Services
                                 if (tt["id"].ToString() == item.id.ToString())
                                 {
                                     item.reshipNums += tt["nums"].ObjectToInt(0);
-                                }
-
-                                if (type == (int)GlobalEnumVars.BillAftersalesIsReceive.Reship)
-                                {
-                                    item.reshipedNums += tt["nums"].ObjectToInt(0);
+                                    //判断 商品id相等，才能判断是否已发货，才能赋值给 reshipedNums 已发货的退货商品
+                                    if (type == (int)GlobalEnumVars.BillAftersalesIsReceive.Reship)
+                                    {
+                                        item.reshipedNums += tt["nums"].ObjectToInt(0);
+                                    }
                                 }
                             }
                         }
