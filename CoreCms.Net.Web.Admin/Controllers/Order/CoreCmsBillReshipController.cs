@@ -267,7 +267,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
                     var sLog = new CoreCmsStockLog
                     {
                         stockId = entity.id,
-                        productId = item.id,
+                        productId = item.productId,
                         goodsId = item.goodsId,
                         nums = item.nums,
                         sn = item.sn,

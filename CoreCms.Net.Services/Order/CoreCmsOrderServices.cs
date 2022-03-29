@@ -2028,6 +2028,7 @@ namespace CoreCms.Net.Services
             if (!bl)
             {
                 jm.msg = "确认收货失败";
+                return jm;
             }
             //修改发货单,如果有为确认收货的发货单，那么给他们回传上去确认收货时间
 

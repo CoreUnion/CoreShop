@@ -23,10 +23,7 @@
                 <u-empty :src="$globalConstVars.apiFilesUrl+'/static/images/empty/address.png'" icon-size="300" text="暂无地址信息" mode="list"></u-empty>
             </view>
             <view class="coreshop-bottomBox">
-                <!-- #ifdef MP-WEIXIN -->
-                <button class="coreshop-btn coreshop-btn-square coreshop-btn-b" @click="wechatAddress">从微信获取</button>
-                <!-- #endif -->
-                <button class="coreshop-btn coreshop-btn-square coreshop-btn-w" @click="toAdd()">新增收货地址</button>
+                <button class="coreshop-btn coreshop-btn-b coreshop-btn-square" @click="toAdd()">新增收货地址</button>
             </view>
 
         </view>
@@ -91,54 +88,6 @@
                     // this.$u.route("/pages/placeOrder/index/index")
                 }
             },
-            // #ifdef MP-WEIXIN
-            wechatAddress: function () {
-                let _that = this;
-                wx.chooseAddress({
-                    success: res => {
-                        if (res.errMsg == "chooseAddress:ok") {
-                            //获取成功
-                            //存储这个收获地区信息到数据库
-                            let data = {
-                                provinceName: res.provinceName,
-                                cityName: res.cityName,
-                                countyName: res.countyName,
-                                postalCode: res.postalCode
-                            };
-                            let areaId = 0;
-                            this.$u.api.getAreaId(data).then(res1 => {
-                                if (res1.status) {
-                                    //存储用户收货信息
-                                    let userShipId = 0;
-                                    let userShipData = {
-                                        areaId: res1.data,
-                                        name: res.userName,
-                                        address: res.detailInfo,
-                                        mobile: res.telNumber,
-                                        isDefault: 2
-                                    }
-                                    this.$u.api.saveUserShipWx(userShipData).then(res2 => {
-                                        if (res2.status) {
-                                            this.$refs.uToast.show({
-                                                title: '存储微信地址成功', type: 'success', callback: function () {
-                                                    _that.userShipList();
-                                                }
-                                            });
-                                        } else {
-                                            this.$refs.uToast.show({ title: '存储微信地址失败', type: 'error' });
-                                        }
-                                    });
-                                } else {
-                                    this.$refs.uToast.show({ title: '获取微信地址失败', type: 'error' });
-                                }
-                            });
-                        } else {
-                            this.$refs.uToast.show({ title: '获取微信地址失败', type: 'error' });
-                        }
-                    }
-                });
-            },
-            // #endif
         }
     }
 </script>

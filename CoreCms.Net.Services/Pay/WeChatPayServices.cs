@@ -105,7 +105,7 @@ namespace CoreCms.Net.Services
 
             var request = new WeChatPayUnifiedOrderRequest
             {
-                Body = entity.payTitle,
+                Body = entity.payTitle.Length > 127 ? entity.payTitle[..125] : entity.payTitle,
                 OutTradeNo = entity.paymentId,
                 TotalFee = Convert.ToInt32(entity.money * 100),
                 SpBillCreateIp = entity.ip,
