@@ -148,7 +148,7 @@ namespace CoreCms.Net.Configuration
         public const string Code11026 = "密码过期了";
         public const string Code11027 = "请选择出生日期";
         public const string Code11028 = "请输入昵称";
-        public const string Code11029 = "请设置出生日期";
+        public const string Code11029 = "请选择您的性别";
 
         public const string Code11030 = "没有此用户等级";
         public const string Code11031 = "请输入手机号码或者密码";
