@@ -220,7 +220,7 @@ https://api.demo.coreshop.cn/job
 - 不允许对程序代码以任何形式、任何目的的再发行或出售，否则将追究侵权者法律责任。
 - 软件受国家计算机软件著作权保护（登记号：2020SR1224749，2021SR1661132）。
 - 我们的团队水平有限，也是在探索中学习、改进。开源，是为了让认可我们的用户能自由的使用、学习软件的内部架构，让更多的人有机会阅读并发现Bug、对软件项目提出改进意见。
-
+- 如果有需要专业版源代码及技术服务指导的，请前往【https://www.coreshop.cn/Service/Subscription】购买订阅服务。
 
 ### 👏 贡献代码
 
@@ -230,9 +230,8 @@ https://api.demo.coreshop.cn/job
 
 ### 💘 支持开源
 - 希望CoreShop对您有用，您的支持也是CoreShop开源的动力，CoreShop有你更精彩！
-![感谢您的支持](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/PayeeCode.jpg "PayeeCode.png")
 
-- 感谢以下小伙伴对我们的支持，捐赠列表将不定期更新；如有疏漏或错误请联系我们更正，捐赠人员将免费获得我们后期推出的商业咨询服务；捐赠金额将用于演示服务器，redis，mysql等硬件资源开支。
+- 感谢以下小伙伴对我们的支持，捐赠列表将不定期更新；如有疏漏或错误请联系我们更正；捐赠金额将用于演示服务器，redis，mysql等硬件资源开支。
 
 | 序列 | 昵称 | 捐赠金额（元） | 日期 | 
 | --- | --- | --- | --- | 
