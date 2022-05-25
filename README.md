@@ -1,7 +1,7 @@
 
 
 <p align="center">
-    <img alt="CoreShoplogo" src="https://gitee.com/jianweie/images/raw/master/coreshop/images/Logo/logo.png" width="602" height="175" style="margin-bottom: 10px;">
+    <img alt="CoreShoplogo" src="https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Logo/logo.png" width="602" height="175" style="margin-bottom: 10px;">
 </p>
 
 <div align="center">
@@ -90,29 +90,29 @@ QQ群：70494974
 
 | 真机截图 |
 |---------------------|
-| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/01.jpg)  |
-| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/02.jpg)  |
-| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/03.jpg)  |
-| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/04.jpg)  |
-| ![小程序截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/WeChat/05.jpg)  |
+| ![小程序截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/WeChat/01.jpg)  |
+| ![小程序截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/WeChat/02.jpg)  |
+| ![小程序截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/WeChat/03.jpg)  |
+| ![小程序截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/WeChat/04.jpg)  |
+| ![小程序截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/WeChat/05.jpg)  |
 
 #### 🎏 后端截图  
 
 | 后端 | 截图 |
 |---------------------|---------------------|
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/01.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/02.png)  |
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/03.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/04.png)  |
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/05.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/06.png)  |
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/07.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/08.png)  |
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/09.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/10.png)  |
-| ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/11.png)  | ![截图](https://gitee.com/jianweie/images/raw/master/coreshop/images/Admin/12.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/01.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/02.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/03.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/04.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/05.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/06.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/07.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/08.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/09.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/10.png)  |
+| ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/11.png)  | ![截图](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/Admin/12.png)  |
 
 
 #### 🎨 系统演示  
 
 | 微信小程序演示 | H5演示（搁置开发） | 安卓APP下载 |
 |---------------------|---------------------|---------------------|
-| ![微信小程序演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/h5qCode.jpg)  |![安卓APP](https://gitee.com/jianweie/images/raw/master/coreshop/images/QRCode/android.png)  |
+| ![微信小程序演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/h5qCode.jpg)  |![安卓APP](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/android.png)  |
 
 
 1、H5网页演示地址：  
@@ -128,7 +128,6 @@ https://admin.demo.coreshop.cn/doc
 
 
 4、接口演示地址：  
-为方便前端开发者在不部署前后端的清下调试uni-app，此演示接口已取消跨域限制，uni-app中可以作为测试接口接入。  
 https://api.demo.coreshop.cn  
 
 
@@ -166,7 +165,7 @@ https://api.demo.coreshop.cn/job
 
 #### 🍭 后端技术看点
 - 前后端完全分离，接口与管理端为独立项目 (互不依赖、互不影响、开发效率高)
-- 采用 最新的 Asp.Net 5.0 框架
+- 采用 开源版为 Asp.Net 5 框架，专业版为 Asp.Net 6 框架
 - 采用 RBAC 基于角色的权限控制管理，可颗粒化配置用户、角色可访问的数据权限。
 - 采用 LayuiAdmin（企业级中后台产品UI组件库）作为后端UI框架；
 - 提供 Redis 做缓存和消息队列的处理；
@@ -231,7 +230,7 @@ https://api.demo.coreshop.cn/job
 
 ### 💘 支持开源
 - 希望CoreShop对您有用，您的支持也是CoreShop开源的动力，CoreShop有你更精彩！
-![感谢您的支持](https://gitee.com/jianweie/images/raw/master/coreshop/images/PayeeCode.jpg "PayeeCode.png")
+![感谢您的支持](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/PayeeCode.jpg "PayeeCode.png")
 
 - 感谢以下小伙伴对我们的支持，捐赠列表将不定期更新；如有疏漏或错误请联系我们更正，捐赠人员将免费获得我们后期推出的商业咨询服务；捐赠金额将用于演示服务器，redis，mysql等硬件资源开支。
 
