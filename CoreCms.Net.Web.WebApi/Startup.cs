@@ -34,6 +34,7 @@ using CoreCms.Net.WeChat.Service.Mediator;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
 using MediatR;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace CoreCms.Net.Web.WebApi
 {
@@ -178,6 +179,13 @@ namespace CoreCms.Net.Web.WebApi
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            #region 解决Ubuntu Nginx 代理不能获取IP问题
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            #endregion
+
             // 记录请求与返回数据 (注意开启权限，不然本地无法写入)
             app.UseRequestResponseLog();
             // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)(注意开启权限，不然本地无法写入)
