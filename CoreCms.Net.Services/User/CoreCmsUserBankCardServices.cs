@@ -312,17 +312,10 @@ namespace CoreCms.Net.Services
             var card = await _dal.QueryByClauseAsync(p => p.userId == userId && p.id == id);
             if (card != null)
             {
-                // 是否有默认
-                var defCard = await _dal.QueryByClauseAsync(p => p.userId == userId && p.isdefault == true);
-                if (defCard != null)
-                {
-                    await _dal.UpdateAsync(it => new CoreCmsUserBankCard() { isdefault = false },
-                        p => p.id == defCard.id);
-                    await _dal.UpdateAsync(it => new CoreCmsUserBankCard() { isdefault = true },
-                        p => p.id == card.id);
-                    jm.status = true;
-                    jm.msg = "保存成功";
-                }
+                await _dal.UpdateAsync(it => new CoreCmsUserBankCard() { isdefault = true }, p => p.id == card.id);
+                await _dal.UpdateAsync(it => new CoreCmsUserBankCard() { isdefault = false }, p => p.id != card.id && p.userId == userId);
+                jm.status = true;
+                jm.msg = "保存成功";
             }
             else
             {
