@@ -23,6 +23,15 @@ Vue.use(uView);
 let mpShare = require('@/uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare)
 
+//全局引用常量配置文件,用于template内代码使用
+Vue.mixin({
+    data() {
+        return {
+            $globalConstVars: GlobalConstVars
+        }
+    }
+})
+
 Vue.config.productionTip = false
 Vue.prototype.$upload = Upload;
 Vue.prototype.$common = Common;

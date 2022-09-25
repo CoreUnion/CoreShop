@@ -323,25 +323,6 @@
 
         },
         onShow() {
-            // #ifdef MP-ALIPAY || MP-TOUTIAO
-            let userShip = this.$db.get('addressUserShip', true);
-            if (userShip) {
-                this.userShip = userShip;
-                this.params.areaId = userShip.areaId;
-                this.$db.del('addressUserShip', true);
-            }
-            let userInvoice = this.$db.get('userInvoice', true);
-            if (userInvoice) {
-                this.invoice = userInvoice;
-                this.$db.del('userInvoice', true);
-            }
-            let userStore = this.$db.get('userStore', true);
-            if (userStore) {
-                this.store = userStore;
-                this.$db.del('userStore', true);
-            }
-            // #endif
-            // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
             let userShip = this.$store.state.userShip;
             if (userShip) {
                 this.userShip = userShip;
@@ -351,7 +332,6 @@
             if (userInvoice) {
                 this.invoice = userInvoice;
             }
-            // #endif
         },
         methods: {
             // 切换门店
@@ -415,15 +395,8 @@
                             })
                         }
                         // 所有价格转换
-                        //data.amount = this.$common.formatMoney(data.amount);
-                        //data.goodsAmount = this.$common.formatMoney(data.goodsAmount);
                         data.goodsPromotionMoneyOld = data.goodsPromotionMoney;
-                        //data.goodsPromotionMoney = this.$common.formatMoney(data.goodsPromotionMoney);
-                        //data.couponPromotionMoney = this.$common.formatMoney(data.couponPromotionMoney);
                         data.orderPromotionMoneyOld = data.orderPromotionMoney;
-                        //data.orderPromotionMoney = this.$common.formatMoney(data.orderPromotionMoney);
-                        //data.pointExchangeMoney = this.$common.formatMoney(data.pointExchangeMoney);
-                        //data.costFreight = this.$common.formatMoney(data.costFreight);
                         // 购物车详情
                         this.cartData = data
                         // 商品详情
@@ -628,21 +601,7 @@
                 data['taxType'] = this.invoice.type
                 data['taxName'] = this.invoice.name
                 data['taxCode'] = this.invoice.code
-                // #ifdef H5
-                data['source'] = 2;
-                // #endif
-                // #ifdef MP-WEIXIN
                 data['source'] = 3;
-                // #endif
-                // #ifdef MP-ALIPAY
-                data['source'] = 4;
-                // #endif
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                data['source'] = 5;
-                // #endif
-                // #ifdef MP-TOUTIAO
-                data['source'] = 6;
-                // #endif
                 data = Object.assign(data, delivery)
                 this.$u.api.createOrder(data).then(res => {
                     this.submitStatus = false;
@@ -654,10 +613,7 @@
                         } else {
                             this.$u.route({ type: 'redirectTo', url: '/pages/payment/pay/pay?orderId=' + res.data.orderId + '&type=' + this.orderType });
                         }
-                        //发起订阅
-                        // #ifdef MP-WEIXIN
                         this.subscription();
-                        // #endif
                     } else {
                         this.$u.toast(res.msg);
                     }
@@ -758,21 +714,14 @@
             },
             // 判断是否开启发票功能
             invoiceSwitch() {
-                //console.log("发票功能:" + this.$store.state.config.invoiceSwitch);
                 return this.$store.state.config.invoiceSwitch || 2;
             },
             // 判断店铺开关
             storeSwitch() {
-                //var status = this.$store.state.config.storeSwitch || 2;
-                //if (status == 2) {
-                //    this.typeItem = ['快递物流', '同城配送']
-                //}
-                //console.log(status);
                 return this.$store.state.config.storeSwitch || 2;
             },
             // 根据接口返回数据判断是否使用优惠券
             couponIsUsed() {
-                //console.log(this.cartData.coupon);
                 return this.cartData.coupon && this.cartData.coupon.length > 0;
             },
 

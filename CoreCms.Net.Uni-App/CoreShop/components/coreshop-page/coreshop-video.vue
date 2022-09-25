@@ -25,9 +25,7 @@
 
         },
         onReady: function (res) {
-            // #ifndef MP-ALIPAY
-            this.videoContext = uni.createVideoContext('myVideo')
-            // #endif
+
         },
         methods: {
 

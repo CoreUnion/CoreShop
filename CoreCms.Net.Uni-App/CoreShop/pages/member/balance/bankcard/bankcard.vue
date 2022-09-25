@@ -121,17 +121,7 @@
                 let pages = getCurrentPages();//当前页
                 let beforePage = pages[pages.length - 2];//上个页面
 
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                beforePage.cardInfo = this.cards[index]
-                // #endif
-
-                // #ifdef MP-WEIXIN
                 beforePage.$vm.cardInfo = this.cards[index]
-                // #endif
-
-                // #ifdef MP-ALIPAY || MP-TOUTIAO
-                this.$db.set('userCardInfo', this.cards[index], true);
-                // #endif
 
                 uni.navigateBack({
                     delta: 1

@@ -100,18 +100,6 @@
             }
         },
         onShow() {
-            // #ifdef MP-ALIPAY || MP-TOUTIAO
-            let orderUserShip = this.$db.get('orderUserShip', true);
-            if (orderUserShip) {
-                this.isReload = orderUserShip;
-                this.$db.del('orderUserShip', true);
-            }
-            let orderUserEvaluate = this.$db.get('orderUserEvaluate', true);
-            if (orderUserEvaluate) {
-                this.isReload = orderUserEvaluate;
-                this.$db.del('orderUserEvaluate', true);
-            }
-            // #endif
         },
         methods: {
             // tab点击切换

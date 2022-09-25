@@ -102,7 +102,7 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        "appid" : "wx11d95cdaee6058f6",
+        "appid" : "wx6fc139d4de0b470f",
         "setting" : {
             "urlCheck" : true,
             "postcss" : true,
