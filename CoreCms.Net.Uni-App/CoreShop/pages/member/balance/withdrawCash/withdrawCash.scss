@@ -5,7 +5,3 @@
     text { font-size: 40upx; }
     input { display: inline-block; min-width: 500upx; padding-left: 20upx; }
 }
-
-/* #ifdef MP-ALIPAY */
-.coreshop-cell-hd-title input { font-size: 24px; height: 18px; }
-/* #endif */

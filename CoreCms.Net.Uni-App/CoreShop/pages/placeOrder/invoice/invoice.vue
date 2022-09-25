@@ -115,15 +115,7 @@
             let pre = pages[pages.length - 2]
             console.log(pre);
             if (pre != undefined) {
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                invoice = pre.invoice
-                // #endif
-                // #ifdef MP-WEIXIN
                 invoice = pre.$vm.invoice
-                // #endif
-                // #ifdef MP-ALIPAY || MP-TOUTIAO
-                invoice = pre.data.invoice;
-                // #endif
                 if (invoice && invoice.hasOwnProperty('type') && invoice.type !== '1') {
                     // 发票不是未使用, 展示发票信息
                     this.model.name = invoice.name;
@@ -157,20 +149,6 @@
             },
             // 保存发票信息
             saveInvoice() {
-                //if (this.type === '1' || this.type === 1) {
-                //    this.$u.toast('请选择发票类型')
-                //    return false
-                //}
-                //if (!this.model.name) {
-                //    this.$u.toast('请输入发票抬头')
-                //    return false
-                //}
-                //// 企业类型需要输入税号
-                //if (this.type === '3' && !this.model.code) {
-                //    this.$u.toast('请输入发票税号信息')
-                //    return false
-                //}
-
                 this.$refs.uForm.validate(valid => {
                     if (valid) {
                         console.log('验证通过');
@@ -196,16 +174,7 @@
                 let pages = getCurrentPages(); //当前页
                 let beforePage = pages[pages.length - 2]; //上个页面
                 if (beforePage != undefined) {
-                    // #ifdef MP-ALIPAY || MP-TOUTIAO
-                    this.$db.set('userInvoice', data, true);
-                    // #endif
-                    // #ifdef MP-WEIXIN
                     beforePage.$vm.invoice = data;
-                    // #endif
-                    // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                    // beforePage.invoice = data;
-                    this.$store.commit('invoice', data)
-                    // #endif
                     uni.navigateBack({
                         delta: 1
                     })

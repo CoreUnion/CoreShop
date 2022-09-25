@@ -64,7 +64,6 @@
                             </view>
                             <view class='coreshop-cell-item-ft'>
                                 <view class="uni-form-item uni-column invoice-type">
-                                    <!-- #ifndef MP-ALIPAY -->
                                     <radio-group class="uni-list" @change="radioChange">
                                         <label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in typeList" :key="index">
                                             <view class="invoice-type-icon">
@@ -79,21 +78,6 @@
                                             </view>
                                         </label>
                                     </radio-group>
-                                    <!-- #endif -->
-                                    <!-- #ifdef MP-ALIPAY -->
-                                    <radio-group class="uni-list" @change="radioChange">
-                                        <label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in typeListByAli" :key="index">
-                                            <view class="invoice-type-icon">
-                                                <radio class="a-radio" :id="item.name" :value="item.value" :checked="item.checked" :disabled="item.disabled"></radio>
-                                            </view>
-                                            <view class="invoice-type-c">
-                                                <label class="label-2-text" :for="item.name">
-                                                    <text>{{item.name}}</text>
-                                                </label>
-                                            </view>
-                                        </label>
-                                    </radio-group>
-                                    <!-- #endif -->
                                 </view>
                             </view>
                         </view>

@@ -210,33 +210,6 @@
       ]
     },
     {
-      "root": "pages/login",
-      "name": "login",
-      "pages": [
-        {
-          "path": "loginBySMS/loginBySMS",
-          "style": {
-            "navigationBarTextStyle": "black",
-            "navigationBarTitleText": "授权登录"
-          }
-        },
-        {
-          "path": "forget/forget",
-          "style": {
-            "navigationBarTextStyle": "black",
-            "navigationBarTitleText": "忘记密码"
-          }
-        },
-        {
-          "path": "loginByAccount/loginByAccount",
-          "style": {
-            "navigationBarTextStyle": "black",
-            "navigationBarTitleText": "账号登录"
-          }
-        }
-      ]
-    },
-    {
       "root": "pages/goods",
       "name": "goods",
       "pages": [
@@ -830,7 +803,6 @@
       },
       {
         "pagePath": "pages/index/member/member",
-        //"pagePath": "pages/login/loginByAccount/loginByAccount",
         "text": "我的",
         "iconPath": "static/images/indexMenus/index04.png",
         "selectedIconPath": "static/images/indexMenus/index04_1.png"

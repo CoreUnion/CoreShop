@@ -10,32 +10,12 @@
             <view class="user-info-box">
                 <!--未登陆-->
                 <view class="login-user-view" v-if="!hasLogin">
-                    <!-- #ifdef H5 || APP-PLUS -->
-                    <view class="login-user-avatar-view">
-                        <u-avatar :src="$store.state.config.shopLogo" size="large"></u-avatar>
-                    </view>
-                    <u-button type="default" size="mini" @click="toLogin()">立即登录</u-button>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-WEIXIN -->
                     <view class="login-user-avatar-view">
                         <view class="account-face grace-box-shadow">
                             <open-data type="userAvatarUrl"></open-data>
                         </view>
                     </view>
                     <u-button type="default" size="mini" @click="goLogin()">立即登录</u-button>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-ALIPAY -->
-                    <view class="login-user-avatar-view">
-                        <u-avatar :src="userInfo.avatarImage" size="large"></u-avatar>
-                    </view>
-                    <u-button type="default" size="mini" @click="goLogin()">立即登录</u-button>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-TOUTIAO -->
-                    <view class="login-user-avatar-view">
-                        <u-avatar :src="$store.state.config.shopLogo" size="large"></u-avatar>
-                    </view>
-                    <u-button type="default" size="mini" @click="goLogin()">立即登录</u-button>
-                    <!-- #endif -->
                 </view>
 
                 <!--已登陆-->
@@ -54,23 +34,12 @@
                                 <text>余额 {{ userInfo.balance }}</text>
                             </view>
                         </view>
-                        <!-- #ifndef MP-WEIXIN -->
-                        <view class="u-m-l-10 u-p-10">
-                            <u-icon name="scan" color="#969799" size="28"></u-icon>
-                        </view>
-                        <view class="u-m-l-10 u-p-10" @tap="navigateToHandle('/pages/member/setting/userInfo/index')">
-                            <u-icon name="arrow-right" color="#969799" size="28"></u-icon>
-                        </view>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-WEIXIN -->
                         <view class="u-m-l-10 u-m-r-20 u-p-10" @click="syncWeChatInfo()">
                             <u-icon name="reload" color="#fff" size="32"></u-icon>
                         </view>
                         <view class="u-m-l-20 u-p-10" @tap="navigateToHandle('/pages/member/setting/userInfo/index')">
                             <u-icon name="arrow-right" color="#fff" size="32"></u-icon>
                         </view>
-                        <!-- #endif -->
-
                     </view>
                 </view>
             </view>
@@ -194,33 +163,15 @@
                     <view class="coreshop-text-black coreshop-text-bold u-font-lg tools-title">其他</view>
                 </view>
                 <view class="coreshop-tools-list-box">
-
                     <u-grid :col="4" :border="false">
                         <u-grid-item @click="goArticleList()">
                             <u-icon name="question-circle" :size="50" color="#666"></u-icon>
                             <view class="grid-text">帮助中心</view>
                         </u-grid-item>
-
                         <u-grid-item v-for="(item,i) in other" :key="i" v-if="item.showItem" @click="navigateToHandle(item.router)">
                             <u-icon :name="item.icon" :size="50" color="#666"></u-icon>
                             <view class="grid-text">{{ item.name }}</view>
                         </u-grid-item>
-                        <!-- #ifdef H5 || APP-PLUS || APP-PLUS-NVUE -->
-                        <u-grid-item @click="showChat">
-                            <u-icon name="server-man" :size="50" color="#666"></u-icon>
-                            <view class="grid-text">联系客服</view>
-                        </u-grid-item>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-WEIXIN -->
-                        <!-- todo:: 微信客服 -->
-                        <!-- #endif -->
-                        <!-- #ifdef MP-TOUTIAO -->
-                        <!-- todo:: 头条客服 -->
-                        <!-- #endif -->
-                        <!-- #ifdef MP-ALIPAY -->
-                        <!-- todo:: 支付宝客服 -->
-                        <!-- #endif -->
-
                     </u-grid>
                 </view>
             </view>
@@ -473,9 +424,6 @@
             goLogin() {
                 this.$store.commit('showLoginTip', true);
             },
-            toLogin() {
-                this.$u.route('/pages/member/login/login/loginByAccount')
-            },
             initData() {
                 var _this = this
                 //判断是开启分销还是原始推广
@@ -562,24 +510,6 @@
             },
             //在线客服,只有手机号的，请自己替换为手机号
             showChat() {
-                // #ifdef H5
-                // #endif
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                this.$u.route('/pages/member/customerService/index');
-                // #endif
-                // 头条系客服
-                // #ifdef MP-TOUTIAO
-                if (this.shopMobile != 0) {
-                    let _this = this;
-                    tt.makePhoneCall({
-                        phoneNumber: this.shopMobile.toString(),
-                        success(res) { },
-                        fail(res) { }
-                    });
-                } else {
-                    _this.$u.toast('暂无设置客服电话');
-                }
-                // #endif
             },
             //同步微信昵称数据
             syncWeChatInfo() {

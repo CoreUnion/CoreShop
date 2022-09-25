@@ -69,18 +69,8 @@
                     let pages = getCurrentPages();//当前页
                     let beforePage = pages[pages.length - 2];//上个页面
 
-                    // #ifdef MP-ALIPAY || MP-TOUTIAO
-                    this.$db.set('addressUserShip', data, true);
-                    // #endif
-
-                    // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                    this.$store.commit("userShip", data)
-                    // #endif
-
-                    // #ifdef MP-WEIXIN
                     beforePage.$vm.userShip = data;
                     beforePage.$vm.params.areaId = data.areaId;
-                    // #endif
 
                     uni.navigateBack({
                         delta: 1

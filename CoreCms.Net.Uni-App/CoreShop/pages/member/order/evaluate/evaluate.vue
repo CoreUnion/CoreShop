@@ -178,28 +178,12 @@
                                 let beforePage = pages[pages.length - 2]; // 上个页面
 
                                 if (beforePage !== undefined && beforePage.route === 'pages/member/order/index/index') {
-                                    // #ifdef MP-WEIXIN
                                     beforePage.$vm.isReload = true
-                                    // #endif
-                                    // #ifdef H5
-                                    beforePage.isReload = true
-                                    // #endif
-                                    // #ifdef MP-ALIPAY || MP-TOUTIAO
-                                    _this.$db.set('orderUserEvaluate', true, true);
-                                    // #endif
                                 }
 
                                 let before = pages[pages.length - 3]; // 上个页面
                                 if (before !== undefined && before.route === 'pages/member/order/index/index') {
-                                    // #ifdef MP-WEIXIN
                                     before.$vm.isReload = true
-                                    // #endif
-                                    // #ifdef H5
-                                    before.isReload = true
-                                    // #endif
-                                    // #ifdef MP-ALIPAY || MP-TOUTIAO
-                                    _this.$db.set('orderUserEvaluate', true, true);
-                                    // #endif
                                 }
                                 uni.navigateBack({
                                     delta: 1,

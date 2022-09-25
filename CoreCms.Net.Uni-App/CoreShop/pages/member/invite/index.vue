@@ -27,16 +27,9 @@
                 <view class='invite-w-btn' @click="setMyInvite">提交</view>
             </view>
             <view class='invite-btn'>
-                <!-- #ifdef MP-WEIXIN -->
                 <button class='share coreshop-btn' open-type="share">
                     <u-icon name="weixin-fill" size="90" top="4"></u-icon>
                 </button>
-                <!-- #endif -->
-                <!-- #ifdef H5 -->
-                <button class='share coreshop-btn' @click="copyUrl()" v-show="!ifwx">
-                    <u-icon name="zhuanfa" size="90" top="4"></u-icon>
-                </button>
-                <!-- #endif -->
                 <button class='share coreshop-btn' @click="createPoster()">
                     <u-icon name="moments" size="90" top="4"></u-icon>
                 </button>
@@ -46,10 +39,7 @@
 
 </template>
 <script>
-    import { h5Url } from '@/common/setting/constVarsHelper.js'
-    // #ifdef MP-TOUTIAO
-    import { ttPlatform } from '@/common/setting/constVarsHelper.js'
-    // #endif
+
     export default {
         data() {
             return {
@@ -118,22 +108,8 @@
                 if (userToken) {
                     data.token = userToken
                 }
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                data.client = 1;
-                data.url = h5Url + 'pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-WEIXIN
                 data.client = 2;
                 data.url = 'pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-TOUTIAO
-                data.client = 4;
-                data.url = 'pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-ALIPAY
-                data.client = 6;
-                data.url = 'pages/share/jump/jump'
-                // #endif
                 this.$u.api.share(data).then(res => {
                     if (res.status) {
                         this.$u.route('/pages/share/sharePoster/sharePoster?poster=' + encodeURIComponent(res.data))
@@ -152,22 +128,8 @@
                 if (userToken) {
                     data.token = userToken
                 }
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                data.client = 1;
-                data.url = h5Url + 'pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-WEIXIN
                 data.client = 2;
                 data.url = 'pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-TOUTIAO
-                data.client = 4;
-                data.url = '/pages/share/jump/jump'
-                // #endif
-                // #ifdef MP-ALIPAY
-                data.client = 6;
-                data.url = '/pages/share/jump/jump'
-                // #endif
                 let _this = this;
                 this.$u.api.share(data).then(res => {
                     if (res.status) {

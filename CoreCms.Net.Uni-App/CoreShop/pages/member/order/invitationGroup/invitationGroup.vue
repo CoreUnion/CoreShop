@@ -30,31 +30,9 @@
             <!-- 弹出层 -->
             <view class="u-padding-10">
                 <u-popup mode="bottom" v-model="shareBox" ref="share">
-                    <!-- #ifdef H5 -->
-                    <shareByH5 :shareType='3' :goodsId="goodsInfo.goodsId" :teamId="teamInfo.teamId" :groupId="teamInfo.ruleId"
-                               :shareImg="goodsInfo.image_url" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref"
-                               @close="closeShare()"></shareByH5>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-WEIXIN -->
                     <shareByWx :shareType='3' :goodsId="goodsInfo.goodsId" :teamId="teamInfo.teamId" :groupId="teamInfo.ruleId"
                                :shareImg="goodsInfo.image_url" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref"
                                @close="closeShare()"></shareByWx>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-ALIPAY -->
-                    <shareByAli :shareType='3' :goodsId="goodsInfo.goodsId" :teamId="teamInfo.teamId" :groupId="teamInfo.ruleId"
-                                :shareImg="goodsInfo.image_url" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref"
-                                @close="closeShare()"></shareByAli>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-TOUTIAO -->
-                    <shareByTt :shareType='3' :goodsId="goodsInfo.goodsId" :teamId="teamInfo.teamId" :groupId="teamInfo.ruleId"
-                               :shareImg="goodsInfo.image_url" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref"
-                               @close="closeShare()"></shareByTt>
-                    <!-- #endif -->
-                    <!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
-                    <shareByApp :shareType='3' :goodsId="goodsInfo.goodsId" :teamId="teamInfo.teamId" :groupId="teamInfo.ruleId"
-                                :shareImg="goodsInfo.image_url" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref"
-                                @close="closeShare()"></shareByApp>
-                    <!-- #endif -->
                 </u-popup>
             </view>
 
@@ -91,40 +69,11 @@
 </template>
 
 <script>
-    // #ifdef H5
-    import shareByH5 from '@/components/coreshop-share/shareByh5.vue'
-    // #endif
-    // #ifdef MP-WEIXIN
     import shareByWx from '@/components/coreshop-share/shareByWx.vue'
-    // #endif
-    // #ifdef MP-ALIPAY
-    import shareByAli from '@/components/coreshop-share/shareByAli.vue'
-    // #endif
-    // #ifdef MP-TOUTIAO
-    import shareByTt from '@/components/coreshop-share/shareByTt.vue'
-    // #endif
-    // #ifdef APP-PLUS || APP-PLUS-NVUE
-    import shareByApp from '@/components/coreshop-share/shareByApp.vue'
-    // #endif
 
     export default {
         components: {
-            // #ifdef H5
-            shareByH5,
-            // #endif
-            // #ifdef MP-WEIXIN
-            shareByWx,
-            // #endif
-            // #ifdef MP-ALIPAY
-            shareByAli,
-            // #endif
-            // #ifdef MP-TOUTIAO
-            shareByTt,
-            // #endif
-            // #ifdef APP-PLUS || APP-PLUS-NVUE
-            shareByApp,
-            // #endif
-            // spec
+            shareByWx
         },
         data() {
             return {
@@ -153,18 +102,8 @@
             let pages = getCurrentPages()
             let pre = pages[pages.length - 2]
             if (typeof pre != 'undefined') {
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                teamInfo = pre.teamInfo
-                orderInfo = pre.orderInfo
-                // #endif
-                // #ifdef MP-WEIXIN
                 teamInfo = pre.$vm.teamInfo
                 orderInfo = pre.$vm.orderInfo
-                // #endif
-                // #ifdef MP-ALIPAY || MP-TOUTIAO
-                teamInfo = pre.data.teamInfo;
-                orderInfo = pre.data.orderInfo
-                // #endif
             }
             if (teamInfo && orderInfo) {
                 this.teamInfo = teamInfo;
@@ -180,13 +119,7 @@
             shareHref() {
                 let pages = getCurrentPages()
                 let page = pages[pages.length - 1]
-                // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE || MP-TOUTIAO
                 return this.$globalConstVars.apiBaseUrl + 'wap/' + page.route + '?scene=' + this.query;
-                // #endif
-
-                // #ifdef MP-ALIPAY
-                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.__proto__.route + '?scene=' + this.query;
-                // #endif
             }
         },
         methods: {

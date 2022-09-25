@@ -15,26 +15,9 @@
                         <view class="u-font-xl">{{totalGoods}}</view>
                         <text class='coreshop-item-text'>全部宝贝</text>
                     </view>
-                    <!-- #ifdef MP-TOUTIAO -->
-                    <view class='coreshop-item' @click="createPoster()">
-                        <u-icon name="star" size="36" label="分享店铺" label-pos="bottom" margin-top="15"></u-icon>
-                    </view>
-                    <!-- #endif -->
-                    <!-- #ifndef MP-TOUTIAO -->
-                    <view class='coreshop-item' @click="openPopup()">
-                        <u-icon name="star" size="36" label="收藏本店" label-pos="bottom" margin-top="15"></u-icon>
-                    </view>
-                    <!-- #endif -->
-                    <!-- #ifndef MP-WEIXIN -->
                     <view class='coreshop-item' @click="createPoster()">
                         <u-icon name="grid" size="36" label="二维码" label-pos="bottom" margin-top="15"></u-icon>
                     </view>
-                    <!-- #endif -->
-                    <!-- #ifdef MP-WEIXIN -->
-                    <view class='coreshop-item' @click="createPoster()">
-                        <u-icon name="grid" size="36" label="二维码" label-pos="bottom" margin-top="15"></u-icon>
-                    </view>
-                    <!-- #endif -->
                 </view>
             </view>
             <view class="u-padding-15 u-margin-bottom-15 coreshop-bg-white u-border-bottom" @tap="goSearch()">
@@ -44,15 +27,7 @@
             <u-popup mode="top" v-model="lvvpopref">
                 <view class="collect-pop">
                     <image v-if="isWeixinBrowser" src="/static/images/distribution/wxh5.png" mode="widthFix"></image>
-                    <!-- #ifdef MP-WEIXIN -->
                     <image src="/static/images/distribution/wxxcx.png" mode="widthFix"></image>
-                    <!-- #endif -->
-                    <!-- #ifdef H5 -->
-                    <view class="h5-tip color-f fsz38">
-                        <view>请将此页面添加浏览器书签</view>
-                        <view>方便下次浏览</view>
-                    </view>
-                    <!-- #endif -->
                 </view>
             </u-popup>
         </view>
@@ -148,18 +123,8 @@
             this.getGoods();
         },
         mounted() {
-            // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-            window.addEventListener('scroll', this.handleScroll)
-            // #endif
         },
         updated() {
-            // #ifndef MP-WEIXIN || MP-TOUTIAO || MP-ALIPAY
-            // 获取上半部分的整体高度
-            this.$nextTick(() => {
-                let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; //浏览器高度
-                this.top_height = this.$refs.myStore.$el.clientHeight;
-            })
-            // #endif
         },
         methods: {
             // 显示modal弹出框
@@ -174,7 +139,6 @@
             goSearch() {
                 let pages = getCurrentPages();
                 let prevPage = pages[pages.length - 2];
-                // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE || MP-TOUTIAO
                 if (prevPage && prevPage.route) {
                     let search_flag = prevPage.route;
                     if (search_flag == 'pages/search/search') {
@@ -187,21 +151,6 @@
                 } else {
                     this.$u.route('/pages/search/search');
                 }
-                // #endif
-                // #ifdef MP-ALIPAY
-                if (prevPage && prevPage.__proto__.route) {
-                    let search_flag = prevPage.__proto__.route;
-                    if (search_flag == 'pages/search/search') {
-                        uni.navigateBack({
-                            delta: 1
-                        });
-                    } else {
-                        this.$u.route('/pages/search/search');
-                    }
-                } else {
-                    this.$u.route('/pages/search/search');
-                }
-                // #endif
             },
 
             //取得商品数据
@@ -265,25 +214,7 @@
                     page: 11,
                 }
                 let pageUrl = 'pages/share/jump/jump';
-                // #ifdef H5
-                data.client = 1;
-                data.url = this.$globalConstVars.apiBaseUrl + 'wap/' + pageUrl;
-                // #endif
-                // #ifdef MP-WEIXIN
                 data.client = 2;
-                data.url = pageUrl;
-                // #endif
-                // #ifdef MP-ALIPAY
-                data.client = 3;
-                data.url = pageUrl;
-                // #endif
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                data.client = 5;
-                data.url = this.$globalConstVars.apiBaseUrl + 'wap/' + pageUrl;
-                // #endif
-                // #ifdef MP-TOUTIAO
-                data.client = 6;
-                // #endif
                 let userToken = this.$db.get('userToken')
                 if (userToken && userToken != '') {
                     data.token = userToken
