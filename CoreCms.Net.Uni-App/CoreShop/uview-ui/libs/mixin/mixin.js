@@ -1,11 +1,6 @@
-import * as GlobalConstVars from '@/common/setting/constVarsHelper.js'
-
-
 module.exports = {
 	data() {
-        return {
-			$globalConstVars: GlobalConstVars
-        }
+		return {}
 	},
 	onLoad() {
 		// getRect挂载到$u上，因为这方法需要使用in(this)，所以无法把它独立成一个单独的文件导出
@@ -53,7 +48,7 @@ module.exports = {
 		uni.$emit('uOnReachBottom')
 	},
 	beforeDestroy() {
-		// 判断当前页面是否存在parent和chldren，一般在checkbox和checkbox-group父子联动的场景会有此情况
+		// 判断当前页面是否存在parent和children，一般在checkbox和checkbox-group父子联动的场景会有此情况
 		// 组件销毁时，移除子组件在父组件children数组中的实例，释放资源，避免数据混乱
 		if(this.parent && uni.$u.test.array(this.parent.children)) {
 			// 组件销毁时，移除父组件中的children数组中对应的实例
