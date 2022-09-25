@@ -96,7 +96,7 @@
     </view>
 </template>
 <script>
-    import paymentsByWx from '@/components/coreshop-payments/coreshop-paymentsByWx.vue';
+    import paymentsByWx from '@/pages/payment/components/coreshop-paymentsByWx.vue';
 
     import { orders } from '@/common/mixins/mixinsHelper.js';
     export default {
