@@ -12,18 +12,18 @@
             <form @submit="submit">
                 <view class="coreshop-content-top">
                     <view class="img-list">
-                        <checkbox-group class="cart-checkbox" v-for="(item, key) in items" :key="key" @change="checkboxChange">
+                        <checkbox-group class="cart-checkbox" v-for="(item, key) in items" :key="key" >
                             <view class="cart-checkbox-item">
                                 <label class="uni-list-cell uni-list-cell-pd">
                                     <view class="cart-checkbox-c">
-                                        <checkbox :value='item.id' :checked="item.checked" color="#FF7159" v-if="item.disabled" :disabled="item.disabled" class="checkboxNo" />
-                                        <checkbox :value='item.id' :checked="item.checked" color="#FF7159" v-else />
+                                        <checkbox :value='item.id' :checked="item.checked" @click="clickCheckBox(item)"  color="#FF7159" v-if="item.disabled" :disabled="item.disabled" class="checkboxNo" />
+                                        <checkbox :value='item.id' :checked="item.checked"  @click="clickCheckBox(item)" color="#FF7159" v-else />
                                     </view>
                                     <view class="img-list-item">
                                         <u-avatar :src="item.imageUrl" mode="square" size="150" class="img-list-item-l"></u-avatar>
                                         <view class="img-list-item-r">
                                             <view class="list-goods-name">
-                                                {{item.name}}
+                                             {{item.name}}
                                             </view>
                                             <view class="goods-item-c u-margin-top-10 u-margin-bottom-10" v-if="item.addon">
                                                 <view class="goods-buy">
@@ -260,9 +260,37 @@
                     }
                 });
             },
+              //退货商品选择
+             clickCheckBox: function(checkbox) {
+				 let num1=0;
+				 let num2=-1;
+				   console.log(checkbox.id)
 
-            //退货商品选择
-            checkboxChange(e) {
+					 for(var i=0;i<this.itemIds.length;i++){
+						console.log("进入循环")
+						console.log(this.itemIds[i].id+checkbox.id)
+					 	if(this.itemIds[i].id==checkbox.id){
+							num2=i;
+							num1=1;
+						 console.log("存在")
+						}
+						}
+                       if(num1==1){
+					  this.itemIds.splice(num2,1);
+					     console.log("删除")
+						 }
+						 if(num1==0){
+							 
+							  this.itemIds = this.itemIds.concat({ id: checkbox.id, nums: checkbox.nums }); 
+							    console.log("添加")
+						 }
+
+				  console.log(this.itemIds);
+                  },
+
+
+           
+       /*     checkboxChange(e) {
                 let nums = 0;
                 let id = 0;
                 this.itemIds = [];
@@ -282,7 +310,7 @@
                     }
                 }
 
-            },
+            }, */
 
             // 点击输入框的事件
             onFocus(item, key) {
@@ -342,6 +370,7 @@
 
             //提交
             submit(e) {
+				
                 let _that = this;
                 this.submitStatus = true;
 

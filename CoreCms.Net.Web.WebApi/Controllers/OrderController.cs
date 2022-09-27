@@ -10,6 +10,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreCms.Net.Auth.HttpContextUser;
@@ -323,6 +324,34 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             return jm;
 
         }
+        //public async Task<WebApiCallBack> AddAftersales([FromBody] List<ToAddBillAfterSalesPost> entity)
+        //{
+        //    var jm = new WebApiCallBack();
+
+        //    foreach (var item in entity)
+        //    {
+        //        jm.otherData = entity;
+        //        if (string.IsNullOrEmpty(item.orderId))
+        //        {
+        //            jm.msg = GlobalErrorCodeVars.Code13100;
+        //            jm.code = 13100;
+        //            return jm;
+        //        }
+        //        if (item.type == 0)
+        //        {
+        //            jm.msg = GlobalErrorCodeVars.Code10051;
+        //            jm.code = 10051;
+        //            return jm;
+        //        }
+        //        jm = await _aftersalesServices.ToAdd(_user.ID, item.orderId, item.type, item.items, item.images,
+        //            item.reason, item.refund);
+        //    }
+
+
+
+        //    return jm;
+
+        //}
 
         #endregion
 
@@ -339,7 +368,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             var jm = new WebApiCallBack();
 
             jm.status = true;
-            jm.msg = "数据获取成功";
+                jm.msg = "数据获取成功";
 
             var where = PredicateBuilder.True<CoreCmsBillAftersales>();
             where = where.And(p => p.userId == _user.ID);
