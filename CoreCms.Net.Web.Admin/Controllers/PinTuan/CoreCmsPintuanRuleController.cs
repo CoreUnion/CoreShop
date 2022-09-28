@@ -242,8 +242,10 @@ namespace CoreCms.Net.Web.Admin.Controllers
             if (entity!=null&&entity.goods.Any())
             {
                 var list = new List<CoreCmsPinTuanGoods>();
+                //循环列表得到所选的值
                 foreach (var good in entity.goods)
                 {
+                    
                     //根据商品id查询商品是否存在
                     var istrue = await _coreCmsPinTuanRuleServices.GetPinTuanInfo(good);
                     //istrue不为空时存在该商品提示：拼团商品不能重复
