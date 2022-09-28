@@ -166,6 +166,9 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 @where = @where.And(p => p.isStatusOpen == false);
             //获取数据
             var list = await _coreCmsPinTuanRuleServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
+          
+           
+
             //返回数据
             jm.data = list;
             jm.code = 0;
@@ -232,19 +235,38 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return jm;
             }
 
+            var bl=false;
             entity.createTime = DateTime.Now;
-            var id = await _coreCmsPinTuanRuleServices.InsertAsync(entity);
-            var bl = id > 0;
-            if (bl && entity.goods.Any())
+
+            if (entity!=null&&entity.goods.Any())
             {
                 var list = new List<CoreCmsPinTuanGoods>();
                 foreach (var good in entity.goods)
-                    list.Add(new CoreCmsPinTuanGoods
+                {
+                    var istrue = await _coreCmsPinTuanRuleServices.GetPinTuanInfo(good);
+                    if (istrue!=null)
                     {
-                        goodsId = good,
-                        ruleId = id
-                    });
-                await _coreCmsPinTuanGoodsServices.InsertAsync(list);
+                        jm.msg = "拼团商品不能重复";
+                        return jm;
+                    }
+                    else if(istrue == null)
+                    {
+                        var id = await _coreCmsPinTuanRuleServices.InsertAsync(entity);
+                        bl = id > 0;
+
+                        list.Add(new CoreCmsPinTuanGoods
+                        {
+                            goodsId = good,
+                            ruleId = id
+                        });
+                        await _coreCmsPinTuanGoodsServices.InsertAsync(list);
+                    }
+                 
+                }
+
+
+
+             
             }
 
             jm.code = bl ? 0 : 1;
