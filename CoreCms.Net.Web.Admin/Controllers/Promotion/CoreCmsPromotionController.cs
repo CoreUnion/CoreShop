@@ -375,66 +375,81 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<AdminUiCallBack> DoEdit([FromBody] CoreCmsPromotion entity)
         {
             var jm = new AdminUiCallBack();
-
-            if (entity.startTime >= entity.endTime)
+            var where = PredicateBuilder.True<CoreCmsPromotion>();
+            where = where.And(p => p.isDel == false);
+            where = where.And(p => p.parameters == entity.parameters);
+            //根据条件查询数据中是否存在该商品 ListReturn 中不为空则存在该商品的秒杀 若为空则不存在则进行编辑添加。
+            var ListReturn  = await _coreCmsPromotionServices.QueryPageAsync(where,p=>p.id,OrderByType.Asc,1,30);
+            //不存在该商品进行修改添加
+            if (ListReturn.Count==0)
             {
-                jm.msg = "开始时间必须小于结束时间";
-                return jm;
-            }
-
-            var oldModel = await _coreCmsPromotionServices.QueryByIdAsync(entity.id);
-            if (oldModel == null)
-            {
-                jm.msg = "不存在此信息";
-                return jm;
-            }
-            //事物处理过程开始
-            oldModel.name = entity.name;
-            oldModel.type = entity.type;
-            oldModel.sort = entity.sort;
-            oldModel.parameters = entity.parameters;
-            oldModel.startTime = entity.startTime;
-            oldModel.endTime = entity.endTime;
-
-            oldModel.maxNums = entity.maxNums > 0 ? entity.maxNums : 0;
-            oldModel.maxGoodsNums = entity.maxGoodsNums > 0 ? entity.maxGoodsNums : 0;
-            oldModel.maxRecevieNums = entity.maxRecevieNums > 0 ? entity.maxRecevieNums : 0;
-
-            oldModel.effectiveDays = entity.effectiveDays;
-            oldModel.effectiveHours = entity.effectiveHours;
-
-            if (entity.type == (int)GlobalEnumVars.PromotionType.Promotion)
-            {
-                oldModel.isExclusive = entity.isExclusive;
-            }
-
-            if (entity.type == (int)GlobalEnumVars.PromotionType.Coupon)
-            {
-                oldModel.isAutoReceive = entity.isAutoReceive;
-
-                if (oldModel.effectiveDays == 0 && oldModel.effectiveHours == 0)
+                if (entity.startTime >= entity.endTime)
                 {
-                    jm.msg = "优惠券有效时间不能为0";
+                    jm.msg = "开始时间必须小于结束时间";
                     return jm;
                 }
+
+                var oldModel = await _coreCmsPromotionServices.QueryByIdAsync(entity.id);
+                if (oldModel == null)
+                {
+                    jm.msg = "不存在此信息";
+                    return jm;
+                }
+                //事物处理过程开始
+                oldModel.name = entity.name;
+                oldModel.type = entity.type;
+                oldModel.sort = entity.sort;
+                oldModel.parameters = entity.parameters;
+                oldModel.startTime = entity.startTime;
+                oldModel.endTime = entity.endTime;
+
+                oldModel.maxNums = entity.maxNums > 0 ? entity.maxNums : 0;
+                oldModel.maxGoodsNums = entity.maxGoodsNums > 0 ? entity.maxGoodsNums : 0;
+                oldModel.maxRecevieNums = entity.maxRecevieNums > 0 ? entity.maxRecevieNums : 0;
+
+                oldModel.effectiveDays = entity.effectiveDays;
+                oldModel.effectiveHours = entity.effectiveHours;
+
+                if (entity.type == (int)GlobalEnumVars.PromotionType.Promotion)
+                {
+                    oldModel.isExclusive = entity.isExclusive;
+                }
+
+                if (entity.type == (int)GlobalEnumVars.PromotionType.Coupon)
+                {
+                    oldModel.isAutoReceive = entity.isAutoReceive;
+
+                    if (oldModel.effectiveDays == 0 && oldModel.effectiveHours == 0)
+                    {
+                        jm.msg = "优惠券有效时间不能为0";
+                        return jm;
+                    }
+                }
+
+                oldModel.isEnable = entity.isEnable;
+
+                if (oldModel.type == (int)GlobalEnumVars.PromotionType.Group || oldModel.type == (int)GlobalEnumVars.PromotionType.Seckill)
+                {
+                    await _coreCmsPromotionConditionServices.DeleteAsync(p => p.promotionId == oldModel.id && p.code == "GOODS_IDS");
+                    var coreCmsPromotionResult = new CoreCmsPromotionCondition();
+                    coreCmsPromotionResult.promotionId = oldModel.id;
+                    coreCmsPromotionResult.code = "GOODS_IDS";
+                    coreCmsPromotionResult.parameters = entity.parameters;
+                    await _coreCmsPromotionConditionServices.InsertAsync(coreCmsPromotionResult);
+                }
+
+                //事物处理过程结束
+                var bl = await _coreCmsPromotionServices.UpdateAsync(oldModel);
+                jm.code = bl ? 0 : 1;
+                jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
+
             }
-
-            oldModel.isEnable = entity.isEnable;
-
-            if (oldModel.type == (int)GlobalEnumVars.PromotionType.Group || oldModel.type == (int)GlobalEnumVars.PromotionType.Seckill)
+            //存在该商品返回提示
+            else 
             {
-                await _coreCmsPromotionConditionServices.DeleteAsync(p => p.promotionId == oldModel.id && p.code == "GOODS_IDS");
-                var coreCmsPromotionResult = new CoreCmsPromotionCondition();
-                coreCmsPromotionResult.promotionId = oldModel.id;
-                coreCmsPromotionResult.code = "GOODS_IDS";
-                coreCmsPromotionResult.parameters = entity.parameters;
-                await _coreCmsPromotionConditionServices.InsertAsync(coreCmsPromotionResult);
+                jm.msg = "秒杀区已存在该商品";
+                return jm;
             }
-
-            //事物处理过程结束
-            var bl = await _coreCmsPromotionServices.UpdateAsync(oldModel);
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
             return jm;
         }

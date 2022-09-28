@@ -238,18 +238,22 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var bl=false;
             entity.createTime = DateTime.Now;
 
+            //判断所选的商品不为空
             if (entity!=null&&entity.goods.Any())
             {
                 var list = new List<CoreCmsPinTuanGoods>();
                 foreach (var good in entity.goods)
                 {
+                    //根据商品id查询商品是否存在
                     var istrue = await _coreCmsPinTuanRuleServices.GetPinTuanInfo(good);
+                    //istrue不为空时存在该商品提示：拼团商品不能重复
                     if (istrue!=null)
                     {
                         jm.msg = "拼团商品不能重复";
                         return jm;
                     }
-                    else if(istrue == null)
+                    //istrue为空时不存在该商品的拼团 则对商品进行添加
+                    else if (istrue == null)
                     {
                         var id = await _coreCmsPinTuanRuleServices.InsertAsync(entity);
                         bl = id > 0;
