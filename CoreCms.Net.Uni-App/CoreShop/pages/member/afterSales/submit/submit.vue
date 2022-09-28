@@ -13,15 +13,14 @@
 			<form @submit="submit">
 				<view class="coreshop-content-top">
 					<view class="img-list">
-						<checkbox-group class="cart-checkbox" v-for="(item, key) in items" :key="key" @click="clickCheckBox(item)">
+						<checkbox-group class="cart-checkbox" v-for="(item, key) in items" :key="key"
+							@click="clickCheckBox(item)">
 							<view class="cart-checkbox-item">
 								<label class="uni-list-cell uni-list-cell-pd">
 									<view class="cart-checkbox-c">
-										<checkbox :value='item.id' :checked="item.checked" 
-											color="#FF7159" v-if="item.disabled" :disabled="item.disabled"
-											class="checkboxNo" />
-										<checkbox :value='item.id' :checked="item.checked"
-											color="#FF7159" v-else />
+										<checkbox :value='item.id' :checked="item.checked" color="#FF7159"
+											v-if="item.disabled" :disabled="item.disabled" class="checkboxNo" />
+										<checkbox :value='item.id' :checked="item.checked" color="#FF7159" v-else />
 									</view>
 									<view class="img-list-item">
 										<u-avatar :src="item.imageUrl" mode="square" size="150" class="img-list-item-l">
@@ -321,7 +320,7 @@
 
 					this.itemIds = this.itemIds.concat({
 						id: checkbox.id,
-						nums: checkbox.nums
+						nums: checkbox.returnNums
 					});
 					console.log("添加")
 				}
@@ -359,8 +358,7 @@
 				if (this.checkedItems.indexOf(item.id) == -1) {
 					this.checkedItems.push(item.id)
 				}
-				this.items[key].checked = true;
-				this.getReturnData();
+
 			},
 			//处理退款金额光标事件
 			refundFocus(e) {
@@ -415,126 +413,116 @@
 											nums: nums
 										});
 									}
-									if (num1 == 0) {
-
-										this.itemIds = this.itemIds.concat({
-											id: k,
-											nums: nums
-										});
-
-										console.log(this.itemIds);
+									
+									}else {
+										this.$u.toast("您填写的数量不对！")
+										return;
 									}
-
-
-
-								} else {
-									this.$u.toast("您填写的数量不对！")
-									return;
+							}
 								}
-							}
 						}
 					}
-				}
-			},
+				},
 
-			//提交
-			submit(e) {
+				//提交
+				submit(e) {
 
-				let _that = this;
-				this.submitStatus = true;
+						let _that = this;
+						this.submitStatus = true;
 
-				//判断退款金额
-				let reg = /^[0-9]+(.[0-9]{1,2})?$/;
-				if (!reg.test(this.refund)) {
-					this.$u.toast('请输入正确金额');
-					this.submitStatus = false;
-					return false;
-				} else {
-					if (this.refund > this.refundShow) {
-						this.$u.toast('退款金额过大');
-						this.submitStatus = false;
-						return false;
-					}
-				}
-				if (!this.isFlag) {
-					this.$u.toast('您填写的数量不对！');
-					this.submitStatus = false;
-					return false;
-				}
-				console.log(this.itemIds)
-				if (this.itemIds.length <= 0) {
-					this.$u.toast('请选择要售后的商品');
-					this.submitStatus = false;
-					return false;
-				}
-				//组装数据，提交数据
-				let data = {
-					orderId: _that.orderId,
-					type: _that.aftersaleType,
-					items: _that.itemIds,
-					images: _that.images,
-					refund: _that.refund,
-					reason: _that.reason
-				};
-				_that.$u.api.addAfterSales(data).then(res => {
-					_that.submitStatus = false;
-					if (res.status) {
-						_that.$refs.uToast.show({
-							title: '提交成功',
-							type: 'success',
-							callback: function() {
-								_that.$u.route("/pages/member/order/detail/detail?orderId=" + _that
-									.orderId)
-							}
-						})
-					} else {
-						_that.$u.toast(res.msg);
-					}
-				});
-			},
-
-			//上传图片
-			upImage() {
-				let num = this.imageMax - this.images.length;
-				if (num > 0) {
-					this.$upload.uploadImage(num, res => {
-						if (res.status) {
-							this.images.push(res.data.src);
-							this.$refs.uToast.show({
-								title: res.msg,
-								type: 'success',
-								back: false
-							});
+						//判断退款金额
+						let reg = /^[0-9]+(.[0-9]{1,2})?$/;
+						if (!reg.test(this.refund)) {
+							this.$u.toast('请输入正确金额');
+							this.submitStatus = false;
+							return false;
 						} else {
-							this.$u.toast(res.msg);
+							if (this.refund > this.refundShow) {
+								this.$u.toast('退款金额过大');
+								this.submitStatus = false;
+								return false;
+							}
 						}
-					});
-				}
-			},
-			//删除图片
-			delImage(e) {
-				let newImages = [];
-				for (var i = 0; i < this.images.length; i++) {
-					if (this.images[i].image_id != e.image_id) {
-						newImages.push(this.images[i]);
+						if (!this.isFlag) {
+							this.$u.toast('您填写的数量不对！');
+							this.submitStatus = false;
+							return false;
+						}
+						console.log(this.itemIds)
+						if (this.itemIds.length <= 0) {
+							this.$u.toast('请选择要售后的商品');
+							this.submitStatus = false;
+							return false;
+						}
+						//组装数据，提交数据
+						let data = {
+							orderId: _that.orderId,
+							type: _that.aftersaleType,
+							items: _that.itemIds,
+							images: _that.images,
+							refund: _that.refund,
+							reason: _that.reason
+						};
+						_that.$u.api.addAfterSales(data).then(res => {
+							_that.submitStatus = false;
+							if (res.status) {
+								_that.$refs.uToast.show({
+									title: '提交成功',
+									type: 'success',
+									callback: function() {
+										_that.$u.route("/pages/member/order/detail/detail?orderId=" +
+											_that
+											.orderId)
+									}
+								})
+							} else {
+								_that.$u.toast(res.msg);
+							}
+						});
+					},
+
+					//上传图片
+					upImage() {
+						let num = this.imageMax - this.images.length;
+						if (num > 0) {
+							this.$upload.uploadImage(num, res => {
+								if (res.status) {
+									this.images.push(res.data.src);
+									this.$refs.uToast.show({
+										title: res.msg,
+										type: 'success',
+										back: false
+									});
+								} else {
+									this.$u.toast(res.msg);
+								}
+							});
+						}
+					},
+					//删除图片
+					delImage(e) {
+						let newImages = [];
+						for (var i = 0; i < this.images.length; i++) {
+							if (this.images[i].image_id != e.image_id) {
+								newImages.push(this.images[i]);
+							}
+						}
+						this.images = newImages;
+					},
+					// 图片点击放大
+					clickImg(img) {
+						// 预览图片
+						uni.previewImage({
+							urls: img.split()
+						});
 					}
-				}
-				this.images = newImages;
 			},
-			// 图片点击放大
-			clickImg(img) {
-				// 预览图片
-				uni.previewImage({
-					urls: img.split()
-				});
+			onLoad(e) {
+				this.orderId = e.orderId;
+				this.getOrderInfo();
+				this.getReturnData()
 			}
-		},
-		onLoad(e) {
-			this.orderId = e.orderId;
-			this.getOrderInfo();
-			this.getReturnData()
 		}
-	}
 </script>
 
 <style lang="scss" scoped>
