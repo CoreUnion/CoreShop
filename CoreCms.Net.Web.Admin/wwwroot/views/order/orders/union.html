@@ -48,9 +48,9 @@
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">￥{{item.price}} </td>
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">{{item.weight}}g</td>
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">
-                        {{item.nums-item.sendNums-item.reshipNums+item.reshipedNums}}
+                        {{item.sendNums-item.reshipNums}}
                     </td>
-                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">￥ {{  item.price * (item.nums-item.sendNums-item.reshipNums+item.reshipedNums) }}</td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top;">￥ {{  item.price * (item.sendNums-item.reshipNums) }}</td>
                 </tr>
                 {{# }); }}
             </tbody>
@@ -131,9 +131,9 @@
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">{{item.sn}} </td>
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">￥{{item.price}} </td>
                     <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">
-                        {{item.nums-item.sendNums-item.reshipNums+item.reshipedNums}}
+                        {{item.sendNums-item.reshipNums}}
                     </td>
-                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">￥ {{  item.price * (item.nums-item.sendNums-item.reshipNums+item.reshipedNums) }}</td>
+                    <td style="padding: 10px 5px; border-bottom: 1px solid #ddd; font-size: 14px; vertical-align: top; text-align: center">￥ {{  item.price * (item.sendNums-item.reshipNums) }}</td>
                 </tr>
                 {{# }); }}
             </tbody>

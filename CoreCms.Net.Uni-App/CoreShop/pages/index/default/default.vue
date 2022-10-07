@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <!-- 页面主体 -->
     <view>
         <!--提示框组件-->
