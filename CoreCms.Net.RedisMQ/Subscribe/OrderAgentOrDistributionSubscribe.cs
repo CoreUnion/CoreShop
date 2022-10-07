@@ -54,7 +54,7 @@ namespace CoreCms.Net.RedisMQ.Subscribe
                 if (order != null)
                 {
                     var jm = await _agentOrderServices.AddData(order);
-
+                    
                     //判断是走代理还是走分销
                     if (jm.status == true)
                     {

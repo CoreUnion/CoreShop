@@ -153,11 +153,10 @@ namespace CoreCms.Net.Services
                 //获取当前订单包含的商品在代理商货品池启用商品数据
                 var agentGoods =
                     await _agentGoodsServices.QueryListByClauseAsync(p => goodIds.Contains(p.goodId) && p.isEnable);
-                //获取货品关联的分销数据
+                //获取货品关联的代理商数据
                 var agentProducts = await _agentProductsServices.QueryListByClauseAsync(p =>
                     productIds.Contains(p.productId) && p.agentGradeId == agentModel.gradeId);
-
-                if (agentGoods.Any() && agentProducts.Any())
+                if (agentGoods.Any())
                     await AddOther(order, orderItems, goods, products, agentGoods, agentProducts, agentModel, user);
                 else
                     jm.msg = "代理商商品池或货品池为空";
