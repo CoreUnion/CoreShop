@@ -627,7 +627,7 @@ namespace CoreCms.Net.Services
             var orderServices = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
 
             var jm = new WebApiCallBack();
-
+            
             var billPaymentInfo = await _dal.QueryByClauseAsync(p =>
                 p.paymentId == paymentId && p.money == money &&
                 p.status != (int)GlobalEnumVars.BillPaymentsStatus.Payed);
@@ -643,14 +643,15 @@ namespace CoreCms.Net.Services
             billPaymentInfo.payedMsg = payedMsg;
             billPaymentInfo.tradeNo = tradeNo;
             billPaymentInfo.updateTime = DateTime.Now;
-
+          
             await _dal.UpdateAsync(billPaymentInfo);
             if (status == (int)GlobalEnumVars.BillPaymentsStatus.Payed)
             {
                 if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.Order)
                 {
                     //如果是订单类型，做支付后处理
-                    await orderServices.Pay(billPaymentInfo.sourceId, paymentCode, billPaymentInfo);
+                  jm= await orderServices.Pay(billPaymentInfo.sourceId, paymentCode, billPaymentInfo);
+                    
                 }
                 else if (billPaymentInfo.type == (int)GlobalEnumVars.BillPaymentsType.Recharge)
                 {
@@ -673,6 +674,11 @@ namespace CoreCms.Net.Services
                 {
                     //::todo 其他业务逻辑
                 }
+            }
+
+            if (jm.status == false)
+            { 
+                return jm;
             }
             jm.status = true;
             jm.data = paymentId;
@@ -766,7 +772,8 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public async Task<WebApiCallBack> ToPay(string orderId, int type, string paymentCode)
         {
-            using (var container = _serviceProvider.CreateScope())
+            using (
+	            var container = _serviceProvider.CreateScope())
             {
                 var orderServices = container.ServiceProvider.GetService<ICoreCmsOrderServices>();
 

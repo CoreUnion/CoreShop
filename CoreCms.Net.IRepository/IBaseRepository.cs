@@ -32,7 +32,7 @@ namespace CoreCms.Net.IRepository
         T QueryById(object pkValue, bool blUseNoLock = false);
 
         /// <summary>
-        ///     根据主值查询单条数据
+        ///     根据主值查询单条数据1
         /// </summary>
         /// <param name="objId"></param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>

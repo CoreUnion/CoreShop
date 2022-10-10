@@ -45,6 +45,7 @@ namespace CoreCms.Net.Services
     public class CoreCmsOrderServices : BaseServices<CoreCmsOrder>, ICoreCmsOrderServices
     {
         private readonly ICoreCmsOrderRepository _dal;
+        private readonly ICoreCmsUserRepository _Userdal;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICoreCmsShipServices _shipServices;
@@ -100,11 +101,11 @@ namespace CoreCms.Net.Services
             , ICoreCmsPaymentsServices paymentsServices
             , ICoreCmsBillRefundServices billRefundServices
             , ICoreCmsBillLadingServices billLadingServices
-            , ICoreCmsBillReshipServices billReshipServices, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsGoodsCommentServices goodsCommentServices, ISysTaskLogServices taskLogServices, ICoreCmsPromotionRecordServices promotionRecordServices, IRedisOperationRepository redisOperationRepository)
+            , ICoreCmsBillReshipServices billReshipServices, ICoreCmsMessageCenterServices messageCenterServices, ICoreCmsGoodsCommentServices goodsCommentServices, ISysTaskLogServices taskLogServices, ICoreCmsPromotionRecordServices promotionRecordServices, IRedisOperationRepository redisOperationRepository, ICoreCmsUserRepository Userdal)
         {
             this._dal = dal;
             base.BaseDal = dal;
-
+            this._Userdal = Userdal;
             _httpContextAccessor = httpContextAccessor;
             _shipServices = shipServices;
             _cartServices = cartServices;
@@ -1311,6 +1312,18 @@ namespace CoreCms.Net.Services
 
             //获取订单
             var order = await _dal.QueryByClauseAsync(p => p.orderId == orderId && p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+            //获取余额
+            var  balanceMoney = await _Userdal.QueryByIdAsync(order.userId);
+
+            //若余额小于待付款金额
+            if (order.goodsAmount > balanceMoney.balance)
+            {
+	            jm.msg = "余额不足订单支付失败";
+	            jm.status = false;
+
+                return jm;
+            }
+
             if (order == null)
             {
                 return jm;
@@ -1345,6 +1358,11 @@ namespace CoreCms.Net.Services
                     order.payStatus = (int)GlobalEnumVars.OrderPayStatus.Yes;
                     jm.status = true;
                     jm.msg = "订单支付成功";
+                    var newMoney = balanceMoney.balance - order.goodsAmount;
+                    //支付成功后
+                    //更改余额信息
+                    var up = await _Userdal.UpdateAsync(p => new CoreCmsUser() { balance = newMoney }, p => p.id == order.userId);
+
 
                     //发票存储
                     if (order.taxType != (int)GlobalEnumVars.OrderTaxType.No)
