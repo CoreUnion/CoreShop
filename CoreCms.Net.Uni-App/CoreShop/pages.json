@@ -117,19 +117,6 @@
       ]
     },
     {
-      "root": "pages/reward",
-      "name": "reward",
-      "pages": [
-        {
-          "path": "reward",
-          "style": {
-            "navigationBarTextStyle": "black",
-            "navigationBarTitleText": "打赏"
-          }
-        }
-      ]
-    },
-    {
       "root": "pages/search",
       "name": "search",
       "pages": [

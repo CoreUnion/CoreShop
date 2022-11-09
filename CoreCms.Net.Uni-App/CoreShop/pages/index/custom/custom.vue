@@ -19,8 +19,6 @@
         <!--返回顶部组件-->
         <u-back-top :scroll-top="scrollTop" :duration="500"></u-back-top>
 
-        <!--弹出框-->
-        <!--<coreshop-modal-img :show="modalShow"  :src="$globalConstVars.apiFilesUrl+'/static/images/empty/reward.png'" @imgTap="imgTap" @closeTap="closeTap" />-->
         <!-- 登录提示 -->
         <coreshop-login-modal></coreshop-login-modal>
     </view>
@@ -100,15 +98,6 @@
         methods: {
             about() {
 
-            },
-            imgTap() {
-                this.modalShow = false;
-                uni.navigateTo({
-                    url: "/pages/reward/reward"
-                });
-            },
-            closeTap() {
-                this.modalShow = false;
             },
             goSearch() {
                 uni.navigateTo({
