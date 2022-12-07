@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <view class="pageBox">
         <u-navbar title="限时秒杀"></u-navbar>
         <view class="tab-box coreshop-flex coreshop-align-center">
@@ -162,6 +162,7 @@
                 }
                 this.loadStatus = 'loading';
                 this.$u.api.getGroup(data).then(res => {
+			
                     if (res.status) {
                         if (res.data) {
                             let _goodsList = res.data.goods;
