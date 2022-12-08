@@ -381,7 +381,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             //根据条件查询数据中是否存在该商品 ListReturn 中不为空则存在该商品的秒杀 若为空则不存在则进行编辑添加。
             var ListReturn  = await _coreCmsPromotionServices.QueryPageAsync(where,p=>p.id,OrderByType.Asc,1,30);
             //不存在该商品进行修改添加
-            if (ListReturn.Count==0)
+            if (ListReturn.Count == 0 || entity.id == ListReturn[0].id)
             {
                 if (entity.startTime >= entity.endTime)
                 {
