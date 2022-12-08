@@ -75,8 +75,8 @@ namespace CoreCms.Net.Services
 
             var dt = DateTime.Now;
             var where = PredicateBuilder.True<CoreCmsPinTuanRule>();
-            @where = @where.And(p => p.startTime < dt);
-            @where = @where.And(p => p.endTime > dt);
+            @where = @where.And(p => p.startTime <= dt);
+            @where = @where.And(p => p.endTime >= dt);
             if (id != 0)
             {
                 @where = @where.And(p => p.id == id);
