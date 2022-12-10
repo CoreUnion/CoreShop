@@ -116,7 +116,8 @@
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
-                            orderDirection: obj.type //排序方式
+                            orderDirection: obj.type, //排序方式
+							userId: d.params.id
                         }
                     });
                 });
