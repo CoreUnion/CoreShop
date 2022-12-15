@@ -75,13 +75,6 @@
             this.userInfo()
         },
         onShow() {
-            // #ifdef MP-ALIPAY || MP-TOUTIAO
-            let userCardInfo = this.$db.get('userCardInfo', true);
-            if (userCardInfo) {
-                this.cardInfo = userCardInfo;
-                this.$db.del('userCardInfo', true);
-            }
-            // #endif
         },
         computed: {
             userbankCard() {

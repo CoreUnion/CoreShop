@@ -13,13 +13,12 @@
             <u-cell-item icon="order" title="用户协议" @click="goUserAgreementPage()"></u-cell-item>
             <u-cell-item icon="eye-off" title="隐私政策" @click="goUserPrivacyPolicy()"></u-cell-item>
             <u-cell-item icon="trash" title="清除缓存" @click="clearCache"></u-cell-item>
-            <u-cell-item icon="account" title="切换账号" @click="changeAccount"></u-cell-item>
         </u-cell-group>
 
         <!--按钮-->
         <view class="coreshop-bg-white coreshop-footer-fixed coreshop-foot-padding-bottom">
             <view class="flex u-padding-20 flex-direction">
-                <u-button :custom-style="customStyle" type="error" size="medium" @click="logOff">退出登录</u-button>
+                <u-button :custom-style="customStyle" type="error" size="medium" @click="logOff">重新登录</u-button>
             </view>
         </view>
     </view>
@@ -106,13 +105,6 @@
                     })
                 })
             },
-            // 切换账号
-            changeAccount() {
-                this.$common.modelShow('切换', '确认切换登录账号吗?', () => {
-                    this.$db.del('userToken')
-                    this.$u.route({url: '/pages/login/loginBySMS/loginBySMS',});
-                })
-            }
         }
     }
 </script>

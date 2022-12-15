@@ -111,17 +111,8 @@
                 store['mobile'] = mobile;
                 store['address'] = address;
 
-                // #ifdef MP-ALIPAY || MP-TOUTIAO
-                this.$db.set('userStore', store, true);
-                // #endif
-
-                // #ifdef MP-WEIXIN
                 pre.$vm.store = store
-                // #endif
 
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                pre.store = store
-                // #endif
 
                 uni.navigateBack({
                     delta: 1

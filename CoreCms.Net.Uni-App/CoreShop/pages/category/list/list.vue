@@ -501,7 +501,6 @@
             goSearch() {
                 let pages = getCurrentPages();
                 let prevPage = pages[pages.length - 2];
-                // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE || MP-TOUTIAO
                 if (prevPage && prevPage.route) {
                     let search_flag = prevPage.route;
                     if (search_flag == 'pages/search/search') {
@@ -514,22 +513,6 @@
                 } else {
                     this.$u.route('/pages/search/search');
                 }
-                // #endif
-
-                // #ifdef MP-ALIPAY
-                if (prevPage && prevPage.__proto__.route) {
-                    let search_flag = prevPage.__proto__.route;
-                    if (search_flag == 'pages/search/search') {
-                        uni.navigateBack({
-                            delta: 1
-                        });
-                    } else {
-                        this.$u.route('/pages/search/search');
-                    }
-                } else {
-                    this.$u.route('/pages/search/search');
-                }
-                // #endif
             },
             //取消筛选
             filterNo() {
@@ -636,21 +619,7 @@
             closeDropdown() {
                 this.$refs.uDropdown.close();
             }
-        },
-        // #ifdef MP-ALIPAY
-        onChangeShowState_show: function () {
-            var that = this;
-            that.setData({
-                showView: (that.showView = true)
-            });
-        },
-        onChangeShowState_hid: function () {
-            var that = this;
-            that.setData({
-                showView: (that.showView = false)
-            });
         }
-        // #endif
     };
 </script>
 

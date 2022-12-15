@@ -84,21 +84,7 @@
 
         <!--支付方式-->
         <view class="content">
-            <!-- #ifdef H5 -->
-            <payments-by-h5 :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-h5>
-            <!-- #endif -->
-            <!-- #ifdef MP-WEIXIN -->
             <payments-by-wx :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-wx>
-            <!-- #endif -->
-            <!-- #ifdef MP-ALIPAY -->
-            <payments-by-ali :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-ali>
-            <!-- #endif -->
-            <!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
-            <payments-by-app :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-app>
-            <!-- #endif -->
-            <!-- #ifdef MP-TOUTIAO -->
-            <payments-by-tt :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-tt>
-            <!-- #endif -->
         </view>
 
         <!--提示信息-->
@@ -110,25 +96,7 @@
     </view>
 </template>
 <script>
-    // #ifdef H5
-    import paymentsByH5 from '@/components/coreshop-payments/coreshop-paymentsByH5.vue';
-    // #endif
-
-    // #ifdef MP-WEIXIN
-    import paymentsByWx from '@/components/coreshop-payments/coreshop-paymentsByWx.vue';
-    // #endif
-
-    // #ifdef MP-ALIPAY
-    import paymentsByAli from '@/components/coreshop-payments/coreshop-paymentsByAli.vue';
-    // #endif
-
-    // #ifdef APP-PLUS || APP-PLUS-NVUE
-    import paymentsByApp from '@/components/coreshop-payments/coreshop-paymentsByApp.vue';
-    // #endif
-
-    // #ifdef MP-TOUTIAO
-    import paymentsByTt from '@/components/coreshop-payments/coreshop-paymentsByTt.vue';
-    // #endif
+    import paymentsByWx from '@/pages/payment/components/coreshop-paymentsByWx.vue';
 
     import { orders } from '@/common/mixins/mixinsHelper.js';
     export default {
@@ -146,21 +114,7 @@
             };
         },
         components: {
-            // #ifdef H5
-            paymentsByH5,
-            // #endif
-            // #ifdef MP-WEIXIN
-            paymentsByWx,
-            // #endif
-            // #ifdef MP-ALIPAY
-            paymentsByAli,
-            // #endif
-            // #ifdef APP-PLUS || APP-PLUS-NVUE
-            paymentsByApp,
-            // #endif
-            // #ifdef MP-TOUTIAO
-            paymentsByTt
-            // #endif
+            paymentsByWx
         },
         onLoad(options) {
             console.log(options);

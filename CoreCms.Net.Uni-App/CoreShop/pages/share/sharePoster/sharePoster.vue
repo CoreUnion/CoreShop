@@ -44,13 +44,7 @@
             // 保存海报到本地
             savePoster() {
                 let _this = this;
-                // #ifdef H5
-                _this.downloadIamge(_this.poster, 'image');
-                // #endif
-
-                // #ifdef MP || MP-ALIPAY || APP-PLUS || APP-PLUS-NVUE
                 _this.downloadImageOfMp(_this.poster)
-                // #endif
             },
             //下载图片地址和图片名
             downloadIamge(imgsrc, name) {

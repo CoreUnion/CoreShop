@@ -16,13 +16,6 @@
 .cell-header { padding: 10rpxpx 0; margin: 0; margin-left: 20rpx; font-size: 28rpx; font-weight: 550; }
 .mr5 { margin-right: 10rpx; }
 .inputStyle { display: inline-block; border: 2rpx solid #ccc; height: 13rpx; line-height: 13rpx; width: 60rpx; text-align: center; font-size: 24rpx; vertical-align: middle; }
-/* #ifdef MP-ALIPAY */
-
-/* #endif */
-/* #ifdef MP-TOUTIAO */
-.goods-item-c { height: 1.5rem; }
-.goods-buy { height: 100%; }
-/* #endif */
 .refund-price { border-bottom: none; }
 .refund-tip { padding: 0 26rpx 10rpx; text-align: right; }
 
@@ -42,4 +35,4 @@
 
 uni-checkbox.checkboxNo .uni-checkbox-input { background-color: #e1e1e1 !important; border-color: #e1e1e1 !important; }
 
-.icon { width: 50upx; height: 50upx; /* #ifdef MP-ALIPAY */ background-size: 100% 100%; /* #endif */ }
+.icon { width: 50upx; height: 50upx; }

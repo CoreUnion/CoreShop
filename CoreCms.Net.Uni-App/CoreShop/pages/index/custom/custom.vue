@@ -13,27 +13,12 @@
         <!--版权组件-->
         <copyright v-if="copy"></copyright>
         <!--客服组件-->
-        <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-        <view class="floatingButton" @click="showChat()">
-            <u-icon name="server-man" color="#e54d42" size="60"></u-icon>
-        </view>
-        <!-- #endif -->
-        <!-- #ifdef MP-WEIXIN -->
         <button class="floatingButton" hover-class="none" open-type="contact" bindcontact="showChat" :session-from="kefupara">
             <u-icon name="server-man" color="#e54d42" size="60"></u-icon>
         </button>
-        <!-- #endif -->
-        <!-- #ifdef MP-ALIPAY -->
-        <contact-button class="floatingButton icon" icon="/static/images/common/seller-content.png" size="80rpx*80rpx" tnt-inst-id="" scene="" hover-class="none" />
-        <!-- #endif -->
-        <!-- #ifdef MP-TOUTIAO -->
-        <!-- 头条客服 -->
-        <!-- #endif -->
         <!--返回顶部组件-->
         <u-back-top :scroll-top="scrollTop" :duration="500"></u-back-top>
 
-        <!--弹出框-->
-        <!--<coreshop-modal-img :show="modalShow"  :src="$globalConstVars.apiFilesUrl+'/static/images/empty/reward.png'" @imgTap="imgTap" @closeTap="closeTap" />-->
         <!-- 登录提示 -->
         <coreshop-login-modal></coreshop-login-modal>
     </view>
@@ -113,15 +98,6 @@
         methods: {
             about() {
 
-            },
-            imgTap() {
-                this.modalShow = false;
-                uni.navigateTo({
-                    url: "/pages/reward/reward"
-                });
-            },
-            closeTap() {
-                this.modalShow = false;
             },
             goSearch() {
                 uni.navigateTo({

@@ -1,44 +1,6 @@
 <template>
     <view>
         <u-toast ref="uToast" />
-        <!-- #ifndef MP-WEIXIN  -->
-        <u-popup class="coreshop-bottom-popup-box" v-if="showLogin" v-model="showLogin" cathctouchmove @tap="hideModal"  mode="bottom">
-            <view class="radius coreshop-bg-white" @tap.stop style="background: none;overflow: visible;">
-                <view class="modal-box">
-                    <image class="head-bg" src="/static/images/login/nologin_bg.png" mode=""></image>
-                    <view class="detail">
-                        <view class="user-avatar">
-                            <!-- #ifndef MP-TOUTIAO -->
-                            <open-data type="userAvatarUrl"></open-data>
-                            <!-- #endif -->
-                            <!-- #ifdef MP-TOUTIAO -->
-                            <image class="toutiao-logo" :src="logoImage"></image>
-                            <!-- #endif -->
-                            <!-- #ifdef H5 || APP-PLUS -->
-                            <u-avatar :src="$store.state.config.shopLogo" size="large"></u-avatar>
-                            <!-- #endif -->
-                        </view>
-                        <open-data class="user-name" type="userNickName"></open-data>
-                        <view class="title2">为了提供更优质的服务</view>
-                        <view class="title2">需要获取您的头像昵称</view>
-                    </view>
-                    <view class="u-margin-top-80 coreshop-flex coreshop-flex-direction coreshop-align-center">
-                        <!-- #ifdef MP-ALIPAY -->
-                        <u-button  type="success"  @click="getALICode()">授权并查看</u-button>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-TOUTIAO -->
-                        <u-button  type="success"  @click="ttLogin()">授权并查看</u-button>
-                        <!-- #endif -->
-                        <!-- #ifdef H5 || APP-PLUS -->
-                        <u-button  type="success"  @click="toAccountLogin()">授权并查看</u-button>
-                        <!-- #endif -->
-                         <u-button  @click="closeAuth">暂不授权</u-button>
-                    </view>
-                </view>
-            </view>
-        </u-popup>
-        <!-- #endif  -->
-        <!-- #ifdef MP-WEIXIN  -->
         <u-popup class="coreshop-bottom-popup-box" v-if="showLogin" v-model="showLogin" mode="center">
             <view class="radius coreshop-bg-white" @tap.stop style="background: none;overflow: visible;">
                 <view class="modal-box">
@@ -79,7 +41,6 @@
                 </view>
             </view>
         </u-popup>
-        <!-- #endif  -->
     </view>
 </template>
 
@@ -193,11 +154,6 @@
             hideModal() {
                 this.showLogin = false;
             },
-            // 去登录
-            toAccountLogin() {
-                this.showLogin = false;
-                this.$u.route('/pages/login/loginByAccount/loginByAccount');
-            },
             // 小程序，取消登录
             closeAuth() {
                 this.showLogin = false;
@@ -236,12 +192,7 @@
                             _this.$refs.uToast.show({ title: '登录成功', type: 'success', })
                             return false
                         } else {
-                            // #ifdef MP-WEIXIN
                             _this.sessionAuthIdTool = res.data.sessionAuthId;
-                            // #endif
-                            // #ifndef MP-WEIXIN
-                            _this.$u.route({ type: 'navigateTo', url: '/pages/login/loginBySMS/loginBySMS?sessionAuthId=' + res.data.sessionAuthId });
-                            // #endif
                         }
                     } else {
                         _this.$refs.uToast.show({ title: '登录失败，请重试', type: 'error', })
@@ -290,122 +241,7 @@
                         _this.$u.toast('登录失败，请重试')
                     }
                 })
-            },
-            // #ifdef MP-ALIPAY
-            getALICode() {
-                let that = this
-                uni.login({
-                    scopes: 'auth_user',
-                    success: (res) => {
-                        if (res.authCode) {
-                            uni.getUserInfo({
-                                provider: 'alipay',
-                                success: function (infoRes) {
-                                    if (infoRes.errMsg == "getUserInfo:ok") {
-                                        let userInfo = {
-                                            'nickname': infoRes.nickName,
-                                            'avatar': infoRes.avatar
-                                        }
-                                        that.aLiLoginStep1(res.authCode, userInfo);
-                                    }
-                                },
-                                fail: function (errorRes) {
-                                    this.$u.toast('未取得用户昵称头像信息');
-                                }
-                            });
-                        } else {
-                            this.$u.toast('未取得code');
-                        }
-                    },
-                    fail: function (res) {
-                        this.$u.toast('用户授权失败my.login');
-                    }
-                });
-            },
-            aLiLoginStep1(code, userInfo) {
-                let data = {
-                    'code': code,
-                    'userInfo': userInfo
-                }
-                this.$u.api.alilogin1(data).then(res => {
-                    this.alipayNoLogin = false;
-                    if (res.status) {
-                        this.sessionAuthIdTool = res.data.sessionAuthId
-                        //判断是否返回了token，如果没有，就说明没有绑定账号，跳转到绑定页面
-                        if (!res.data.hasOwnProperty('token')) {
-                            this.$u.route({ type: 'redirectTo', url: '/pages/login/loginBySMS/loginBySMS?sessionAuthId=' + res.data.sessionAuthId });
-                        } else {
-                            this.$db.set('userToken', res.data.token)
-                            uni.navigateBack({
-                                delta: 1
-                            });
-                        }
-                    } else {
-                        this.$u.toast(res.msg)
-                    }
-                })
-            },
-            // #endif
-            // #ifdef MP-TOUTIAO
-            ttLogin() {
-                let that = this
-                uni.login({
-                    provider: 'toutiao',
-                    success: (res) => {
-                        //console.log(res);
-                        if (res.errMsg == "login:ok") {
-                            uni.getUserInfo({
-                                provider: 'toutiao',
-                                success: function (infoRes) {
-                                    //console.log(infoRes);
-                                    if (infoRes.errMsg == "getUserInfo:ok") {
-                                        let code = res.code;
-                                        let userInfo = {
-                                            'nickname': infoRes.userInfo.nickName,
-                                            'avatar': infoRes.userInfo.avatarUrl,
-                                            'gender': infoRes.userInfo.gender,
-                                            'language': infoRes.userInfo.language,
-                                            'country': infoRes.userInfo.country,
-                                            'city': infoRes.userInfo.city,
-                                            'province': infoRes.userInfo.province
-                                        }
-                                        that.ttLoginStep(code, userInfo);
-                                    }
-                                },
-                                fail: function (errorRes) {
-                                    this.$u.toast('未取得用户昵称头像信息');
-                                }
-                            });
-                        } else {
-                            this.$u.toast('未取得code');
-                        }
-                    },
-                    fail: function (res) {
-                        this.$u.toast('用户授权失败my.login');
-                    }
-                });
-            },
-            ttLoginStep(code, userInfo) {
-                let data = {
-                    'code': code,
-                    'userInfo': userInfo
-                }
-                this.$u.api.ttlogin(data).then(res => {
-                    if (res.status) {
-                        if (!res.data.hasOwnProperty('token')) {
-                            this.$u.route({ type: 'redirectTo', url: '/pages/login/loginBySMS/loginBySMS?sessionAuthId=' + res.data.userId });
-                        } else {
-                            this.$db.set('userToken', res.data.token)
-                            uni.navigateBack({
-                                delta: 1
-                            });
-                        }
-                    } else {
-                        this.$u.toast(res.msg)
-                    }
-                })
             }
-            // #endif
         }
     };
 </script>

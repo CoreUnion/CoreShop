@@ -148,22 +148,8 @@
 
         <!-- 分享弹窗 -->
         <view class="u-padding-10">
-            <u-popup  mode="bottom" v-model="shareBox" ref="share">
-                <!-- #ifdef H5 -->
-                <shareByH5 :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType" @close="closeShare()"></shareByH5>
-                <!-- #endif -->
-                <!-- #ifdef MP-WEIXIN -->
-                <shareByWx :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByWx>
-                <!-- #endif -->
-                <!-- #ifdef MP-ALIPAY -->
-                <shareByAli :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByAli>
-                <!-- #endif -->
-                <!-- #ifdef MP-TOUTIAO -->
-                <shareByTt :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType"  @close="closeShare()"></shareByTt>
-                <!-- #endif -->
-                <!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
-                <shareByApp :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType" :shareType="shareType"  @close="closeShare()"></shareByApp>
-                <!-- #endif -->
+            <u-popup mode="bottom" v-model="shareBox" ref="share">
+                <shareByWx :goodsId="goodsInfo.id" :shareImg="goodsInfo.image" :shareTitle="goodsInfo.name" :shareContent="goodsInfo.brief" :shareHref="shareHref" :shareType="shareType" @close="closeShare()"></shareByWx>
             </u-popup>
         </view>
 
@@ -345,18 +331,11 @@
         <view class="coreshop-good-footer-fixed">
             <view class="tabbar">
                  <!-- 客服按钮 -->
-                <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-                <view class="action"  @click="showChat()">
-                    <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom"></u-icon>
-                </view>
-                <!-- #endif -->
-                <!-- #ifdef MP-WEIXIN -->
-                <view class="action" >
+                <view class="action">
                     <button open-type="contact" bindcontact="showChat" class="noButtonStyle">
                         <u-icon name="server-fill" :size="40" label="客服" :label-size="22" label-pos="bottom"></u-icon>
-                    </button>   
+                    </button>
                 </view>
-                <!-- #endif -->
                 <view class="action"  @click="collection">
                     <u-icon :name="[isfav?'star-fill':'star']" :size="40" :label="isfav?'已收藏':'收藏'" :label-size="22" label-pos="bottom"></u-icon>
                 </view>
@@ -384,42 +363,15 @@
     import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
     import spec from '@/components/coreshop-spec/coreshop-spec.vue';
     import coreshopNavbarSlot from '@/components/coreshop-navbar-slot/coreshop-navbar-slot.vue';
-    // #ifdef H5
-    import shareByH5 from '@/components/coreshop-share/shareByh5.vue';
-    // #endif
-    // #ifdef MP-WEIXIN
     import shareByWx from '@/components/coreshop-share/shareByWx.vue';
-    // #endif
-    // #ifdef MP-TOUTIAO
-    import shareByTt from '@/components/coreshop-share/shareByTt.vue';
-    // #endif
-    // #ifdef MP-ALIPAY
-    import shareByAli from '@/components/coreshop-share/shareByAli.vue';
-    // #endif
-    // #ifdef APP-PLUS || APP-PLUS-NVUE
-    import shareByApp from '@/components/coreshop-share/shareByApp.vue';
-    // #endif
+
     export default {
         mixins: [goods, articles, commonUse, tools],
         components: {
             coreshopFab,
             coreshopNavbarSlot,
             spec,
-            // #ifdef H5
-            shareByH5,
-            // #endif
-            // #ifdef MP-WEIXIN
             shareByWx,
-            // #endif
-            // #ifdef MP-TOUTIAO
-            shareByTt,
-            // #endif
-            // #ifdef MP-ALIPAY
-            shareByAli,
-            // #endif
-            // #ifdef APP-PLUS || APP-PLUS-NVUE
-            shareByApp
-            // #endif
         },
         data() {
             return {
@@ -544,12 +496,7 @@
             shareHref() {
                 let pages = getCurrentPages();
                 let page = pages[pages.length - 1];
-                // #ifdef H5 || MP-WEIXIN || APP-PLUS || APP-PLUS-NVUE
                 return this.$globalConstVars.apiBaseUrl + 'wap/' + page.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
-                // #endif
-                // #ifdef MP-ALIPAY
-                return this.$globalConstVars.apiBaseUrl + 'wap/' + page.__proto__.route + '?id=' + this.goodsId + '&groupId=' + this.groupId;
-                // #endif
             },
             defaultSpesDesc() {
                 return this.product.defaultSpecificationDescription;
@@ -820,45 +767,6 @@
             },
             //在线客服,只有手机号的，请自己替换为手机号
             showChat() {
-                // #ifdef H5
-                let _this = this;
-                window._AIHECONG('ini', {
-                    entId: this.config.entId,
-                    button: false,
-                    appearance: {
-                        panelMobile: {
-                            tone: '#FF7159',
-                            sideMargin: 30,
-                            ratio: 'part',
-                            headHeight: 50
-                        }
-                    }
-                });
-                //传递客户信息
-                window._AIHECONG('customer', {
-                    head: _this.userInfo.avatar,
-                    名称: _this.userInfo.nickname,
-                    手机: _this.userInfo.mobile
-                });
-                window._AIHECONG('showChat');
-                // #endif
-                // 客服页面
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                this.$u.route('/pages/member/customerService/index');
-                // #endif
-                // 头条系客服
-                // #ifdef MP-TOUTIAO
-                if (this.shopMobile != 0) {
-                    let _this = this;
-                    tt.makePhoneCall({
-                        phoneNumber: this.shopMobile.toString(),
-                        success(res) { },
-                        fail(res) { }
-                    });
-                } else {
-                    _this.$u.toast('暂无设置客服电话');
-                }
-                // #endif
             },
             //获取分享URL
             getShareUrl() {

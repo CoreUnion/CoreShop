@@ -13,27 +13,12 @@
         <!--版权组件-->
         <copyright></copyright>
         <!--客服组件-->
-        <!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-        <view class="floatingButton" @click="showChat()">
-            <u-icon name="server-man" color="#e54d42" size="60"></u-icon>
-        </view>
-        <!-- #endif -->
-        <!-- #ifdef MP-WEIXIN -->
         <button class="floatingButton" hover-class="none" open-type="contact" bindcontact="showChat" :session-from="kefupara">
             <u-icon name="server-man" color="#e54d42" size="60"></u-icon>
         </button>
-        <!-- #endif -->
-        <!-- #ifdef MP-ALIPAY -->
-        <contact-button class="floatingButton icon" icon="/static/images/common/seller-content.png" size="80rpx*80rpx" tnt-inst-id="" scene="" hover-class="none" />
-        <!-- #endif -->
-        <!-- #ifdef MP-TOUTIAO -->
-        <!-- 头条客服 -->
-        <!-- #endif -->
         <!--返回顶部组件-->
         <u-back-top :scroll-top="scrollTop" :duration="500"></u-back-top>
 
-        <!--弹出框-->
-        <!--<coreshop-modal-img :show="modalShow"  :src="$globalConstVars.apiFilesUrl+'/static/images/empty/reward.png'" @imgTap="imgTap" @closeTap="closeTap" />-->
         <!-- 登录提示 -->
         <coreshop-login-modal></coreshop-login-modal>
     </view>
@@ -108,15 +93,6 @@
             about() {
 
             },
-            imgTap() {
-                this.modalShow = false;
-                uni.navigateTo({
-                    url: "/pages/reward/reward"
-                });
-            },
-            closeTap() {
-                this.modalShow = false;
-            },
             goSearch() {
                 uni.navigateTo({
                     url: '/pages/search/search'
@@ -181,47 +157,6 @@
             },
             //在线客服,只有手机号的，请自己替换为手机号
             showChat() {
-                // #ifdef H5
-                let _this = this;
-                window._AIHECONG('ini', {
-                    entId: this.$store.state.config.entId,
-                    button: false,
-                    appearance: {
-                        panelMobile: {
-                            tone: '#FF7159',
-                            sideMargin: 30,
-                            ratio: 'part',
-                            headHeight: 50
-                        }
-                    }
-                });
-                //传递客户信息
-                window._AIHECONG('customer', {
-                    head: _this.userInfo.avatarImage,
-                    名称: _this.userInfo.nickName,
-                    手机: _this.userInfo.mobile
-                });
-                window._AIHECONG('showChat');
-                // #endif
-
-                // 客服页面
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                this.$u.route('/pages/member/customerService/index');
-                // #endif
-
-                // 头条系客服
-                // #ifdef MP-TOUTIAO
-                if (this.shopMobile != 0) {
-                    let _this = this;
-                    tt.makePhoneCall({
-                        phoneNumber: this.shopMobile.toString(),
-                        success(res) { },
-                        fail(res) { }
-                    });
-                } else {
-                    _this.$u.toast('暂无设置客服电话');
-                }
-                // #endif
             },
             //获取分享URL
             getShareUrl() {

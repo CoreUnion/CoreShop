@@ -51,31 +51,10 @@ const install = (Vue, vm) => {
             //console.log(page.route);
             // 登录信息过期或者未登录
             if (result.data === 14007 || result.data === 14006) {
-                // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                if (page.route.indexOf('pages/login/loginBySMS/loginBySMS') < 0) {
-                    db.del("userToken");
-                    uni.showToast({
-                        title: result.msg,
-                        icon: 'none',
-                        duration: 1000,
-                        complete: function () {
-                            setTimeout(function () {
-                                uni.hideToast();
-                                uni.navigateTo({
-                                    url: '/pages/login/loginBySMS/loginBySMS'
-                                });
-                            },
-                                1000);
-                        }
-                    });
-                }
-                // #endif
-                // #ifdef MP-WEIXIN || MP-ALIPAY || MP-TOUTIAO
                 db.del("userToken");
                 console.log("开启登录弹窗");
                 //Vue.prototype.$store.commit('showLoginTip', true);
                 Vue.prototype.$store.commit('hasLogin', false);
-                // #endif
             }
         }
 
@@ -83,8 +62,6 @@ const install = (Vue, vm) => {
         // res为服务端返回值，可能有code，result等字段
         // 这里对res.result进行返回，将会在this.$u.post(url).then(res => {})的then回调中的res的到
         // 如果配置了originalData为true，请留意这里的返回值
-
-
     }
 }
 

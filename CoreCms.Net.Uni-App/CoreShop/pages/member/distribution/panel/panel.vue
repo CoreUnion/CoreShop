@@ -183,25 +183,8 @@
                     page: 4,
                 }
                 let pageUrl = 'pages/share/jump/jump';
-                // #ifdef H5
-                data.client = 1;
-                data.url = this.$globalConstVars.apiBaseUrl + 'wap/' + pageUrl;
-                // #endif
-                // #ifdef MP-WEIXIN
                 data.client = 2;
-                data.url = pageUrl;
-                // #endif
-                // #ifdef MP-ALIPAY
-                data.client = 3;
-                data.url = pageUrl;
-                // #endif
-                // #ifdef APP-PLUS || APP-PLUS-NVUE
-                data.client = 5;
-                data.url = this.$globalConstVars.apiBaseUrl + 'wap/' + pageUrl;
-                // #endif
-                // #ifdef MP-TOUTIAO
-                data.client = 6;
-                // #endif
+
                 let userToken = this.$db.get('userToken')
                 if (userToken && userToken != '') {
                     data.token = userToken

@@ -578,15 +578,7 @@
                                     let pages = getCurrentPages(); // 当前页
                                     let beforePage = pages[pages.length - 2]; // 上个页面
                                     if (beforePage !== undefined && beforePage.route === 'pages/member/order/index/index') {
-                                        // #ifdef MP-WEIXIN
                                         beforePage.$vm.isReload = true
-                                        // #endif
-                                        // #ifdef H5 || APP-PLUS || APP-PLUS-NVUE
-                                        beforePage.isReload = true
-                                        // #endif
-                                        // #ifdef MP-ALIPAY || MP-TOUTIAO
-                                        _this.$db.set('orderUserShip', true, true);
-                                        // #endif
                                     }
                                     _this.orderDetail()
                                 }

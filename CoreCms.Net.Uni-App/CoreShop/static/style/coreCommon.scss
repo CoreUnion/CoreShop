@@ -243,7 +243,7 @@ page, .bg-page { background: #f7f7f7; }
 .coreshop-cell-group { background-color: #fff;
     .coreshop-cell-item { padding: 20rpx 26rpx 20rpx 20rpx; border-bottom: 2rpx solid #f3f3f3; position: relative; background-color: #fff; color: #333; display: flex; min-height: 90rpx; align-items: center; justify-content: space-between;
         .coreshop-cell-item-hd { display: flex; align-items: center; font-size: 28rpx; position: relative;
-            .coreshop-cell-hd-title { display: inline-block; position: relative; /* #ifdef MP-ALIPAY */ top: 4rpx; /* #endif */ }
+            .coreshop-cell-hd-title { display: inline-block; position: relative; }
             .coreshop-cell-bd-input { display: inline-block; float: left; font-size: 26rpx; }
         }
         .coreshop-cell-item-bd { display: flex; min-height: 30rpx; overflow: hidden; align-items: center; padding-right: 30rpx;

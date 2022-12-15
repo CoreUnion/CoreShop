@@ -48,13 +48,6 @@
       }
     },
     {
-      "path": "pages/search/search",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "搜索"
-      }
-    },
-    {
       "path": "pages/category/index/index",
       "style": {
         "navigationBarTextStyle": "white",
@@ -67,201 +60,257 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "商品列表"
       }
-    },
-    {
-      "path": "pages/goods/goodDetails/goodDetails",
-      "style": {
-        "navigationBarTextStyle": "black",
-        // #ifdef H5
-        "titleNView": false,
-        // #endif
-        "navigationBarTitleText": "商品详情",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/placeOrder/index/index",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "提交订单"
-      }
-    },
-    {
-      "path": "pages/placeOrder/invoice/invoice",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "发票"
-      }
-    },
-    {
-      "path": "pages/placeOrder/storeList/storeList",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "门店列表"
-      }
-    },
-    {
-      "path": "pages/payment/pay/pay",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "支付"
-      }
-    },
-    {
-      "path": "pages/payment/waiting/waiting",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "等待支付"
-      }
-    },
-    {
-      "path": "pages/payment/result/result",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "支付结果"
-      }
-    },
-
-    {
-      "path": "pages/article/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "文章详情"
-      }
-    },
-    {
-      "path": "pages/article/list/list",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "文章列表"
-      }
-    },
-    {
-      "path": "pages/login/loginBySMS/loginBySMS",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "授权登录"
-      }
-    },
-    {
-      "path": "pages/share/sharePoster/sharePoster",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "分享"
-      }
-    },
-    {
-      "path": "pages/activity/pinTuan/list/list",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "拼团列表"
-      }
-    },
-    {
-      "path": "pages/activity/pinTuan/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "拼团详情"
-      }
-    },
-    {
-      "path": "pages/activity/seckill/list/list",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "秒杀列表"
-      }
-    },
-    {
-      "path": "pages/activity/seckill/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "秒杀详情"
-      }
-    },
-    {
-      "path": "pages/activity/groupBuying/list/list",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "团购列表"
-      }
-    },
-    {
-      "path": "pages/activity/groupBuying/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "团购详情"
-      }
-    },
-    {
-      "path": "pages/form/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "万能表单"
-      }
-    },
-
-    {
-      "path": "pages/share/jump/jump",
-      "style": {
-        "navigationBarTextStyle": "black",
-        // #ifdef H5
-        "titleNView": false,
-        // #endif
-        "navigationBarTitleText": "加载中..."
-      }
-    },
-    {
-      "path": "pages/storeMap/storeMap",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "门店列表"
-      }
-    },
-
-    {
-      "path": "pages/serviceGoods/index/index",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "服务商品列表"
-      }
-    },
-    {
-      "path": "pages/serviceGoods/details/details",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "服务商品详情"
-      }
-    },
-    {
-      "path": "pages/coupon/coupon",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "优惠券列表"
-      }
-    },
-    {
-      "path": "pages/map/map",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "地图展示"
-      }
-    },
-    {
-      "path": "pages/goods/goodComments/goodComments",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "商品评论"
-      }
-    },
-    {
-      "path": "pages/reward/reward",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "打赏"
-      }
     }
   ],
   "subpackages": [
+    {
+      "root": "pages/share",
+      "name": "share",
+      "pages": [
+        {
+          "path": "sharePoster/sharePoster",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "分享"
+          }
+        },
+        {
+          "path": "jump/jump",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "加载中..."
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/serviceGoods",
+      "name": "serviceGoods",
+      "pages": [
+        {
+          "path": "index/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "服务商品列表"
+          }
+        },
+        {
+          "path": "details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "服务商品详情"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/map",
+      "name": "map",
+      "pages": [
+        {
+          "path": "map",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "地图展示"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/search",
+      "name": "search",
+      "pages": [
+        {
+          "path": "search",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "搜索"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/placeOrder",
+      "name": "placeOrder",
+      "pages": [
+        {
+          "path": "index/index",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "提交订单"
+          }
+        },
+        {
+          "path": "invoice/invoice",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "发票"
+          }
+        },
+        {
+          "path": "storeList/storeList",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "门店列表"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/payment",
+      "name": "payment",
+      "pages": [
+        {
+          "path": "pay/pay",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "支付"
+          }
+        },
+        {
+          "path": "waiting/waiting",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "等待支付"
+          }
+        },
+        {
+          "path": "result/result",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "支付结果"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/storeMap",
+      "name": "storeMap",
+      "pages": [
+        {
+          "path": "storeMap",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "门店列表"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/goods",
+      "name": "goods",
+      "pages": [
+        {
+          "path": "goodDetails/goodDetails",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "商品详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "goodComments/goodComments",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "商品评论"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/form",
+      "name": "form",
+      "pages": [
+        {
+          "path": "details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "万能表单"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/coupon",
+      "name": "coupon",
+      "pages": [
+        {
+          "path": "coupon",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "优惠券列表"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/article",
+      "name": "article",
+      "pages": [
+        {
+          "path": "details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "文章详情"
+          }
+        },
+        {
+          "path": "list/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "文章列表"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/activity",
+      "name": "template",
+      "pages": [
+        {
+          "path": "pinTuan/list/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "拼团列表"
+          }
+        },
+        {
+          "path": "pinTuan/details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "拼团详情"
+          }
+        },
+        {
+          "path": "seckill/list/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "秒杀列表"
+          }
+        },
+        {
+          "path": "seckill/details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "秒杀详情"
+          }
+        },
+        {
+          "path": "groupBuying/list/list",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "团购列表"
+          }
+        },
+        {
+          "path": "groupBuying/details/details",
+          "style": {
+            "navigationBarTextStyle": "black",
+            "navigationBarTitleText": "团购详情"
+          }
+        }
+      ]
+    },
     {
       "root": "pages/member",
       "name": "member",
@@ -741,7 +790,6 @@
       },
       {
         "pagePath": "pages/index/member/member",
-        //"pagePath": "pages/login/loginByAccount/loginByAccount",
         "text": "我的",
         "iconPath": "static/images/indexMenus/index04.png",
         "selectedIconPath": "static/images/indexMenus/index04_1.png"

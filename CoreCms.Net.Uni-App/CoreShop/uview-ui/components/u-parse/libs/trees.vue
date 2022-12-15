@@ -301,7 +301,7 @@
 	}
 
 	._img {
-		/*display: inline-block;*/
+		display: inline-block;
 		max-width: 100%;
 		overflow: hidden;
 	}
