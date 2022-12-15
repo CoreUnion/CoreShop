@@ -402,12 +402,12 @@
 										if (this.itemIds[s].id == k) {
 											num2 = s;
 											num1 = 1;
-											console.log("存在1")
+									
 										}
 									}
 									if (num1 == 1) {
 										this.itemIds.splice(num2, 1);
-										console.log("删除1")
+								
 										this.itemIds = this.itemIds.concat({
 											id: k,
 											nums: nums
