@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.6" />
-    <PackageReference Include="InitQ" Version="1.0.0.7" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.1.0" />
+    <PackageReference Include="InitQ" Version="1.0.0.14" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
-    <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="1.9.0" />
+    <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="2.23.0" />
   </ItemGroup>
 
   <ItemGroup>
