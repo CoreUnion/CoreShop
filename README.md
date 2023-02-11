@@ -110,31 +110,30 @@ QQ群：70494974
 
 #### 🎨 系统演示  
 
-| 微信小程序演示 | H5演示（搁置开发） | 安卓APP下载 |
+| 微信小程序演示 | 安卓APP下载 |
 |---------------------|---------------------|---------------------|
-| ![微信小程序演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/wxqCode.jpg)  | ![h5演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/h5qCode.jpg)  |![安卓APP](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/android.png)  |
+| ![微信小程序演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/wxqCode.jpg)  | ![安卓APP](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/android.png)  |
 
 
-1、H5网页演示地址：  
-https://h5.demo.coreshop.cn  
-
-2、后端管理演示地址：  
+1、后端管理演示地址：  
 https://admin.demo.coreshop.cn  
 账号：coreshop  
 密码：coreshop  
 
-3、后端接口文档地址：  
+
+2、后端接口文档地址：  
 https://admin.demo.coreshop.cn/doc  
 
 
-4、接口演示地址：  
+3、接口演示地址：  
 https://api.demo.coreshop.cn  
 
 
-5、接口文档地址：  
+4、接口文档地址：  
 https://api.demo.coreshop.cn/doc  
 
-6、定时任务面板演示地址：  
+
+5、定时任务面板演示地址：  
 https://api.demo.coreshop.cn/job  
 账号：CoreShop  
 密码：CoreShop 
@@ -186,13 +185,13 @@ https://api.demo.coreshop.cn/job
 | 技术 | 官网 | 版本 | 描述 |
 | --- | --- | --- | --- |
 | uni-app | https://uniapp.dcloud.io/ |  | 跨平台应用前端框架 | 
-| uView UI | http://uviewui.com/ | v1.8.4 | 组件功能强丰富|
+| uView UI | http://uviewui.com/ | v2.x | 全面兼容nvue的uni-app生态框架|
 
 
 ### 📀 开发环境
 
-- Visual Studio 2019 16.8 +
-- .NET 5 SDK +
+- Visual Studio 2022 +
+- .NET 7 SDK +
 - HBuilderX
 - 微信开发者工具
 - SQL Server Management Studio
@@ -204,7 +203,7 @@ https://api.demo.coreshop.cn/job
 
 - [x]  （必选）Windows IIS7.5+ / Docker / k8s等支持环境
 - [x]  （必选）sqlserver 2012R2+ / MySQL 5.7+
-- [x]  （必选）Redis 3.0+
+- [x]  （必选）Redis 5.0+
 - [x]  （必选）支持https协议的域名
 - [x]  （可选）阿里云OSS/腾讯云COS
 - [ ] （可选）易联云网络打印机
