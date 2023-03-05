@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SqlSugar;
+using CoreCms.Net.Utility.Helper;
 
 namespace CoreCms.Net.Web.WebApi.Controllers
 {
@@ -53,6 +54,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         private ICoreCmsGoodsParamsServices _goodsParamsServices;
         private ICoreCmsGoodsCollectionServices _goodsCollectionServices;
         private ICoreCmsUserServices _userServices;
+        private ICoreCmsGoodsCategoryExtendServices _goodsCategoryExtendServices;
 
         /// <summary>
         /// 构造函数
@@ -68,8 +70,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             , ICoreCmsGoodsCommentServices goodsCommentServices
             , ICoreCmsGoodsParamsServices goodsParamsServices
             , ICoreCmsGoodsCollectionServices goodsCollectionServices
-            , ICoreCmsUserServices userServices
-        )
+            , ICoreCmsUserServices userServices, ICoreCmsGoodsCategoryExtendServices goodsCategoryExtendServices)
         {
             _mapper = mapper;
             _user = user;
@@ -83,7 +84,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             _goodsParamsServices = goodsParamsServices;
             _goodsCollectionServices = goodsCollectionServices;
             _userServices = userServices;
-
+            _goodsCategoryExtendServices = goodsCategoryExtendServices;
         }
 
         //公共接口====================================================================================================
@@ -190,21 +191,24 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                     var catId = obj.catId.ObjectToInt(0);
                     if (catId > 0)
                     {
-                        var category = await _goodsCategoryServices.QueryByIdAsync(catId);
+                        var category = await _goodsCategoryServices.QueryByIdAsync(catId, true);
                         if (category != null)
                         {
                             className = category.name;
                         }
 
-                        var childs = await _goodsCategoryServices.QueryListByClauseAsync(p => p.parentId == catId);
-                        if (childs.Any())
+                        var categories = await _goodsCategoryServices.QueryAsync(true);
+                        var ids = GoodsHelper.GetChildIds(categories, catId);
+                        //扩展分类
+                        var extends = await _goodsCategoryExtendServices.QueryListByClauseAsync(p => p.goodsCategroyId == catId);
+                        if (extends.Any())
                         {
-                            var ids = childs.Select(p => p.id).ToList();
-                            where = where.And(p => ids.Contains(p.goodsCategoryId) || p.goodsCategoryId == catId);
+                            var extGoodIds = extends.Select(p => p.goodsId).ToList();
+                            where = where.And(p => ids.Contains(p.goodsCategoryId) || extGoodIds.Contains(p.id));
                         }
                         else
                         {
-                            where = where.And(p => p.goodsCategoryId == catId);
+                            where = where.And(p => ids.Contains(p.goodsCategoryId));
                         }
                     }
                 }

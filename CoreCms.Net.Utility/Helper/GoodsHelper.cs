@@ -80,6 +80,37 @@ namespace CoreCms.Net.Utility.Helper
 
         #endregion
 
+        #region 递归获取下级所有序列
+        /// <summary>
+        /// 递归获取下级所有序列
+        /// </summary>
+        /// <returns></returns>
+        [Description("递归获取下级所有序列")]
+        public static List<int> GetChildIds(List<CoreCmsGoodsCategory> categories, int parentId)
+        {
+            var ids = new List<int> { parentId };
+            ids = GetChildrenIds(categories, parentId, ids);
+            return ids;
+        }
+
+        /// <summary>
+        /// 迭代方法
+        /// </summary>
+        /// <param name="oldNavs"></param>
+        /// <param name="parentId"></param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        private static List<int> GetChildrenIds(List<CoreCmsGoodsCategory> oldNavs, int parentId, List<int> ids)
+        {
+            var model = oldNavs.Where(p => p.parentId == parentId).ToList();
+            foreach (var item in model)
+            {
+                ids.Add(item.id);
+                GetChildrenIds(oldNavs, item.id, ids);
+            }
+            return ids;
+        }
+        #endregion
 
         #region 获取可用库存
         /// <summary>
