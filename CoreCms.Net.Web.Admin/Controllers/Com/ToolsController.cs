@@ -450,6 +450,14 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 return jm;
             }
 
+            //检查上传大小
+            if (!CommonHelper.CheckBase64Size(entity.base64, filesStorageOptions.MaxSize))
+            {
+                jm.msg = "上传文件大小超过限制，最大允许上传" + filesStorageOptions.MaxSize + "M";
+                return jm;
+            }
+
+
             entity.base64 = entity.base64.Replace("data:image/png;base64,", "").Replace("data:image/jgp;base64,", "").Replace("data:image/jpg;base64,", "").Replace("data:image/jpeg;base64,", "");//将base64头部信息替换
             byte[] bytes = Convert.FromBase64String(entity.base64);
             MemoryStream memStream = new MemoryStream(bytes);

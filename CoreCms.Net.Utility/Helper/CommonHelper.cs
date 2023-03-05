@@ -598,5 +598,57 @@ namespace CoreCms.Net.Utility.Helper
         #endregion
 
 
+        /// <summary>
+        ///  精确计算base64字符串文件大小（单位：B）
+        ///  param base64String
+        ///  return double 字节大小
+        /// </summary>
+        /// <param name="base64String"></param>
+        /// <returns></returns>
+        public static double Base64FileSize(String base64String)
+        {
+            //检测是否含有base64,文件头)
+            if (base64String.LastIndexOf(",", StringComparison.Ordinal) > -1)
+            {
+                base64String = base64String[(base64String.LastIndexOf(",", StringComparison.Ordinal) + 1)..];
+            }
+            //获取base64字符串长度(不含data:audio/wav;base64,文件头)
+            var size0 = base64String.Length;
+            if (size0 <= 10) return size0 - ((double)size0 / 8) * 2;
+            //获取字符串的尾巴的最后10个字符，用于判断尾巴是否有等号，正常生成的base64文件'等号'不会超过4个
+            var tail = base64String[(size0 - 10)..];
+            //找到等号，把等号也去掉,(等号其实是空的意思,不能算在文件大小里面)
+            int equalIndex = tail.IndexOf("=", StringComparison.Ordinal);
+            if (equalIndex > 0)
+            {
+                size0 = size0 - (10 - equalIndex);
+            }
+            //计算后得到的文件流大小，单位为字节
+            return size0 - ((double)size0 / 8) * 2;
+        }
+
+        /// <summary>
+        /// 判断文件大小
+        /// </summary>
+        /// <param name="base64"></param>
+        /// <param name="size"></param>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public static bool CheckBase64Size(string base64, int size, string unit = "M")
+        {
+            // 上传文件的大小, 单位为字节.
+            var len = Base64FileSize(base64);
+            // 准备接收换算后文件大小的容器
+            double fileSize = unit.ToUpperInvariant() switch
+            {
+                "B" => len,
+                "K" => (double)len / 1024,
+                "M" => (double)len / 1048576,
+                "G" => (double)len / 1073741824,
+                _ => 0
+            };
+            // 如果上传文件大于限定的容量
+            return !(fileSize > size);
+        }
     }
 }
