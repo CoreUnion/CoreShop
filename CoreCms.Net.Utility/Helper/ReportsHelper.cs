@@ -110,29 +110,29 @@ namespace CoreCms.Net.Utility.Helper
                 case 3600:                 //小时
                     if (dateArr.num <= 24)
                     {
-                        xType = "H时";
+                        xType = "d日H时";
                     }
                     else if (dateArr.num <= 720)
                     {
-                        xType = "d日H时";
+                        xType = "M月d日H时";
                     }
                     else
                     {
-                        xType = "m月d日H时";
+                        xType = "M月d日H时";
                     }
                     break;
                 case 86400:                 //天
                     if (dateArr.num <= 31)
                     {
-                        xType = "d号";
+                        xType = "M月d号";
                     }
                     else if (dateArr.num <= 365)
                     {
-                        xType = "m.d";
+                        xType = "yyyy年M月dd日";
                     }
                     else
                     {
-                        xType = "Y.m.d";
+                        xType = "yyyy年M月dd日";
                     }
                     break;
             }

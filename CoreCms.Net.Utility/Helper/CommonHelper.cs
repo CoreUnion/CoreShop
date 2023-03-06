@@ -650,5 +650,19 @@ namespace CoreCms.Net.Utility.Helper
             // 如果上传文件大于限定的容量
             return !(fileSize > size);
         }
+
+
+        /// <summary>
+        /// 10位时间戳 转化
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static long ConvertDateTimeToInt(System.DateTime time)
+        {
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+            long t = (time.Ticks - startTime.Ticks) / 10000000;   //除10000000调整为10位    
+            return t;
+        }
+
     }
 }

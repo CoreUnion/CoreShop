@@ -19,6 +19,7 @@ using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.Basics;
 using CoreCms.Net.Model.ViewModels.Echarts;
 using CoreCms.Net.Model.ViewModels.UI;
+using CoreCms.Net.Utility.Helper;
 using SqlSugar;
 
 
@@ -83,7 +84,7 @@ namespace CoreCms.Net.Services
                     select * from CoreCmsOrder
                 where 1 = 1
                 " + where + @"
-                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                        ) o on tmp_x.x = ((unix_timestamp(o." + joinVal + @") - " + CommonHelper.ConvertDateTimeToInt(sTime) + @") div(" + section + @"))
                 group by tmp_x.x
                 ";
             }
@@ -141,7 +142,7 @@ namespace CoreCms.Net.Services
                     select * from CoreCmsBillPayments 
             where 1 = 1
                 " + where + @"
-                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                        ) o on tmp_x.x = ((unix_timestamp(o." + joinVal + @") - " + CommonHelper.ConvertDateTimeToInt(sTime) + @") div(" + section + @"))
                 group by tmp_x.x
                 ";
             }
@@ -201,7 +202,7 @@ namespace CoreCms.Net.Services
                     select* from CoreCmsBillRefund
                 where 1 = 1
                 " + where + @"
-                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                        ) o on tmp_x.x = ((unix_timestamp(o." + joinVal + @") - " + CommonHelper.ConvertDateTimeToInt(sTime) + @") div(" + section + @"))
                 group by tmp_x.x
                 ";
             }
@@ -258,7 +259,7 @@ namespace CoreCms.Net.Services
                     select * from CoreCmsUserTocash 
             where 1 = 1
                 " + where + @"
-                    ) o on tmp_x.x = ((cast(date(o." + joinVal + @") as signed) - " + sTime.ToString("yyyy-MM-dd") + @") div(" + section + @"))
+                        ) o on tmp_x.x = ((unix_timestamp(o." + joinVal + @") - " + CommonHelper.ConvertDateTimeToInt(sTime) + @") div(" + section + @"))
                 group by tmp_x.x
                 ";
             }
