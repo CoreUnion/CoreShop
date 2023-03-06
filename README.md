@@ -27,7 +27,6 @@
 
 QQ群：70494974
 
-微信群：人已满200，请加QQ群后联系群主邀请进入微信群。
 
 [![](https://img.shields.io/badge/点击访问官方网站-coreshop.cn-brightgreen)](https://www.coreshop.cn/)  [![](https://img.shields.io/badge/点击加QQ群-70494974-red)](https://jq.qq.com/?_wv=1027&k=y83TiQC7)
 
@@ -110,33 +109,7 @@ QQ群：70494974
 
 #### 🎨 系统演示  
 
-| 微信小程序演示 | 安卓APP下载 |
-|---------------------|---------------------|---------------------|
-| ![微信小程序演示](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/wxqCode.jpg)  | ![安卓APP](https://gitee.com/CoreUnion/CoreShop/raw/master/.gitee/coreshop/images/QRCode/android.png)  |
-
-
-1、后端管理演示地址：  
-https://admin.demo.coreshop.cn  
-账号：coreshop  
-密码：coreshop  
-
-
-2、后端接口文档地址：  
-https://admin.demo.coreshop.cn/doc  
-
-
-3、接口演示地址：  
-https://api.demo.coreshop.cn  
-
-
-4、接口文档地址：  
-https://api.demo.coreshop.cn/doc  
-
-
-5、定时任务面板演示地址：  
-https://api.demo.coreshop.cn/job  
-账号：CoreShop  
-密码：CoreShop 
+请访问【http://wwww.coreshop.cn】点击右上角演示查阅预览项目。  
 
 
 ### 🌈 技术选型

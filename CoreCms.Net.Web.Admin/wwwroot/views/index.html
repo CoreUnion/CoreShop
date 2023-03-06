@@ -326,32 +326,15 @@
 
             function ordersEcharts() {
                 var myChart = echarts.init(document.getElementById('main'));
-                var option = {
-                    title: {
-                        text: '最近7天订单量统计'
-                    },
-                    tooltip: {
-                        show: true
-                    },
-                    legend: {},
-                    yAxis: [{
-                        type: 'value'
-                    }],
-                    xAxis: [],
-                    series: []
-                };
-
                 coreHelper.Post("Api/Tools/GetOrdersStatistics",
                     {}, function (data) {
                         if (data.code == 0) {
-                            myChart.setOption({
-                                legend: data.data.legend,
-                                xAxis: data.data.xAxis,
-                                series: data.data.series
-                            });
+                            //刷新折线图
+                            option = data.data.option;
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
                         }
                     });
-                myChart.setOption(option);
             }
 
             function usersEcharts() {

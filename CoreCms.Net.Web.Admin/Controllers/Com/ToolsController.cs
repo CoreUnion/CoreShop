@@ -86,6 +86,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
         private readonly ICoreCmsServicesServices _servicesServices;
         private readonly ICoreCmsPagesServices _pagesServices;
         private readonly IToolsServices _toolsServices;
+        private readonly ICoreCmsReportsServices _reportsServices;
 
 
 
@@ -113,7 +114,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             , ISysMenuServices sysMenuServices
             , ISysUserRoleServices sysUserRoleServices
             , ISysOrganizationServices sysOrganizationServices, ICodeGeneratorServices codeGeneratorServices,
-            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsPagesServices pagesServices, IToolsServices toolsServices)
+            ICoreCmsLogisticsServices logisticsServices, ISysLoginRecordServices sysLoginRecordServices, ISysNLogRecordsServices sysNLogRecordsServices, ICoreCmsBillPaymentsServices paymentsServices, ICoreCmsBillDeliveryServices billDeliveryServices, ICoreCmsUserServices userServices, ICoreCmsOrderServices orderServices, ICoreCmsBillAftersalesServices aftersalesServices, ICoreCmsSettingServices settingServices, ICoreCmsProductsServices productsServices, ICoreCmsServicesServices servicesServices, IOptions<FilesStorageOptions> filesStorageOptions, ISysRoleMenuServices sysRoleMenuServices, IWeChatApiHttpClientFactory weChatApiHttpClientFactory, ICoreCmsPagesServices pagesServices, IToolsServices toolsServices, ICoreCmsReportsServices reportsServices)
         {
             _user = user;
             _webHostEnvironment = webHostEnvironment;
@@ -148,6 +149,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
             _pagesServices = pagesServices;
             _toolsServices = toolsServices;
+            _reportsServices = reportsServices;
         }
 
         #region 获取登录用户用户信息(用于面板展示)====================================================
@@ -1365,53 +1367,114 @@ namespace CoreCms.Net.Web.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("获取7天订单情况数据统计")]
-        public async Task<AdminUiCallBack> GetOrdersStatistics()
+        public Task<AdminUiCallBack> GetOrdersStatistics()
         {
             var jm = new AdminUiCallBack();
 
+            var dtEnd = DateTime.Now;
+            var dtStart = dtEnd.AddDays(-7);
+            var dtStr = dtStart.ToString("yyyy-MM-dd") + " 到 " + dtEnd.ToString("yyyy-MM-dd");
 
-            var data = new List<string>() { "已支付", "已发货" };
-            var legend = new Legend();
-            legend.data = data;
-
-            var paymentsStatistics = await _paymentsServices.Statistics();
-            var billDeliveryStatistics = await _billDeliveryServices.Statistics();
-
-
-            var xAxis = new List<XAxis>();
-            var xItem = new XAxis();
-            xItem.type = "category";
-            xItem.data = paymentsStatistics.Select(p => p.day).ToList();
-
-            for (int i = 0; i < xItem.data.Count; i++)
+            var dataRes = ReportsHelper.GetDate(dtStr, 2);
+            if (!dataRes.status)
             {
-                xItem.data[i] = Convert.ToDateTime(xItem.data[i]).ToString("d日");
+                jm.msg = dataRes.msg;
+                return System.Threading.Tasks.Task.FromResult(jm);
             }
-            xAxis.Add(xItem);
 
-            var series = new List<SeriesDataIntItem>
+            var echartsOption = new EchartsOption();
+
+            echartsOption.title.text = "最近7天订单统计";
+            var legend = new List<string>() { "全部", "待付款", "已付款" };
+            echartsOption.legend.data = legend;
+
+            var getDate = dataRes.data as ReportsBackForGetDate;
+
+            var xData = ReportsHelper.GetXdata(getDate);
+            if (!xData.status)
             {
-                new SeriesDataIntItem()
+                jm.msg = dataRes.msg;
+                return System.Threading.Tasks.Task.FromResult(jm);
+            }
+            echartsOption.xAxis.data = xData.data as List<string>;
+
+            var whereSql = string.Empty;
+            var data = new List<GetOrdersReportsDbSelectOut>();
+            var data1 = new List<GetOrdersReportsDbSelectOut>();
+            var data2 = new List<GetOrdersReportsDbSelectOut>();
+            var data3 = new List<GetOrdersReportsDbSelectOut>();
+            foreach (var item in legend)
+            {
+                switch (item)
                 {
-                    name = "已支付", type = "line", data = paymentsStatistics.Select(p => p.nums).ToList()
-                },
-                new SeriesDataIntItem()
-                {
-                    name = "已发货", type = "line", data = billDeliveryStatistics.Select(p => p.nums).ToList()
+                    case "全部":
+                        whereSql = string.Empty;
+                        whereSql += " and createTime > '" + getDate.start.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        whereSql += " and createTime < '" + getDate.end.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        data = _reportsServices.GetOrderMark(getDate.num, whereSql, getDate.section, getDate.start, "createTime");
+                        data1 = data;
+                        break;
+                    case "待付款":
+                        whereSql = string.Empty;
+                        whereSql += " and createTime > '" + getDate.start.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        whereSql += " and createTime < '" + getDate.end.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        whereSql += " and payStatus=1 ";
+                        data = _reportsServices.GetOrderMark(getDate.num, whereSql, getDate.section, getDate.start, "createTime");
+                        data2 = data;
+                        break;
+                    case "已付款":
+                        whereSql = string.Empty;
+                        whereSql += " and paymentTime > '" + getDate.start.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        whereSql += " and paymentTime < '" + getDate.end.ToString("yyyy-MM-dd HH:mm:ss") + "' ";
+                        whereSql += " and payStatus>1 ";
+                        data = _reportsServices.GetOrderMark(getDate.num, whereSql, getDate.section, getDate.start, "paymentTime");
+                        data3 = data;
+                        break;
                 }
-            };
+
+                if (data != null && data.Any())
+                {
+                    var vals = data.Select(p => p.val).ToList();
+                    echartsOption.series.Add(new SeriesItem()
+                    {
+                        name = item,
+                        type = "line",
+                        data = vals.ConvertAll<string>(x => x.ToString(CultureInfo.InvariantCulture))
+                    });
+                }
+                else
+                {
+                    echartsOption.series.Add(new SeriesItem()
+                    {
+                        name = item,
+                        type = "line",
+                        data = new List<string>()
+                    });
+                }
+            }
+            //组装数据列表用于table里使用
+            var tableData = new List<OrderTableItem>();
+            for (int i = 0; i < getDate.num; i++)
+            {
+                var item = new OrderTableItem();
+                if (echartsOption.xAxis.data != null) item.x = echartsOption.xAxis.data[i];
+                item.order_all_val = data1[i].val.ToString(CultureInfo.InvariantCulture);
+                item.order_all_num = data1[i].num;
+                item.order_nopay_val = data2[i].val.ToString(CultureInfo.InvariantCulture);
+                item.order_nopay_num = data2[i].num;
+                item.order_payed_val = data3[i].val.ToString(CultureInfo.InvariantCulture);
+                item.order_payed_num = data3[i].num;
+                tableData.Add(item);
+            }
 
             jm.code = 0;
             jm.data = new
             {
-                legend,
-                xAxis,
-                series
+                option = echartsOption,
+                table = tableData
             };
 
-            //返回数据
-            jm.msg = "数据调用成功!";
-            return jm;
+            return System.Threading.Tasks.Task.FromResult(jm);
         }
 
         #endregion
