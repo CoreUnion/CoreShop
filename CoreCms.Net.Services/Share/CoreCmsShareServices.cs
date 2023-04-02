@@ -15,6 +15,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using CoreCms.Net.Caching.AccressToken;
@@ -31,6 +32,12 @@ using CoreCms.Net.WeChat.Service.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+
 using SKIT.FlurlHttpClient.Wechat.Api;
 using SKIT.FlurlHttpClient.Wechat.Api.Models;
 
@@ -45,9 +52,10 @@ namespace CoreCms.Net.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public static readonly string AppInterFaceUrl = AppSettingsConstVars.AppConfigAppInterFaceUrl;
+        private readonly string _appInterFaceUrl = AppSettingsConstVars.AppConfigAppInterFaceUrl;
 
-        public readonly ICoreCmsGoodsServices GoodsServices;
+        private readonly ICoreCmsGoodsServices _goodsServices;
+        private readonly ICoreCmsUserServices _userServices;
         private readonly WeChatOptions _weChatOptions;
         private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
 
@@ -56,16 +64,18 @@ namespace CoreCms.Net.Services
         public CoreCmsShareServices(IUnitOfWork unitOfWork
             , IWebHostEnvironment webHostEnvironment
             , ICoreCmsGoodsServices goodsServices
-            , IOptions<WeChatOptions> weChatOptions, IWeChatApiHttpClientFactory weChatApiHttpClientFactory)
+            , IOptions<WeChatOptions> weChatOptions, IWeChatApiHttpClientFactory weChatApiHttpClientFactory,ICoreCmsUserServices userServices)
 
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
-            GoodsServices = goodsServices;
+            _goodsServices = goodsServices;
             _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
+            _userServices = userServices;
             _weChatOptions = weChatOptions.Value;
 
         }
+
 
         #region 二维码分享
 
@@ -130,7 +140,12 @@ namespace CoreCms.Net.Services
                 return await getQr(url, res.otherData.ToString(), client);
             }
             //生成海报图片
-            var result = await Poster(url, res.otherData.ToString(), client);
+
+            var userId = UserHelper.GetUserIdByShareCode(userShareCode);
+            var user = await _userServices.QueryByClauseAsync(p => p.id == userId);
+
+
+            var result = await Poster(url, res.otherData.ToString(), client, user);
             return result;
         }
         #endregion
@@ -192,7 +207,7 @@ namespace CoreCms.Net.Services
                 //有这个二维码了
                 jm.status = true;
                 jm.msg = "二维码获取成功";
-                jm.data = AppInterFaceUrl + fileName;
+                jm.data = _appInterFaceUrl + fileName;
             }
             else
             {
@@ -359,7 +374,7 @@ namespace CoreCms.Net.Services
             {
                 jm.status = true;
                 jm.msg = "二维码获取成功";
-                jm.data = AppInterFaceUrl + fileName;
+                jm.data = _appInterFaceUrl + fileName;
                 jm.otherData = fileNameMin;
             }
             else
@@ -788,8 +803,9 @@ namespace CoreCms.Net.Services
         /// <param name="url"></param>
         /// <param name="code"></param>
         /// <param name="client"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<WebApiCallBack> Poster(string url, string code, int client)
+        public async Task<WebApiCallBack> Poster(string url, string code, int client, CoreCmsUser user)
         {
             var jm = new WebApiCallBack() { status = false, msg = "海报生成失败0" };
 
@@ -810,7 +826,7 @@ namespace CoreCms.Net.Services
                 //有这个二维码了
                 jm.status = true;
                 jm.msg = "海报获取成功";
-                jm.data = AppInterFaceUrl + fileName;
+                jm.data = _appInterFaceUrl + fileName;
             }
             else
             {
@@ -829,12 +845,12 @@ namespace CoreCms.Net.Services
                     return qrResult;
                 }
 
-                var mkResult = await DoMark(res.data, qrResult.otherData.ToString(), fileName);
+                var mkResult = await DoMark(res.data, qrResult.otherData.ToString(), fileName, user);
                 if (mkResult)
                 {
                     jm.status = true;
                     jm.msg = "海报生成成功";
-                    jm.data = AppInterFaceUrl + fileName;
+                    jm.data = _appInterFaceUrl + fileName;
                 }
                 jm.otherData = mkResult;
             }
@@ -847,14 +863,17 @@ namespace CoreCms.Net.Services
         /// <param name="data"></param>
         /// <param name="otherData">生成的二维码图片地址</param>
         /// <param name="fileNameStr">海报文件名称</param>
+        /// <param name="user">用户信息</param>
         /// <returns></returns>
-        public async Task<bool> DoMark(object data, string otherData, string fileNameStr)
+        public async Task<bool> DoMark(object data, string otherData, string fileNameStr, CoreCmsUser user)
         {
             var fileName = fileNameStr;
 
             //文件硬地址
+            var savePath = _webHostEnvironment.WebRootPath + "/static/poster/";
             var qrCodeDir = _webHostEnvironment.WebRootPath + "/static/qrCode/weChat/" + otherData;
-            System.Drawing.Image qrCodeImage = System.Drawing.Image.FromFile(qrCodeDir);
+            //如果文件夹不存在，则创建文件夹
+            if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 
             //获取数据来源
             var dataObj = JObject.FromObject(data);
@@ -864,7 +883,7 @@ namespace CoreCms.Net.Services
             }
             //2商品详情页，3拼团详情页
             var page = dataObj["page"].ObjectToInt(0);
-            if (page == 2 || page == 3)
+            if (page is (int)GlobalEnumVars.UrlSharePageType.Goods or (int)GlobalEnumVars.UrlSharePageType.PinTuan or (int)GlobalEnumVars.UrlSharePageType.Seckill)
             {
                 if (dataObj.ContainsKey("params"))
                 {
@@ -874,65 +893,74 @@ namespace CoreCms.Net.Services
                         return false;
                     }
                     var goodId = paramsObj["goodsId"].ObjectToInt();
-                    var goodModel = await GoodsServices.GetGoodsDetial(goodId);
+                    var goodModel = await _goodsServices.GetGoodsDetial(goodId);
                     if (goodModel != null)
                     {
                         var images = goodModel.images.Split(",");
                         if (images.Any())
                         {
                             var image = images[0];
-                            //创建画布
-                            //创建 带二维码的图片 大小的 位图
-                            Bitmap tmpImage = new Bitmap(400, 600);
-                            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(tmpImage);
-                            //下面这个设成High
-                            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                            g.SmoothingMode = SmoothingMode.HighQuality;
-                            g.CompositingQuality = CompositingQuality.HighQuality;
-                            //清除整个绘图面并以背景色填充
-                            //g.Clear(Color.Transparent);// 透明（看到的可能是黑色）
-                            g.Clear(Color.White); //绘制白色
-
+                            //创建一个背景宽度为400X600的底图
+                            using var imageTemple = new SixLabors.ImageSharp.Image<Rgba32>(400, 600);
+                            //设置底图的背景色为白色
+                            imageTemple.Mutate(x => x.BackgroundColor(SixLabors.ImageSharp.Color.White));
                             //绘制商品图片（网络下载图片）
-                            System.Net.WebRequest request = System.Net.WebRequest.Create(image);
-                            System.Net.WebResponse response = request.GetResponse();
-                            Stream reader = response.GetResponseStream();
-                            if (reader != null)
+                            HttpClient client = new HttpClient();
+                            HttpResponseMessage response = await client.GetAsync(image);
+                            response.EnsureSuccessStatusCode();
+                            var stream = await response.Content.ReadAsStreamAsync();
+                            //载入下载的图片流2
+                            var imageThumbnail = await SixLabors.ImageSharp.Image.LoadAsync(stream);
+                            //将下载的图片压缩至400X400
+                            imageThumbnail.Mutate(x =>
                             {
-                                System.Drawing.Image imgHeadPhoto = System.Drawing.Image.FromStream(reader);
-                                g.DrawImage(imgHeadPhoto, 0, 0, 400, 400);
-                                imgHeadPhoto.Dispose();
-                            }
-                            reader.Close();
-                            reader.Dispose();
-
-                            //绘制分享二维码
-                            g.DrawImage(qrCodeImage, 275, 420, 120, 120);
-
-                            //绘制商品名称
-                            Font titleFont = new Font("微软雅黑", 14);
-
-                            RectangleF descRect = new RectangleF();
-                            descRect.Location = new Point(10, 460);
-                            descRect.Size = new Size(260, ((int)g.MeasureString(goodModel.name, titleFont, 260, StringFormat.GenericTypographic).Height));
-                            g.DrawString(goodModel.name, titleFont, Brushes.Black, descRect);
-
-                            //g.DrawString(goodModel.name, titleFont, new SolidBrush(Color.Black), new PointF(10, 430));
-
+                                x.Resize(400, 400);
+                            });
+                            //将商品大图合并到背景图上
+                            imageTemple.Mutate(x => x.DrawImage(imageThumbnail, new SixLabors.ImageSharp.Point(0, 0), 1));
+                            //将用户的分享二维码合并大背景图上
+                            var imageQrcode = await SixLabors.ImageSharp.Image.LoadAsync(qrCodeDir);
+                            //将二维码缩略至120X120
+                            imageQrcode.Mutate(x =>
+                            {
+                                x.Resize(120, 120);
+                            });
+                            //将二维码图片合并到背景图上
+                            imageTemple.Mutate(x => x.DrawImage(imageQrcode, new SixLabors.ImageSharp.Point(275, 420), 1));
+                            //构建字体//装载字体(ttf)（而且字体一定要支持简体中文的）
+                            var fonts = new FontCollection();
+                            SixLabors.Fonts.FontFamily fontFamily = fonts.Install(_webHostEnvironment.WebRootPath + "/fonts/SourceHanSansK-Normal.ttf");
+                            //商品名称可能较长,设置为多行文本输出
+                            SixLabors.Fonts.Font titleFont = new SixLabors.Fonts.Font(fontFamily, 20, SixLabors.Fonts.FontStyle.Regular);
+                            //多行文本输出
+                            var textOptions = new TextOptions()
+                            {
+                                ApplyKerning = true,
+                                VerticalAlignment = VerticalAlignment.Top,
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                WrapTextWidth = 230
+                            };
+                            var graphicsOptions = new GraphicsOptions()
+                            {
+                                Antialias = true
+                            };
+                            //沿着行尾的绕行路径绘制文本  
+                            var options = new SixLabors.ImageSharp.Drawing.Processing.DrawingOptions
+                            {
+                                GraphicsOptions = graphicsOptions,
+                                TextOptions = textOptions
+                            };
+                            //开始绘制商品名称
+                            imageTemple.Mutate(ctx => ctx.DrawText(options, goodModel.name, titleFont, SixLabors.ImageSharp.Color.Red, new SixLabors.ImageSharp.PointF(10, 450)));
                             //绘制商品金额
-                            Font moneyFont = new Font("微软雅黑", 18);
-                            g.DrawString("￥" + goodModel.price, moneyFont, new SolidBrush(Color.Crimson), new PointF(10, 420));
-
+                            SixLabors.Fonts.Font moneyFont = new SixLabors.Fonts.Font(fontFamily, 18);
+                            //获取该文件绘制所需的大小
+                            imageTemple.Mutate(ctx => ctx.DrawText("￥" + goodModel.price, moneyFont, SixLabors.ImageSharp.Color.Crimson, new SixLabors.ImageSharp.PointF(10, 410)));
                             //绘制提示语
-                            Font tipsFont = new Font("微软雅黑", 8);
-                            g.DrawString("扫描或长按识别二维码", tipsFont, new SolidBrush(Color.Black), new PointF(278, 555));
-
-                            //释放资源 并保存要返回 位图
-                            qrCodeImage.Dispose();
-                            //图片压缩
-                            SaveImage2File(_webHostEnvironment.WebRootPath + fileName, tmpImage, 90);
-                            g.Dispose();
-                            tmpImage.Dispose();
+                            SixLabors.Fonts.Font tipsFont = new SixLabors.Fonts.Font(fontFamily, 10);
+                            imageTemple.Mutate(ctx => ctx.DrawText("扫描或长按识别二维码", tipsFont, SixLabors.ImageSharp.Color.Black, new SixLabors.ImageSharp.PointF(283, 555)));
+                            //载入流存储在到文件
+                            await imageTemple.SaveAsync(_webHostEnvironment.WebRootPath + fileName);
 
                             return true;
                         }
@@ -941,33 +969,6 @@ namespace CoreCms.Net.Services
                 }
             }
             return false;
-        }
-
-        /// <summary>
-        /// 将Image实例保存到文件,注意此方法不执行 img.Dispose()
-        /// 图片保存时本可以直接使用destImage.Save(path, ImageFormat.Jpeg)，但是这种方法无法进行进一步控制图片质量
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="img"></param>
-        /// <param name="quality">1~100整数,无效值，则取默认值95</param>
-        /// <param name="mimeType"></param>
-        private void SaveImage2File(string path, Image destImage, int quality, string mimeType = "image/jpeg")
-        {
-            if (quality <= 0 || quality > 100) quality = 95;
-            //创建保存的文件夹
-            FileInfo fileInfo = new FileInfo(path);
-            if (!Directory.Exists(fileInfo.DirectoryName))
-            {
-                Directory.CreateDirectory(fileInfo.DirectoryName);
-            }
-            //设置保存参数，保存参数里进一步控制质量
-            EncoderParameters encoderParams = new EncoderParameters();
-            long[] qua = new long[] { quality };
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
-            encoderParams.Param[0] = encoderParam;
-            //获取指定mimeType的mimeType的ImageCodecInfo
-            var codecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(ici => ici.MimeType == mimeType);
-            destImage.Save(path, codecInfo, encoderParams);
         }
 
     }

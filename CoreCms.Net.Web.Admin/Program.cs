@@ -145,8 +145,6 @@ app.UseRequestResponseLog();
 app.UseRecordAccessLogsMildd();
 // 记录ip请求 (注意开启权限，不然本地无法写入)
 app.UseIpLogMildd();
-// signalr
-app.UseSignalRSendMildd();
 
 app.UseSwagger().UseSwaggerUI(c =>
 {

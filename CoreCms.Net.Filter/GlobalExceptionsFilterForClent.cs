@@ -10,20 +10,11 @@
  ***********************************************************************/
 
 
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
-
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.ViewModels.UI;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CoreCms.Net.Filter
 {

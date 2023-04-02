@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Qiniu.Storage;
 using Qiniu.Util;
+using SixLabors.ImageSharp;
 using ToolGood.Words;
 
 namespace CoreCms.Net.Services
@@ -302,8 +303,11 @@ namespace CoreCms.Net.Services
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + ".jpg";
             var today = DateTime.Now.ToString("yyyyMMdd");
 
-            Image mImage = Image.FromStream(memStream);
-            Bitmap bp = new Bitmap(mImage);
+            byte[] data = new byte[memStream.Length];
+            memStream.Seek(0, SeekOrigin.Begin);
+            memStream.Read(data, 0, Convert.ToInt32(memStream.Length));
+            SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(new MemoryStream(data));
+
 
             var saveUrl = options.Path + today + "/";
             var dirPath = _webHostEnvironment.WebRootPath + saveUrl;
@@ -311,7 +315,9 @@ namespace CoreCms.Net.Services
             string bucketBindDomain = string.Empty;
             if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.Admin)
             {
-                bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+                //bucketBindDomain = AppSettingsConstVars.AppConfigAppUrl;
+                bucketBindDomain = !string.IsNullOrEmpty(options.BucketBindUrl) ? options.BucketBindUrl : AppSettingsConstVars.AppConfigAppUrl;
+                ;
             }
             else if (filesStorageLocation == (int)GlobalEnumVars.FilesStorageLocation.API)
             {
@@ -322,7 +328,8 @@ namespace CoreCms.Net.Services
             var filePath = dirPath + newFileName;
             var fileUrl = saveUrl + newFileName;
 
-            bp.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);//注意保存路径
+            //保存到图片
+            image.SaveAsync(filePath);
 
             return bucketBindDomain + fileUrl;
         }

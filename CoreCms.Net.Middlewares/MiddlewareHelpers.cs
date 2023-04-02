@@ -51,17 +51,6 @@ namespace CoreCms.Net.Middlewares
             return app.UseMiddleware<ExceptionHandlerMiddForClent>();
         }
 
-        /// <summary>
-        /// SignalR中间件
-        /// </summary>
-        /// <param name="app"></param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseSignalRSendMildd(this IApplicationBuilder app)
-        {
-            return app.UseMiddleware<SignalRSendMildd>();
-        }
-
-
 
         /// <summary>
         /// IP请求中间件
