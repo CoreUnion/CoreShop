@@ -74,18 +74,24 @@
             // 获取自己的位置信息
             getMyLocation() {
                 let _this = this;
-                uni.getLocation({
+                wx.getFuzzyLocation({
                     type: 'wgs84',
-                    success: function (res) {
+                    success(res) {
                         _this.longitude = res.longitude;
                         _this.latitude = res.latitude;
                         _this.getStoreList();
                     },
                     fail: function () {
-                        _this.$u.toast("获取位置信息失败")
+                        _this.$u.toast("获取您的经纬度坐标失败")
+                    },
+                    complete: function (res) {
+                        if (!_this.longitude || !_this.latitude) {
+                            _this.longitude = '0';
+                            _this.latitude = '0';
+                        }
+                        _this.getStoreList();
                     }
-                });
-
+                })
             },
             // 获取店铺列表信息
             getStoreList() {

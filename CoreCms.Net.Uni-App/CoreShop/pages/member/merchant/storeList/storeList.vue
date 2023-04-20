@@ -56,13 +56,21 @@
             //获取门店列表
             getStoreAddress() {
                 let _this = this;
-                uni.getLocation({
-                    type: 'gcj02',
-                    success: function (res) {
-                        _this.longitude = res.longitude;
-                        _this.latitude = res.latitude;
+                wx.getFuzzyLocation({
+                    type: 'wgs84',
+                    success(res) {
+                        _this.latitude = res.latitude
+                        _this.longitude = res.longitude
+                        //console.log('当前位置的经度1：' + res);
+                    },
+                    fail: function () {
+                        _this.$u.toast("获取您的经纬度坐标失败")
                     },
                     complete: function (res) {
+                        if (!_this.longitude || !_this.latitude) {
+                            _this.longitude = '0';
+                            _this.latitude = '0';
+                        }
                         let data = {
                             'key': _this.key,
                             'longitude': _this.longitude,
@@ -79,7 +87,7 @@
                             }
                         });
                     }
-                });
+                })
             },
         }
     };
