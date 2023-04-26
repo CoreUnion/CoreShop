@@ -249,24 +249,58 @@ namespace CoreCms.Net.Services
 
             //开始事务处理
             await _dal.InsertAsync(order);
-
+            
             //上面保存好订单表，下面保存订单的其他信息
             if (orderItems != null)
             {
                 jm.msg = "更改库存";
+                // foreach (var item in orderItems)
+                // {
+                //     var res = _goodsServices.ChangeStock(item.productId, GlobalEnumVars.OrderChangeStockType.order.ToString(), item.nums);
+                //     if (res.status == false)
+                //     {
+                //         jm.msg = "更新库存数据失败";
+                //         return jm;
+                //     }
+                // }
+                
                 //更改库存
-                foreach (var item in orderItems)
+                var avaliableOrderItems = orderItems.Where(item =>
                 {
                     var res = _goodsServices.ChangeStock(item.productId, GlobalEnumVars.OrderChangeStockType.order.ToString(), item.nums);
+
                     if (res.status == false)
                     {
-
-                        jm.msg = "更新库存数据失败";
-                        return jm;
+                        jm.msg += $"{item.name}库存不足";
                     }
+                    
+                    return res.status;
+
+ 
+                }).ToList();
+                
+                
+                if (avaliableOrderItems.Count == 0)
+                {
+                    await _orderItemServices.InsertCommandAsync(orderItems);
+                    
+                    await _dal.UpdateAsync(n => new CoreCmsOrder()
+                        {
+                            status = (int)GlobalEnumVars.OrderStatus.Cancel,
+                            updateTime = DateTime.Now
+                        },
+                        m => m.orderId == order.orderId);
+                   
+                    //清除购物车信息
+                    await _cartServices.DeleteAsync(p => ids.Contains(p.id) && p.userId == userId && p.type == orderType);
+
+                    
+                    jm.msg = "下单失败，库存不足";
+                    return jm;
                 }
-                jm.msg = "订单明细更新" + orderItems.Count;
-                var outItems = await _orderItemServices.InsertCommandAsync(orderItems);
+                
+                jm.msg = "订单明细更新" + avaliableOrderItems.Count;
+                var outItems = await _orderItemServices.InsertCommandAsync(avaliableOrderItems);
                 var outItemsBool = outItems > 0;
                 if (outItemsBool == false)
                 {
@@ -275,6 +309,13 @@ namespace CoreCms.Net.Services
                     jm.data = outItems;
                     return jm;
                 }
+                
+                
+
+
+                
+                
+                
                 //优惠券核销
                 if (!string.IsNullOrEmpty(couponCode))
                 {
@@ -304,21 +345,21 @@ namespace CoreCms.Net.Services
                         break;
                     case (int)GlobalEnumVars.OrderType.PinTuan:
                         //拼团模式去校验拼团是否存在，并添加拼团记录
-                        var pinTuanRes = await _pinTuanRecordServices.OrderAdd(order, orderItems, teamId);
+                        var pinTuanRes = await _pinTuanRecordServices.OrderAdd(order, avaliableOrderItems, teamId);
                         if (pinTuanRes.status == false)
                         {
                             return pinTuanRes;
                         }
                         break;
                     case (int)GlobalEnumVars.OrderType.Group:
-                        var groupRes = await _promotionRecordServices.OrderAdd(order, orderItems, objectId, orderType);
+                        var groupRes = await _promotionRecordServices.OrderAdd(order, avaliableOrderItems, objectId, orderType);
                         if (groupRes.status == false)
                         {
                             return groupRes;
                         }
                         break;
                     case (int)GlobalEnumVars.OrderType.Skill:
-                        var rskillRes = await _promotionRecordServices.OrderAdd(order, orderItems, objectId, orderType);
+                        var rskillRes = await _promotionRecordServices.OrderAdd(order, avaliableOrderItems, objectId, orderType);
                         if (rskillRes.status == false)
                         {
                             return rskillRes;
