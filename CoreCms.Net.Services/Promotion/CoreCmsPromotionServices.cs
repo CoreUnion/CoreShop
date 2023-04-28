@@ -465,16 +465,17 @@ namespace CoreCms.Net.Services
             where = where.And(p => p.isDel == false);  //是否被删除
 
 
-            var info = await _dal.QueryByClauseAsync(where);
+            var info = await _dal.QueryByClauseAsync(where,false,true);
             if (info != null)
             {
                 jm.data = info;
                 //判断最大领取数量
                 if (info.maxRecevieNums == 0)
                 {
-                    jm.status = true;
+                    jm.status = false;
                     return jm;
                 }
+                
                 var receiveCount = await _couponServices.GetCountAsync(p => p.promotionId == promotionId);
                 if (receiveCount >= info.maxRecevieNums)
                 {

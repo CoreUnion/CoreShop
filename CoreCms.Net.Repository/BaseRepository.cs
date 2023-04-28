@@ -331,12 +331,16 @@ namespace CoreCms.Net.Repository
         /// </summary>
         /// <param name="predicate">条件表达式树</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <param name="blUseTranLock">是否使用事务锁</param>
+        /// <param name="dbLockType">事务锁类型</param>
         /// <returns></returns>
-        public async Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
+        public async Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false,bool blUseTranLock = false,
+            DbLockType dbLockType = DbLockType.Wait)
         {
             return blUseNoLock
                 ? await DbBaseClient.Queryable<T>().With(SqlWith.NoLock).FirstAsync(predicate)
-                : await DbBaseClient.Queryable<T>().FirstAsync(predicate);
+                : (blUseTranLock? await DbBaseClient.Queryable<T>().TranLock(dbLockType).FirstAsync(predicate)
+                    : await DbBaseClient.Queryable<T>().FirstAsync(predicate));
         }
 
         /// <summary>
