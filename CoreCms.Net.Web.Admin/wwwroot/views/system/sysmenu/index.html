@@ -11,7 +11,10 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/SysMenu/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+</script>
+
+<script type="text/html" id="LAY-app-SysMenu-tableBox-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <button class="layui-btn  layui-btn-sm mybtn  layuiadmin-btn-admin" data-type="add"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
@@ -20,15 +23,16 @@
     </div>
 </script>
 
+
 <div class="table-body">
     <table id="LAY-app-SysMenu-tableBox" lay-filter="LAY-app-SysMenu-tableBox"></table>
 </div>
 
 <script type="text/html" id="LAY-app-SysMenu-tableBox-bar">
 
-    {{#  if(d.menuType === 0){ }}
+    {{# if(d.otherData.path != '' && d.otherData.path != null && d.otherData.menuType===0){ }}
     <a class="layui-btn layui-btn-xs" lay-event="importButton">导入按钮</a>
-    {{#  } }}
+    {{# } }}
 
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" data-dropdown="#SysMenuTbDelDrop{{d.id}}" no-shade="true">删除</a>
@@ -37,7 +41,7 @@
         <div class="dropdown-anchor"></div>
         <div class="dropdown-popconfirm-title">
             <i class="layui-icon layui-icon-help"></i>
-            确定要删除【{{d.menuName}}】吗？
+            确定要删除【{{d.otherData.menuName}}】吗？
         </div>
         <div class="dropdown-popconfirm-btn">
             <a class="layui-btn layui-btn-primary cursor" btn-cancel>取消</a>
@@ -49,13 +53,13 @@
 <script>
     var indexData;
     var debug = layui.setter.debug;
-    var insTb;
+
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d); }
 
         indexData = d.data;
-        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper','treeTable','zTree'],
+        layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper','zTree'],
             function () {
                 var $ = layui.$
                     , admin = layui.admin
@@ -68,75 +72,75 @@
                     , util = layui.util
                     , zTree = layui.zTree
                     , view = layui.view;
-                var tbDataList = [];  // 表格全部数据
 
                 //数据绑定
-                    insTb = treeTable.render({
-                        elem: '#LAY-app-SysMenu-tableBox',
-                        tree: {
-                            iconIndex: 1,
-                            idName: 'id',
-                            pidName: 'parentId',
-                            isPidData: true,
-                            //getIcon: ''
+              var  insTb = treeTable.render({
+                    id: 'treeTableBox',
+                  url: layui.setter.apiUrl + 'Api/SysMenu/GetPageList',
+                  where: { type: 'layui' },
+                    method: 'POST',
+                    elem: '#LAY-app-SysMenu-tableBox',
+                    tree: {
+                        customName: {
+                            id: 'id',
+                            pid: 'parentId',
+                            name: 'menuName',
                         },
-                        height: 'full-250',
-                        cols: [
+                        view: {
+                            showIcon: false,
+                            indent:25
+                        },
+                        data: {
+                            isSimpleData: false,
+                        }
+                    },
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    toolbar: '#LAY-app-SysMenu-tableBox-toolbar',
+                        cols: [[
                             {field: 'id', title: '序列', width: 60},
-                            {field: 'menuName', title: '菜单名称', minWidth: 110},
+                            { field: 'menuName', title: '菜单名称', minWidth: 110, templet: function (d) { return d.otherData.menuName } },
                             {
-                                title: '图标', templet: '<p><i class="layui-icon {{d.menuIcon}}"></i></p>',
+                                title: '图标', templet: '<p><i class="layui-icon {{d.otherData.menuIcon}}"></i></p>',
                                 align: 'center', width: 60, minWidth: 60
                             },
-                            {field: 'path', title: '菜单Url'},
-                            {field: 'identificationCode', title: '文件夹标识'},
-                            {field: 'component', title: 'API请求地址'},
-                            {field: 'authority', title: '权限标识'},
+                            { field: 'path', title: '菜单Url', templet: function (d) { return d.otherData.path == null || d.otherData.path == '' ? '' : d.otherData.path } },
+                            { field: 'identificationCode', title: '文件夹标识', templet: function (d) { return d.otherData.identificationCode } },
+                            { field: 'component', title: 'API请求地址', templet: function (d) { return d.otherData.component } },
+                            { field: 'authority', title: '权限标识', templet: function (d) { return d.otherData.authority } },
                             {
-                                field: 'sortNumber', title: '排序', align: 'center',
-                                width: 60, minWidth: 60
+                                field: 'sortNumber', title: '排序', align: 'center', width: 60, minWidth: 60, templet: function (d) { return d.otherData.sortNumber }
                             },
                             {
                                 title: '隐藏', templet: function (d) {
-                                    return d.hide ? '<span class="text-danger">隐藏</span>' : '显示';
+                                    return d.otherData.hide ? '<span class="text-danger">隐藏</span>' : '显示';
                                 }, align: 'center', width: 60, minWidth: 60
                             },
                             {
                                 title: '类型', templet: function (d) {
                                     var strs = ['<span class="layui-badge layui-badge-green">菜单</span>', '<span class="layui-badge layui-badge-gray">按钮</span>'];
-                                    return strs[d.menuType];
+                                    return strs[d.otherData.menuType];
                                 }, align: 'center', width: 70, minWidth: 70
                             },
                             //{field: 'createTime', title: '创建时间'},
                             {title: '操作', toolbar: '#LAY-app-SysMenu-tableBox-bar', align: 'center', width: 180}
-                        ],
-                        reqData: function (data, callback) {
-                            coreHelper.Post('Api/SysMenu/GetPageList',null, function (res) {
-                                tbDataList = res.data ? res.data : [];
-                                for (var i = 0; i < tbDataList.length; i++) {
-                                    if (tbDataList[i].parentId==0) {
-                                        tbDataList[i].open = true;
-                                    } else {
-                                        tbDataList[i].open = false;
-                                    }
-                                }
-                                callback(tbDataList);
-                            });
-                        }
-                    });
+                    ]],
+
+                      //autoSort: false,
+                      page: false
+                });
                     //重载form
-                    form.render();
+                form.render();
 
                      //事件
-                    var active = {
-                        add: function () {
-                            doCreate();
-                        }
-                    };
-                    $('.layui-btn.layuiadmin-btn-admin').on('click', function () {
-                        var type = $(this).data('type');
-                        active[type] ? active[type].call(this) : '';
-                    });
+                var active = {
+                    add: function () {
+                        doCreate();
+                    }
+                };
+                $('.layui-btn.layuiadmin-btn-admin').on('click', function () {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
 
                 //监听工具条
                 treeTable.on('tool(LAY-app-SysMenu-tableBox)',
@@ -153,12 +157,13 @@
                 function doCreate() {
                     coreHelper.Post("Api/SysMenu/GetCreate", null, function (e) {
                         if (e.code === 0) {
+                            var treeTableData = treeTable.getData('treeTableBox',false);
                             admin.popup({ shadeClose: false,
                                 title: '创建数据',
                                 area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-create',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/sysmenu/create', { data: e.data,treeData:insTb.options.data }).done(function () {
+                                    view(this.id).render('system/sysmenu/create', { data: e.data, treeTableData: treeTableData }).done(function () {
                                         //监听提交
                                         form.on('submit(LAY-app-SysMenu-createForm-submit)',
                                             function (data) {
@@ -168,7 +173,7 @@
                                                     field.parentId = 0;
                                                 }
 
-                                                field.hide = field.hide == 'on';
+                                                field.hide = field.hide == 1;
                                                 //field.deleted = field.deleted == 'on';
 
                                                 if (debug) { console.log(field); } //开启调试返回数据
@@ -176,7 +181,7 @@
                                                 coreHelper.Post("Api/SysMenu/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        insTb.refresh();
+                                                        insTb.reloadData();
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -202,12 +207,14 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/SysMenu/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            var treeTableData = treeTable.getData('treeTableBox', false);
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
                                 area: ['1000px', '500px'],
                                 id: 'LAY-popup-SysMenu-edit',
                                 success: function (layero, index) {
-                                    view(this.id).render('system/sysmenu/edit', { data: e.data, treeData: insTb.options.data }).done(function() {
+                                    view(this.id).render('system/sysmenu/edit', { data: e.data, treeTableData: treeTableData }).done(function() {
                                         //监听提交
                                         form.on('submit(LAY-app-SysMenu-editForm-submit)',
                                             function(data) {
@@ -215,7 +222,7 @@
                                                 if (!field.parentId) {
                                                     field.parentId = 0;
                                                 }
-                                                field.hide = field.hide == 'on';
+                                                field.hide = field.hide == 1;
                                                 //field.deleted = field.deleted == 'on';
                                                 if (debug) {
                                                     console.log(field);
@@ -226,7 +233,7 @@
                                                     function(e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            insTb.refresh();
+                                                            insTb.reloadData();
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -302,7 +309,7 @@
                                 layer.close(loadIndex);
                                 if (0 === res.code) {
                                     layer.msg(res.msg, { icon: 1 });
-                                    insTb.refresh();
+                                    insTb.reloadData();
                                     layer.close(dIndex);
                                 } else {
                                     layer.msg(res.msg, { icon: 2, anim: 6 });
@@ -318,7 +325,7 @@
                     coreHelper.Post("Api/SysMenu/DoDelete", { id: obj.data.id }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
                         //table.reloadData('LAY-app-SysMenu-tableBox');
-                        insTb.refresh();
+                        insTb.reloadData();
                         layer.msg(e.msg);
                     });
                 }

@@ -48,6 +48,11 @@ namespace CoreCms.Net.Model.ViewModels.UI
         public bool last { get; set; }
 
         /// <summary>
+        /// 是否属于父节点
+        /// </summary>
+        public bool isParent { get; set; }
+
+        /// <summary>
         ///     是否选中 0否1是
         /// </summary>
         public string checkArr { get; set; } = "0";
@@ -56,6 +61,13 @@ namespace CoreCms.Net.Model.ViewModels.UI
         ///     子
         /// </summary>
         public object children { get; set; }
+
+        /// <summary>
+        /// 其他数据
+        /// </summary>
+        public object otherData { get; set; }
+
+
     }
 
     /// <summary>

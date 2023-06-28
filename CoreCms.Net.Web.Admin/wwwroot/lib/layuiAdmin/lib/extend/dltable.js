@@ -19,7 +19,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function (exports) {
             , obj: {}//额外保存的数据
             , config: {//全局配置项
                 checkName: 'LAY_CHECKED' //是否选中状态的字段名
-                , indexName: 'LAY_TABLE_INDEX' //下标索引名
+                , indexName: 'LAY_INDEX' //下标索引名
             }
             /**
              * 缓存数据

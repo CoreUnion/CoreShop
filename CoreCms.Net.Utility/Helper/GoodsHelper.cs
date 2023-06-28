@@ -71,6 +71,8 @@ namespace CoreCms.Net.Utility.Helper
                 parentTree.title = item.name;
                 parentTree.parentId = item.parentId.ToString();
                 parentTree.last = !oldNavs.Exists(p => p.parentId == item.id);
+                parentTree.isParent = !parentTree.last;
+                parentTree.otherData = item;
 
                 childTree.Add(parentTree);
                 parentTree.children = GetMenus(oldNavs, item.id);

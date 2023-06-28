@@ -86,7 +86,7 @@
                                 //这里才是真正的有效勾选
                                 res.data[i]["LAY_CHECKED"] = 'true';
                                 //找到对应数据改变勾选样式，呈现出选中效果
-                                var index = res.data[i]['LAY_TABLE_INDEX'];
+                                var index = res.data[i]['LAY_INDEX'];
                                 $('#LAY-app-CoreCmsNotice-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
                                 $('#LAY-app-CoreCmsNotice-tableBox + div .layui-table-body tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
                             }

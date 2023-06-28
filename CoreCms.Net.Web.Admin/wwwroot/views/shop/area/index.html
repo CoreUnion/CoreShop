@@ -9,15 +9,55 @@
 
 <style>
     /* 左树 */
-    #areaTreeBar { padding: 10px 15px; border: 1px solid #e6e6e6; background-color: #f2f2f2; }
-    #areaTree { border: 1px solid #e6e6e6; padding: 10px 5px; overflow: auto; height: -webkit-calc(100vh - 158px); height: -moz-calc(100vh - 158px); height: calc(100vh - 158px); }
-    .layui-tree-entry .layui-tree-txt { padding: 0 5px; border: 1px transparent solid; text-decoration: none !important; }
-    .layui-tree-entry.ew-tree-click .layui-tree-txt { background-color: #fff3e0; border: 1px #FFE6B0 solid; }
+    #areaTreeBar {
+        padding: 10px 15px;
+        border: 1px solid #e6e6e6;
+        background-color: #f2f2f2;
+    }
+
+    #areaTree {
+        border: 1px solid #e6e6e6;
+        padding: 10px 5px;
+        overflow: auto;
+        height: -webkit-calc(100vh - 158px);
+        height: -moz-calc(100vh - 158px);
+        height: calc(100vh - 158px);
+    }
+
+    .layui-tree-entry .layui-tree-txt {
+        padding: 0 5px;
+        border: 1px transparent solid;
+        text-decoration: none !important;
+    }
+
+    .layui-tree-entry.ew-tree-click .layui-tree-txt {
+        background-color: #fff3e0;
+        border: 1px #FFE6B0 solid;
+    }
     /* 右表搜索表单 */
-    #areaTbSearchForm .layui-form-label { box-sizing: border-box !important; width: 90px !important; }
-    #areaTbSearchForm .layui-input-block { margin-left: 90px !important; }
+    #areaTbSearchForm .layui-form-label {
+        box-sizing: border-box !important;
+        width: 90px !important;
+    }
+
+    #areaTbSearchForm .layui-input-block {
+        margin-left: 90px !important;
+    }
     /* 主管标识 */
-    td .leader-flag { background: #52c41a; color: #fff; font-size: 12px; line-height: 18px; position: absolute; padding: 0 15px; right: -15px; top: 2px; -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-transform-origin: center; transform-origin: center; }
+    td .leader-flag {
+        background: #52c41a;
+        color: #fff;
+        font-size: 12px;
+        line-height: 18px;
+        position: absolute;
+        padding: 0 15px;
+        right: -15px;
+        top: 2px;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        -webkit-transform-origin: center;
+        transform-origin: center;
+    }
 </style>
 <!-- 正文开始 -->
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsArea/GetIndex" lay-done="layui.data.done(d);">
@@ -137,7 +177,6 @@
                         { field: 'parentId', title: '父级ID', sort: false },
                         { field: 'depth', title: '地区深度', sort: false },
                         { field: 'name', title: '地区名称', sort: false },
-                        { field: 'postalCode', title: '邮编', sort: false },
                         { field: 'sort', title: '地区排序', sort: false },
                         {
                             title: '操作', toolbar: '#areaTbBar', unresize: true,
@@ -163,9 +202,9 @@
                 table.on('toolbar(areaTable)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
-                    case 'addData':
-                        doCreate(checkId);
-                        break;
+                        case 'addData':
+                            doCreate(checkId);
+                            break;
                     };
                 });
 

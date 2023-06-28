@@ -72,10 +72,18 @@ namespace CoreCms.Net.Web.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
             //获取数据
-            var list = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.id > 0, p => p.sort,
-                OrderByType.Desc);
+            var list = await _coreCmsGoodsCategoryServices.QueryListByClauseAsync(p => p.id > 0, p => p.sort, OrderByType.Desc);
             //返回数据
-            jm.data = list;
+            var type = Request.Form["type"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(type) && type == "layui")
+            {
+                //返回数据
+                jm.data = GoodsHelper.GetTree(list, false).data;
+            }
+            else
+            {
+                jm.data = list;
+            }
             jm.code = 0;
             jm.msg = "数据调用成功!";
             return jm;
