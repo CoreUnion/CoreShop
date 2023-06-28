@@ -109,7 +109,7 @@ QQ群：70494974
 
 #### 🎨 系统演示  
 
-请访问【http://wwww.coreshop.cn】点击右上角演示查阅预览项目。  
+请访问【[https://www.coreshop.cn](https://www.coreshop.cn)】点击右上角演示查阅预览项目。  
 
 
 ### 🌈 技术选型
