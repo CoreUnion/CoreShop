@@ -90,43 +90,39 @@
     layui.data.sendParams = function (d) {
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d.params.data); }
-        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'xmSelect', 'icon'],
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'xmSelect', 'iconSelected'],
             function () {
                 var $ = layui.$
                     , form = layui.form
                     , admin = layui.admin
                     , laydate = layui.laydate
                     , upload = layui.upload
-                    , icon = layui.icon
+                    , iconSelected = layui.iconSelected
                     , cropperImg = layui.cropperImg
                     , xmSelect = layui.xmSelect;
 
-                
-                icon.render({
-                    elem: '.menuIcon'
-                    , style: 'color: #5FB878;'
-                    , placeholder: d.params.data.menuIcon
-                    //,isSplit: true
-                    , page: true
-                    //,search: false
-                    , click: function (obj) {
-                        console.log(obj)
-                        //this.elem.val(obj.className)
-                    }
-                    , ready: function () {
-                        console.log(1)
-                    }
+                iconSelected.render(".menuIcon", {
+                    event: {
+                        select(event, data) {
+                            console.log("选中的图标数据", { event, data });
+                        },
+                    },
+                    width: '300',
+                    value: d.params.data.menuIcon,
+                    placeholder: '请点击选择图标'
                 });
-
 
                 var list = [];
                 let item = {
-                    menuName: "无上级",
+                    title: "无上级",
                     id: 0
                 }
                 list.push(item);
-                for (var i = 0; i < insTb.options.data.length; i++) {
-                    list.push(insTb.options.data[i]);
+
+                var newData = d.params.treeTableData;
+
+                for (var i = 0; i < newData.length; i++) {
+                    list.push(newData[i]);
                 }
 
                 // 渲染下拉树
@@ -138,7 +134,7 @@
                     model: { label: { type: 'text' } },
                     name: 'parentId',
                     prop: {
-                        name: 'menuName',
+                        name: 'title',
                         value: 'id'
                     },
                     radio: true,
@@ -150,6 +146,7 @@
                         expandedKeys: []
                     }
                 });
+
 
                 form.verify({
 

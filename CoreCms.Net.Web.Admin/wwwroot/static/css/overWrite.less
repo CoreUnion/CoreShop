@@ -19,6 +19,7 @@ a { cursor: pointer }
 .layui-input, .layui-textarea { display: block; width: 100%; padding-left: 5px; }
 //设置新的头部搜索框背景颜色
 .coreshop-search-form, .layui-table-box, .layui-table-view, .coreshop-form { background-color: #fff; }
+.layui-table-view { margin: 10px 0; }
 /*重写左侧导航icon图标大小*/
 .layui-side-menu .layui-nav .layui-nav-item .layui-icon { font-size: 14px; }
 /*重写左侧导航右侧icon图标*/
@@ -43,7 +44,7 @@ a { cursor: pointer }
     .layui-form-mid { padding: 8px 10px !important; border-bottom: 1px dashed #eee; min-height: 21px; color: #999 !important;
         .layui-form-switch { margin-top: -3px; }
     }
-    /*表单左侧label文字大小重写*/ .layui-form-label { font-size: 12px; }
+    /*表单左侧label文字大小重写*/ .layui-form-label { font-size: 12px; padding: 8px 5px; }
 }
 /*用于给*打红色标记一般用于<i>*/
 .required-color { color: red; }
@@ -198,7 +199,7 @@ xm-select .xm-label .xm-label-block, xm-select .xm-body .xm-option.hide-icon.sel
 .layui-form-radio * { font-size: 12px; }
 /*重写table字体样式*/
 .layui-table td, .layui-table th { position: relative; padding: 9px 15px; min-height: 20px; line-height: 20px; font-size: 12px; }
-.layui-table-cell { height: 28px; line-height: 28px; padding: 0 8px; position: relative; box-sizing: border-box; }
+.layui-table-cell { line-height: 28px; padding: 6px 8px; position: relative; box-sizing: border-box; }
 .layui-table { word-break: break-all; word-wrap: break-word; }
 /*重写弹出面板框内容和边框间距*/
 .layui-layer-admin .layui-layer-content { padding: 10px; line-height: 22px; }
@@ -326,6 +327,8 @@ xm-select .xm-label .xm-label-block, xm-select .xm-body .xm-option.hide-icon.sel
     .layui-icon { font-size: 13px; }
     .layui-nav-item .layui-icon:first-child { position: absolute; top: 50%; left: 20px; margin-top: -24px; }
 }
+
+.layui-side-menu .layui-nav > .layui-nav-item .layui-icon:first-child { margin-top: -24px; }
 /*自定义全局包围*/
 .coreshop-admin {
     .layui-logo { padding: 0px;
@@ -358,7 +361,58 @@ xm-select .xm-label .xm-label-block, xm-select .xm-body .xm-option.hide-icon.sel
     .longLogo { height: 50px; width: 220px; display: none; }
 }
 
-    .layadmin-side-shrink .layui-layout-admin .layui-logo { width: 60px; background-image: url(../images/common/logoMin.png); }
+    .layadmin-side-shrink .layui-layout-admin .layui-logo { width: 60px; background-image: url(../images/common/logoMin.png);
+        img { display: none; }
+    }
 
 .ew-tree-table .ew-tree-pack { cursor: pointer; line-height: 16px; display: inline; vertical-align: middle; }
     .ew-tree-table .ew-tree-pack > span { height: 16px; line-height: 16px; display: inline; vertical-align: middle; }
+
+
+//连续签到
+.continuousCheckInBox { overflow: hidden; width: 450px; margin-left: 50px; border: 1px solid rgba(0, 0, 0, 0.1); padding: 10px; margin-bottom: 10px; border-radius: 10px; position: relative; float: left;
+    .layui-form-item label { width: 100px; }
+    .btn-continuous-delete { position: absolute; right: 30px; top: 30px; }
+}
+
+
+//累计签到
+.cumulativeCheckInBox { overflow: hidden; width: 450px; margin-left: 50px; border: 1px solid rgba(0, 0, 0, 0.1); padding: 10px; margin-bottom: 10px; border-radius: 10px; position: relative; float: left;
+    .layui-form-item label { width: 100px; }
+    .btn-delete { position: absolute; right: 30px; top: 30px; }
+}
+
+//Layui 图标选择器
+.layui-ext-icon-selected-input { height: 38px; line-height: 38px; padding: 0px 10px; display: inline-block; cursor: pointer; border-width: 1px; border-style: solid; background-color: #fff; border-color: #eee; border-radius: 2px; transition: 0.2s;
+
+    > .placeholder { color: #757575; }
+
+    > .layui-icon { margin-left: 5px; color: #757575; }
+}
+    .layui-ext-icon-selected-input:hover { border-color: #d2d2d2; }
+.layui-ext-icon-selected-container { padding: 5px; display: none; position: absolute; z-index: 999; top: 100%; left: 0px; margin-top: 5px; height: 240px; width: 300px; overflow-x: hidden; overflow-y: auto; border-width: 1px; border-style: solid; background-color: #fff; border-color: #eee; border-radius: 2px; box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    &.show { display: block; animation: layui-ext-icon-selected-icons-animate 0.2s linear; }
+    &::-webkit-scrollbar { width: 5px; background-color: #f6f6f6; }
+    &::-webkit-scrollbar-thumb { border-radius: 2.5px; background-color: #009688; }
+}
+
+.layui-ext-icon-selected-item { float: left; width: 25%; text-align: center; padding: 10px 5px; box-sizing: border-box; cursor: pointer; color: #888888; transition: 0.2s; border-radius: 5px;
+    &:hover,
+    &.selected { background-color: #f2f2f2; color: #009688;
+        .layui-icon { transform: scale(1.2); }
+    }
+    .layui-ext-icon-selected-icon { transition: 0.2s; display: inline-block; height: 30px; line-height: 30px; font-size: 24px; }
+    .layui-ext-icon-selected-name { padding-top: 15px; font-size: 12px; height: 1em; line-height: 1em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; width: 100%; }
+}
+
+.layui-ext-icon-selected-selected-value { float: left; display: inline-block; overflow: hidden;
+    .layui-ext-icon-selected-icon,
+    .layui-ext-icon-selected-name { display: inline-block; float: left; }
+    .layui-ext-icon-selected-icon { font-size: 18px; }
+    .layui-ext-icon-selected-name { margin-left: 5px; }
+}
+
+@keyframes layui-ext-icon-selected-icons-animate {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}

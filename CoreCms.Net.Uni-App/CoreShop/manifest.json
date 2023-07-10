@@ -1,168 +1,169 @@
 {
-    "name" : "核心商城系统",
-    "appid" : "__UNI__EAACF14",
-    "description" : "核心商城系统（CoreShop）是基于uni-app框架开发的商城应用程序",
-    "versionName" : "1.0",
-    "versionCode" : 1,
-    "transformPx" : false,
-    "app-plus" : {
-        /* 5+App特有相关 */
-        "modules" : {
-            "Payment" : {},
-            "VideoPlayer" : {}
+  "name": "核心商城系统",
+  "appid": "__UNI__EAACF14",
+  "description": "核心商城系统（CoreShop）是基于uni-app框架开发的商城应用程序",
+  "versionName": "1.0",
+  "versionCode": 1,
+  "transformPx": false,
+  "app-plus": {
+    /* 5+App特有相关 */
+    "modules": {
+      "Payment": {},
+      "VideoPlayer": {}
+    },
+    /* 模块配置 */
+    "distribute": {
+      /* 应用发布信息 */
+      "android": {
+        /* android打包配置 */
+        "permissions": [
+          "<uses-feature android:name=\"android.hardware.camera\"/>",
+          "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+          "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+          "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+          "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+          "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+          "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+          "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+          "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+          "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+        ],
+        "abiFilters": [ "armeabi-v7a", "arm64-v8a", "x86" ]
+      },
+      "ios": {},
+      /* ios打包配置 */
+      "sdkConfigs": {
+        "payment": {
+          "weixin": {
+            "appid": "wxd56f71964a318e5d"
+          },
+          "alipay": {
+            "scheme": ""
+          }
         },
-        /* 模块配置 */
-        "distribute" : {
-            /* 应用发布信息 */
-            "android" : {
-                /* android打包配置 */
-                "permissions" : [
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
-                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
-                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ],
-                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
-            },
-            "ios" : {},
-            /* ios打包配置 */
-            "sdkConfigs" : {
-                "payment" : {
-                    "weixin" : {
-                        "appid" : "wxd56f71964a318e5d"
-                    },
-                    "alipay" : {
-                        "scheme" : ""
-                    }
-                },
-                "ad" : {},
-                "maps" : {},
-                "oauth" : {
-                    "univerify" : {}
-                }
-            },
-            "icons" : {
-                "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
-                },
-                "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
-                    "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
-                    },
-                    "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
-                    }
-                }
-            }
-        },
-        "splashscreen" : {
-            "waiting" : true
+        "ad": {},
+        "maps": {},
+        "oauth": {
+          "univerify": {}
         }
-    },
-    /* SDK配置 */
-    "quickapp" : {},
-    /* 快应用特有相关 */
-    "mp-weixin" : {
-        "appid" : "wx6fc139d4de0b470f",
-        "setting" : {
-            "urlCheck" : true,
-            "postcss" : true,
-            "minified" : true,
-            "es6" : true,
-            "checkSiteMap" : false
+      },
+      "icons": {
+        "android": {
+          "hdpi": "unpackage/res/icons/72x72.png",
+          "xhdpi": "unpackage/res/icons/96x96.png",
+          "xxhdpi": "unpackage/res/icons/144x144.png",
+          "xxxhdpi": "unpackage/res/icons/192x192.png"
         },
-        "permission" : {
-            "scope.userLocation" : {
-                "desc" : "用于获取您附近的门店列表"
-            }
-        },
-        "optimization" : {
-            "subPackages" : true
+        "ios": {
+          "appstore": "unpackage/res/icons/1024x1024.png",
+          "ipad": {
+            "app": "unpackage/res/icons/76x76.png",
+            "app@2x": "unpackage/res/icons/152x152.png",
+            "notification": "unpackage/res/icons/20x20.png",
+            "notification@2x": "unpackage/res/icons/40x40.png",
+            "proapp@2x": "unpackage/res/icons/167x167.png",
+            "settings": "unpackage/res/icons/29x29.png",
+            "settings@2x": "unpackage/res/icons/58x58.png",
+            "spotlight": "unpackage/res/icons/40x40.png",
+            "spotlight@2x": "unpackage/res/icons/80x80.png"
+          },
+          "iphone": {
+            "app@2x": "unpackage/res/icons/120x120.png",
+            "app@3x": "unpackage/res/icons/180x180.png",
+            "notification@2x": "unpackage/res/icons/40x40.png",
+            "notification@3x": "unpackage/res/icons/60x60.png",
+            "settings@2x": "unpackage/res/icons/58x58.png",
+            "settings@3x": "unpackage/res/icons/87x87.png",
+            "spotlight@2x": "unpackage/res/icons/80x80.png",
+            "spotlight@3x": "unpackage/res/icons/120x120.png"
+          }
         }
+      }
     },
-    "h5" : {
-        "title" : "核心商城系统",
-        "domain" : "https://h5.demo.coreshop.com.cn/",
-        "router" : {
-            "base" : "./",
-            "mode" : "hash"
-        },
-        "template" : "index.html",
-        "devServer" : {
-            "port" : 80,
-            "disableHostCheck" : true,
-            "https" : true
-        },
-        "sdkConfigs" : {
-            "maps" : {
-                "qqmap" : {
-                    "key" : "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
-                }
-            }
-        },
-        "optimization" : {
-            "treeShaking" : {
-                "enable" : false
-            }
+    "splashscreen": {
+      "waiting": true
+    }
+  },
+  /* SDK配置 */
+  "quickapp": {},
+  /* 快应用特有相关 */
+  "mp-weixin": {
+    "appid": "wx6fc139d4de0b470f",
+    "setting": {
+      "urlCheck": true,
+      "postcss": true,
+      "minified": true,
+      "es6": true,
+      "checkSiteMap": false
+    },
+    "permission": {
+      "scope.userFuzzyLocation": {
+        "desc": "你的位置信息将用于小程序定位"
+      }
+    },
+    "optimization": {
+      "subPackages": true
+    },
+    "requiredPrivateInfos": [ "getFuzzyLocation" ]
+  },
+  "h5": {
+    "title": "核心商城系统",
+    "domain": "https://h5.demo.coreshop.com.cn/",
+    "router": {
+      "base": "./",
+      "mode": "hash"
+    },
+    "template": "index.html",
+    "devServer": {
+      "port": 80,
+      "disableHostCheck": true,
+      "https": true
+    },
+    "sdkConfigs": {
+      "maps": {
+        "qqmap": {
+          "key": "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
         }
+      }
     },
-    "mp-toutiao" : {
-        "setting" : {
-            "es6" : true,
-            "postcss" : true,
-            "minified" : true
-        },
-        "appid" : ""
+    "optimization": {
+      "treeShaking": {
+        "enable": false
+      }
+    }
+  },
+  "mp-toutiao": {
+    "setting": {
+      "es6": true,
+      "postcss": true,
+      "minified": true
     },
-    "mp-qq" : {
-        "setting" : {
-            "es6" : true,
-            "postcss" : true,
-            "minified" : true
-        },
-        "optimization" : {
-            "subPackages" : true
-        }
+    "appid": ""
+  },
+  "mp-qq": {
+    "setting": {
+      "es6": true,
+      "postcss": true,
+      "minified": true
     },
-    "mp-alipay" : {},
-    "mp-baidu" : {}
+    "optimization": {
+      "subPackages": true
+    }
+  },
+  "mp-alipay": {},
+  "mp-baidu": {}
 }

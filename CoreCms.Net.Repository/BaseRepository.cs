@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
  *            Project: CoreCms
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
@@ -42,9 +42,10 @@ namespace CoreCms.Net.Repository
         /// <returns>泛型实体</returns>
         public T QueryById(object pkValue, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().With(SqlWith.NoLock).InSingle(pkValue)
-                : DbBaseClient.Queryable<T>().InSingle(pkValue);
+            return DbBaseClient
+                .Queryable<T>()
+                .WithNoLockOrNot(blUseNoLock)
+                .InSingle(pkValue);
         }
 
         /// <summary>
@@ -55,9 +56,11 @@ namespace CoreCms.Net.Repository
         /// <returns>数据实体</returns>
         public async Task<T> QueryByIdAsync(object objId, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().In(objId).With(SqlWith.NoLock).SingleAsync()
-                : await DbBaseClient.Queryable<T>().In(objId).SingleAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .In(objId)
+                .WithNoLockOrNot(blUseNoLock)
+                .SingleAsync();
         }
 
         /// <summary>
@@ -68,9 +71,11 @@ namespace CoreCms.Net.Repository
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         public List<T> QueryByIDs(object[] lstIds, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().In(lstIds).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().In(lstIds).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .In(lstIds)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -81,9 +86,11 @@ namespace CoreCms.Net.Repository
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         public async Task<List<T>> QueryByIDsAsync(object[] lstIds, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().In(lstIds).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().In(lstIds).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .In(lstIds)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -94,9 +101,11 @@ namespace CoreCms.Net.Repository
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         public List<T> QueryByIDs(int[] lstIds, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().In(lstIds).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().In(lstIds).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .In(lstIds)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -107,9 +116,11 @@ namespace CoreCms.Net.Repository
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         public async Task<List<T>> QueryByIDsAsync(int[] lstIds, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().In(lstIds).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().In(lstIds).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .In(lstIds)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -119,9 +130,10 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public List<T> Query(bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -131,9 +143,10 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<List<T>> QueryAsync(bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -145,11 +158,12 @@ namespace CoreCms.Net.Repository
         /// <returns>泛型实体集合</returns>
         public List<T> QueryListByClause(string strWhere, string orderBy = "", bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -162,11 +176,12 @@ namespace CoreCms.Net.Repository
         public async Task<List<T>> QueryListByClauseAsync(string strWhere, string orderBy = "",
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                .WhereIF(!string.IsNullOrEmpty(strWhere), strWhere)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -179,11 +194,12 @@ namespace CoreCms.Net.Repository
         public List<T> QueryListByClause(Expression<Func<T, bool>> predicate, string orderBy = "",
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                .WhereIF(predicate != null, predicate)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -196,11 +212,12 @@ namespace CoreCms.Net.Repository
         public async Task<List<T>> QueryListByClauseAsync(Expression<Func<T, bool>> predicate, string orderBy = "",
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                .WhereIF(predicate != null, predicate)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -214,11 +231,12 @@ namespace CoreCms.Net.Repository
         public List<T> QueryListByClause(Expression<Func<T, bool>> predicate,
             Expression<Func<T, object>> orderByPredicate, OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
+                .WhereIF(predicate != null, predicate)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -232,11 +250,12 @@ namespace CoreCms.Net.Repository
         public async Task<List<T>> QueryListByClauseAsync(Expression<Func<T, bool>> predicate,
             Expression<Func<T, object>> orderByPredicate, OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
+                .WhereIF(predicate != null, predicate)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -251,11 +270,13 @@ namespace CoreCms.Net.Repository
         public List<T> QueryListByClause(Expression<Func<T, bool>> predicate, int take,
             Expression<Func<T, object>> orderByPredicate, OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).Take(take).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).Take(take).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
+                .WhereIF(predicate != null, predicate)
+                .Take(take)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -270,11 +291,13 @@ namespace CoreCms.Net.Repository
         public async Task<List<T>> QueryListByClauseAsync(Expression<Func<T, bool>> predicate, int take,
             Expression<Func<T, object>> orderByPredicate, OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).Take(take).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
-                    .WhereIF(predicate != null, predicate).Take(take).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(orderByPredicate != null, orderByPredicate, orderByType)
+                .WhereIF(predicate != null, predicate)
+                .Take(take)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -288,11 +311,13 @@ namespace CoreCms.Net.Repository
         public List<T> QueryListByClause(Expression<Func<T, bool>> predicate, int take, string strOrderByFileds = "",
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
-                    .Where(predicate).Take(take).With(SqlWith.NoLock).ToList()
-                : DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
-                    .Where(predicate).Take(take).ToList();
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
+                .Where(predicate)
+                .Take(take)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -306,11 +331,13 @@ namespace CoreCms.Net.Repository
         public async Task<List<T>> QueryListByClauseAsync(Expression<Func<T, bool>> predicate, int take,
             string strOrderByFileds = "", bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
-                    .Where(predicate).Take(take).With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
-                    .Where(predicate).Take(take).ToListAsync();
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
+                .Where(predicate)
+                .Take(take)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -321,9 +348,10 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public T QueryByClause(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().With(SqlWith.NoLock).First(predicate)
-                : DbBaseClient.Queryable<T>().First(predicate);
+            return DbBaseClient
+                .Queryable<T>()
+                .WithNoLockOrNot(blUseNoLock)
+                .First(predicate);
         }
 
         /// <summary>
@@ -354,9 +382,11 @@ namespace CoreCms.Net.Repository
         public T QueryByClause(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate,
             OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderBy(orderByPredicate, orderByType).With(SqlWith.NoLock).First(predicate)
-                : DbBaseClient.Queryable<T>().OrderBy(orderByPredicate, orderByType).First(predicate);
+            return DbBaseClient
+                .Queryable<T>()
+                .OrderBy(orderByPredicate, orderByType)
+                .WithNoLockOrNot(blUseNoLock)
+                .First(predicate);
         }
 
         /// <summary>
@@ -370,10 +400,11 @@ namespace CoreCms.Net.Repository
         public async Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate,
             Expression<Func<T, object>> orderByPredicate, OrderByType orderByType, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderBy(orderByPredicate, orderByType).With(SqlWith.NoLock)
-                    .FirstAsync(predicate)
-                : await DbBaseClient.Queryable<T>().OrderBy(orderByPredicate, orderByType).FirstAsync(predicate);
+            return await DbBaseClient
+                .Queryable<T>()
+                .OrderBy(orderByPredicate, orderByType)
+                .WithNoLockOrNot(blUseNoLock)
+                .FirstAsync(predicate);
         }
 
         /// <summary>
@@ -383,7 +414,9 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public int Insert(T entity)
         {
-            return DbBaseClient.Insertable(entity).ExecuteReturnIdentity();
+            return DbBaseClient
+                .Insertable(entity)
+                .ExecuteReturnIdentity();
         }
 
         /// <summary>
@@ -393,7 +426,9 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<int> InsertAsync(T entity)
         {
-            return await DbBaseClient.Insertable(entity).ExecuteReturnIdentityAsync();
+            return await DbBaseClient
+                .Insertable(entity)
+                .ExecuteReturnIdentityAsync();
         }
 
         /// <summary>
@@ -879,9 +914,7 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public bool Exists(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).Any()
-                : DbBaseClient.Queryable<T>().Where(predicate).Any();
+            return DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).Any();
         }
 
         /// <summary>
@@ -892,9 +925,7 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).AnyAsync()
-                : await DbBaseClient.Queryable<T>().Where(predicate).AnyAsync();
+            return await DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).AnyAsync();
         }
 
         /// <summary>
@@ -905,9 +936,7 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public int GetCount(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().With(SqlWith.NoLock).Count(predicate)
-                : DbBaseClient.Queryable<T>().Count(predicate);
+            return DbBaseClient.Queryable<T>().WithNoLockOrNot(blUseNoLock).Count(predicate);
         }
 
         /// <summary>
@@ -918,9 +947,7 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public async Task<int> GetCountAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().With(SqlWith.NoLock).CountAsync(predicate)
-                : await DbBaseClient.Queryable<T>().CountAsync(predicate);
+            return await DbBaseClient.Queryable<T>().WithNoLockOrNot(blUseNoLock).CountAsync(predicate);
         }
 
         /// <summary>
@@ -932,9 +959,7 @@ namespace CoreCms.Net.Repository
         /// <returns></returns>
         public int GetSum(Expression<Func<T, bool>> predicate, Expression<Func<T, int>> field, bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).Sum(field)
-                : DbBaseClient.Queryable<T>().Where(predicate).Sum(field);
+            return DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).Sum(field);
         }
 
         /// <summary>
@@ -947,9 +972,7 @@ namespace CoreCms.Net.Repository
         public async Task<int> GetSumAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, int>> field,
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).SumAsync(field)
-                : await DbBaseClient.Queryable<T>().Where(predicate).SumAsync(field);
+            return await DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).SumAsync(field);
         }
 
         /// <summary>
@@ -962,9 +985,7 @@ namespace CoreCms.Net.Repository
         public decimal GetSum(Expression<Func<T, bool>> predicate, Expression<Func<T, decimal>> field,
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).Sum(field)
-                : DbBaseClient.Queryable<T>().Where(predicate).Sum(field);
+            return DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).Sum(field);
         }
 
         /// <summary>
@@ -977,9 +998,7 @@ namespace CoreCms.Net.Repository
         public async Task<decimal> GetSumAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, decimal>> field,
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).SumAsync(field)
-                : await DbBaseClient.Queryable<T>().Where(predicate).SumAsync(field);
+            return await DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).SumAsync(field);
         }
 
         /// <summary>
@@ -992,9 +1011,7 @@ namespace CoreCms.Net.Repository
         public float GetSum(Expression<Func<T, bool>> predicate, Expression<Func<T, float>> field,
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).Sum(field)
-                : DbBaseClient.Queryable<T>().Where(predicate).Sum(field);
+            return DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).Sum(field);
         }
 
         /// <summary>
@@ -1007,9 +1024,7 @@ namespace CoreCms.Net.Repository
         public async Task<float> GetSumAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, float>> field,
             bool blUseNoLock = false)
         {
-            return blUseNoLock
-                ? await DbBaseClient.Queryable<T>().Where(predicate).With(SqlWith.NoLock).SumAsync(field)
-                : await DbBaseClient.Queryable<T>().Where(predicate).SumAsync(field);
+            return await DbBaseClient.Queryable<T>().Where(predicate).WithNoLockOrNot(blUseNoLock).SumAsync(field);
         }
 
         /// <summary>
@@ -1025,12 +1040,12 @@ namespace CoreCms.Net.Repository
             int pageSize = 20, bool blUseNoLock = false)
         {
             var totalCount = 0;
-            var page = blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
-                    .ToPageList(pageIndex, pageSize, ref totalCount)
-                : DbClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).ToPageList(pageIndex, pageSize, ref totalCount);
+            var page = DbBaseClient
+                        .Queryable<T>()
+                        .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                        .WhereIF(predicate != null, predicate)
+                        .WithNoLockOrNot(blUseNoLock)
+                        .ToPageList(pageIndex, pageSize, ref totalCount);
 
             var list = new PageList<T>(page, pageIndex, pageSize, totalCount);
             return list;
@@ -1049,12 +1064,12 @@ namespace CoreCms.Net.Repository
             int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
         {
             RefAsync<int> totalCount = 0;
-            var page = blUseNoLock
-                ? await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
-                    .ToPageListAsync(pageIndex, pageSize, totalCount)
-                : await DbBaseClient.Queryable<T>().OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
-                    .WhereIF(predicate != null, predicate).ToPageListAsync(pageIndex, pageSize, totalCount);
+            var page = await DbBaseClient
+                        .Queryable<T>()
+                        .OrderByIF(!string.IsNullOrEmpty(orderBy), orderBy)
+                        .WhereIF(predicate != null, predicate)
+                        .WithNoLockOrNot(blUseNoLock)
+                        .ToPageListAsync(pageIndex, pageSize, totalCount);
             var list = new PageList<T>(page, pageIndex, pageSize, totalCount);
             return list;
         }
@@ -1074,12 +1089,13 @@ namespace CoreCms.Net.Repository
             int pageSize = 20, bool blUseNoLock = false)
         {
             var totalCount = 0;
-            var page = blUseNoLock
-                ? DbBaseClient.Queryable<T>().OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .WhereIF(predicate != null, predicate).With(SqlWith.NoLock)
-                    .ToPageList(pageIndex, pageSize, ref totalCount)
-                : DbBaseClient.Queryable<T>().OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .WhereIF(predicate != null, predicate).ToPageList(pageIndex, pageSize, ref totalCount);
+            var page = DbBaseClient
+                        .Queryable<T>()
+                        .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
+                        .WhereIF(predicate != null, predicate)
+                        .WithNoLockOrNot(blUseNoLock)
+                        .ToPageList(pageIndex, pageSize, ref totalCount);
+
             var list = new PageList<T>(page, pageIndex, pageSize, totalCount);
             return list;
         }
@@ -1099,11 +1115,13 @@ namespace CoreCms.Net.Repository
             int pageSize = 20, bool blUseNoLock = false)
         {
             RefAsync<int> totalCount = 0;
-            var page = blUseNoLock
-                ? await DbBaseClient.Queryable<T>().WhereIF(predicate != null, predicate).OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .With(SqlWith.NoLock).ToPageListAsync(pageIndex, pageSize, totalCount)
-                : await DbBaseClient.Queryable<T>().WhereIF(predicate != null, predicate).OrderByIF(orderByExpression != null, orderByExpression, orderByType)
-                    .ToPageListAsync(pageIndex, pageSize, totalCount);
+            var page = await DbBaseClient
+                        .Queryable<T>()
+                        .WhereIF(predicate != null, predicate)
+                        .OrderByIF(orderByExpression != null, orderByExpression, orderByType)
+                        .WithNoLockOrNot(blUseNoLock)
+                        .ToPageListAsync(pageIndex, pageSize, totalCount);
+
             var list = new PageList<T>(page, pageIndex, pageSize, totalCount);
             return list;
         }
@@ -1125,14 +1143,12 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock).ToList()
-                    : DbBaseClient.Queryable(joinExpression).Select(selectExpression).ToList();
-            return blUseNoLock
-                ? DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).With(SqlWith.NoLock)
-                    .ToList()
-                : DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).ToList();
+            return DbBaseClient
+                .Queryable(joinExpression)
+                .WhereIF(whereLambda is not null, whereLambda)
+                .Select(selectExpression)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -1152,15 +1168,12 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? await DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock)
-                        .ToListAsync()
-                    : await DbBaseClient.Queryable(joinExpression).Select(selectExpression).ToListAsync();
-            return blUseNoLock
-                ? await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression)
-                    .With(SqlWith.NoLock).ToListAsync()
-                : await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).ToListAsync();
+            return await DbBaseClient
+                .Queryable(joinExpression)
+                .WhereIF(whereLambda is not null, whereLambda)
+                .Select(selectExpression)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -1180,14 +1193,12 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock).First()
-                    : DbBaseClient.Queryable(joinExpression).Select(selectExpression).First();
-            return blUseNoLock
-                ? DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).With(SqlWith.NoLock)
-                    .First()
-                : DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).First();
+            return DbBaseClient
+                .Queryable(joinExpression)
+				.WhereIF(whereLambda is not null, whereLambda)
+				.Select(selectExpression)
+                .WithNoLockOrNot(blUseNoLock)
+                .First();
         }
 
         /// <summary>
@@ -1207,15 +1218,11 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? await DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock)
-                        .FirstAsync()
-                    : await DbBaseClient.Queryable(joinExpression).Select(selectExpression).FirstAsync();
-            return blUseNoLock
-                ? await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression)
-                    .With(SqlWith.NoLock).FirstAsync()
-                : await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).FirstAsync();
+            return await DbBaseClient
+                .Queryable(joinExpression)
+				.WhereIF(whereLambda is not null, whereLambda)
+				.Select(selectExpression).WithNoLockOrNot(blUseNoLock)
+                .FirstAsync();
         }
 
         /// <summary>
@@ -1236,16 +1243,12 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, T3, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock)
-                        .ToList()
-                    : DbBaseClient.Queryable(joinExpression).Select(selectExpression).ToList();
-            return blUseNoLock
-                ? DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).With(SqlWith.NoLock)
-                    .ToList()
-                : DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression)
-                    .ToList();
+            return DbBaseClient
+                .Queryable(joinExpression)
+				.WhereIF(whereLambda is not null, whereLambda)
+				.Select(selectExpression)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToList();
         }
 
         /// <summary>
@@ -1266,17 +1269,12 @@ namespace CoreCms.Net.Repository
             Expression<Func<T1, T2, T3, bool>> whereLambda = null,
             bool blUseNoLock = false) where T1 : class, new()
         {
-            if (whereLambda == null)
-                return blUseNoLock
-                    ? await DbBaseClient.Queryable(joinExpression).Select(selectExpression).With(SqlWith.NoLock)
-                        .ToListAsync()
-                    : await DbBaseClient.Queryable(joinExpression).Select(selectExpression).ToListAsync();
-            return blUseNoLock
-                ? await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression)
-                    .With(SqlWith.NoLock)
-                    .ToListAsync()
-                : await DbBaseClient.Queryable(joinExpression).Where(whereLambda).Select(selectExpression)
-                    .ToListAsync();
+            return await DbBaseClient
+                .Queryable(joinExpression)
+				.WhereIF(whereLambda is not null, whereLambda)
+				.Select(selectExpression)
+                .WithNoLockOrNot(blUseNoLock)
+                .ToListAsync();
         }
 
         /// <summary>

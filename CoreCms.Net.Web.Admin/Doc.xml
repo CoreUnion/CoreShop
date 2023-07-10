@@ -554,7 +554,7 @@
                 后端常用方法
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory,CoreCms.Net.IServices.ICoreCmsPagesServices,CoreCms.Net.IServices.IToolsServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.ToolsController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsArticleServices,CoreCms.Net.IServices.ICoreCmsFormServices,CoreCms.Net.IServices.ICoreCmsArticleTypeServices,CoreCms.Net.IServices.ICoreCmsNoticeServices,CoreCms.Net.IServices.ICoreCmsPinTuanRuleServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IServices.ICoreCmsAreaServices,CoreCms.Net.IServices.ISysUserServices,CoreCms.Net.IServices.ISysRoleServices,CoreCms.Net.IServices.ISysMenuServices,CoreCms.Net.IServices.ISysUserRoleServices,CoreCms.Net.IServices.ISysOrganizationServices,CoreCms.Net.IServices.ICodeGeneratorServices,CoreCms.Net.IServices.ICoreCmsLogisticsServices,CoreCms.Net.IServices.ISysLoginRecordServices,CoreCms.Net.IServices.ISysNLogRecordsServices,CoreCms.Net.IServices.ICoreCmsBillPaymentsServices,CoreCms.Net.IServices.ICoreCmsBillDeliveryServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsOrderServices,CoreCms.Net.IServices.ICoreCmsBillAftersalesServices,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsServicesServices,Microsoft.Extensions.Options.IOptions{CoreCms.Net.Model.ViewModels.Options.FilesStorageOptions},CoreCms.Net.IServices.ISysRoleMenuServices,CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory,CoreCms.Net.IServices.ICoreCmsPagesServices,CoreCms.Net.IServices.IToolsServices,CoreCms.Net.IServices.ICoreCmsReportsServices)">
             <summary>
                 构造函数
             </summary>
@@ -2924,7 +2924,7 @@
              服务购买表
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsUserServicesOrderServices,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices)">
              <summary>
              构造函数
             </summary>
@@ -2941,43 +2941,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.GetCreate">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoCancellation(CoreCms.Net.Model.FromBody.FMIntId)">
             <summary>
-            创建数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoCreate(CoreCms.Net.Model.Entities.CoreCmsUserServicesOrder)">
-            <summary>
-            创建提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.GetEdit(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            编辑数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoEdit(CoreCms.Net.Model.Entities.CoreCmsUserServicesOrder)">
-            <summary>
-            编辑提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            单选删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoBatchDelete(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            批量删除
+            作废订单
             </summary>
             <param name="entity"></param>
             <returns></returns>
@@ -3009,176 +2975,36 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController">
-             <summary>
-             服务消费券
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsUserServicesTicketServices)">
-             <summary>
-             构造函数
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.GetPageList">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.GetTicketPageList(System.String)">
             <summary>
-            获取列表
+            获取核销码列表
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.GetIndex">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoCancellationTicket(CoreCms.Net.Model.FromBody.FMIntId)">
             <summary>
-            首页数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.GetCreate">
-            <summary>
-            创建数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.DoCreate(CoreCms.Net.Model.Entities.CoreCmsUserServicesTicket)">
-            <summary>
-            创建提交
+            作废核销码记录
             </summary>
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.GetEdit(CoreCms.Net.Model.FromBody.FMIntId)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.DoSetisVerification(CoreCms.Net.Model.FromBody.FMUpdateBoolDataByIntId)">
             <summary>
-            编辑数据
+            设置核销码是否核销
             </summary>
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.DoEdit(CoreCms.Net.Model.Entities.CoreCmsUserServicesTicket)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.SelectTicketExportExcel(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
             <summary>
-            编辑提交
+            选择核销码导出
             </summary>
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
+        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesOrderController.QueryTicketExportExcel">
             <summary>
-            单选删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.DoBatchDelete(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            批量删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            预览数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.SelectExportExcel(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            选择导出
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.QueryExportExcel">
-            <summary>
-            查询导出
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketController.DoSetisVerification(CoreCms.Net.Model.FromBody.FMUpdateBoolDataByIntId)">
-            <summary>
-            设置是否核销
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController">
-             <summary>
-             服务券核验日志
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,CoreCms.Net.IServices.ICoreCmsUserServicesTicketVerificationLogServices)">
-             <summary>
-             构造函数
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.GetPageList">
-            <summary>
-            获取列表
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.GetIndex">
-            <summary>
-            首页数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.GetCreate">
-            <summary>
-            创建数据
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.DoCreate(CoreCms.Net.Model.Entities.CoreCmsUserServicesTicketVerificationLog)">
-            <summary>
-            创建提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.GetEdit(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            编辑数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.DoEdit(CoreCms.Net.Model.Entities.CoreCmsUserServicesTicketVerificationLog)">
-            <summary>
-            编辑提交
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.DoDelete(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            单选删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.DoBatchDelete(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            批量删除
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.GetDetails(CoreCms.Net.Model.FromBody.FMIntId)">
-            <summary>
-            预览数据
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.SelectExportExcel(CoreCms.Net.Model.FromBody.FMArrayIntIds)">
-            <summary>
-            选择导出
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Controllers.CoreCmsUserServicesTicketVerificationLogController.QueryExportExcel">
-            <summary>
-            查询导出
+            查询核销码导出
             </summary>
             <returns></returns>
         </member>
@@ -5120,63 +4946,6 @@
             </summary>
             <param name="entity"></param>
             <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.Admin.Program">
-            <summary>
-            初始化
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Program.Main(System.String[])">
-            <summary>
-            启动配置
-            </summary>
-            <param name="args"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Program.CreateHostBuilder(System.String[])">
-            <summary>
-            创建启动支撑
-            </summary>
-            <param name="args"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.Admin.Startup">
-            <summary>
-                启动配置
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-                构造函数
-            </summary>
-            <param name="configuration"></param>
-            <param name="env"></param>
-        </member>
-        <member name="P:CoreCms.Net.Web.Admin.Startup.Configuration">
-            <summary>
-            </summary>
-        </member>
-        <member name="P:CoreCms.Net.Web.Admin.Startup.Env">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                This method gets called by the runtime. Use this method to add services to the container.
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
-            <summary>
-                Autofac规则配置
-            </summary>
-            <param name="builder"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.Admin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-                This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            </summary>
-            <param name="app"></param>
-            <param name="env"></param>
         </member>
     </members>
 </doc>

@@ -67,35 +67,20 @@ namespace CoreCms.Net.Web.Admin.Controllers
         public async Task<AdminUiCallBack> GetPageList()
         {
             var jm = new AdminUiCallBack();
-            var where = PredicateBuilder.True<SysMenu>();
-            where = where.And(p => p.deleted == false);
-            //查询筛选
-
-            ////菜单名称 nvarchar
-            //var menuName = Request.Form["menuName"].FirstOrDefault();
-            //if (!string.IsNullOrEmpty(menuName))
-            //{
-            //    where = where.And(p => p.menuName.Contains(menuName));
-            //}
-
-            ////菜单组件地址 nvarchar
-            //var component = Request.Form["component"].FirstOrDefault();
-            //if (!string.IsNullOrEmpty(component))
-            //{
-            //    where = where.And(p => p.component.Contains(component));
-            //}
-
-            ////权限标识 nvarchar
-            //var authority = Request.Form["authority"].FirstOrDefault();
-            //if (!string.IsNullOrEmpty(authority))
-            //{
-            //    where = where.And(p => p.authority.Contains(authority));
-            //}
 
             //获取数据
-            var list = await _sysMenuServices.QueryListByClauseAsync(where, p => p.sortNumber, OrderByType.Asc);
+            var list = await _sysMenuServices.QueryListByClauseAsync(p => p.deleted == false, p => p.sortNumber, OrderByType.Asc);
+
+            var type = Request.Form["type"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(type) && type == "layui")
+            {
+                jm.data = SysMenuHelper.GetTree(list, false).data;
+            }
+            else
+            {
+                jm.data = list;
+            }
             //返回数据
-            jm.data = list;
             jm.code = 0;
             jm.count = list.Count;
             jm.msg = "数据调用成功!";

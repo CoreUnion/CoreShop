@@ -1,21 +1,26 @@
 <div class="layui-layout layui-layout-admin coreshop-admin">
   <div class="layui-header">
     <!-- 头部区域 -->
-    <ul class="layui-nav layui-layout-left">
-      <li class="layui-nav-item layadmin-flexible" lay-unselect>
-        <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
-          <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
-        </a>
-      </li>
-        <li class="layui-nav-item" lay-unselect>
-        <a href="javascript:;" layadmin-event="refresh" title="刷新">
-          <i class="layui-icon layui-icon-refresh-3"></i>
-        </a>
-      </li>
-      <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
-        <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords=">
-      </li>-->
-    </ul>
+      <ul class="layui-nav layui-layout-left">
+          <li class="layui-nav-item layadmin-flexible" lay-unselect>
+              <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                  <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+              </a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs" lay-unselect>
+              <a href="https://www.coreshop.cn/" target="_blank" title="前台">
+                  <i class="layui-icon layui-icon-home"></i>
+              </a>
+          </li>
+          <li class="layui-nav-item" lay-unselect>
+              <a href="javascript:;" layadmin-event="refresh" title="刷新">
+                  <i class="layui-icon layui-icon-refresh-3"></i>
+              </a>
+          </li>
+          <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
+      <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords=">
+    </li>-->
+      </ul>
     <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
         <li class="layui-nav-item layui-hide-xs" lay-unselect>
             <a href="javascript:;" layadmin-event="theme">
@@ -59,7 +64,7 @@
 
           <div class="layui-logo" lay-href="">
               <!--<span>{{ layui.setter.name || '核心商城系统' }}</span>-->
-                <img src="../static/images/common/coreshop.png" class="longLogo" />
+              <img src="../static/images/common/coreshop.png" style="height: 50px;width: 220px;" />
         </div>
 
         <ul class="layui-nav layui-nav-tree coreshop-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -81,7 +86,7 @@
             ,url = (item.jump && typeof item.jump === 'string') ? item.jump : item.name;
         }}
           <li data-name="{{ item.name || '' }}" data-jump="{{ item.jump || '' }}" class="layui-nav-item {{ classSelected() }}">
-            <a href="javascript:;" {{ hasChildren ? '' : 'lay-href="'+ url +'"' }} lay-tips="{{ item.title }}" lay-direction="2">
+            <a href="javascript:;" {{ hasChildren ? '' : 'lay-href="'+ url+'"' }} lay-tips="{{ item.title }}" lay-direction="2">
               <i class="layui-icon {{ item.icon }}"></i>
               <cite>{{ item.title }}</cite>
             </a>
@@ -102,8 +107,8 @@
                 : [item.name, item2.name, ''].join('/');
               }}
                 <dd  data-name="{{ item2.name || '' }}"  data-jump="{{ item2.jump || '' }}" 
-                {{ classSelected2() ? ('class="'+ classSelected2() +'"') : '' }}>
-                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href="'+ url2 +'"' }}>{{ item2.title }}</a>
+                {{ classSelected2() ? ('class='+ classSelected2()) : '' }}>
+                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href='+ url2+' ' }}>{{ item2.title }}</a>
                   {{# if(hasChildren2){ }}
                     <dl class="layui-nav-child">
                       {{# layui.each(item2.list, function(index3, item3){ 

@@ -122,9 +122,9 @@
                         {
                             field: 'id', title: '', width: 50, templet: function (data) {
                                 if (data.atPresentReshipNums > 0) {
-                                    return '<input name="idIsCheck[' + data.LAY_TABLE_INDEX + ']" lay-skin="primary" checked="" title="" type="checkbox" value="1">';
+                                    return '<input name="idIsCheck[' + data.LAY_INDEX + ']" lay-skin="primary" checked="" title="" type="checkbox" value="1">';
                                 } else {
-                                    return '<input name="idIsCheck[' + data.LAY_TABLE_INDEX + ']" lay-skin="primary" title="" type="checkbox" value="1">';
+                                    return '<input name="idIsCheck[' + data.LAY_INDEX + ']" lay-skin="primary" title="" type="checkbox" value="1">';
                                 }
                             }
                         },
@@ -142,7 +142,7 @@
                         },
                         {
                             field: 'atPresentReshipNums', title: '退货数量', width: 80, templet: function (data) {
-                                return '<input name="nums[' + data.LAY_TABLE_INDEX + ']" style="width:50px;" value="' + data.atPresentReshipNums + '"  type="text"><input name="id[' + data.LAY_TABLE_INDEX + ']" type="hidden" value="' + data.id + '">';
+                                return '<input name="nums[' + data.LAY_INDEX + ']" style="width:50px;" value="' + data.atPresentReshipNums + '"  type="text"><input name="id[' + data.LAY_INDEX + ']" type="hidden" value="' + data.id + '">';
                             }
                         }
                     ]],

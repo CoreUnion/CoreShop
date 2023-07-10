@@ -1,5 +1,13 @@
 <style>
-    .layui-table td, .layui-table th { position: relative; padding: 9px 15px; min-height: 20px; line-height: 20px; font-size: 12px; word-wrap: break-word; word-break: break-all; }
+    .layui-table td, .layui-table th {
+        position: relative;
+        padding: 9px 15px;
+        min-height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
 </style>
 
 <script type="text/html" template lay-done="layui.data.done(d);">
@@ -88,8 +96,7 @@
                     <label for="status">状态</label>
                 </td>
                 <td>
-                    {{ d.params.data.refundStatus || '' }}
-                </td>
+                    {{-d.params.data.refundStatus}}
             </tr>
 
             <tr>

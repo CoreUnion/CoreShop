@@ -11,7 +11,11 @@
     /* 重写样式 */
 </style>
 <script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsGoodsCategory/GetIndex" lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-search-form">
+
+</script>
+
+<script type="text/html" id="LAY-app-CoreCmsGoodsCategory-tableBox-toolbar">
+    <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <button class="layui-btn layui-btn-sm layuiadmin-btn-admin" data-type="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
@@ -19,6 +23,8 @@
         </div>
     </div>
 </script>
+
+
 <div class="table-body">
     <table id="LAY-app-CoreCmsGoodsCategory-tableBox" lay-filter="LAY-app-CoreCmsGoodsCategory-tableBox"></table>
 </div>
@@ -54,43 +60,57 @@
 
                 // 渲染表格
                 var insTb = treeTable.render({
+                    id: 'treeTableBox',
                     elem: '#LAY-app-CoreCmsGoodsCategory-tableBox',
+                    url: layui.setter.apiUrl + 'Api/CoreCmsGoodsCategory/GetPageList',
+                    where: { type: 'layui' },
+                    method: 'POST',
                     tree: {
-                        iconIndex: 1,
-                        idName: 'id',  // id的字段名
-                        pidName: 'parentId',  // pid的字段名
-                        openName: 'name',
-                        isPidData: true
-                    },
-                    height: 'full-230',//无面包屑127,搜索框189,1行62
-                    cols: [
-                        { field: 'id', title: '序列', width: 60, sort: false },
-                        { field: 'name', title: '名称', sort: false },
-                        { field: 'sort', title: '排序', sort: false, width: 105 },
-                        {
-                            field: 'imageUrl', title: '图片', width: 80, sort: false,
-                            templet: function (d) {
-                                if (d.imageUrl) {
-                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.imageUrl + '")><image style="max-width:28px;max-height:28px;" src="' + d.imageUrl + '" /></a>';
-                                } else {
-                                    return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
-                                }
-                            }
+                        customName: {
+                            id: 'id',
+                            pid: 'parentId',
+                            name: 'title',
                         },
-                        { field: 'isShow', title: '是否显示', width: 105, templet: '#switch_isShow', sort: false, unresize: true },
-                        { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoodsCategory-tableBox-bar' }
-                    ],
-                    reqData: function (data, callback) {
-                        coreHelper.Post('Api/CoreCmsGoodsCategory/GetPageList', null, function (res) {
-                            if (res.code === 0) {
-                                callback(res.data);
-                            } else {
-                                layer.msg(res.msg, { icon: 5, time: 2000 });
-                            }
-                        })
+                        view: {
+                            showIcon: false,
+                            indent: 25
+                        },
+                        data: {
+                            //isSimpleData: true,
+                        },
+                        callback: {}
                     },
-                    style: 'margin-top:0;'
+                    height: 'full-127',//无面包屑127,搜索框189,1行62
+                    toolbar: '#LAY-app-CoreCmsGoodsCategory-tableBox-toolbar',
+                    cols: [
+                        [
+                            { field: 'id', title: '序列', width: 60, sort: false },
+                            { field: 'title', title: '名称', sort: false },
+                            {
+                                field: 'sort', title: '排序', sort: false, width: 105, templet: function (d) {
+                                    return d.otherData.sort
+                                }
+                            },
+                            {
+                                field: 'imageUrl', title: '图片', width: 80, sort: false,
+                                templet: function (d) {
+                                    if (d.otherData.imageUrl) {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + d.otherData.imageUrl + '")><image style="max-width:28px;max-height:28px;" src="' + d.otherData.imageUrl + '" /></a>';
+                                    } else {
+                                        return '<a href="javascript:void(0);" onclick=layui.coreHelper.viewImage("' + setter.noImagePicUrl + '")><image style="max-width:30px;max-height:30px;" src="' + setter.noImagePicUrl + '" /></a>';
+                                    }
+                                }
+                            },
+                            { field: 'isShow', title: '是否显示', width: 105, templet: '#switch_isShow', sort: false, unresize: true },
+                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsGoodsCategory-tableBox-bar' }
+                        ]
+                    ],
+                    done: function (res, curr, count) {
+                        treeTable.expandAll('treeTableBox', true);
+                    },
+                    page: false
                 });
+
                 //监听工具条
                 treeTable.on('tool(LAY-app-CoreCmsGoodsCategory-tableBox)',
                     function (obj) {
@@ -112,7 +132,8 @@
                     addData: function () {
                         coreHelper.Post("Api/CoreCmsGoodsCategory/GetCreate", null, function (e) {
                             if (e.code === 0) {
-                                admin.popup({ shadeClose: false,
+                                admin.popup({
+                                    shadeClose: false,
                                     title: '创建数据',
                                     area: ['600px', '540px'],
                                     id: 'LAY-popup-CoreCmsGoodsCategory-create',
@@ -129,7 +150,7 @@
                                                     coreHelper.Post("Api/CoreCmsGoodsCategory/DoCreate", field, function (e) {
                                                         console.log(e)
                                                         if (e.code === 0) {
-                                                            insTb.refresh(); //刷新表格
+                                                            insTb.reloadData(); //刷新表格
                                                             layer.close(index); //再执行关闭
                                                             layer.msg(e.msg);
                                                         } else {
@@ -155,7 +176,8 @@
                 function doEdit(obj) {
                     coreHelper.Post("Api/CoreCmsGoodsCategory/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
-                            admin.popup({ shadeClose: false,
+                            admin.popup({
+                                shadeClose: false,
                                 title: '编辑数据',
                                 area: ['600px', '540px'],
                                 id: 'LAY-popup-CoreCmsGoodsCategory-edit',
@@ -172,7 +194,7 @@
                                                 coreHelper.Post("Api/CoreCmsGoodsCategory/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        insTb.refresh(); //刷新表格
+                                                        insTb.reloadData(); //刷新表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -197,7 +219,7 @@
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
                         coreHelper.Post("Api/CoreCmsGoodsCategory/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            insTb.refresh(); //刷新表格
+                            insTb.reloadData(); //刷新表格
                             layer.msg(e.msg);
                         });
                     });
@@ -218,5 +240,5 @@
 
 <!--设置是否显示-->
 <script type="text/html" id="switch_isShow">
-    <input type="checkbox" name="switch_isShow" value="{{d.id}}" lay-skin="switch" lay-text="显示|关闭" lay-filter="switch_isShow" {{ d.isShow ? 'checked' : '' }}>
+    <input type="checkbox" name="switch_isShow" value="{{d.id}}" lay-skin="switch" lay-text="显示|关闭" lay-filter="switch_isShow" {{ d.otherData.isShow ? 'checked' : '' }}>
 </script>

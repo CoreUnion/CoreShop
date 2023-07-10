@@ -45,6 +45,9 @@ a {
 .coreshop-form {
   background-color: #fff;
 }
+.layui-table-view {
+  margin: 10px 0;
+}
 /*重写左侧导航icon图标大小*/
 .layui-side-menu .layui-nav .layui-nav-item .layui-icon {
   font-size: 14px;
@@ -109,6 +112,7 @@ a {
 }
 .coreshop-form .layui-form-label {
   font-size: 12px;
+  padding: 8px 5px;
 }
 /*用于给*打红色标记一般用于<i>*/
 .required-color {
@@ -539,9 +543,8 @@ xm-select .xm-body .xm-option.hide-icon.selected {
   font-size: 12px;
 }
 .layui-table-cell {
-  height: 28px;
   line-height: 28px;
-  padding: 0 8px;
+  padding: 6px 8px;
   position: relative;
   box-sizing: border-box;
 }
@@ -1007,6 +1010,9 @@ xm-select .xm-body .xm-option.hide-icon.selected {
   left: 20px;
   margin-top: -24px;
 }
+.layui-side-menu .layui-nav > .layui-nav-item .layui-icon:first-child {
+  margin-top: -24px;
+}
 /*自定义全局包围*/
 .coreshop-admin .layui-logo {
   padding: 0px;
@@ -1053,6 +1059,9 @@ xm-select .xm-body .xm-option.hide-icon.selected {
   width: 60px;
   background-image: url(../images/common/logoMin.png);
 }
+.layadmin-side-shrink .layui-layout-admin .layui-logo img {
+  display: none;
+}
 .ew-tree-table .ew-tree-pack {
   cursor: pointer;
   line-height: 16px;
@@ -1064,4 +1073,160 @@ xm-select .xm-body .xm-option.hide-icon.selected {
   line-height: 16px;
   display: inline;
   vertical-align: middle;
+}
+.continuousCheckInBox {
+  overflow: hidden;
+  width: 450px;
+  margin-left: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  position: relative;
+  float: left;
+}
+.continuousCheckInBox .layui-form-item label {
+  width: 100px;
+}
+.continuousCheckInBox .btn-continuous-delete {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+.cumulativeCheckInBox {
+  overflow: hidden;
+  width: 450px;
+  margin-left: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  position: relative;
+  float: left;
+}
+.cumulativeCheckInBox .layui-form-item label {
+  width: 100px;
+}
+.cumulativeCheckInBox .btn-delete {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+.layui-ext-icon-selected-input {
+  height: 38px;
+  line-height: 38px;
+  padding: 0px 10px;
+  display: inline-block;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  background-color: #fff;
+  border-color: #eee;
+  border-radius: 2px;
+  transition: 0.2s;
+}
+.layui-ext-icon-selected-input > .placeholder {
+  color: #757575;
+}
+.layui-ext-icon-selected-input > .layui-icon {
+  margin-left: 5px;
+  color: #757575;
+}
+.layui-ext-icon-selected-input:hover {
+  border-color: #d2d2d2;
+}
+.layui-ext-icon-selected-container {
+  padding: 5px;
+  display: none;
+  position: absolute;
+  z-index: 999;
+  top: 100%;
+  left: 0px;
+  margin-top: 5px;
+  height: 240px;
+  width: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-width: 1px;
+  border-style: solid;
+  background-color: #fff;
+  border-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+.layui-ext-icon-selected-container.show {
+  display: block;
+  animation: layui-ext-icon-selected-icons-animate 0.2s linear;
+}
+.layui-ext-icon-selected-container::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f6f6f6;
+}
+.layui-ext-icon-selected-container::-webkit-scrollbar-thumb {
+  border-radius: 2.5px;
+  background-color: #009688;
+}
+.layui-ext-icon-selected-item {
+  float: left;
+  width: 25%;
+  text-align: center;
+  padding: 10px 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  color: #888888;
+  transition: 0.2s;
+  border-radius: 5px;
+}
+.layui-ext-icon-selected-item:hover,
+.layui-ext-icon-selected-item.selected {
+  background-color: #f2f2f2;
+  color: #009688;
+}
+.layui-ext-icon-selected-item:hover .layui-icon,
+.layui-ext-icon-selected-item.selected .layui-icon {
+  transform: scale(1.2);
+}
+.layui-ext-icon-selected-item .layui-ext-icon-selected-icon {
+  transition: 0.2s;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 24px;
+}
+.layui-ext-icon-selected-item .layui-ext-icon-selected-name {
+  padding-top: 15px;
+  font-size: 12px;
+  height: 1em;
+  line-height: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+}
+.layui-ext-icon-selected-selected-value {
+  float: left;
+  display: inline-block;
+  overflow: hidden;
+}
+.layui-ext-icon-selected-selected-value .layui-ext-icon-selected-icon,
+.layui-ext-icon-selected-selected-value .layui-ext-icon-selected-name {
+  display: inline-block;
+  float: left;
+}
+.layui-ext-icon-selected-selected-value .layui-ext-icon-selected-icon {
+  font-size: 18px;
+}
+.layui-ext-icon-selected-selected-value .layui-ext-icon-selected-name {
+  margin-left: 5px;
+}
+@keyframes layui-ext-icon-selected-icons-animate {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }

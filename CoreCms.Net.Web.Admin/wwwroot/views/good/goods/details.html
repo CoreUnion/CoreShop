@@ -168,7 +168,7 @@
                         <div class="layui-tab-item">
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
-                                    {{d.params.data.model.intro}}
+                                    {{-d.params.data.model.intro}}
                                 </div>
                             </div>
                         </div>
@@ -355,7 +355,7 @@
         types = d.params.data.types;
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d.data); }
-        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'dtree', 'view', 'laytpl', 'xmSelect', 'layedit', 'util', 'cropperImg'],
+        layui.use(['admin', 'form', 'laydate', 'upload', 'coreHelper', 'dtree', 'view', 'laytpl', 'xmSelect', 'util', 'cropperImg'],
             function () {
                 $ = layui.$;
                 var form = layui.form
@@ -366,7 +366,6 @@
                     , view = layui.view
                     , laytpl = layui.laytpl
                     , xmSelect = layui.xmSelect
-                    , layedit = layui.layedit
                     , util = layui.util
                     , cropperImg = layui.cropperImg
                     , coreHelper = layui.coreHelper;
