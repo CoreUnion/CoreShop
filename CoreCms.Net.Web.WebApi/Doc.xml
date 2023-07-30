@@ -221,13 +221,14 @@
             优惠券接口
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsPromotionServices)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.#ctor(CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsCouponServices,CoreCms.Net.IServices.ICoreCmsPromotionServices,CoreCms.Net.IRepository.UnitOfWork.IUnitOfWork)">
             <summary>
             构造函数
             </summary>
             <param name="user"></param>
             <param name="couponServices"></param>
             <param name="promotionServices"></param>
+            <param name="unionOfWork"></param>
         </member>
         <member name="M:CoreCms.Net.Web.WebApi.Controllers.CouponController.CouponList(CoreCms.Net.Model.FromBody.FMCouponForUserCouponPost)">
             <summary>
@@ -358,7 +359,7 @@
             商品相关接口处理
             </summary>
         </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.#ctor(AutoMapper.IMapper,CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsBrandServices,CoreCms.Net.IServices.ICoreCmsOrderItemServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserServices)">
+        <member name="M:CoreCms.Net.Web.WebApi.Controllers.GoodController.#ctor(AutoMapper.IMapper,CoreCms.Net.Auth.HttpContextUser.IHttpContextUser,CoreCms.Net.IServices.ICoreCmsSettingServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryServices,CoreCms.Net.IServices.ICoreCmsGoodsServices,CoreCms.Net.IServices.ICoreCmsProductsServices,CoreCms.Net.IServices.ICoreCmsBrandServices,CoreCms.Net.IServices.ICoreCmsOrderItemServices,CoreCms.Net.IServices.ICoreCmsGoodsCommentServices,CoreCms.Net.IServices.ICoreCmsGoodsParamsServices,CoreCms.Net.IServices.ICoreCmsGoodsCollectionServices,CoreCms.Net.IServices.ICoreCmsUserServices,CoreCms.Net.IServices.ICoreCmsGoodsCategoryExtendServices)">
             <summary>
             构造函数
             </summary>
@@ -1311,62 +1312,6 @@
             <param name="postModel"></param>
             <param name="msgXml"></param>
             <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.WebApi.Program">
-            <summary>
-            启动类
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Program.Main(System.String[])">
-            <summary>
-                启动配置
-            </summary>
-            <param name="args"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Program.CreateHostBuilder(System.String[])">
-            <summary>
-                创建启动支撑
-            </summary>
-            <param name="args"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CoreCms.Net.Web.WebApi.Startup">
-            <summary>
-            启动配置
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="configuration"></param>
-            <param name="env"></param>
-        </member>
-        <member name="P:CoreCms.Net.Web.WebApi.Startup.Configuration">
-            <summary>
-            配置属性
-            </summary>
-        </member>
-        <member name="P:CoreCms.Net.Web.WebApi.Startup.Env">
-            <summary>
-            web环境
-            </summary>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            This method gets called by the runtime. Use this method to add services to the container.
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
-            <summary>
-                Autofac规则配置
-            </summary>
-            <param name="builder"></param>
-        </member>
-        <member name="M:CoreCms.Net.Web.WebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-             This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            </summary>
-            <param name="app"></param>
-            <param name="env"></param>
         </member>
     </members>
 </doc>
