@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreCms.Net.Auth.HttpContextUser;
 using CoreCms.Net.Configuration;
+using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.FromBody;
@@ -33,18 +34,21 @@ namespace CoreCms.Net.Web.WebApi.Controllers
         private readonly IHttpContextUser _user;
         private readonly ICoreCmsCouponServices _couponServices;
         private readonly ICoreCmsPromotionServices _promotionServices;
+        private readonly IUnitOfWork _unionOfWork;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="user"></param>
         /// <param name="couponServices"></param>
         /// <param name="promotionServices"></param>
+        /// <param name="unionOfWork"></param>
         public CouponController(IHttpContextUser user
-            , ICoreCmsCouponServices couponServices, ICoreCmsPromotionServices promotionServices)
+            , ICoreCmsCouponServices couponServices, ICoreCmsPromotionServices promotionServices, IUnitOfWork unionOfWork)
         {
             _user = user;
             _couponServices = couponServices;
             _promotionServices = promotionServices;
+            _unionOfWork = unionOfWork;
         }
 
         //公共接口====================================================================================================
@@ -144,32 +148,55 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 jm.msg = GlobalErrorCodeVars.Code15006;
                 return jm;
             }
-            //判断优惠券是否可以领取?
-            var promotionModel = await _promotionServices.ReceiveCoupon(entity.id);
-            if (promotionModel.status == false)
+            
+            try
             {
-                return promotionModel;
-            }
+                _unionOfWork.BeginTran();
 
-            var promotion = (CoreCmsPromotion)promotionModel.data;
-            if (promotion == null)
-            {
-                jm.msg = GlobalErrorCodeVars.Code15019;
-                return jm;
-            }
 
-            if (promotion.maxNums > 0)
-            {
-                //判断用户是否已领取?领取次数
-                var couponResult = await _couponServices.GetMyCoupon(_user.ID, entity.id, "all", 1, 9999);
-                if (couponResult.status && couponResult.code >= promotion.maxNums)
+                //判断优惠券是否可以领取?
+                var promotionModel = await _promotionServices.ReceiveCoupon(entity.id);
+                if (promotionModel.status == false)
                 {
-                    jm.msg = GlobalErrorCodeVars.Code15018;
+                    _unionOfWork.RollbackTran();
+                    return promotionModel;
+                }
+
+                
+                
+                var promotion = (CoreCmsPromotion)promotionModel.data;
+                if (promotion == null)
+                {
+                    _unionOfWork.RollbackTran();
+                    jm.msg = GlobalErrorCodeVars.Code15019;
                     return jm;
                 }
+
+                if (promotion.maxNums > 0)
+                {
+                    //判断用户是否已领取?领取次数
+                    var couponResult = await _couponServices.GetMyCoupon(_user.ID, entity.id, "all", 1, 9999);
+                    if (couponResult.status && couponResult.code >= promotion.maxNums)
+                    {
+                        _unionOfWork.RollbackTran();
+                        jm.msg = GlobalErrorCodeVars.Code15018;
+                        return jm;
+                    }
+                }
+                
+                jm = await _couponServices.AddData(_user.ID, entity.id, promotion);
+
+                _unionOfWork.CommitTran();
+
+                jm.otherData = promotionModel;
+
             }
-            jm = await _couponServices.AddData(_user.ID, entity.id, promotion);
-            jm.otherData = promotionModel;
+            catch (Exception e)
+            {
+                _unionOfWork.RollbackTran();
+                jm.msg = GlobalErrorCodeVars.Code10000;
+            }
+            
             return jm;
         }
         #endregion

@@ -803,7 +803,7 @@ namespace CoreCms.Net.Repository
                     //更新记录。
                     bl = DbClient.Updateable<CoreCmsProducts>()
                         .SetColumns(it => it.freezeStock == it.freezeStock + num)
-                        .Where(p => p.id == productModel.id && insertNum >= num).ExecuteCommandHasChange();
+                        .Where(p => p.id == productModel.id && insertNum >= num && p.freezeStock < p.stock).ExecuteCommandHasChange();
                     break;
                 case "send": //发货
                     bl = DbClient.Updateable<CoreCmsProducts>()

@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
  *            Project: CoreCms
  *        ProjectName: 核心内容管理系统                                
  *                Web: https://www.corecms.net                      
@@ -359,13 +359,16 @@ namespace CoreCms.Net.Repository
         /// </summary>
         /// <param name="predicate">条件表达式树</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <param name="blUseTranLock">是否使用事务锁</param>
+        /// <param name="dbLockType">事务锁类型</param>
         /// <returns></returns>
-        public async Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false)
+        public async Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false,bool blUseTranLock = false,
+            DbLockType dbLockType = DbLockType.Wait)
         {
-            return await DbBaseClient
-                .Queryable<T>()
-                .WithNoLockOrNot(blUseNoLock)
-                .FirstAsync(predicate);
+            return blUseNoLock
+                ? await DbBaseClient.Queryable<T>().With(SqlWith.NoLock).FirstAsync(predicate)
+                : (blUseTranLock? await DbBaseClient.Queryable<T>().TranLock(dbLockType).FirstAsync(predicate)
+                    : await DbBaseClient.Queryable<T>().FirstAsync(predicate));
         }
 
         /// <summary>

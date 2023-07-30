@@ -203,8 +203,11 @@ namespace CoreCms.Net.IRepository
         /// </summary>
         /// <param name="predicate">条件表达式树</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <param name="blUseTranLock">是否使用事务锁</param>
+        /// <param name="dbLockType">事务锁类型</param>
         /// <returns></returns>
-        Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false);
+        Task<T> QueryByClauseAsync(Expression<Func<T, bool>> predicate, bool blUseNoLock = false,bool blUseTranLock = false,
+            DbLockType dbLockType = DbLockType.Wait);
 
         /// <summary>
         ///     根据条件查询数据
