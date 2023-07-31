@@ -82,7 +82,7 @@
                             <select name="status" id="status">
                                 <option value="">请选择订单状态</option>
                                 {{# layui.each(indexData.orderStatus, function(index, item){ }}
-                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                <option value="{{ item.value }}">{{- item.description }}</option>
                                 {{# }); }}
                             </select>
                         </div>
@@ -113,7 +113,7 @@
                             <select name="receiptType" id="shipStatus">
                                 <option value="">请选择订单属性</option>
                                 {{# layui.each(indexData.receiptType, function(index, item){ }}
-                                <option value="{{ item.value }}">{{ item.description }}</option>
+                                <option value="{{ item.value }}">{{- item.description }}</option>
                                 {{# }); }}
                             </select>
                         </div>
@@ -133,7 +133,7 @@
             </div>
             <div class="layui-row">
                 <div class="layui-col-md12">
-                    <div class="layui-inline layui-input-wrap-prefix">
+                    <div class="layui-inline layui-input-wrap">
                         <div class="layui-input-inline">
                             <div class="layui-input-prefix">
                                 <i class="layui-icon layui-icon-date"></i>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
 
-                    <div class="layui-inline layui-input-wrap-prefix">
+                    <div class="layui-inline layui-input-wrap">
                         <div class="layui-input-inline">
                             <div class="layui-input-prefix">
                                 <i class="layui-icon layui-icon-username"></i>
@@ -150,7 +150,7 @@
                             <input type="text" name="shipName" id="shipName" placeholder="请输入收货人姓名" class="layui-input" lay-affix="clear">
                         </div>
                     </div>
-                    <div class="layui-inline layui-input-wrap-prefix">
+                    <div class="layui-inline layui-input-wrap">
                         <div class="layui-input-inline">
                             <div class="layui-input-prefix">
                                 <i class="layui-icon layui-icon-cellphone-fine"></i>
@@ -158,7 +158,7 @@
                             <input type="text" name="shipMobile" id="shipMobile" placeholder="请输入收货电话" class="layui-input" lay-affix="clear">
                         </div>
                     </div>
-                    <div class="layui-inline layui-input-wrap-prefix">
+                    <div class="layui-inline layui-input-wrap">
                         <div class="layui-input-inline">
                             <div class="layui-input-prefix">
                                 <i class="layui-icon layui-icon-location"></i>
@@ -166,7 +166,7 @@
                             <input type="text" name="shipAddress" id="shipAddress" placeholder="请输入收货地址" class="layui-input" lay-affix="clear">
                         </div>
                     </div>
-                    <div class="layui-inline layui-input-wrap-prefix">
+                    <div class="layui-inline layui-input-wrap">
                         <div class="layui-input-inline core-time-input">
                             <div class="layui-input-prefix">
                                 <i class="layui-icon layui-icon-time"></i>
@@ -280,7 +280,11 @@
                     cols: [
                         [
                             { type: 'checkbox' },
-                            { field: 'operating', title: '操作', width: 60, align: 'center' },
+                            {
+                                field: 'operating', title: '操作', width: 90, align: 'center', templet: function (data) {
+                                    return data.operating;
+                                }
+                            },
                             {
                                 field: 'orderId',
                                 title: '订单号',
