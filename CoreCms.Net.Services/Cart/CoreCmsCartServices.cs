@@ -102,7 +102,11 @@ namespace CoreCms.Net.Services
         public async Task<WebApiCallBack> SetCartNum(int id, int nums, int userId, int numType, int type = 1)
         {
             var jm = new WebApiCallBack();
-
+            if (nums <= 0)
+            {
+                jm.msg = "商品数量必须为正整数";
+                return jm;
+            }
             if (userId == 0)
             {
                 jm.msg = "用户信息获取失败";
@@ -180,12 +184,12 @@ namespace CoreCms.Net.Services
             var goodsServices = container.ServiceProvider.GetService<ICoreCmsGoodsServices>();
 
             //获取数据 
-            if (nums == 0)
+            if (nums <= 0)
             {
                 jm.msg = "请选择货品数量";
                 return jm;
             }
-            if (productId == 0)
+            if (productId <= 0)
             {
                 jm.msg = "请选择货品";
                 return jm;
@@ -421,6 +425,9 @@ namespace CoreCms.Net.Services
         {
             var jm = new WebApiCallBack() { methodDescription = "获取购物车原始列表(未核算)" };
 
+            //强制过滤一遍，防止出现可以造假数据
+            await _dal.DeleteAsync(p => p.userId == userId && p.nums <= 0);
+
             using var container = _serviceProvider.CreateScope();
             var productsService = container.ServiceProvider.GetService<ICoreCmsProductsServices>();
             var goodsServices = container.ServiceProvider.GetService<ICoreCmsGoodsServices>();
@@ -442,6 +449,12 @@ namespace CoreCms.Net.Services
                 //商品下架，就从购物车里面删除
                 var ps = await productsService.GetShelfStatus(item.productId);
                 if (ps == false)
+                {
+                    await _dal.DeleteAsync(item);
+                    continue;
+                }
+                //商品金额设置为0，就从购物车里面删除
+                if (productInfo.price <= 0)
                 {
                     await _dal.DeleteAsync(item);
                     continue;
@@ -700,7 +713,7 @@ namespace CoreCms.Net.Services
         public async Task<WebApiCallBack> CartPoint(CartDto cartDto, int userId, int point)
         {
             var jm = new WebApiCallBack() { status = true };
-            if (point != 0)
+            if (point > 0)
             {
                 var getUserPointDto = await _userServices.GetUserPoint(userId, 0);
                 if (getUserPointDto.point < point)

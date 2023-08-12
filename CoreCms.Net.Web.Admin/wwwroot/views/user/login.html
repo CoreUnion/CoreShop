@@ -44,11 +44,6 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 mb-2">
-                                <div class="form-group">
-                                    <input type="checkbox" name="saveLoginInfo" lay-skin="primary" checked="checked"><small>保存登录信息</small>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 mb-2">
                                 <button type="button" class="btn btn-info w-100" lay-submit lay-filter="LAY-user-login-submit" id="loginSubmit">登录</button>
                             </div>
                         </div>
@@ -118,17 +113,6 @@
 
             var field = obj.field; //获取提交的字段
 
-            console.log("saveLoginInfo:" + field.saveLoginInfo);
-
-            if (field.saveLoginInfo == 'on') {
-                console.log("保存缓存");
-                coreHelper.setCookie("username", field.username);
-                coreHelper.setCookie("password", field.password);
-            } else {
-                console.log("清空缓存");
-                coreHelper.delCookie("username");
-                coreHelper.delCookie("password");
-            }
             coreHelper.Post("api/login/getJwtToken", field, function (res) {
                 if (res.code === 0) {
                     //jwttoekn处理

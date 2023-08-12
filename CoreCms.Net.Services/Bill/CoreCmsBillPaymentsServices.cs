@@ -454,6 +454,13 @@ namespace CoreCms.Net.Services
             }
 
             var billPayments = result.data as CoreCmsBillPayments;
+
+            if (billPayments.money < 0)
+            {
+                jm.msg = "支付金额异常！";
+                return jm;
+            }
+
             //根据支付方式返回支付配置
             //微信支付
             if (paymentCode == GlobalEnumVars.PaymentsTypes.wechatpay.ToString())

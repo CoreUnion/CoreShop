@@ -41,7 +41,7 @@ namespace CoreCms.Net.Auth
 
             #region 参数
             //读取配置文件
-            var symmetricKeyAsBase64 = AppSettingsConstVars.JwtConfigSecretKey;
+            var symmetricKeyAsBase64 = AppSettingsHelper.GetMachineRandomKey(AppSettingsConstVars.JwtConfigSecretKey);
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
             var issuer = AppSettingsConstVars.JwtConfigIssuer;
