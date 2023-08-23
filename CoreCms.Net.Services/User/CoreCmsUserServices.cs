@@ -287,6 +287,12 @@ namespace CoreCms.Net.Services
                 return jm;
             }
 
+            if (superior.parentId == user.id)
+            {
+                jm.msg = "不允许双方互相设置为上级";
+                return jm;
+            }
+
             var flag = IsInvited(userId, superiorId);
             if (flag)
             {
