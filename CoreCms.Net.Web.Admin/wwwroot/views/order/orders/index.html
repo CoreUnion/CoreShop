@@ -336,15 +336,18 @@
                                 title: '订单状态',
                                 width: 80,
                                 align: 'center',
-                                templet: '#statusText'
-                                //templet: function (data) {
-                                //    for (var i = 0; i < d.data.orderStatus.length; i++) {
-                                //        if (data.status == d.data.orderStatus[i].value) {
-                                //            return d.data.orderStatus[i].description;
-                                //        }
-                                //    }
-                                //    return "";
-                                //}
+                                templet: function (data) {
+                                    var html = '';
+                                    for (var i = 0; i < d.data.orderStatus.length; i++) {
+                                        if (data.status == d.data.orderStatus[i].value) {
+                                            html += d.data.orderStatus[i].description;
+                                        }
+                                    }
+                                    if (data.tcOrder) {
+                                        html += '<button type="button" class="layui-btn  layui-btn-warm layui-btn-xs" data-id="' + data.orderId + '" lay-active="showTcOrder" style="margin-left: 0px">直播订单</button>';
+                                    }
+                                    return html;
+                                }
                             },
                             //{
                             //    field: 'payStatus',
@@ -1361,20 +1364,6 @@
     <font class="layui-font-12">￥</font>
     <font class="layui-font-14">{{d.orderAmount}}</font>
 </script>
-
-
-<!--直播订单-->
-<script type="text/html" id="statusText">
-    {{#  layui.each(orderStatus, function(index, item){ }}
-    {{#  if(d.status == item.value){ }}
-    {{item.description}}
-    {{#  } }}
-    {{#  }); }}
-    {{#  if(d.tcOrder){ }}
-    <button type="button" class="layui-btn  layui-btn-warm layui-btn-xs" data-id="{{d.orderId}}" lay-active="showTcOrder" style="margin-left: 0px">直播订单</button>
-    {{#  } }}
-</script>
-
 
 <!--用户地址-->
 <script type="text/html" id="orderShip">
