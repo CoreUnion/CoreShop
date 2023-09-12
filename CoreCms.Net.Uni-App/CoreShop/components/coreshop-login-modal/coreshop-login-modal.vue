@@ -33,10 +33,9 @@
                         </view>
                     </view>
                     <view class="u-flex u-row-between u-padding-left-30 u-padding-right-30">
-                        <u-button  @click="closeAuth">暂不授权</u-button>
-                        <!-- #ifdef MP-WEIXIN -->
-                        <u-button  type="success" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">确定授权</u-button>
-                        <!-- #endif -->
+                        <u-button @click="closeAuth">暂不授权</u-button>
+                        <u-button type="success" :disabled="isDisabled" v-if="isDisabled">确定授权</u-button>
+                        <u-button type="success" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-else>确定授权</u-button>
                     </view>
                 </view>
             </view>
@@ -51,12 +50,15 @@
      * @property {Boolean} forceOauth - 小程序端特制的全屏登录提示。
      */
     import { mapMutations, mapActions, mapState } from 'vuex';
+    import { goods, articles, commonUse, tools } from '@/common/mixins/mixinsHelper.js'
     export default {
+        mixins: [goods, articles, commonUse, tools],
         name: 'coreshopLoginModal',
         components: {},
         data() {
             return {
-                agreement: true
+                agreement: false,
+                isDisabled: true,
             };
         },
         props: {
@@ -149,6 +151,12 @@
             // 勾选版权协议
             checkboxChange(e) {
                 this.agreement = e.value;
+                if (e.value == true) {
+                    this.isDisabled = false;
+                } else {
+                    this.isDisabled = true;
+                }
+                console.log(this.agreement);
             },
             // 隐藏登录弹窗
             hideModal() {
@@ -213,9 +221,15 @@
                         data.invitecode = invitecode
                     }
                     _this.toGetPhoneNumber(data);
-                } else {
+                }
+                else if (e.mp.detail.errMsg == 'getPhoneNumber:fail user deny') {
+                    _this.$u.toast('您已经取消了授权，将无法进行关键业务功能。');
+                }
+                else {
                     _this.$u.toast('如未授权，您可尝试使用手机号+短信验证码登录');
                 }
+                _this.agreement = false;
+                _this.isDisabled = true;
                 _this.showLogin = false;
             },
             //实际的去登陆
