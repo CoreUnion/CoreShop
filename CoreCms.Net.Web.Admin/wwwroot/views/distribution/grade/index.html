@@ -205,6 +205,17 @@
                     });
                 }
 
+                //执行单个删除
+                function doDelete(obj) {
+                    layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
+                        coreHelper.Post("Api/CoreCmsDistributionGrade/DoDelete", { id: obj.data.id }, function (e) {
+                            if (debug) { console.log(e); } //开启调试返回数据
+                            table.reloadData('LAY-app-CoreCmsDistributionGrade-tableBox');
+                            layer.msg(e.msg);
+                        });
+                    });
+                }
+
                 //监听 表格复选框操作
 
                 layui.form.on('switch(switch_isDefault)', function (obj) {
