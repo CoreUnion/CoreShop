@@ -940,7 +940,7 @@ namespace CoreCms.Net.Services
                             foreach (var product in cartProducts)
                             {
                                 var money = product.products.price * product.nums;
-                                goodsAmount += Math.Round(goodsAmount + money, 2);
+                                goodsAmount = Math.Round(goodsAmount + money, 2);
                             }
                             if (goodsAmount >= objMoney)
                             {
