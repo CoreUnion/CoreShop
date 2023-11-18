@@ -929,29 +929,11 @@ namespace CoreCms.Net.Services
                             imageTemple.Mutate(x => x.DrawImage(imageQrcode, new SixLabors.ImageSharp.Point(275, 420), 1));
                             //构建字体//装载字体(ttf)（而且字体一定要支持简体中文的）
                             var fonts = new FontCollection();
-                            SixLabors.Fonts.FontFamily fontFamily = fonts.Install(_webHostEnvironment.WebRootPath + "/fonts/SourceHanSansK-Normal.ttf");
+                            SixLabors.Fonts.FontFamily fontFamily = fonts.Add(_webHostEnvironment.WebRootPath + "/fonts/SourceHanSansK-Normal.ttf");
                             //商品名称可能较长,设置为多行文本输出
                             SixLabors.Fonts.Font titleFont = new SixLabors.Fonts.Font(fontFamily, 20, SixLabors.Fonts.FontStyle.Regular);
-                            //多行文本输出
-                            var textOptions = new TextOptions()
-                            {
-                                ApplyKerning = true,
-                                VerticalAlignment = VerticalAlignment.Top,
-                                HorizontalAlignment = HorizontalAlignment.Left,
-                                WrapTextWidth = 230
-                            };
-                            var graphicsOptions = new GraphicsOptions()
-                            {
-                                Antialias = true
-                            };
-                            //沿着行尾的绕行路径绘制文本  
-                            var options = new SixLabors.ImageSharp.Drawing.Processing.DrawingOptions
-                            {
-                                GraphicsOptions = graphicsOptions,
-                                TextOptions = textOptions
-                            };
                             //开始绘制商品名称
-                            imageTemple.Mutate(ctx => ctx.DrawText(options, goodModel.name, titleFont, SixLabors.ImageSharp.Color.Red, new SixLabors.ImageSharp.PointF(10, 450)));
+                            imageTemple.Mutate(ctx => ctx.DrawText(goodModel.name, titleFont, SixLabors.ImageSharp.Color.Red, new SixLabors.ImageSharp.PointF(10, 450)));
                             //绘制商品金额
                             SixLabors.Fonts.Font moneyFont = new SixLabors.Fonts.Font(fontFamily, 18);
                             //获取该文件绘制所需的大小

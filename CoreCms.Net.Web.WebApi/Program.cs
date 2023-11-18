@@ -54,7 +54,7 @@ builder.Services.AddSession();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfiguration));
 
 //MediatR（只需要注册一个,同项目或类库下就不需要注册多个）
-builder.Services.AddMediatR(typeof(TextMessageEventCommand).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TextMessageEventCommand).Assembly));
 
 //使用 SignalR
 builder.Services.AddSignalR();

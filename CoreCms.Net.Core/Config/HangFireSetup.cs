@@ -17,6 +17,7 @@ using CoreCms.Net.Utility.Extensions;
 using Hangfire;
 using Hangfire.MySql;
 using Hangfire.Redis;
+using Hangfire.Redis.StackExchange;
 using Hangfire.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;

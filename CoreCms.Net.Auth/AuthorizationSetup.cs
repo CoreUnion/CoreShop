@@ -21,6 +21,7 @@ using CoreCms.Net.Utility.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -101,7 +102,7 @@ namespace CoreCms.Net.Auth
                  {
                      OnChallenge = context =>
                      {
-                         context.Response.Headers.Add("Token-Error", context.ErrorDescription);
+                         context.Response.Headers.Append("Token-Error", context.ErrorDescription);
                          return Task.CompletedTask;
                      },
                      OnAuthenticationFailed = context =>
@@ -111,18 +112,18 @@ namespace CoreCms.Net.Auth
 
                          if (jwtToken.Issuer != issuer)
                          {
-                             context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
+                             context.Response.Headers.Append("Token-Error-Iss", "issuer is wrong!");
                          }
 
                          if (jwtToken.Audiences.FirstOrDefault() != audience)
                          {
-                             context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+                             context.Response.Headers.Append("Token-Error-Aud", "Audience is wrong!");
                          }
 
                          // 如果过期，则把<是否过期>添加到，返回头信息中
                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                          {
-                             context.Response.Headers.Add("Token-Expired", "true");
+                             context.Response.Headers.Append("Token-Expired", "true");
                          }
                          return Task.CompletedTask;
                      }
@@ -206,7 +207,7 @@ namespace CoreCms.Net.Auth
                  {
                      OnChallenge = context =>
                      {
-                         context.Response.Headers.Add("Token-Error", context.ErrorDescription);
+                         context.Response.Headers.Append("Token-Error", context.ErrorDescription);
                          return Task.CompletedTask;
                      },
                      OnAuthenticationFailed = context =>
@@ -216,18 +217,18 @@ namespace CoreCms.Net.Auth
 
                          if (jwtToken.Issuer != issuer)
                          {
-                             context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
+                             context.Response.Headers.Append("Token-Error-Iss", "issuer is wrong!");
                          }
 
                          if (jwtToken.Audiences.FirstOrDefault() != audience)
                          {
-                             context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+                             context.Response.Headers.Append("Token-Error-Aud", "Audience is wrong!");
                          }
 
                          // 如果过期，则把<是否过期>添加到，返回头信息中
                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                          {
-                             context.Response.Headers.Add("Token-Expired", "true");
+                             context.Response.Headers.Append("Token-Expired", "true");
                          }
                          return Task.CompletedTask;
                      }

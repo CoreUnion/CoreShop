@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
     <UserSecretsId>077906fd-e490-4431-9bae-c3a48ae21992</UserSecretsId>
@@ -48,28 +48,28 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.1.0" />
-    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.1.0" />
-    <PackageReference Include="Hangfire" Version="1.7.33" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.33" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.33" />
+    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.1.3" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.1.3" />
+    <PackageReference Include="Hangfire" Version="1.8.6" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.6" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.6" />
     <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
-    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.8.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.2" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.3" />
-    <PackageReference Include="MySql.Data" Version="8.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageReference Include="MySql.Data" Version="8.2.0" />
     <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
-    <PackageReference Include="NLog" Version="5.2.3" />
-    <PackageReference Include="NLog.Database" Version="5.2.3" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.3" />
+    <PackageReference Include="NLog" Version="5.2.5" />
+    <PackageReference Include="NLog.Database" Version="5.2.5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.5" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
-    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.34" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
+    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.35" />
     <PackageReference Include="ToolGood.Words" Version="3.1.0" />
   </ItemGroup>
 
