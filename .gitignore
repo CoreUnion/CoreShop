@@ -369,3 +369,4 @@ node_modules/
 .project
 unpackage/
 .DS_Store
+CoreCms.Net.Web.Admin/wwwroot/upload
