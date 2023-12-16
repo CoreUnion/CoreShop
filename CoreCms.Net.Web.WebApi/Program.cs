@@ -148,7 +148,8 @@ app.UseRequestResponseLog();
 app.UseRecordAccessLogsMildd();
 // 记录ip请求 (注意开启权限，不然本地无法写入)
 app.UseIpLogMildd();
-
+// Swagger授权登录拦截
+app.UseSwaggerAuthorizedMildd();
 //强制显示中文
 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
 
@@ -161,8 +162,7 @@ app.UseSwagger().UseSwaggerUI(c =>
             c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"Doc {version}");
         });
     //设置默认跳转到swagger-ui
-    c.RoutePrefix = "doc";
-    //c.RoutePrefix = string.Empty;
+    c.RoutePrefix = AppSettingsConstVars.SwaggerRoutePrefix;
 });
 
 #region Hangfire定时任务

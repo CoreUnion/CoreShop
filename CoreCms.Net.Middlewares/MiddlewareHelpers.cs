@@ -73,5 +73,15 @@ namespace CoreCms.Net.Middlewares
             return app.UseMiddleware<RecordAccessLogsMildd>();
         }
 
+        /// <summary>
+        /// Swagger授权中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseSwaggerAuthorizedMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<SwaggerBasicAuthMiddleware>();
+        }
+
     }
 }
