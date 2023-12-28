@@ -17,9 +17,8 @@ using CoreCms.Net.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace CoreCms.Net.Filter
+namespace CoreCms.Net.Web.Admin.Infrastructure
 {
     /// <summary>
     /// 请求验证错误处理

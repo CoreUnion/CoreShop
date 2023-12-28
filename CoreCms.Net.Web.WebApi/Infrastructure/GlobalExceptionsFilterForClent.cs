@@ -16,7 +16,7 @@ using CoreCms.Net.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace CoreCms.Net.Filter
+namespace CoreCms.Net.Web.WebApi.Infrastructure
 {
     /// <summary>
     /// 接口全局异常错误日志

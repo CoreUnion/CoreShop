@@ -23,10 +23,10 @@
     <PackageReference Include="InitQ" Version="1.0.0.18" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.6.10" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.6.11" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
     <PackageReference Include="SqlSugar.IOC" Version="2.0.0" />
-    <PackageReference Include="sqlSugarCore" Version="5.1.4.117" />
+    <PackageReference Include="sqlSugarCore" Version="5.1.4.129" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
   </ItemGroup>
 

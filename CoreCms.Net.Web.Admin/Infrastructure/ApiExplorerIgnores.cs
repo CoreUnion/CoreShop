@@ -9,12 +9,9 @@
  ***********************************************************************/
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace CoreCms.Net.Filter
+namespace CoreCms.Net.Web.Admin.Infrastructure
 {
     public class ApiExplorerIgnores : IActionModelConvention
     {

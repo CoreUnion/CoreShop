@@ -12,6 +12,7 @@ using CoreCms.Net.Mapping;
 using CoreCms.Net.Middlewares;
 using CoreCms.Net.Swagger;
 using CoreCms.Net.Task;
+using CoreCms.Net.Web.WebApi.Infrastructure;
 using CoreCms.Net.WeChat.Service.Mediator;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
