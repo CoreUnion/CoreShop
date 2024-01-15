@@ -268,7 +268,10 @@ namespace CoreCms.Net.Caching.SqlSugar
         public List<string> GetCacheKeys()
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            var entries = Cache.GetType().GetField("_entries", flags).GetValue(Cache);
+
+            var coherentState = Cache.GetType().GetField("_coherentState", flags).GetValue(Cache);
+            var entries = coherentState.GetType().GetField("_entries", flags).GetValue(coherentState);
+
             var cacheItems = entries as IDictionary;
             var keys = new List<string>();
             if (cacheItems == null) return keys;
