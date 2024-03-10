@@ -565,15 +565,16 @@
                                             </div>
                                             <div class="layui-form-mid layui-word-aux">M（兆），一般10M即可，超过网络容易缓慢</div>
                                         </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">{{d.data.configs['filesStorageBucketBindUrl']['sKey']}}：</label>
+                                            <div class="layui-input-inline layui-inline-10">
+                                                <input type="text" name="filesStorageBucketBindUrl" value="{{d.data.configs['filesStorageBucketBindUrl']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                                            </div>
+                                            <div class="layui-form-mid layui-word-aux">独立绑定的域名最好，也可以用云存储提供的多级域名</div>
+                                        </div>
 
                                         <div id="cloudConfig">
-                                            <div class="layui-form-item">
-                                                <label class="layui-form-label">{{d.data.configs['filesStorageBucketBindUrl']['sKey']}}：</label>
-                                                <div class="layui-input-inline layui-inline-10">
-                                                    <input type="text" name="filesStorageBucketBindUrl" value="{{d.data.configs['filesStorageBucketBindUrl']['sValue']}}" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
-                                                </div>
-                                                <div class="layui-form-mid layui-word-aux">独立绑定的域名最好，也可以用云存储提供的多级域名</div>
-                                            </div>
+
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">{{d.data.configs['filesStorageAccessKeyId']['sKey']}}：</label>
                                                 <div class="layui-input-inline layui-inline-10">
@@ -638,8 +639,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
 
                                 <div class="layui-tab-item">
                                     <div class="layui-form coreshop-form">
