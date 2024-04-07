@@ -278,10 +278,10 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             jm.status = true;
             jm.data = new
             {
-                count = first + second,
+                count = first,
                 first,
                 second,
-                monthCount = monthFirst + monthSecond,
+                monthCount = monthFirst,
                 monthFirst,
                 monthSecond
             };
