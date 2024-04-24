@@ -1313,5 +1313,21 @@
             <param name="msgXml"></param>
             <returns></returns>
         </member>
+        <member name="M:CoreCms.Net.Web.WebApi.Infrastructure.ApiExplorerIgnores.Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            自带的Controller与swagger3.0冲突，在此排除扫描
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Infrastructure.GlobalExceptionsFilterForClent">
+            <summary>
+            接口全局异常错误日志
+            </summary>
+        </member>
+        <member name="T:CoreCms.Net.Web.WebApi.Infrastructure.RequiredErrorForClent">
+            <summary>
+            请求验证错误处理
+            </summary>
+        </member>
     </members>
 </doc>

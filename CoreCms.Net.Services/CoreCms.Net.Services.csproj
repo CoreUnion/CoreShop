@@ -12,7 +12,6 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
     <PackageReference Include="Qc.YilianyunSdk" Version="1.0.7" />
     <PackageReference Include="Qiniu" Version="8.5.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.0" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.35" />
     <PackageReference Include="ToolGood.Words" Version="3.1.0" />
