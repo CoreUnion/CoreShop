@@ -3,7 +3,7 @@
     export default {
         onLaunch() {
             //版本设置
-            const version = '1.5.4'
+            const version = '1.5.5'
             // 开发环境才提示，生产环境不会提示
             if (process.env.NODE_ENV === 'development') {
                 console.log(`\n %c \u6838\u5fc3\u5546\u57ce\u7cfb\u7edf\u0020\u0043\u006f\u0072\u0065\u0053\u0068\u006f\u0070 V${version} %c \u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0063\u006f\u0072\u0065\u0073\u0068\u006f\u0070\u002e\u0063\u006e\u002f \n\n`, 'color: #ffffff; background: #3c9cff; padding:5px 0;', 'color: #3c9cff;background: #f1f1f1; padding:5px 0;');
