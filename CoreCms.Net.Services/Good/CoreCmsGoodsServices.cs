@@ -652,6 +652,22 @@ namespace CoreCms.Net.Services
 
 
         /// <summary>
+        ///     重写根据条件查询分页数据
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="pageIndex">当前页面索引</param>
+        /// <param name="pageSize">分布大小</param>
+        /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <returns></returns>
+        public new async Task<IPageList<CoreCmsGoods>> QueryPageForLinqAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "",
+            int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
+        {
+            return await _dal.QueryPageAsync(predicate, orderBy, pageIndex, pageSize, blUseNoLock);
+        }
+
+
+        /// <summary>
         ///     根据条件查询代理池商品分页数据
         /// </summary>
         /// <param name="predicate"></param>

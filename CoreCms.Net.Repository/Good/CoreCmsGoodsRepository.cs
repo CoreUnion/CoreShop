@@ -1491,8 +1491,7 @@ namespace CoreCms.Net.Repository
         /// <param name="pageSize">分布大小</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         /// <returns></returns>
-        public new async Task<IPageList<CoreCmsGoods>> QueryPageAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "",
-            int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
+        public new async Task<IPageList<CoreCmsGoods>> QueryPageAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "", int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
         {
             RefAsync<int> totalCount = 0;
             List<CoreCmsGoods> page;
@@ -1599,6 +1598,121 @@ namespace CoreCms.Net.Repository
                     .OrderBy(orderBy)
                     .ToPageListAsync(pageIndex, pageSize, totalCount);
             }
+            var list = new PageList<CoreCmsGoods>(page, pageIndex, pageSize, totalCount);
+            return list;
+
+
+        }
+
+
+        #endregion
+
+
+        #region 根据条件查询分页数据
+        /// <summary>
+        ///     根据条件查询分页数据
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="orderByExpression"></param>
+        /// <param name="pageIndex">当前页面索引</param>
+        /// <param name="pageSize">分布大小</param>
+        /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
+        /// <returns></returns>
+        public new async Task<IPageList<CoreCmsGoods>> QueryPageForLinqAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderByExpression, int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
+        {
+            RefAsync<int> totalCount = 0;
+
+            var sqlCom = DbClient.Queryable<CoreCmsGoods, CoreCmsProducts>((good, pd) => new JoinQueryInfos(
+                    JoinType.Left, good.id == pd.goodsId))
+                .Where((good, pd) => pd.isDefalut == true && pd.isDel == false)
+                .Select((good, pd) => new CoreCmsGoods
+                {
+                    id = good.id,
+                    bn = good.bn,
+                    name = good.name,
+                    brief = good.brief,
+                    image = good.image,
+                    images = good.images,
+                    video = good.video,
+                    productsDistributionType = good.productsDistributionType,
+                    goodsCategoryId = good.goodsCategoryId,
+                    goodsTypeId = good.goodsTypeId,
+                    brandId = good.brandId,
+                    isNomalVirtual = good.isNomalVirtual,
+                    isMarketable = good.isMarketable,
+                    unit = good.unit,
+                    //intro = good.intro,
+                    spesDesc = good.spesDesc,
+                    parameters = good.parameters,
+                    commentsCount = good.commentsCount,
+                    viewCount = good.viewCount,
+                    buyCount = good.buyCount,
+                    uptime = good.uptime,
+                    downtime = good.downtime,
+                    sort = good.sort,
+                    labelIds = good.labelIds,
+                    newSpec = good.newSpec,
+                    openSpec = good.openSpec,
+                    createTime = good.createTime,
+                    updateTime = good.updateTime,
+                    isRecommend = good.isRecommend,
+                    isHot = good.isHot,
+                    isDel = good.isDel,
+                    sn = pd.sn,
+                    price = pd.price,
+                    costprice = pd.costprice,
+                    mktprice = pd.mktprice,
+                    stock = pd.stock,
+                    freezeStock = pd.freezeStock,
+                    weight = pd.weight
+                })
+                .With(SqlWith.NoLock)
+                .MergeTable();
+
+            if (blUseNoLock)
+            {
+                sqlCom.With(SqlWith.NoLock);
+            }
+            sqlCom.Where(predicate);
+
+            sqlCom.OrderBy(it => it.isRecommend, OrderByType.Desc).OrderBy(it => it.isHot, OrderByType.Desc);
+
+            //为了防止sql注入，所以需要遍历一遍，改成参数化执行sql
+            if (!string.IsNullOrEmpty(orderByExpression))
+            {
+                var orderByArr = orderByExpression.Split(',');
+                foreach (var orderString in orderByArr)
+                {
+                    if (orderString.Contains("price asc"))
+                    {
+                        sqlCom.OrderBy(it => it.price, OrderByType.Asc);
+                    }
+                    else if (orderString.Contains("price desc"))
+                    {
+                        sqlCom.OrderBy(it => it.price, OrderByType.Desc);
+                    }
+
+                    if (orderString.Contains("buyCount asc"))
+                    {
+                        sqlCom.OrderBy(it => it.buyCount, OrderByType.Asc);
+                    }
+                    else if (orderString.Contains("buyCount desc"))
+                    {
+                        sqlCom.OrderBy(it => it.buyCount, OrderByType.Desc);
+                    }
+
+                    if (orderString.Contains("sort asc"))
+                    {
+                        sqlCom.OrderBy(it => it.sort, OrderByType.Asc);
+                    }
+                    else if (orderString.Contains("sort desc"))
+                    {
+                        sqlCom.OrderBy(it => it.sort, OrderByType.Desc);
+                    }
+                }
+            }
+            List<CoreCmsGoods> page = await sqlCom.ToPageListAsync(pageIndex, pageSize, totalCount);
+
             var list = new PageList<CoreCmsGoods>(page, pageIndex, pageSize, totalCount);
             return list;
 
