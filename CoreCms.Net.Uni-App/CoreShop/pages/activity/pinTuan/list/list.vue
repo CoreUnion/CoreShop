@@ -10,7 +10,7 @@
                         <text class="group-head__notice">省钱省心限时拼</text>
                     </view>
                     <view class="group-box">
-                        <view class="goods-item" v-for="(item, index) in goodsList" :key="item.id" v-if="goodsList.length>0">
+                        <view class="goods-item" v-for="(item, index) in goodsList" :key="item.id" v-if="goodsList&&goodsList.length>0">
                             <view class="activity-goods-box u-flex u-row-between">
                                 <view class="img-box">
                                     <view class="tag" v-if="index < 3">TOP{{ index + 1 }}</view>
