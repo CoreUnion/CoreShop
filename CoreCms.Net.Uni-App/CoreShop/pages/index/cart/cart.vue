@@ -57,7 +57,7 @@
 
         <view class="nobox"></view>
 
-        <view class="cart-nowrap cart-flex-vcenter cart-border-t" style="background-color: #FFFFFF; width: 100%; position: fixed; left: 0; bottom: 0; z-index: 99;" v-if="shoppingCard.list.length >= 1">
+        <view class="cart-nowrap cart-flex-vcenter cart-border-t" style="background-color: #FFFFFF; width: 100%; position: fixed; left: 0; bottom: 0; z-index: 99;" v-if="shoppingCard.list && shoppingCard.list.length >= 1">
             <view class="cart-shoppingcard-checkbtn cart-nowrap cart-flex-vcenter">
                 <u-checkbox @change="itemChangeAll" v-model="selectAll" active-color="red">{{selectText}}</u-checkbox>
             </view>

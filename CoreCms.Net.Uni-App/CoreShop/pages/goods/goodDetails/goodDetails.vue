@@ -397,7 +397,7 @@
                 bannerCur: 0,
                 current: 0, // init tab位
                 goodsId: 0, // 商品id
-                goodsInfo: {}, // 商品详情
+                goodsInfo: { album: [] }, // 商品详情
                 cartNums: 0, // 购物车数量
                 product: {}, // 货品详情
                 shopRecommendData: [], // 本店推荐数据
