@@ -198,8 +198,12 @@ var hangfireOptions = new Hangfire.DashboardOptions
     IsReadOnlyFunc = _ => false
 };
 
-app.UseHangfireDashboard("/job", hangfireOptions); //可以改变Dashboard的url
+app.UseHangfireDashboard(AppSettingsConstVars.HangFireRoutePrefix, hangfireOptions);
 HangfireDispose.HangfireService();
+
+//设置hangfire定时任务过期时间
+GlobalStateHandlers.Handlers.Add(new SucceededStateExpireHandler(AppSettingsConstVars.HangFireJobExpirationTimeOut));
+
 
 #endregion
 

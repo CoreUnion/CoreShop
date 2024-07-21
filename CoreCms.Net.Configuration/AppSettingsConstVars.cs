@@ -149,6 +149,10 @@ namespace CoreCms.Net.Configuration
 
         #region HangFire定时任务================================================================================
         /// <summary>
+        /// HangFire默认访问路由地址
+        /// </summary>
+        public static readonly string HangFireRoutePrefix = AppSettingsHelper.GetContent("HangFire", "RoutePrefix");
+        /// <summary>
         /// 登录账号
         /// </summary>
         public static readonly string HangFireLogin = AppSettingsHelper.GetContent("HangFire", "Login");
@@ -156,8 +160,10 @@ namespace CoreCms.Net.Configuration
         /// 登录密码
         /// </summary>
         public static readonly string HangFirePassWord = AppSettingsHelper.GetContent("HangFire", "PassWord");
-
-
+        /// <summary>
+        /// 已经完成的任务过期时间，单位分钟（默认10080,7天时间）
+        /// </summary>
+        public static readonly int HangFireJobExpirationTimeOut = AppSettingsHelper.GetContent("HangFire", "JobExpirationTimeOut").ObjToInt(10080);
         #endregion
 
 
