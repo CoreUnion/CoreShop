@@ -664,5 +664,19 @@ namespace CoreCms.Net.Utility.Helper
             return t;
         }
 
+        #region 检测提交的内容是否包含非法信息
+
+        /// <summary>
+        /// 检测提交的内容是否包含非法信息。
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <returns></returns>
+        public static bool CheckData(string inputData)
+        {
+            var strRegex = @"<[^>]+?style=[\w]+?:expression\(|\b(alert|confirm|prompt)\b|^\+/v(8|9)|<[^>]*?=[^>]*?&#[^>]*?>|\b(and|or)\b.{1,6}?(=|>|<|\bin\b|\blike\b)|/\*.+?\*/|<\s*script\b|<\s*img\b|\bEXEC\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\s+(TABLE|DATABASE)";
+            return Regex.IsMatch(inputData, strRegex);
+        }
+        #endregion
+
     }
 }

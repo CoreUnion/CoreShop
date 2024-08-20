@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Aliyun.OSS;
 using Aliyun.OSS.Util;
@@ -289,6 +290,18 @@ namespace CoreCms.Net.Web.WebApi.Controllers
             {
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;
+            }
+
+            // 使用StreamReader来读取文件内容  
+            using (var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8))
+            {
+                var content = await reader.ReadToEndAsync(); // 注意：这可能会消耗大量内存对于大文件，所以需要限制上传大小 
+                // 检查内容是否合法
+                if (CommonHelper.CheckData(content))
+                {
+                    jm.msg = "请勿提交非法数据。";
+                    return jm;
+                }
             }
 
             string url = string.Empty;
