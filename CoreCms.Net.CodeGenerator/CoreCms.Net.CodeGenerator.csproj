@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.2.692" />
-    <PackageReference Include="sqlSugarCore" Version="5.1.4.129" />
+    <PackageReference Include="DotLiquid" Version="2.3.197" />
+    <PackageReference Include="sqlSugarCore" Version="5.1.4.207" />
   </ItemGroup>
 
   <ItemGroup>

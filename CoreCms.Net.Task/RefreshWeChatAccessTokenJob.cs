@@ -70,7 +70,7 @@ namespace CoreCms.Net.Task
                                 createTime = DateTime.Now,
                                 isSuccess = false,
                                 name = "定时刷新获取微信AccessToken",
-                                parameters = $"刷新 AppId 为 {_weChatOptions.WeiXinAppId} 微信 AccessToken 失败（状态码：{response.RawStatus}，错误代码：{response.ErrorCode}，错误描述：{response.ErrorMessage}）。"
+                                parameters = $"刷新 AppId 为 {_weChatOptions.WeiXinAppId} 微信 AccessToken 失败（状态码：{response.GetRawStatus()}，错误代码：{response.ErrorCode}，错误描述：{response.ErrorMessage}）。"
                             };
                             await _taskLogServices.InsertAsync(log);
                         }
@@ -184,7 +184,7 @@ namespace CoreCms.Net.Task
                                 createTime = DateTime.Now,
                                 isSuccess = false,
                                 name = "定时刷新获取微信AccessToken",
-                                parameters = $"刷新 AppId 为 {_weChatOptions.WeiXinAppId} 微信 AccessToken 失败（状态码：{response.RawStatus}，错误代码：{response.ErrorCode}，错误描述：{response.ErrorMessage}）。"
+                                parameters = $"刷新 AppId 为 {_weChatOptions.WeiXinAppId} 微信 AccessToken 失败（状态码：{response.GetRawStatus()}，错误代码：{response.ErrorCode}，错误描述：{response.ErrorMessage}）。"
                             };
                             await _taskLogServices.InsertAsync(log);
                         }

@@ -1,0 +1,36 @@
+<Solution>
+  <Folder Name="/1.Core/">
+    <Project Path="CoreCms.Net.Auth/CoreCms.Net.Auth.csproj" />
+    <Project Path="CoreCms.Net.Caching/CoreCms.Net.Caching.csproj" />
+    <Project Path="CoreCms.Net.CodeGenerator/CoreCms.Net.CodeGenerator.csproj" />
+    <Project Path="CoreCms.Net.Configuration/CoreCms.Net.Configuration.csproj" />
+    <Project Path="CoreCms.Net.Core/CoreCms.Net.Core.csproj" />
+    <Project Path="CoreCms.Net.Filter/CoreCms.Net.Filter.csproj" />
+    <Project Path="CoreCms.Net.Loging/CoreCms.Net.Loging.csproj" />
+    <Project Path="CoreCms.Net.Mapping/CoreCms.Net.Mapping.csproj" />
+    <Project Path="CoreCms.Net.Middlewares/CoreCms.Net.Middlewares.csproj" />
+    <Project Path="CoreCms.Net.RedisMQ/CoreCms.Net.RedisMQ.csproj" />
+    <Project Path="CoreCms.Net.Swagger/CoreCms.Net.Swagger.csproj" />
+    <Project Path="CoreCms.Net.Task/CoreCms.Net.Task.csproj" />
+    <Project Path="CoreCms.Net.Utility/CoreCms.Net.Utility.csproj" />
+  </Folder>
+  <Folder Name="/2.Entity/">
+    <Project Path="CoreCms.Net.Model/CoreCms.Net.Model.csproj" />
+  </Folder>
+  <Folder Name="/3.Services/">
+    <Project Path="CoreCms.Net.IServices/CoreCms.Net.IServices.csproj" />
+    <Project Path="CoreCms.Net.Services/CoreCms.Net.Services.csproj" />
+  </Folder>
+  <Folder Name="/4.Repository/">
+    <Project Path="CoreCms.Net.IRepository/CoreCms.Net.IRepository.csproj" />
+    <Project Path="CoreCms.Net.Repository/CoreCms.Net.Repository.csproj" />
+  </Folder>
+  <Folder Name="/5.WeChat/">
+    <Project Path="CoreCms.Net.WeChat.Service/CoreCms.Net.WeChat.Service.csproj" />
+  </Folder>
+  <Folder Name="/9.App/">
+    <Project Path="CoreCms.Net.Uni-App/CoreCms.Net.Uni-App.csproj" />
+    <Project Path="CoreCms.Net.Web.Admin/CoreCms.Net.Web.Admin.csproj" />
+    <Project Path="CoreCms.Net.Web.WebApi/CoreCms.Net.Web.WebApi.csproj" />
+  </Folder>
+</Solution>

@@ -623,7 +623,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var response = await client.ExecuteCgibinWxaappCreateWxaQrcodeAsync(request);
             if (response.IsSuccessful())
             {
-                var memStream = new MemoryStream(response.RawBytes);
+                var memStream = new MemoryStream(response.GetRawBytes());
 
                 string url = string.Empty;
                 if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
@@ -639,12 +639,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
                 {
                     //上传到腾讯云OSS
-                    url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, response.RawBytes);
+                    url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, response.GetRawBytes());
                 }
                 else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QiNiuKoDo.ToString())
                 {
                     //上传到七牛云kodo
-                    url = _toolsServices.UpLoadBase64ForQiNiuKoDo(filesStorageOptions, response.RawBytes);
+                    url = _toolsServices.UpLoadBase64ForQiNiuKoDo(filesStorageOptions, response.GetRawBytes());
                 }
 
                 var bl = !string.IsNullOrEmpty(url);
@@ -706,7 +706,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             var response = await client.ExecuteCgibinWxaappCreateWxaQrcodeAsync(request);
             if (response.IsSuccessful())
             {
-                var memStream = new MemoryStream(response.RawBytes);
+                var memStream = new MemoryStream(response.GetRawBytes());
 
                 string url = string.Empty;
                 if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.LocalStorage.ToString())
@@ -722,12 +722,12 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QCloudOSS.ToString())
                 {
                     //上传到腾讯云OSS
-                    url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, response.RawBytes);
+                    url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, response.GetRawBytes());
                 }
                 else if (filesStorageOptions.StorageType == GlobalEnumVars.FilesStorageOptionsType.QiNiuKoDo.ToString())
                 {
                     //上传到七牛云kodo
-                    url = _toolsServices.UpLoadBase64ForQiNiuKoDo(filesStorageOptions, response.RawBytes);
+                    url = _toolsServices.UpLoadBase64ForQiNiuKoDo(filesStorageOptions, response.GetRawBytes());
                 }
 
                 var bl = !string.IsNullOrEmpty(url);

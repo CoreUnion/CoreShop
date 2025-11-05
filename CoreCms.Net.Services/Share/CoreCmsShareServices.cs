@@ -302,7 +302,7 @@ namespace CoreCms.Net.Services
                 var response = await client.ExecuteWxaGetWxaCodeUnlimitAsync(request);
                 if (response.IsSuccessful())
                 {
-                    ms = new MemoryStream(response.RawBytes);
+                    ms = new MemoryStream(response.GetRawBytes());
                 }
                 else
                 {
@@ -412,7 +412,7 @@ namespace CoreCms.Net.Services
                 }
                 else
                 {
-                    ms = new MemoryStream(response.RawBytes);
+                    ms = new MemoryStream(response.GetRawBytes());
                 }
 
                 //QrCode 根目录

@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.2.692" />
-    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.1.3" />
-    <PackageReference Include="SqlSugar.IOC" Version="2.0.0" />
+    <PackageReference Include="DotLiquid" Version="2.3.197" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.1.9" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.6.28" />
+    <PackageReference Include="SqlSugar.IOC" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
