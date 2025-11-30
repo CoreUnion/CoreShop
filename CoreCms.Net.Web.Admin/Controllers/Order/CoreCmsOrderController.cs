@@ -1472,6 +1472,8 @@ namespace CoreCms.Net.Web.Admin.Controllers
                 var marId = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42 };
                 foreach (var id in marId)
                 {
+                //修复合并行但是 行数不够的问题 Merged region A2 must contain 2 or more cells at NPOI.HSSF.UserModel.HSS
+                  if (nowNumber + 1 < detailsStartNumber)
                     sheet1.AddMergedRegion(new CellRangeAddress(nowNumber + 1, detailsStartNumber, id, id));
                 }
 
