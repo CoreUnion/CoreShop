@@ -167,6 +167,14 @@ namespace CoreCms.Net.Configuration
         #endregion
 
 
+        #region AutoMapper================================================================================
+        /// <summary>
+        /// AutoMapper License Key（15版本后启用授权模式，前往 https://luckypennysoftware.com/ 申请免费 Key）
+        /// </summary>
+        public static readonly string AutoMapperLicenseKey = AppSettingsHelper.GetContent("AutoMapper", "LicenseKey");
+        #endregion
+
+
         #region Swagger授权访问设置
         /// <summary>
         /// Swagger文档默认访问路由地址
