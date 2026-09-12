@@ -370,3 +370,5 @@ node_modules/
 unpackage/
 .DS_Store
 CoreCms.Net.Web.Admin/wwwroot/upload
+
+.qoder/
