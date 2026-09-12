@@ -19,10 +19,25 @@ namespace CoreCms.Net.Configuration
     {
         static IConfiguration Configuration { get; set; }
 
-        public AppSettingsHelper(string contentPath)
+        public AppSettingsHelper(string contentPath, string environmentName)
         {
-            string Path = "appsettings.json";
-            Configuration = new ConfigurationBuilder().SetBasePath(contentPath).Add(new JsonConfigurationSource { Path = Path, Optional = false, ReloadOnChange = true }).Build();
+            var configBuilder = new ConfigurationBuilder()
+                .SetBasePath(contentPath)
+                .Add(new JsonConfigurationSource { Path = "appsettings.json", Optional = false, ReloadOnChange = true });
+
+            //非 Production 环境追加加载对应的环境配置文件（如 appsettings.Development.json），用于本地覆盖默认配置
+            if (!string.IsNullOrEmpty(environmentName) &&
+                !environmentName.Equals("Production", StringComparison.OrdinalIgnoreCase))
+            {
+                configBuilder.Add(new JsonConfigurationSource
+                {
+                    Path = $"appsettings.{environmentName}.json",
+                    Optional = true,
+                    ReloadOnChange = true
+                });
+            }
+
+            Configuration = configBuilder.Build();
         }
 
         /// <summary>

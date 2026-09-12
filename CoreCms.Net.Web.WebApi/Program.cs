@@ -36,7 +36,7 @@ using NLog.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 //添加本地路径获取支持
-builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
+builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath, builder.Environment.EnvironmentName));
 builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootPath));
 
 //Memory缓存
