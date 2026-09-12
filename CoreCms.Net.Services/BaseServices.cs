@@ -360,7 +360,7 @@ namespace CoreCms.Net.Services
         /// <returns></returns>
         public async Task<bool> InsertGuidAsync(T entity, Expression<Func<T, object>> insertColumns = null)
         {
-            return await InsertGuidAsync(entity, insertColumns);
+            return await BaseDal.InsertGuidAsync(entity, insertColumns);
         }
 
         /// <summary>
