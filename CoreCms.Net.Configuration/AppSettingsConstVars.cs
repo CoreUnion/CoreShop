@@ -175,6 +175,14 @@ namespace CoreCms.Net.Configuration
         #endregion
 
 
+        #region 雪花漂移算法================================================================================
+        /// <summary>
+        /// 雪花漂移算法 WorkerId（多实例部署时每个实例配置不同的值，范围 0-63）
+        /// </summary>
+        public static readonly ushort SnowflakeIdWorkerId = Convert.ToUInt16(AppSettingsHelper.GetContent("SnowflakeId", "WorkerId"));
+        #endregion
+
+
         #region Swagger授权访问设置
         /// <summary>
         /// Swagger文档默认访问路由地址

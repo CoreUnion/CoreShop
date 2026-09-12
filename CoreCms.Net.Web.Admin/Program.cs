@@ -112,7 +112,7 @@ builder.Services.AddMvc(options =>
 
 // 雪花漂移算法
 // 创建 IdGeneratorOptions 对象，请在构造函数中输入 WorkerId：
-var options = new IdGeneratorOptions(1);
+var options = new IdGeneratorOptions(AppSettingsConstVars.SnowflakeIdWorkerId);
 // 保存参数（必须的操作，否则以上设置都不能生效）：
 YitIdHelper.SetIdGenerator(options);
 
