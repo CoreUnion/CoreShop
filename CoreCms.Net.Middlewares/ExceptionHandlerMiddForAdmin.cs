@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using CoreCms.Net.Loging;
 using CoreCms.Net.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -31,10 +32,12 @@ namespace CoreCms.Net.Middlewares
     public class ExceptionHandlerMiddForAdmin
     {
         private readonly RequestDelegate _next;
+        private readonly IHostEnvironment _env;
 
-        public ExceptionHandlerMiddForAdmin(RequestDelegate next)
+        public ExceptionHandlerMiddForAdmin(RequestDelegate next, IHostEnvironment env)
         {
             _next = next;
+            _env = env;
         }
 
         public async Task Invoke(HttpContext context)
@@ -56,7 +59,7 @@ namespace CoreCms.Net.Middlewares
             await WriteExceptionAsync(context, ex).ConfigureAwait(false);
         }
 
-        private static async Task WriteExceptionAsync(HttpContext context, Exception e)
+        private async Task WriteExceptionAsync(HttpContext context, Exception e)
         {
             if (e is UnauthorizedAccessException) context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             else if (e is Exception) context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -64,7 +67,7 @@ namespace CoreCms.Net.Middlewares
             context.Response.ContentType = "application/json";
             var jm = new AdminUiCallBack();
             jm.code = 500;
-            jm.data = e;
+            jm.data = _env.IsDevelopment() ? e : (object)e.Message;
             jm.msg = "全局捕获异常";
             await context.Response.WriteAsync(JsonConvert.SerializeObject(jm)).ConfigureAwait(false);
         }
