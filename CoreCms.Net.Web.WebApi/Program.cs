@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Linq;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -35,96 +35,96 @@ using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Ìí¼Ó±¾µØÂ·¾¶»ñÈ¡Ö§³Ö
+//æ·»åŠ æœ¬åœ°è·¯å¾„è·å–æ”¯æŒ
 builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath, builder.Environment.EnvironmentName));
 builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootPath));
 
-//Memory»º´æ
+//Memoryç¼“å­˜
 builder.Services.AddMemoryCacheSetup();
-//Redis»º´æ
+//Redisç¼“å­˜
 builder.Services.AddRedisCacheSetup();
 
-//Ìí¼ÓÊı¾İ¿âÁ¬½ÓSqlSugar×¢ÈëÖ§³Ö
+//æ·»åŠ æ•°æ®åº“è¿æ¥SqlSugaræ³¨å…¥æ”¯æŒ
 builder.Services.AddSqlSugarSetup();
-//ÅäÖÃ¿çÓò£¨CORS£©
+//é…ç½®è·¨åŸŸï¼ˆCORSï¼‰
 builder.Services.AddCorsSetup();
 
-//Ìí¼ÓsessionÖ§³Ö(sessionÒÀÀµÓÚcache½øĞĞ´æ´¢)
+//æ·»åŠ sessionæ”¯æŒ(sessionä¾èµ–äºcacheè¿›è¡Œå­˜å‚¨)
 builder.Services.AddSession();
-// AutoMapperÖ§³Ö
-// AutoMapperÖ§³Ö£¨15°æ±¾ºóÆôÓÃÁËÊÚÈ¨Ä£Ê½£¬´ó¼Ò¿ÉÒÔÇ°Íùhttps://luckypennysoftware.com/ÉêÇë×Ô¼ºÃâ·ÑµÄkey£©
+// AutoMapperæ”¯æŒ
+// AutoMapperæ”¯æŒï¼ˆ15ç‰ˆæœ¬åå¯ç”¨äº†æˆæƒæ¨¡å¼ï¼Œå¤§å®¶å¯ä»¥å‰å¾€https://luckypennysoftware.com/ç”³è¯·è‡ªå·±å…è´¹çš„keyï¼‰
 //builder.Services.AddAutoMapper(typeof(AutoMapperConfiguration));
 builder.Services.AddAutoMapper(cfg => cfg.LicenseKey = AppSettingsConstVars.AutoMapperLicenseKey, typeof(AutoMapperConfiguration));
 
-//MediatR£¨Ö»ĞèÒª×¢²áÒ»¸ö,Í¬ÏîÄ¿»òÀà¿âÏÂ¾Í²»ĞèÒª×¢²á¶à¸ö£©
+//MediatRï¼ˆåªéœ€è¦æ³¨å†Œä¸€ä¸ª,åŒé¡¹ç›®æˆ–ç±»åº“ä¸‹å°±ä¸éœ€è¦æ³¨å†Œå¤šä¸ªï¼‰
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TextMessageEventCommand).Assembly));
 
-//Ê¹ÓÃ SignalR
+//ä½¿ç”¨ SignalR
 builder.Services.AddSignalR();
 
-//RedisÏûÏ¢¶ÓÁĞ
+//Redisæ¶ˆæ¯é˜Ÿåˆ—
 builder.Services.AddRedisMessageQueueSetup();
 
-// ÒıÈëPayment ÒÀÀµ×¢Èë(Ö§¸¶±¦Ö§¸¶/Î¢ĞÅÖ§¸¶)
+// å¼•å…¥Payment ä¾èµ–æ³¨å…¥(æ”¯ä»˜å®æ”¯ä»˜/å¾®ä¿¡æ”¯ä»˜)
 builder.Services.AddAlipay();
 builder.Services.AddWeChatPay();
 
-// ÔÚ appsettings.json ÖĞ ÅäÖÃÑ¡Ïî
+// åœ¨ appsettings.json ä¸­ é…ç½®é€‰é¡¹
 builder.Services.Configure<WeChatPayOptions>(builder.Configuration.GetSection("WeChatPay"));
 builder.Services.Configure<AlipayOptions>(builder.Configuration.GetSection("Alipay"));
 
-//×¢²á×Ô¶¨ÒåÎ¢ĞÅ½Ó¿ÚÅäÖÃÎÄ¼ş
+//æ³¨å†Œè‡ªå®šä¹‰å¾®ä¿¡æ¥å£é…ç½®æ–‡ä»¶
 builder.Services.Configure<CoreCms.Net.WeChat.Service.Options.WeChatOptions>(builder.Configuration.GetSection(nameof(CoreCms.Net.WeChat.Service.Options.WeChatOptions)));
 
-// ×¢Èë¹¤³§ HTTP ¿Í»§¶Ë
+// æ³¨å…¥å·¥å‚ HTTP å®¢æˆ·ç«¯
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<CoreCms.Net.WeChat.Service.HttpClients.IWeChatApiHttpClientFactory, CoreCms.Net.WeChat.Service.HttpClients.WeChatApiHttpClientFactory>();
 
-//Swagger½Ó¿ÚÎÄµµ×¢Èë
+//Swaggeræ¥å£æ–‡æ¡£æ³¨å…¥
 builder.Services.AddClientSwaggerSetup();
 
-//ÅäÖÃÒ×ÁªÔÆ´òÓ¡»ú
+//é…ç½®æ˜“è”äº‘æ‰“å°æœº
 builder.Services.AddYiLianYunSetup();
 
-//×¢²áHangfire¶¨Ê±ÈÎÎñ
+//æ³¨å†ŒHangfireå®šæ—¶ä»»åŠ¡
 builder.Services.AddHangFireSetup();
 
-//ÊÚÈ¨Ö§³Ö×¢Èë
+//æˆæƒæ”¯æŒæ³¨å…¥
 builder.Services.AddAuthorizationSetupForClient();
-//ÉÏÏÂÎÄ×¢Èë
+//ä¸Šä¸‹æ–‡æ³¨å…¥
 builder.Services.AddHttpContextSetup();
 
-//·şÎñÅäÖÃÖĞ¼ÓÈëAutoFac¿ØÖÆÆ÷Ìæ»»¹æÔò¡£
+//æœåŠ¡é…ç½®ä¸­åŠ å…¥AutoFacæ§åˆ¶å™¨æ›¿æ¢è§„åˆ™ã€‚
 builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
-//×¢²ámvc£¬×¢²árazorÒıÇæÊÓÍ¼
+//æ³¨å†Œmvcï¼Œæ³¨å†Œrazorå¼•æ“è§†å›¾
 builder.Services.AddMvc(options =>
 {
-    //ÊµÌåÑéÖ¤
+    //å®ä½“éªŒè¯
     options.Filters.Add<RequiredErrorForClent>();
-    //Òì³£´¦Àí
+    //å¼‚å¸¸å¤„ç†
     options.Filters.Add<GlobalExceptionsFilterForClent>();
-    //SwaggerÌŞ³ı²»ĞèÒª¼ÓÈëapiÕ¹Ê¾µÄÁĞ±í
+    //Swaggerå‰”é™¤ä¸éœ€è¦åŠ å…¥apiå±•ç¤ºçš„åˆ—è¡¨
     options.Conventions.Add(new ApiExplorerIgnores());
 })
     .AddNewtonsoftJson(p =>
     {
-        //Êı¾İ¸ñÊ½Ê××ÖÄ¸Ğ¡Ğ´ ²»Ê¹ÓÃÍÕ·å
+        //æ•°æ®æ ¼å¼é¦–å­—æ¯å°å†™ ä¸ä½¿ç”¨é©¼å³°
         p.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-        //²»Ê¹ÓÃÍÕ·åÑùÊ½µÄkey
+        //ä¸ä½¿ç”¨é©¼å³°æ ·å¼çš„key
         //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
-        //ºöÂÔÑ­»·ÒıÓÃ
+        //å¿½ç•¥å¾ªç¯å¼•ç”¨
         p.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        //ÉèÖÃÊ±¼ä¸ñÊ½£¨±ØĞëÊ¹ÓÃyyyy/MM/dd¸ñÊ½£¬ÒòÎªiosÏµÍ³²»Ö§³Ö2018-03-29¸ñÊ½µÄÊ±¼ä£¬Ö»Ê¶±ğ2018/03/09ÕâÖÖ¸ñÊ½¡££©
+        //è®¾ç½®æ—¶é—´æ ¼å¼ï¼ˆå¿…é¡»ä½¿ç”¨yyyy/MM/ddæ ¼å¼ï¼Œå› ä¸ºiosç³»ç»Ÿä¸æ”¯æŒ2018-03-29æ ¼å¼çš„æ—¶é—´ï¼Œåªè¯†åˆ«2018/03/09è¿™ç§æ ¼å¼ã€‚ï¼‰
         p.SerializerSettings.DateFormatString = "yyyy/MM/dd HH:mm:ss";
     });
 
-#region AutoFac×¢²á============================================================================
+#region AutoFacæ³¨å†Œ============================================================================
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-    //»ñÈ¡ËùÓĞ¿ØÖÆÆ÷ÀàĞÍ²¢Ê¹ÓÃÊôĞÔ×¢Èë
+    //è·å–æ‰€æœ‰æ§åˆ¶å™¨ç±»å‹å¹¶ä½¿ç”¨å±æ€§æ³¨å…¥
     var controllerBaseType = typeof(ControllerBase);
     containerBuilder.RegisterAssemblyTypes(typeof(Program).Assembly)
         .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
@@ -138,39 +138,39 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 var app = builder.Build();
 
-#region ½â¾öUbuntu Nginx ´úÀí²»ÄÜ»ñÈ¡IPÎÊÌâ
+#region è§£å†³Ubuntu Nginx ä»£ç†ä¸èƒ½è·å–IPé—®é¢˜
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 #endregion
 
-// ¼ÇÂ¼ÇëÇóÓë·µ»ØÊı¾İ (×¢Òâ¿ªÆôÈ¨ÏŞ£¬²»È»±¾µØÎŞ·¨Ğ´Èë)
+// è®°å½•è¯·æ±‚ä¸è¿”å›æ•°æ® (æ³¨æ„å¼€å¯æƒé™ï¼Œä¸ç„¶æœ¬åœ°æ— æ³•å†™å…¥)
 app.UseRequestResponseLog();
-// ÓÃ»§·ÃÎÊ¼ÇÂ¼(±ØĞë·Åµ½Íâ²ã£¬²»È»Èç¹ûÓöµ½Òì³££¬»á±¨´í£¬ÒòÎª²»ÄÜ·µ»ØÁ÷)(×¢Òâ¿ªÆôÈ¨ÏŞ£¬²»È»±¾µØÎŞ·¨Ğ´Èë)
+// ç”¨æˆ·è®¿é—®è®°å½•(å¿…é¡»æ”¾åˆ°å¤–å±‚ï¼Œä¸ç„¶å¦‚æœé‡åˆ°å¼‚å¸¸ï¼Œä¼šæŠ¥é”™ï¼Œå› ä¸ºä¸èƒ½è¿”å›æµ)(æ³¨æ„å¼€å¯æƒé™ï¼Œä¸ç„¶æœ¬åœ°æ— æ³•å†™å…¥)
 app.UseRecordAccessLogsMildd();
-// ¼ÇÂ¼ipÇëÇó (×¢Òâ¿ªÆôÈ¨ÏŞ£¬²»È»±¾µØÎŞ·¨Ğ´Èë)
+// è®°å½•ipè¯·æ±‚ (æ³¨æ„å¼€å¯æƒé™ï¼Œä¸ç„¶æœ¬åœ°æ— æ³•å†™å…¥)
 app.UseIpLogMildd();
-// SwaggerÊÚÈ¨µÇÂ¼À¹½Ø
+// Swaggeræˆæƒç™»å½•æ‹¦æˆª
 app.UseSwaggerAuthorizedMildd();
-//Ç¿ÖÆÏÔÊ¾ÖĞÎÄ
+//å¼ºåˆ¶æ˜¾ç¤ºä¸­æ–‡
 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
 
 app.UseSwagger().UseSwaggerUI(c =>
 {
-    //¸ù¾İ°æ±¾Ãû³Æµ¹Ğò ±éÀúÕ¹Ê¾
+    //æ ¹æ®ç‰ˆæœ¬åç§°å€’åº éå†å±•ç¤º
     typeof(CustomApiVersion.ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(
         version =>
         {
             c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"Doc {version}");
         });
-    //ÉèÖÃÄ¬ÈÏÌø×ªµ½swagger-ui
+    //è®¾ç½®é»˜è®¤è·³è½¬åˆ°swagger-ui
     c.RoutePrefix = AppSettingsConstVars.SwaggerRoutePrefix;
 });
 
-#region Hangfire¶¨Ê±ÈÎÎñ
+#region Hangfireå®šæ—¶ä»»åŠ¡
 
-//ÊÚÈ¨
+//æˆæƒ
 var filter = new BasicAuthAuthorizationFilter(
     new BasicAuthAuthorizationFilterOptions
     {
@@ -191,8 +191,8 @@ var filter = new BasicAuthAuthorizationFilter(
     });
 var hangfireOptions = new Hangfire.DashboardOptions
 {
-    AppPath = "/",//·µ»ØÊ±Ìø×ªµÄµØÖ·
-    DisplayStorageConnectionString = false,//ÊÇ·ñÏÔÊ¾Êı¾İ¿âÁ¬½ÓĞÅÏ¢
+    AppPath = "/",//è¿”å›æ—¶è·³è½¬çš„åœ°å€
+    DisplayStorageConnectionString = false,//æ˜¯å¦æ˜¾ç¤ºæ•°æ®åº“è¿æ¥ä¿¡æ¯
     Authorization = new[]
     {
         filter
@@ -203,18 +203,18 @@ var hangfireOptions = new Hangfire.DashboardOptions
 app.UseHangfireDashboard(AppSettingsConstVars.HangFireRoutePrefix, hangfireOptions);
 HangfireDispose.HangfireService();
 
-//ÉèÖÃhangfire¶¨Ê±ÈÎÎñ¹ıÆÚÊ±¼ä
+//è®¾ç½®hangfireå®šæ—¶ä»»åŠ¡è¿‡æœŸæ—¶é—´
 GlobalStateHandlers.Handlers.Add(new SucceededStateExpireHandler(AppSettingsConstVars.HangFireJobExpirationTimeOut));
 
 
 #endregion
 
-//Ê¹ÓÃ Session
+//ä½¿ç”¨ Session
 app.UseSession();
 
 if (app.Environment.IsDevelopment())
 {
-    // ÔÚ¿ª·¢»·¾³ÖĞ£¬Ê¹ÓÃÒì³£Ò³Ãæ£¬ÕâÑù¿ÉÒÔ±©Â¶´íÎó¶ÑÕ»ĞÅÏ¢£¬ËùÒÔ²»Òª·ÅÔÚÉú²ú»·¾³¡£
+    // åœ¨å¼€å‘ç¯å¢ƒä¸­ï¼Œä½¿ç”¨å¼‚å¸¸é¡µé¢ï¼Œè¿™æ ·å¯ä»¥æš´éœ²é”™è¯¯å †æ ˆä¿¡æ¯ï¼Œæ‰€ä»¥ä¸è¦æ”¾åœ¨ç”Ÿäº§ç¯å¢ƒã€‚
     app.UseDeveloperExceptionPage();
 }
 else
@@ -224,25 +224,25 @@ else
     app.UseHsts();
 }
 
-// CORS¿çÓò
+// CORSè·¨åŸŸ
 app.UseCors(AppSettingsConstVars.CorsPolicyName);
 
 // Routing
 app.UseRouting();
 
-// Ê¹ÓÃ¾²Ì¬ÎÄ¼ş
+// ä½¿ç”¨é™æ€æ–‡ä»¶
 app.UseStaticFiles();
-// ÏÈ¿ªÆôÈÏÖ¤
+// å…ˆå¼€å¯è®¤è¯
 app.UseAuthentication();
-// È»ºóÊÇÊÚÈ¨ÖĞ¼ä¼ş
+// ç„¶åæ˜¯æˆæƒä¸­é—´ä»¶
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//ÉèÖÃÄ¬ÈÏÆğÊ¼Ò³£¨Èçdefault.html£©
-//´Ë´¦µÄÂ·¾¶ÊÇÏà¶ÔÓÚwwwrootÎÄ¼ş¼ĞµÄÏà¶ÔÂ·¾¶
+//è®¾ç½®é»˜è®¤èµ·å§‹é¡µï¼ˆå¦‚default.htmlï¼‰
+//æ­¤å¤„çš„è·¯å¾„æ˜¯ç›¸å¯¹äºwwwrootæ–‡ä»¶å¤¹çš„ç›¸å¯¹è·¯å¾„
 var defaultFilesOptions = new DefaultFilesOptions();
 defaultFilesOptions.DefaultFileNames.Clear();
 defaultFilesOptions.DefaultFileNames.Add("index.html");
@@ -251,16 +251,16 @@ app.UseStaticFiles();
 
 try
 {
-    //È·±£NLog.configÖĞÁ¬½Ó×Ö·û´®Óëappsettings.jsonÖĞÍ¬²½
+    //ç¡®ä¿NLog.configä¸­è¿æ¥å­—ç¬¦ä¸²ä¸appsettings.jsonä¸­åŒæ­¥
     NLogUtil.EnsureNlogConfig("NLog.config");
-    //ÆäËûÏîÄ¿Æô¶¯Ê±ĞèÒª×öµÄÊÂÇé
-    NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.ApiRequest, "½Ó¿ÚÆô¶¯", "½Ó¿ÚÆô¶¯³É¹¦");
+    //å…¶ä»–é¡¹ç›®å¯åŠ¨æ—¶éœ€è¦åšçš„äº‹æƒ…
+    NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.ApiRequest, "æ¥å£å¯åŠ¨", "æ¥å£å¯åŠ¨æˆåŠŸ");
 
     app.Run();
 }
 catch (Exception ex)
 {
-    //Ê¹ÓÃNlogĞ´µ½±¾µØÈÕÖ¾ÎÄ¼ş£¨ÍòÒ»Êı¾İ¿âÃ»´´½¨/Á¬½Ó³É¹¦£©
-    NLogUtil.WriteFileLog(NLog.LogLevel.Error, LogType.ApiRequest, "½Ó¿ÚÆô¶¯", "³õÊ¼»¯Êı¾İÒì³£", ex);
+    //ä½¿ç”¨Nlogå†™åˆ°æœ¬åœ°æ—¥å¿—æ–‡ä»¶ï¼ˆä¸‡ä¸€æ•°æ®åº“æ²¡åˆ›å»º/è¿æ¥æˆåŠŸï¼‰
+    NLogUtil.WriteFileLog(NLog.LogLevel.Error, LogType.ApiRequest, "æ¥å£å¯åŠ¨", "åˆå§‹åŒ–æ•°æ®å¼‚å¸¸", ex);
     throw;
 }
