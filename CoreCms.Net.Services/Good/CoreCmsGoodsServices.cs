@@ -663,7 +663,7 @@ namespace CoreCms.Net.Services
         public new async Task<IPageList<CoreCmsGoods>> QueryPageForLinqAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "",
             int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
         {
-            return await _dal.QueryPageAsync(predicate, orderBy, pageIndex, pageSize, blUseNoLock);
+            return await _dal.QueryPageForLinqAsync(predicate, orderBy, pageIndex, pageSize, blUseNoLock);
         }
 
 
