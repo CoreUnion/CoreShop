@@ -162,13 +162,7 @@ namespace CoreCms.Net.Web.WebApi.Controllers
                 }
             }
 
-            var orderBy = " isRecommend desc,isHot desc";
-            if (!string.IsNullOrEmpty(entity.order))
-            {
-                orderBy += "," + entity.order;
-            }
-
-            var list = await _goodsServices.QueryAgentGoodsPageAsync(where, orderBy, entity.page, entity.limit, false);
+            var list = await _goodsServices.QueryAgentGoodsPageAsync(where, entity.page, entity.limit, false);
             if (list.Any())
             {
                 foreach (var goods in list)

@@ -154,13 +154,12 @@ namespace CoreCms.Net.IRepository
         ///     根据条件查询代理池商品分页数据
         /// </summary>
         /// <param name="predicate"></param>
-        /// <param name="orderBy"></param>
         /// <param name="pageIndex">当前页面索引</param>
         /// <param name="pageSize">分布大小</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         /// <returns></returns>
         Task<IPageList<CoreCmsGoods>> QueryAgentGoodsPageAsync(Expression<Func<CoreCmsGoods, bool>> predicate,
-            string orderBy = "", int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false);
+            int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false);
 
         /// <summary>
         ///     获取下拉商品数据

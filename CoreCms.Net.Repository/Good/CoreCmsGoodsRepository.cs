@@ -1728,12 +1728,11 @@ namespace CoreCms.Net.Repository
         ///     根据条件查询代理池商品分页数据
         /// </summary>
         /// <param name="predicate"></param>
-        /// <param name="orderBy"></param>
         /// <param name="pageIndex">当前页面索引</param>
         /// <param name="pageSize">分布大小</param>
         /// <param name="blUseNoLock">是否使用WITH(NOLOCK)</param>
         /// <returns></returns>
-        public async Task<IPageList<CoreCmsGoods>> QueryAgentGoodsPageAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "",
+        public async Task<IPageList<CoreCmsGoods>> QueryAgentGoodsPageAsync(Expression<Func<CoreCmsGoods, bool>> predicate,
             int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
         {
             RefAsync<int> totalCount = 0;
@@ -1787,7 +1786,7 @@ namespace CoreCms.Net.Repository
                     .With(SqlWith.NoLock)
                     .MergeTable()
                     .Where(predicate)
-                    .OrderBy(orderBy)
+                    .OrderBy(it => it.isRecommend, OrderByType.Desc).OrderBy(it => it.isHot, OrderByType.Desc)
                     .ToPageListAsync(pageIndex, pageSize, totalCount);
             }
             else
@@ -1838,7 +1837,7 @@ namespace CoreCms.Net.Repository
                     })
                     .MergeTable()
                     .Where(predicate)
-                    .OrderBy(orderBy)
+                    .OrderBy(it => it.isRecommend, OrderByType.Desc).OrderBy(it => it.isHot, OrderByType.Desc)
                     .ToPageListAsync(pageIndex, pageSize, totalCount);
             }
             var list = new PageList<CoreCmsGoods>(page, pageIndex, pageSize, totalCount);
