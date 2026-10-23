@@ -663,6 +663,8 @@ namespace CoreCms.Net.Services
         public new async Task<IPageList<CoreCmsGoods>> QueryPageForLinqAsync(Expression<Func<CoreCmsGoods, bool>> predicate, string orderBy = "",
             int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
         {
+            // 此处必须调用 _dal.QueryPageForLinqAsync：排序字符串经仓储层白名单转 lambda 后才进 SQL。
+            // 若改接 _dal.QueryPageAsync（字符串重载），orderBy 会原样拼进 ORDER BY，构成匿名SQL注入点（见提交 0453011）。
             return await _dal.QueryPageForLinqAsync(predicate, orderBy, pageIndex, pageSize, blUseNoLock);
         }
 
